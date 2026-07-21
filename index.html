@@ -443,31 +443,49 @@
 
 <script>(function(){var tg=document.querySelector(".nav-toggle"),dr=document.getElementById("nav-drawer"),ov=document.getElementById("nav-overlay"),cl=document.querySelector(".nav-drawer-close");function op(){tg.setAttribute("aria-expanded","true");dr.setAttribute("aria-hidden","false");dr.classList.add("is-open");if(ov)ov.classList.add("is-visible");document.body.style.overflow="hidden";}function cl2(){tg.setAttribute("aria-expanded","false");dr.setAttribute("aria-hidden","true");dr.classList.remove("is-open");if(ov)ov.classList.remove("is-visible");document.body.style.overflow="";}if(tg&&dr){tg.addEventListener("click",function(){tg.getAttribute("aria-expanded")==="true"?cl2():op();});if(cl)cl.addEventListener("click",cl2);if(ov)ov.addEventListener("click",cl2);}})();</script>
 
-<!-- Populate the "Three Ways to Enter the Garden" cards with dates from JSON -->
+<!-- Populate the "Three Ways to Enter the Garden" cards with dates from JSON.
+     Each file lists dated events; we show the next one on/after today, else
+     the file's emptyMessage (e.g. "New dates coming soon (TBA)"). -->
 <script>
 (function () {
-  // One JSON file per event; each: { label, date, time (optional), placeholder (optional) }
-  var events = [
+  var DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function fmt(iso) {
+    var d = new Date(iso + "T00:00:00");
+    if (isNaN(d)) return iso;
+    return DAYS[d.getDay()] + ", " + ("0" + d.getDate()).slice(-2) + " " + MONTHS[d.getMonth()] + " " + d.getFullYear();
+  }
+
+  var cards = [
     { url: "/assets/data/enter-the-garden.json", labelEl: "etg-label", dateEl: "etg-date" },
     { url: "/assets/data/regular-classes.json", labelEl: "rc-label", dateEl: "rc-date" },
     { url: "/assets/data/practicas.json", labelEl: "prac-label", dateEl: "prac-date" }
   ];
-  events.forEach(function (ev) {
-    fetch(ev.url, { cache: "no-store" })
+
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  cards.forEach(function (card) {
+    fetch(card.url, { cache: "no-store" })
       .then(function (res) { return res.ok ? res.json() : null; })
       .then(function (data) {
         if (!data) return;
-        var label = document.getElementById(ev.labelEl);
-        var date = document.getElementById(ev.dateEl);
+        var label = document.getElementById(card.labelEl);
+        var dateEl = document.getElementById(card.dateEl);
         if (label && data.label) label.textContent = data.label;
-        if (date) {
-          if (data.date) {
-            date.innerHTML = data.time
-              ? data.date + "<br>" + data.time
-              : data.date;
-          } else if (data.placeholder) {
-            date.textContent = data.placeholder;
-          }
+        if (!dateEl) return;
+
+        // Keep only events on/after today, earliest first.
+        var upcoming = (data.events || [])
+          .filter(function (e) { return e.date && new Date(e.date + "T00:00:00") >= today; })
+          .sort(function (a, b) { return new Date(a.date) - new Date(b.date); });
+
+        if (upcoming.length) {
+          var next = upcoming[0];
+          var text = (data.prefix || "") + fmt(next.date);
+          dateEl.innerHTML = next.time ? text + "<br>" + next.time : text;
+        } else {
+          dateEl.textContent = data.emptyMessage || "New dates coming soon (TBA)";
         }
       })
       .catch(function () { /* keep the static fallback text on error */ });
