@@ -1,0 +1,15 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+
+# Local dev server logs
+*.log
+serve.log
+serve.err
+
+# Environment / secrets (should never be committed)
+.env
+.env.*

@@ -1,0 +1,477 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Garden — Our Story, Philosophy &amp; People — Tango Garden</title>
+  <meta name="description" content="The story behind Tango Garden Cologne — who we are, why we do this, and what we believe.">
+  <link rel="canonical" href="https://tangogarden.de/pages/the-garden">
+  <meta property="og:site_name" content="Tango Garden">
+  <meta property="og:url" content="https://tangogarden.de/pages/the-garden">
+  <meta property="og:title" content="The Garden — Our Story, Philosophy &amp; People — Tango Garden">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="The story behind Tango Garden Cologne — who we are, why we do this, and what we believe.">
+  <meta property="og:image" content="https://cdn.shopify.com/s/files/1/0957/0969/2231/files/venue.png?v=1770925805">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="/assets/logo-icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/styles.css?v=2">
+  <style>
+    .garden-hero {
+      height: 100vh;
+      min-height: 500px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: url('https://cdn.shopify.com/s/files/1/0957/0969/2231/files/venue.png?v=1770925805') center/cover no-repeat;
+    }
+    .garden-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: none;
+    }
+    .garden-hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 800px;
+      padding: 0 1.5rem;
+    }
+    .garden-hero-content h1 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    .garden-scroll-hint {
+      margin-top: 3rem;
+      color: var(--green);
+    }
+    .garden-scroll-hint p {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.5rem;
+    }
+    .garden-scroll-arrow {
+      font-size: 1.8rem;
+      animation: gardenBounce 2s ease-in-out infinite;
+      display: block;
+    }
+    @keyframes gardenBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    /* Story section */
+    .garden-story {
+      background: var(--cream);
+      padding: 6rem 1.5rem;
+    }
+    .garden-story-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .garden-story-eyebrow {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--green);
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+    }
+    .garden-story-text p {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--text-mid);
+      margin-bottom: 1.4rem;
+    }
+    .garden-pullquote {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--green);
+      padding-left: 1.25rem;
+      border-left: 3px solid var(--green);
+      margin: 2rem 0;
+      line-height: 1.6;
+      font-style: italic;
+    }
+    .garden-sign-off {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--green);
+      margin-top: 2rem;
+    }
+    .garden-story-images img {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      display: block;
+    }
+    .garden-story-images img + img { margin-top: 1.5rem; }
+    .garden-photo-caption {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-top: 0.6rem;
+      text-align: center;
+      font-style: italic;
+    }
+
+    /* Gardeners banner */
+    .garden-team-banner {
+      min-height: 320px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(45,80,22,0.92), rgba(78,93,34,0.88));
+      padding: 4rem 1.5rem;
+      text-align: center;
+    }
+    .garden-team-banner h2 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+    .garden-team-banner p {
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.88);
+      max-width: 640px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Team grid */
+    .garden-team-grid-section {
+      background: #fff;
+      padding: 5rem 1.5rem;
+    }
+    .garden-team-grid-section h2 {
+      text-align: center;
+      font-size: 2.25rem;
+      color: var(--green);
+      margin-bottom: 0.75rem;
+    }
+    .garden-team-intro {
+      text-align: center;
+      font-size: 1.1rem;
+      color: var(--text-light);
+      max-width: 620px;
+      margin: 0 auto 3.5rem;
+      line-height: 1.6;
+    }
+    .garden-team-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .garden-team-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+    }
+    .garden-team-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 32px rgba(0,0,0,0.13);
+    }
+    .garden-team-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--green);
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      z-index: 2;
+    }
+    .garden-team-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: contain;
+      display: block;
+      background: var(--cream);
+    }
+    .garden-team-card-body {
+      padding: 1.5rem 1.75rem 2rem;
+    }
+    .garden-team-card-body h3 {
+      font-size: 1.35rem;
+      color: var(--green);
+      margin-bottom: 0.2rem;
+    }
+    .garden-team-role {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-light);
+      margin-bottom: 0.9rem;
+    }
+    .garden-team-card-body p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-mid);
+    }
+
+    /* Join CTA */
+    .garden-join {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 3rem 2rem;
+      background: var(--cream);
+      border-radius: 12px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .garden-join h3 {
+      font-size: 1.65rem;
+      color: var(--green);
+      margin-bottom: 0.75rem;
+    }
+    .garden-join p {
+      font-size: 1rem;
+      color: var(--text-mid);
+      max-width: 540px;
+      margin: 0 auto 1.75rem;
+      line-height: 1.65;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .garden-story-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .garden-story-images { order: -1; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-container">
+    <a href="/" class="nav-logo" aria-label="Tango Garden — Home">
+      <span class="nav-logo-desktop"><img src="/assets/logo-icon.svg" alt="" width="32" height="32" loading="eager"><span class="nav-logo-text">Tango Garden</span></span>
+      <span class="nav-logo-mobile"><img src="https://cdn.shopify.com/s/files/1/0957/0969/2231/files/green_text_logo-cropped.svg" alt="Tango Garden" width="100" height="40" loading="eager"></span>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer"><span></span><span></span><span></span></button>
+    <ul class="nav-links" role="list">
+      <li class="nav-item-has-dropdown">
+        <a href="/pages/the-garden" class="nav-link">The Garden <span class="nav-caret" aria-hidden="true"><svg viewBox="0 0 10 6" width="10" height="6" fill="none"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"></path></svg></span></a>
+        <ul class="nav-dropdown" role="list">
+          <li><a href="/pages/the-garden#our-story">Our Story</a></li>
+          <li><a href="/pages/the-garden#our-gardeners">Our Gardeners</a></li>
+        </ul>
+      </li>
+      <li class="nav-item-has-dropdown">
+        <a href="/pages/start-here" class="nav-link">Start Here <span class="nav-caret" aria-hidden="true"><svg viewBox="0 0 10 6" width="10" height="6" fill="none"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"></path></svg></span></a>
+        <ul class="nav-dropdown" role="list">
+          <li><a href="/pages/start-here#three-ways-to-enter">Three Ways to Enter the Garden</a></li>
+          <li><a href="/pages/start-here#is-this-for-you">Is This For Me?</a></li>
+          <li><a href="/pages/start-here#common-questions">Common Questions</a></li>
+        </ul>
+      </li>
+      <li class="nav-item-has-dropdown">
+        <a href="/collections/all" class="nav-link">Classes <span class="nav-caret" aria-hidden="true"><svg viewBox="0 0 10 6" width="10" height="6" fill="none"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"></path></svg></span></a>
+        <ul class="nav-dropdown" role="list">
+          <li><a href="/products/enter-the-garden-general-admission">Enter the Garden</a></li>
+          <li><a href="/products/the-sprouting-sessions-beginner-level-full-course-pass-general-admission">Sprouting Sessions</a></li>
+          <li><a href="/products/the-garden-practica-1-practica-pass-general-admission">Garden Practica</a></li>
+        </ul>
+      </li>
+      <li><a href="/pages/contact" class="nav-link">Connect with us</a></li>
+    </ul>
+    <div class="nav-social">
+      <a href="https://www.facebook.com/tangogardencologne/" target="_blank" rel="noopener" class="nav-social-link" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+      <a href="https://www.instagram.com/tangogardencologne" target="_blank" rel="noopener" class="nav-social-link" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+    </div>
+  </div>
+  <div class="nav-drawer" id="nav-drawer" aria-hidden="true">
+    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <ul class="nav-drawer-links" role="list">
+      <li>
+        <details class="nav-drawer-detail">
+          <summary class="nav-drawer-summary">The Garden</summary>
+          <ul class="nav-drawer-submenu" role="list">
+            <li><a href="/pages/the-garden#our-story">Our Story</a></li>
+            <li><a href="/pages/the-garden#our-gardeners">Our Gardeners</a></li>
+          </ul>
+        </details>
+      </li>
+      <li>
+        <details class="nav-drawer-detail">
+          <summary class="nav-drawer-summary">Start Here</summary>
+          <ul class="nav-drawer-submenu" role="list">
+            <li><a href="/pages/start-here#three-ways-to-enter">Three Ways to Enter the Garden</a></li>
+            <li><a href="/pages/start-here#is-this-for-you">Is This For Me?</a></li>
+            <li><a href="/pages/start-here#common-questions">Common Questions</a></li>
+          </ul>
+        </details>
+      </li>
+      <li>
+        <details class="nav-drawer-detail">
+          <summary class="nav-drawer-summary">Classes</summary>
+          <ul class="nav-drawer-submenu" role="list">
+            <li><a href="/products/enter-the-garden-general-admission">Enter the Garden</a></li>
+            <li><a href="/products/the-sprouting-sessions-beginner-level-full-course-pass-general-admission">Sprouting Sessions</a></li>
+            <li><a href="/products/the-garden-practica-1-practica-pass-general-admission">Garden Practica</a></li>
+          </ul>
+        </details>
+      </li>
+      <li><a href="/pages/contact">Connect with us</a></li>
+    </ul>
+    <div class="nav-drawer-footer">
+      <p class="nav-drawer-connect">Connect with us</p>
+      <div class="nav-drawer-social">
+        <a href="https://www.facebook.com/tangogardencologne/" target="_blank" rel="noopener" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+        <a href="https://www.instagram.com/tangogardencologne" target="_blank" rel="noopener" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        <a href="https://wa.me/491602368723" target="_blank" rel="noopener" aria-label="WhatsApp"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-overlay" id="nav-overlay"></div>
+</nav>
+
+
+
+
+<!-- Hero -->
+<section class="garden-hero">
+  <div class="garden-hero-overlay"></div>
+  <div class="garden-hero-content">
+    <h1>This Is Your Garden</h1>
+    <div class="garden-scroll-hint">
+      <p>Discover Our Story</p>
+      <span class="garden-scroll-arrow">↓</span>
+    </div>
+  </div>
+</section>
+
+<!-- Story -->
+<section class="garden-story" id="our-story">
+  <div class="garden-story-inner">
+    <div class="garden-story-text">
+      <div class="garden-story-eyebrow">Where This Began</div>
+      <p>Hi! My name's Vangelis and I was born in Crete, Greece, where my favourite season was always summer. Every evening, our small garden would fill with the scent of night-bloom jasmine. It wasn't much — a few chairs, a plastic table — but it was a place where people came together. My uncles would drop by unannounced; friends, neighbours, strangers would sit, eat, laugh, argue, and share stories and silence.</p>
+      <p>That garden was my first lesson in connection — a simple, living space that brought people closer and helped us catch our breath from the noise of life.</p>
+      <p>Every evening, people would gather. Not because they were invited. Not because there was an event. But because the garden <em>existed</em> — a shared space where showing up meant you belonged.</p>
+      <p>They shared food and told stories. They argued about politics and taught the children old songs. Conversations were always loud. And on celebrations, someone was always dancing.</p>
+      <p>What struck me wasn't the dancing itself. It was how <strong>natural</strong> it felt. No one was performing. No one was "good" or "bad." Movement was just another language they used to connect.</p>
+      <p>Years later, at 21, I stumbled upon Argentine tango. It became my new garden. Through tango I grew emotionally, mentally, spiritually. I watched others transform too:</p>
+      <div class="garden-pullquote">learning to trust, to listen, to embrace, to face themselves.</div>
+      <p>Tango revealed that growth and connection are never solitary acts — they happen between us.</p>
+      <p>When life brought me to Munich, I began to recreate that feeling. My living room became a small garden again — filled with plants, music, friends, laughter, and movement.</p>
+      <p>Around a wooden table this time, we shared food, stories, and tango. Slowly, a community grew — not just of dancers, but of people who showed up for one another.</p>
+      <p>Tango Garden is born from this journey — a place to grow on and off the dance floor. A space to connect deeply, to nurture yourself and others, to rediscover the joy of being present. Like every garden, it takes time, care, and warmth — but what blossoms is unforgettable.</p>
+      <div class="garden-pullquote">❝We dance not just to move, but to belong.❞</div>
+      <p>To find that rare space where we can breathe, feel, and grow together.</p>
+      <p>I am glad that you came — and I am looking forward to meeting you in real life!</p>
+      <p class="garden-sign-off">Hugs, Vangelis</p>
+    </div>
+
+    <div class="garden-story-images">
+      <img src="https://cdn.shopify.com/s/files/1/0957/0969/2231/files/south.jpg?v=1773173820" alt="Crete, Summer 2020 — Dinner after a tango weekend" loading="lazy">
+      <p class="garden-photo-caption">Crete, Summer 2020 — Last dinner after a long tango weekend full of warm embraces.</p>
+      <img src="https://cdn.shopify.com/s/files/1/0957/0969/2231/files/miloga-de-archanes.jpg?v=1773173800" alt="Milonga de Archanes, Crete, Winter 2018" loading="lazy">
+      <p class="garden-photo-caption">Crete, Winter 2018 — Dancing to Greek Tangos with traditional instruments.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Team banner -->
+<section class="garden-team-banner" id="our-gardeners">
+  <div>
+    <h2>Our Gardeners</h2>
+    <p>We're not performers. We're not tango purists.<br>We're people who believe connection matters more than perfection.</p>
+  </div>
+</section>
+
+<!-- Team grid -->
+<section class="garden-team-grid-section">
+  <h2>Meet the Team</h2>
+  <p class="garden-team-intro">Every person here has a story. Every person brings something unique to the garden.</p>
+
+  <div class="garden-team-cards">
+    <div class="garden-team-card">
+      <span class="garden-team-badge">Cofounder</span>
+      <img src="https://cdn.shopify.com/s/files/1/0957/0969/2231/files/Vangelis_Profile_Photo.png?v=1770672555" alt="Vangelis Theodorakis" loading="lazy">
+      <div class="garden-team-card-body">
+        <h3>Vangelis Theodorakis</h3>
+        <p class="garden-team-role">Lead Instructor</p>
+        <p>Built Tango Garden after discovering his love for communities. Believes that tradition is the passing of the fire — not the worshipping of the ashes.</p>
+      </div>
+    </div>
+    <div class="garden-team-card">
+      <span class="garden-team-badge">Cofounder</span>
+      <img src="https://cdn.shopify.com/s/files/1/0957/0969/2231/files/Kristina_Profile_Photo.png?v=1770672544" alt="Kristina Yanushko" loading="lazy">
+      <div class="garden-team-card-body">
+        <h3>Kristina Yanushko</h3>
+        <p class="garden-team-role">Lead Instructor</p>
+        <p>Kristina focuses on helping students develop body awareness, confidence, and real connection — creating a space where people can grow both on and off the dance floor.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="garden-join">
+    <h3>Want to Join the Team?</h3>
+    <p>We're always looking for people who share our values and want to help grow the garden. If you've been dancing for a while and feel called to teach, let's talk.</p>
+    <a href="https://wa.me/491602368723?text=Hi!%20I'm%20interested%20in%20joining%20the%20Tango%20Garden%20team." class="btn-primary">Join our team</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo-col">
+      <img src="https://cdn.shopify.com/s/files/1/0957/0969/2231/files/light_text_logo-cropped.svg" alt="Tango Garden" width="210" loading="lazy">
+    </div>
+    <div class="footer-col">
+      <h3 class="footer-heading">Connect</h3>
+      <ul class="footer-links" role="list">
+        <li><a href="/pages/the-garden">The Garden</a></li>
+        <li><a href="/pages/start-here">Start Here</a></li>
+        <li><a href="/pages/contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3 class="footer-heading">Legal</h3>
+      <ul class="footer-links" role="list">
+        <li><a href="/pages/refund-and-cancellation-policy">Refund &amp; Cancellation Policy</a></li>
+        <li><a href="/pages/terms-of-service">Terms of Service</a></li>
+        <li><a href="/pages/privacy-policy">Privacy Policy</a></li>
+        <li><a href="/pages/code-of-care">Code of Care</a></li>
+        <li><a href="/pages/impressum">Impressum</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-social">
+    <a href="https://www.facebook.com/tangogardencologne/" target="_blank" rel="noopener" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+    <a href="https://www.instagram.com/tangogardencologne" target="_blank" rel="noopener" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Tango Garden Cologne</p>
+    <p>All prices are final prices. No VAT charged according to §19 UStG.<br>
+    Alle Preise sind Endpreise. Gemäß §19 UStG wird keine Umsatzsteuer berechnet.</p>
+    <p class="footer-credit">Made with love ♥ and AI ✨</p>
+  </div>
+</footer>
+
+<script>(function(){var tg=document.querySelector(".nav-toggle"),dr=document.getElementById("nav-drawer"),ov=document.getElementById("nav-overlay"),cl=document.querySelector(".nav-drawer-close");function op(){tg.setAttribute("aria-expanded","true");dr.setAttribute("aria-hidden","false");dr.classList.add("is-open");if(ov)ov.classList.add("is-visible");document.body.style.overflow="hidden";}function cl2(){tg.setAttribute("aria-expanded","false");dr.setAttribute("aria-hidden","true");dr.classList.remove("is-open");if(ov)ov.classList.remove("is-visible");document.body.style.overflow="";}if(tg&&dr){tg.addEventListener("click",function(){tg.getAttribute("aria-expanded")==="true"?cl2():op();});if(cl)cl.addEventListener("click",cl2);if(ov)ov.addEventListener("click",cl2);}})();</script>
+
+</body>
+</html>
