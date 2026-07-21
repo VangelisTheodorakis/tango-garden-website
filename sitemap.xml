@@ -3,14 +3,10 @@
   <url><loc>https://tangogarden.de/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://tangogarden.de/pages/start-here</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://tangogarden.de/pages/the-garden</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://tangogarden.de/products/enter-the-garden-general-admission</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://tangogarden.de/products/enter-the-garden-introductory-session-student-and-under-28-admission</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://tangogarden.de/products/the-garden-practica-1-practica-pass-general-admission</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://tangogarden.de/products/the-garden-practica-1-practica-pass-door-only-student-and-under-28-admission</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://tangogarden.de/products/the-garden-practica-1-time-pass-evey</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://tangogarden.de/products/the-sprouting-sessions-beginner-level-1-class-pass-general-admission</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://tangogarden.de/products/the-sprouting-sessions-beginner-level-1-class-pass-student-and-under-28-admission</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://tangogarden.de/products/the-sprouting-sessions-beginner-level-1-class-welcome-pass</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://tangogarden.de/products/the-sprouting-sessions-beginners-level-4-classes-pass-general-admission</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://tangogarden.de/products/the-sprouting-sessions-beginner-level-4-classes-pass-student-and-under-28-admission</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://tangogarden.de/products/the-sprouting-sessions-beginner-level-full-course-pass-general-admission</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
