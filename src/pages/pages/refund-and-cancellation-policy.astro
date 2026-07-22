@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Refund & Cancellation Policy &#8212; Tango Garden"
+  description="Cancellation and refund policy for Tango Garden Cologne classes, events and practicas."
+  canonical="https://tangogarden.de/pages/refund-and-cancellation-policy"
+  noindex
+>
+  <Fragment set:html={`
+<main class="legal-page">
+  <h1 class="legal-title">Our Cancellation &amp; Refund Policy</h1>
+  <p style="font-size:1.05rem;color:#252525;margin-bottom:2.5rem;">We want everyone at Tango Garden to feel safe and supported.</p>
+
+  <section class="legal-section">
+    <h2>How to Request a Refund</h2>
+    <p>To request a refund or discuss your options, please contact us via <a href="https://wa.me/491602368723?text=Hi!+I+would+like+to+cancel+my+booking..." target="_blank" rel="noopener">WhatsApp</a> or send us an email at <a href="mailto:bookings@tangogarden.de">bookings@tangogarden.de</a>. We'll process your request within 2-3 business days.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>One-time events and 1-Class/Practica Passes ("Enter The Garden", "The Sprouting Sessions (Beginners Level)", "The Garden Practica")</h2>
+    <p>Cancellations are possible up to 1 calendar day before the start of event with a full refund. Cancellations on the same day as the event are not eligible for refund.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>4-Classes Passes</h2>
+    <p>Cancellations are possible up to 1 calendar day before the start of the course with a full refund.<br>
+    Cancellations before the first 7 calendar days from the beginning of the course are eligible to partial refund of 65€.<br>
+    Cancellations after the first 7 calendar days from the beginning of the course not eligible to refund.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>Full Course Passes (12 Classes)</h2>
+    <p>Cancellations are possible up to 1 calendar day before the start of the course with a full refund.<br>
+    Cancellations before the first 7 calendar days from the beginning of the course are eligible to partial refund of 215€.<br>
+    Cancellations after the first 7 calendar days from the beginning of the course not eligible to refund.</p>
+  </section>
+</main>
+`} />
+</BaseLayout>
+
+<style is:global>
+.legal-page { max-width: 860px; margin: 0 auto; padding: 53px 20px 60px; }
+    .legal-title { font-size: clamp(2.2rem, 5vw, 57px); font-weight: 400; color: #252525; line-height: 1.2; margin-bottom: 2.5rem; letter-spacing: -0.5px; }
+    .legal-section { margin-bottom: 2.5rem; }
+    .legal-section h2 { font-size: 19px; font-weight: 700; color: #1f1f1f; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(37,37,37,0.1); margin-bottom: 1.25rem; }
+    .legal-section p { font-size: 16px; line-height: 1.7; color: #252525; margin-bottom: 1rem; }
+    .legal-section p:last-child { margin-bottom: 0; }
+    .legal-section a { color: #252525; }
+    .legal-box { background: rgba(37,37,37,0.03); border: 1px solid rgba(37,37,37,0.1); padding: 25px; line-height: 1.7; color: #252525; font-size: 16px; }
+</style>

@@ -2,9 +2,9 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "Tango Garden Static Site",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-p", "3001", "Tango Garden Static Website"],
+      "name": "Tango Garden Astro",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
       "port": 3001
     }
   ]

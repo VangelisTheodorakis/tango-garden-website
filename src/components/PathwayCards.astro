@@ -1,0 +1,416 @@
+---
+/**
+ * "Three Ways to Enter the Garden".
+ *
+ * The date line of each card is populated at runtime from a JSON file in
+ * /assets/data/ — see the script at the bottom. The markup below carries the
+ * last-known text as a fallback so the card is never blank if the fetch fails.
+ */
+const cards = [
+  {
+    key: 'etg',
+    number: '1',
+    icon: '🌱',
+    title: 'Enter the Garden',
+    description: 'One-time event for those who want to try without commitment.',
+    features: [
+      'One-time 1.5 hour session',
+      'Connect with new people',
+      'Drinks & snacks included',
+    ],
+    dateLabel: 'Next Event',
+    dateFallback: 'New dates coming soon (TBA)',
+    price: '10€ or 8€ *',
+    cta: { label: 'Start small →', href: '/products/enter-the-garden-general-admission' },
+    featured: false,
+  },
+  {
+    key: 'rc',
+    number: '2',
+    icon: '🌿',
+    title: 'Regular classes',
+    description: 'A steady weekly rhythm for optimal learning and growth.',
+    features: [
+      '10 weekly 1.5 hour sessions',
+      'Community events & Rituals',
+      'Cover missed classes for free',
+    ],
+    dateLabel: 'Next Class (Course open until 31/03)',
+    dateFallback: 'No upcoming dates scheduled (TBA)',
+    price: '€13 or €10/class *',
+    cta: {
+      label: 'Commit to learning →',
+      href: '/products/the-sprouting-sessions-beginner-level-full-course-pass-general-admission',
+    },
+    secondaryCta: { label: 'or explore our flexible bundles', href: '/collections' },
+    featured: true,
+  },
+  {
+    key: 'prac',
+    number: '3',
+    icon: '🌳',
+    title: 'Weekly Practicas',
+    description: 'A relaxed space to practice, connect, and grow together.',
+    features: [
+      'Weekly 2.5 hour guided sessions',
+      'Open-level and double-role',
+      'Community-focused atmosphere',
+    ],
+    dateLabel: 'Next Practica',
+    dateFallback: 'Wed, 22/07/2026<br>19:30 – 22:00',
+    price: '10€ or 8€ *',
+    cta: {
+      label: 'Accelerate your growth →',
+      href: '/products/the-garden-practica-1-practica-pass-general-admission',
+    },
+    featured: false,
+  },
+];
+---
+
+<section id="three-ways-to-enter" style="background: white; padding: 70px 20px;">
+  <div class="container" style="max-width: 1200px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 80px;">
+      <div
+        style="font-size: 14px; text-transform: uppercase; letter-spacing: 2px; color: #4E5D22; font-weight: 600; margin-bottom: 20px;"
+      >
+        How to Start
+      </div>
+      <h2
+        style="font-size: 42px; font-weight: 700; color: #4E5D22; margin-bottom: 25px; line-height: 1.2;"
+      >
+        Three Ways to Enter the Garden
+      </h2>
+      <p style="font-size: 20px; color: #666; max-width: 700px; margin: 0 auto; line-height: 1.6;">
+        Choose what feels right for where you are.
+      </p>
+    </div>
+
+    <div class="garden-pathways-grid">
+      {
+        cards.map((card) => (
+          <div class:list={['pathway-card', { featured: card.featured }]}>
+            <div class="card-number">{card.number}</div>
+            <div class="card-icon">{card.icon}</div>
+            <h3 class="card-title">{card.title}</h3>
+            <p class="card-desc">{card.description}</p>
+            <ul class="card-features">
+              {card.features.map((f) => (
+                <li>
+                  <span class="card-check">✓</span>
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <div class="card-date">
+              <span class="card-date-emoji">🗓️</span>
+              <div style="text-align: left;">
+                <span class="date-label" id={`${card.key}-label`}>
+                  {card.dateLabel}
+                </span>
+                <span class="date-value" id={`${card.key}-date`} set:html={card.dateFallback} />
+              </div>
+            </div>
+            <div class="card-foot">
+              <div class="card-price-wrap">
+                <p class="card-price">{card.price}</p>
+              </div>
+              <a class="card-btn" href={card.cta.href}>
+                {card.cta.label}
+              </a>
+              {card.secondaryCta && (
+                <a class="card-btn-secondary" href={card.secondaryCta.href}>
+                  {card.secondaryCta.label}
+                </a>
+              )}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div style="text-align: center;">
+      <p style="margin: 0;">
+        <span>* for students and anyone who is 28 years old or less</span>
+      </p>
+    </div>
+
+    <div
+      style="text-align: center; margin-top: 40px; padding: 50px 30px; background: #F9F7F2; border: 1px solid rgba(45,80,22,0.1); border-radius: 20px;"
+    >
+      <h4 style="font-size: 22px; color: #4E5D22; margin-bottom: 12px; font-weight: 700;">
+        Still wandering?
+      </h4>
+      <p
+        style="font-size: 16px; line-height: 1.6; color: #666; max-width: 500px; margin: 0 auto 30px;"
+      >
+        Every dancer starts somewhere different. If you're not sure where you fit, we're happy to
+        guide you personally.
+      </p>
+      <div
+        style="display: flex; gap: 15px; justify-content: center; align-items: center; flex-direction: row; flex-wrap: wrap;"
+      >
+        <a
+          href="/collections/all"
+          class="safety-btn-info"
+          style="display: inline-flex; align-items: center; padding: 12px 24px; color: #4E5D22; font-weight: 600; text-decoration: none; font-size: 15px; border-radius: 30px; background: rgba(45,80,22,0.05); border: 1px solid rgba(45,80,22,0.1); transition: all 0.2s ease;"
+        >
+          <span style="margin-right: 8px;">📋</span> See all details
+        </a>
+        <a
+          href="https://wa.me/491602368723?text=Hi!%20I'm%20not%20sure%20which%20option%20is%20right%20for%20me..."
+          class="safety-btn-primary"
+          style="display: inline-flex; align-items: center; padding: 12px 24px; background: #4E5D22; color: white; font-weight: 600; text-decoration: none; font-size: 15px; border-radius: 30px; box-shadow: 0 4px 12px rgba(45,80,22,0.2); transition: all 0.3s ease; border: 1px solid transparent;"
+        >
+          <span style="margin-right: 8px;">💬</span> Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* These were per-element inline styles in the original HTML. Moving them here
+     lets the three cards share one template; the `.featured` variants below
+     reproduce the light-on-green treatment of the middle card. */
+  .card-number {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 80px;
+    height: 80px;
+    background: rgba(45, 80, 22, 0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 700;
+    color: rgba(45, 80, 22, 0.15);
+  }
+  .featured .card-number {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.2);
+  }
+
+  .card-icon {
+    width: 70px;
+    height: 70px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    font-size: 32px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  }
+  .featured .card-icon {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: none;
+    backdrop-filter: blur(10px);
+  }
+
+  .card-title {
+    font-size: 26px;
+    color: #4e5d22;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+  .featured .card-title {
+    color: white;
+  }
+
+  .card-desc {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #666;
+    margin-bottom: 25px;
+  }
+  .featured .card-desc {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .card-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 30px 0;
+    text-align: left;
+  }
+  .card-features li {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+  }
+  .featured .card-features li {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .card-check {
+    position: absolute;
+    left: 0;
+    color: #4e5d22;
+    font-weight: 700;
+  }
+  .featured .card-check {
+    color: white;
+  }
+
+  .card-date {
+    margin-bottom: 25px;
+    padding: 12px;
+    background: rgba(45, 80, 22, 0.05);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .featured .card-date {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .card-date-emoji {
+    font-size: 16px;
+  }
+  .date-label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #4e5d22;
+    font-weight: 700;
+  }
+  .featured .date-label {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .date-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: #4e5d22;
+  }
+  .featured .date-value {
+    color: white;
+  }
+
+  .card-foot {
+    border-top: 2px solid rgba(45, 80, 22, 0.1);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .featured .card-foot {
+    border-top-color: rgba(255, 255, 255, 0.2);
+  }
+  .card-price-wrap {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .card-price {
+    font-size: 32px;
+    font-weight: 700;
+    color: #4e5d22;
+    margin-bottom: 15px;
+  }
+  .featured .card-price {
+    color: white;
+    margin-bottom: 10px;
+    line-height: 1.1;
+  }
+
+  .card-btn {
+    display: block;
+    background: white;
+    color: #4e5d22;
+    padding: 15px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    border: 2px solid #4e5d22;
+    transition: all 0.3s ease;
+  }
+  .featured .card-btn {
+    padding: 15px 20px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+  }
+  .card-btn-secondary {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 10px 8px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+  }
+</style>
+
+<script>
+  // Populate the pathway cards with dates from JSON. Each file lists dated
+  // events; we show the next one on/after today, else the file's emptyMessage
+  // (e.g. "New dates coming soon (TBA)").
+  const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const MONTHS = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  ];
+
+  interface GardenEvent {
+    date: string;
+    time?: string;
+  }
+  interface EventFeed {
+    label?: string;
+    prefix?: string;
+    emptyMessage?: string;
+    events?: GardenEvent[];
+  }
+
+  function fmt(iso: string): string {
+    const d = new Date(iso + 'T00:00:00');
+    if (isNaN(d.getTime())) return iso;
+    return `${DAYS[d.getDay()]}, ${String(d.getDate()).padStart(2, '0')} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+  }
+
+  const feeds = [
+    { url: '/assets/data/enter-the-garden.json', key: 'etg' },
+    { url: '/assets/data/regular-classes.json', key: 'rc' },
+    { url: '/assets/data/practicas.json', key: 'prac' },
+  ];
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  for (const feed of feeds) {
+    fetch(feed.url, { cache: 'no-store' })
+      .then((res) => (res.ok ? (res.json() as Promise<EventFeed>) : null))
+      .then((data) => {
+        if (!data) return;
+        const label = document.getElementById(`${feed.key}-label`);
+        const dateEl = document.getElementById(`${feed.key}-date`);
+        if (label && data.label) label.textContent = data.label;
+        if (!dateEl) return;
+
+        // Keep only events on/after today, earliest first.
+        const upcoming = (data.events ?? [])
+          .filter((e) => e.date && new Date(e.date + 'T00:00:00') >= today)
+          .sort((a, b) => +new Date(a.date) - +new Date(b.date));
+
+        if (upcoming.length) {
+          const next = upcoming[0];
+          const text = (data.prefix ?? '') + fmt(next.date);
+          dateEl.innerHTML = next.time ? `${text}<br>${next.time}` : text;
+        } else {
+          dateEl.textContent = data.emptyMessage ?? 'New dates coming soon (TBA)';
+        }
+      })
+      .catch(() => {
+        /* keep the static fallback text on error */
+      });
+  }
+</script>

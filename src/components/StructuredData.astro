@@ -1,0 +1,72 @@
+---
+/**
+ * Emits JSON-LD. `type="localbusiness"` renders the site-wide LocalBusiness
+ * entity (homepage only); `type="product"` renders a Product/Offer for a PDP.
+ */
+interface ProductInfo {
+  name: string;
+  description: string;
+  url: string;
+  price: string;
+  availability: 'InStock' | 'OutOfStock';
+}
+
+interface Props {
+  type?: 'localbusiness' | 'product' | 'none';
+  product?: ProductInfo;
+}
+
+const { type = 'none', product } = Astro.props;
+
+const business = {
+  name: 'Tango Garden Cologne',
+  url: 'https://tangogarden.de',
+  sameAs: [
+    'https://www.instagram.com/tangogardencologne',
+    'https://www.facebook.com/tangogardencologne/',
+  ],
+};
+
+const address = {
+  '@type': 'PostalAddress',
+  streetAddress: 'Thürmchenswall 21',
+  postalCode: '50668',
+  addressLocality: 'Köln',
+  addressRegion: 'NRW',
+  addressCountry: 'DE',
+};
+
+const localBusiness = {
+  '@context': 'https://schema.org',
+  '@type': ['LocalBusiness', 'SportsActivityLocation'],
+  '@id': 'https://tangogarden.de/#localbusiness',
+  ...business,
+  image: 'https://tangogarden.de/images/og-image.jpg',
+  telephone: '+49 160 2368723',
+  email: 'hello@tangogarden.de',
+  priceRange: '€€',
+  currenciesAccepted: 'EUR',
+  address,
+  geo: { '@type': 'GeoCoordinates', latitude: 50.9501585, longitude: 6.9535692 },
+};
+
+const productSchema = product && {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: product.name,
+  description: product.description,
+  url: product.url,
+  brand: { '@type': 'Organization', name: 'Tango Garden Cologne' },
+  offers: {
+    '@type': 'Offer',
+    url: product.url,
+    price: product.price,
+    priceCurrency: 'EUR',
+    availability: `https://schema.org/${product.availability}`,
+  },
+};
+
+const schema = type === 'localbusiness' ? localBusiness : type === 'product' ? productSchema : null;
+---
+
+{schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}

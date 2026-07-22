@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets';
+import heroImage from '../assets/hero-dancers.png';
+---
+
+<section class="hero">
+  <Image
+    class="hero-bg"
+    src={heroImage}
+    alt="Argentine tango class in Cologne"
+    widths={[750, 1100, 1500, 1800]}
+    sizes="100vw"
+    format="webp"
+    quality={80}
+    loading="eager"
+    fetchpriority="high"
+  />
+  <div class="hero-content">
+    <div class="hero-box">
+      <h1 class="hero-h1">
+        Stop Scrolling. Start Connecting. Argentine Tango Classes in Cologne
+      </h1>
+      <p class="hero-subtitle">
+        <strong>No partner needed.</strong>
+        <strong>No experience required.</strong>
+        <strong>Come as you are.</strong>
+      </p>
+    </div>
+  </div>
+</section>

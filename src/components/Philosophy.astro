@@ -1,0 +1,81 @@
+---
+const principles = [
+  ['Enjoyment leads to progress', ', validated processes for stress free progression'],
+  ['Invitation, not intimidation', ', no partner or experience required'],
+  ['Growth over performance', ', confidence, presence, real friendships'],
+  ['Choice and inclusivity', ', roles by curiosity, not gender'],
+];
+---
+
+<section id="garden-intro-v2" style="background: white; padding: 70px 20px;">
+  <div class="container" style="max-width: 1000px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <div
+        style="font-size: 14px; text-transform: uppercase; letter-spacing: 2px; color: #4E5D22; font-weight: 600; margin-bottom: 20px;"
+      >
+        Our Philosophy
+      </div>
+      <h2
+        style="font-size: 42px; font-weight: 700; color: #4E5D22; margin-bottom: 25px; line-height: 1.2;"
+      >
+        Why Tango Garden
+      </h2>
+      <p
+        style="font-size: 24px; color: #4E5D22; font-weight: 500; max-width: 800px; margin: 0 auto; line-height: 1.4;"
+      >
+        Because many young people are craving connection, not performance.
+      </p>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 40px; margin-bottom: 60px;">
+      <div
+        style="font-size: 18px; line-height: 1.8; color: #444; text-align: center; max-width: 850px; margin: 0 auto;"
+      >
+        <p style="margin-bottom: 20px;">
+          Tango Garden was created for people who want to meet others in real life, feel at home in
+          their bodies, and grow through shared experience.
+        </p>
+        <p>
+          In a world of gyms, apps, and quick interactions, we choose to build something slower and
+          more human, a place where you can show up alone, be welcomed immediately, and belong over
+          time.
+        </p>
+        <p>
+          Most of our students are young adults navigating work, relationships, and identity,
+          looking for a place that feels genuine and warm.
+        </p>
+      </div>
+
+      <div
+        style="background: #F3EDE1; border-radius: 20px; padding: 60px 40px; position: relative; overflow: hidden; border: 1px solid rgba(45,80,22,0.05);"
+      >
+        <div
+          style="position: absolute; top: -20px; right: -20px; font-size: 120px; opacity: 0.05; color: #4E5D22; pointer-events: none;"
+        >
+          🌿
+        </div>
+
+        <div style="text-align: center; margin-bottom: 40px;">
+          <h3 style="font-size: 28px; color: #4E5D22; font-weight: 700; margin-bottom: 10px;">
+            Our Principles
+          </h3>
+          <p style="color: #666; font-size: 16px;">Here, tango is the vehicle, not the goal.</p>
+        </div>
+
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 800px; margin: 0 auto;"
+        >
+          {
+            principles.map(([bold, rest]) => (
+              <div class="garden-value-item">
+                <span class="garden-check">✓</span>
+                <strong>{bold}</strong>
+                {rest}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

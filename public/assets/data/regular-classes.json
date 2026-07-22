@@ -1,0 +1,8 @@
+{
+  "label": "Next Class (Course open until 31/03)",
+  "emptyMessage": "No upcoming dates scheduled (TBA)",
+  "prefix": "Starts ",
+  "events": [
+    { "date": "2026-09-15", "time": "19:00 – 20:30" }
+  ]
+}

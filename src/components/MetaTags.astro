@@ -1,0 +1,43 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article' | 'product';
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href,
+  ogImage = new URL('/images/og-image.jpg', Astro.site ?? Astro.url).href,
+  ogType = 'website',
+  noindex = false,
+} = Astro.props;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+<link rel="canonical" href={canonical} />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/assets/logo-icon.svg" />
+
+<!-- Open Graph -->
+<meta property="og:site_name" content="Tango Garden" />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={title} />
+<meta property="og:type" content={ogType} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />

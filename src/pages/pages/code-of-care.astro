@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Code of Care — Tango Garden"
+  description="Tango Garden's Code of Care — how we keep our community safe, respectful, and welcoming."
+  canonical="https://tangogarden.de/pages/code-of-care"
+>
+  <Fragment set:html={`
+<main class="legal-page">
+  <h1 class="legal-title">Code of Care</h1>
+  <p style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:#6b6b6b;margin-bottom:2.5rem;">Last updated: May 20, 2024</p>
+
+  <section class="legal-section">
+    <h2>Our Intention</h2>
+    <p>Tango Garden is a space for connection, growth, and presence. This Code of Care exists to protect that space and everyone who enters it.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>Consent &amp; Choice</h2>
+    <ul>
+      <li>Every dance is optional.</li>
+      <li>Asking, accepting, and declining are all equally respected.</li>
+      <li>No one owes anyone a dance, an explanation, or physical closeness.</li>
+    </ul>
+  </section>
+
+  <section class="legal-section">
+    <h2>Respect &amp; Boundaries</h2>
+    <ul>
+      <li>We respect physical, emotional, and personal boundaries.</li>
+      <li>Unwanted comments, touching, or pressure are not tolerated.</li>
+      <li>Feedback is offered with care, never imposed.</li>
+    </ul>
+  </section>
+
+  <section class="legal-section">
+    <h2>Inclusivity</h2>
+    <p>All genders, identities, bodies, and backgrounds are welcome. Tango Garden is a learning space, not a performance or competition.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>Care for the Space</h2>
+    <ul>
+      <li>Personal hygiene is part of mutual respect.</li>
+      <li>Please arrive on time and help keep the space calm and welcoming.</li>
+    </ul>
+  </section>
+
+  <section class="legal-section">
+    <h2>Alcohol &amp; Substances</h2>
+    <p>Classes and practicas are sober spaces. We prioritize clarity, safety, and presence.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>Conflict &amp; Support</h2>
+    <p>If something feels uncomfortable or unsafe, please speak to an instructor or organizer. Concerns will be handled discreetly and respectfully.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>Accountability</h2>
+    <p>Repeated or serious violations of this Code of Care may result in exclusion from classes or events, without refund.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>Growing Together</h2>
+    <p>This Code of Care is not about perfection. It is about attention, responsibility, and learning how to share a space well.</p>
+  </section>
+</main>
+`} />
+</BaseLayout>
+
+<style is:global>
+.legal-page { max-width: 860px; margin: 0 auto; padding: 53px 20px 60px; }
+    .legal-title { font-size: clamp(2.2rem, 5vw, 57px); font-weight: 400; color: #252525; line-height: 1.2; margin-bottom: 2.5rem; letter-spacing: -0.5px; }
+    .legal-section { margin-bottom: 2.5rem; }
+    .legal-section h2 { font-size: 19px; font-weight: 700; color: #1f1f1f; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(37,37,37,0.1); margin-bottom: 1.25rem; }
+    .legal-section p { font-size: 16px; line-height: 1.7; color: #252525; margin-bottom: 1rem; }
+    .legal-section p:last-child { margin-bottom: 0; }
+    .legal-section ul { margin: 0; padding-left: 1.25rem; }
+    .legal-section li { font-size: 16px; line-height: 1.7; color: #252525; margin-bottom: 0.5rem; }
+    .legal-section a { color: #252525; }
+    .legal-box { background: rgba(37,37,37,0.03); border: 1px solid rgba(37,37,37,0.1); padding: 25px; line-height: 1.7; color: #252525; font-size: 16px; }
+</style>

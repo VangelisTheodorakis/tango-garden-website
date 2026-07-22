@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Datenschutzerklärung — Tango Garden"
+  description="Datenschutzerklärung von Tango Garden Cologne."
+  canonical="https://tangogarden.de/pages/datenschutz"
+  noindex
+>
+  <Fragment set:html={`
+<div class="page-hero">
+  <h1 class="section-title">Datenschutzerklärung</h1>
+  <p class="section-subtitle">Informationen zum Datenschutz gemäß DSGVO</p>
+</div>
+
+<div class="page-content">
+  <div class="placeholder-box">
+    Die vollständige Datenschutzerklärung wird hier ergänzt. Sie wird Angaben zu Stripe (Zahlungsabwicklung) und Resend (E-Mail-Versand) als Auftragsverarbeiter enthalten.
+  </div>
+</div>
+`} />
+</BaseLayout>

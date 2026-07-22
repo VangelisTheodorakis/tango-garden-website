@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Products that exist but are not live on the store.
+Disallow: /products/enter-the-garden-general-admission
+Disallow: /products/enter-the-garden-introductory-session-student-and-under-28-admission
+Disallow: /products/the-garden-practica-1-time-pass-evey
+Disallow: /products/the-sprouting-sessions-beginner-level-1-class-welcome-pass
+
+Sitemap: https://tangogarden.de/sitemap-index.xml

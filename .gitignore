@@ -13,3 +13,9 @@ serve.err
 # Environment / secrets (should never be committed)
 .env
 .env.*
+
+# Astro build output / caches
+dist/
+.astro/
+node_modules/
+.lighthouseci/

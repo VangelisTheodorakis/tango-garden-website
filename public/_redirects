@@ -1,0 +1,14 @@
+# Shopify paths that have no equivalent on the static site.
+# Product and page URLs are unchanged, so they need no redirect.
+
+/collections/*            /collections/all  301
+/cart                     /                 301
+/cart/*                   /                 301
+/checkout                 /                 301
+/account                  /                 301
+/account/*                /                 301
+/search                   /                 301
+/apps/*                   /                 301
+
+# The four off-live products deliberately keep their pages: reachable by direct
+# URL, noindex + robots-disallowed, absent from the sitemap. No redirect here.

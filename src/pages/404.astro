@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page Not Found — Tango Garden"
+  description="This page doesn't exist in our garden yet."
+  noindex
+>
+  <Fragment set:html={`
+<main>
+  <div class="not-found">
+    <div style="text-align:center;">
+      <h1 style="font-size:clamp(3rem,10vw,6rem);font-weight:400;color:#252525;line-height:1;margin-bottom:1rem;">404</h1>
+      <p style="font-size:1.25rem;color:#252525;margin-bottom:2rem;">Page not found</p>
+      <a href="/collections/all" class="btn-primary">Continue shopping</a>
+    </div>
+  </div>
+</main>
+`} />
+</BaseLayout>

@@ -1,0 +1,56 @@
+---
+import { social } from '../data/nav.js';
+import Icon from './Icons.astro';
+
+const connectLinks = [
+  { href: '/pages/the-garden', label: 'The Garden' },
+  { href: '/pages/start-here', label: 'Start Here' },
+  { href: '/pages/contact', label: 'Contact' },
+];
+
+const legalLinks = [
+  { href: '/pages/refund-and-cancellation-policy', label: 'Refund & Cancellation Policy' },
+  { href: '/pages/terms-of-service', label: 'Terms of Service' },
+  { href: '/pages/privacy-policy', label: 'Privacy Policy' },
+  { href: '/pages/code-of-care', label: 'Code of Care' },
+  { href: '/pages/impressum', label: 'Impressum' },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo-col">
+      <img src="/images/logo-stacked-light.svg" alt="Tango Garden" width="210" loading="lazy" />
+    </div>
+    <div class="footer-col">
+      <h3 class="footer-heading">Connect</h3>
+      <ul class="footer-links" role="list">
+        {connectLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3 class="footer-heading">Legal</h3>
+      <ul class="footer-links" role="list">
+        {legalLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </div>
+  </div>
+  <div class="footer-social">
+    <a href={social.facebook} target="_blank" rel="noopener" aria-label="Facebook"
+      ><Icon name="facebook" size={22} /></a
+    >
+    <a href={social.instagram} target="_blank" rel="noopener" aria-label="Instagram"
+      ><Icon name="instagram" size={22} /></a
+    >
+  </div>
+  <div class="footer-bottom">
+    <p>© {year} Tango Garden Cologne</p>
+    <p>
+      All prices are final prices. No VAT charged according to §19 UStG.<br />
+      Alle Preise sind Endpreise. Gemäß §19 UStG wird keine Umsatzsteuer berechnet.
+    </p>
+    <p class="footer-credit">Made with love ♥ and AI ✨</p>
+  </div>
+</footer>

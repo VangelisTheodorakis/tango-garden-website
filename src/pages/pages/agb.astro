@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="AGB — Tango Garden"
+  description="Allgemeine Geschäftsbedingungen von Tango Garden Cologne."
+  canonical="https://tangogarden.de/pages/agb"
+  noindex
+>
+  <Fragment set:html={`
+<div class="page-hero">
+  <h1 class="section-title">AGB</h1>
+  <p class="section-subtitle">Allgemeine Geschäftsbedingungen</p>
+</div>
+
+<div class="page-content">
+  <div class="placeholder-box">
+    Die vollständigen Allgemeinen Geschäftsbedingungen werden hier ergänzt.
+  </div>
+</div>
+`} />
+</BaseLayout>

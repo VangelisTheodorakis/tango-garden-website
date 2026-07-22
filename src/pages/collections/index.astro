@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductGrid from '../../components/ProductGrid.astro';
+
+// Both /collections and /collections/all are linked from the site (nav and the
+// pathway cards), so both resolve; /collections/all is the canonical one.
+const canonical = new URL('/collections/all', Astro.site).href;
+---
+
+<BaseLayout
+  title="Classes & Passes — Tango Garden"
+  description="All Argentine Tango classes and passes at Tango Garden Cologne — intro sessions, beginner course passes and open practicas."
+  canonical={canonical}
+>
+  <ProductGrid />
+</BaseLayout>

@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Impressum — Tango Garden"
+  description="Impressum — Angaben gemäß §5 TMG für Tango Garden Cologne."
+  canonical="https://tangogarden.de/pages/impressum"
+  noindex
+>
+  <Fragment set:html={`
+<main class="legal-page">
+  <h1 class="legal-title">Impressum</h1>
+
+  <section class="legal-section">
+    <h2>Angaben gemäß § 5 TMG</h2>
+    <div class="legal-box">
+      <strong>Tango Garden</strong><br>
+      Evangelos Theodorakis<br>
+      Domagkstraße 6<br>
+      51063 Köln<br>
+      Deutschland
+    </div>
+  </section>
+
+  <section class="legal-section">
+    <h2>Kontakt</h2>
+    <p>E-Mail: <a href="mailto:hello@tangogarden.de">hello@tangogarden.de</a></p>
+  </section>
+
+  <section class="legal-section">
+    <h2>Verantwortlich für den Inhalt</h2>
+    <p>Nach § 18 Abs. 2 MStV (ehemals § 55 Abs. 2 RStV):</p>
+    <p>Evangelos Theodorakis<br>Domagkstraße 6<br>51063 Köln</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>Unternehmensform &amp; Steuer</h2>
+    <p>Einzelunternehmen<br>Kleinunternehmer gemäß § 19 UStG (Umsatzsteuer wird nicht ausgewiesen).</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>Berufshaftpflichtversicherung</h2>
+    <p>AXA Versicherung AG<br>Colonia-Allee 10–20<br>51067 Köln<br><strong>Geltungsbereich:</strong> Deutschland (Tanzschule / Tanzunterricht)</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>Haftung &amp; Urheberrecht</h2>
+    <p><strong>Haftung für Inhalte:</strong> Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen.</p>
+    <p><strong>Haftung für Links:</strong> Unser Angebot enthält Links zu externen Websites Dritter. Auf deren Inhalte haben wir keinen Einfluss und übernehmen daher keine Gewähr. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter verantwortlich.</p>
+    <p><strong>Urheberrecht:</strong> Die durch die Seitenbetreiber erstellten Inhalte auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung oder Verbreitung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>Online-Streitbeilegung</h2>
+    <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr</a>.<br>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+  </section>
+</main>
+`} />
+</BaseLayout>
+
+<style is:global>
+.legal-page { max-width: 860px; margin: 0 auto; padding: 53px 20px 60px; }
+    .legal-title { font-size: clamp(2.2rem, 5vw, 57px); font-weight: 400; color: #252525; line-height: 1.2; margin-bottom: 2.5rem; letter-spacing: -0.5px; }
+    .legal-section { margin-bottom: 2.5rem; }
+    .legal-section h2 { font-size: 19px; font-weight: 700; color: #1f1f1f; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(37,37,37,0.1); margin-bottom: 1.25rem; }
+    .legal-section p { font-size: 16px; line-height: 1.7; color: #252525; margin-bottom: 1rem; }
+    .legal-section p:last-child { margin-bottom: 0; }
+    .legal-section a { color: #252525; }
+    .legal-box { background: rgba(37,37,37,0.03); border: 1px solid rgba(37,37,37,0.1); padding: 25px; line-height: 1.7; color: #252525; font-size: 16px; }
+</style>

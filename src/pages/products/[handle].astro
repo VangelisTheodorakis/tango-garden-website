@@ -1,0 +1,238 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { products } from '../../data/products.js';
+
+export function getStaticPaths() {
+  return products.map((product) => ({
+    params: { handle: product.handle },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+const canonical = new URL(`/products/${product.handle}`, Astro.site).href;
+
+// The Course JSON-LD carried over from the original pages is richer than the
+// generic Product schema, so pass it through untouched when present.
+const rawSchema = product.schema ? JSON.stringify(product.schema) : null;
+---
+
+<BaseLayout
+  title={`${product.title} — Tango Garden`}
+  description={product.description}
+  canonical={canonical}
+  ogType="product"
+  noindex={product.hidden}
+>
+  {rawSchema && <script type="application/ld+json" set:html={rawSchema} slot="head" />}
+
+  {
+    product.template === 'pdp' ? (
+      <div class="pdp">
+        <h1>{product.heading}</h1>
+        <div class="pdp-price">{product.price}</div>
+        <div class="pdp-stock">{product.stock}</div>
+
+        <div class="pdp-field">
+          <label for="pdp-var">{product.variantLabel}</label>
+          <select id="pdp-var" data-cart-id={product.cartVariantId}>
+            {(product.variants ?? []).map((v) => (
+              <option value={v.id ?? product.cartVariantId}>{v.label}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="pdp-field">
+          <label for="pdp-qty">Quantity</label>
+          <div class="pdp-qty-wrap">
+            <button type="button" class="pdp-qty-down" aria-label="Decrease">
+              &minus;
+            </button>
+            <input id="pdp-qty" type="number" value="1" min="1" aria-label="Quantity" />
+            <button type="button" class="pdp-qty-up" aria-label="Increase">
+              +
+            </button>
+          </div>
+        </div>
+
+        <div class="pdp-actions">
+          <button class="pdp-btn pdp-btn-add" data-checkout>
+            Add to cart
+          </button>
+          <button class="pdp-btn pdp-btn-buy" data-checkout>
+            Buy it now
+          </button>
+        </div>
+
+        <div class="pdp-desc" set:html={product.bodyHtml} />
+      </div>
+    ) : (
+      <Fragment set:html={product.bodyHtml} />
+    )
+  }
+</BaseLayout>
+
+<style is:global>
+  /* Product detail page — mirrors the live Shopify product template. */
+  .pdp {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 4rem;
+    text-align: center;
+  }
+  .pdp h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 400;
+    color: #252525;
+    line-height: 1.25;
+    margin-bottom: 1.5rem;
+  }
+  .pdp-price {
+    font-size: 1.15rem;
+    color: #252525;
+    margin-bottom: 1.5rem;
+  }
+  .pdp-stock {
+    font-size: 0.95rem;
+    color: #252525;
+    margin-bottom: 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .pdp-stock::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #3bab5a;
+    display: inline-block;
+  }
+  .pdp-field {
+    max-width: 340px;
+    margin: 0 auto 1.5rem;
+  }
+  .pdp-field label {
+    display: block;
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+  }
+  .pdp-field select,
+  .pdp-field input {
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.95rem;
+    background: #fff;
+    color: #252525;
+    font-family: inherit;
+  }
+  .pdp-qty-wrap {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .pdp-qty-wrap button {
+    background: none;
+    border: none;
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #252525;
+  }
+  .pdp-qty-wrap input {
+    width: 52px;
+    text-align: center;
+    border: none;
+    border-left: 1px solid rgba(0, 0, 0, 0.15);
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
+    font-size: 0.95rem;
+  }
+  .pdp-actions {
+    max-width: 340px;
+    margin: 0 auto 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .pdp-btn {
+    display: block;
+    padding: 0.9rem 1rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    font-family: inherit;
+  }
+  .pdp-btn-add {
+    background: #fff;
+    color: var(--green);
+    border: 1.5px solid var(--green);
+  }
+  .pdp-btn-buy {
+    background: var(--green);
+    color: #fff;
+    border: 1.5px solid var(--green);
+  }
+  .pdp-btn:hover {
+    opacity: 0.9;
+  }
+  .pdp-desc {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+    color: #252525;
+  }
+  .pdp-desc h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.6rem;
+    color: #252525;
+  }
+  .pdp-desc p {
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+  .pdp-desc ul {
+    padding-left: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .pdp-desc li {
+    line-height: 1.7;
+    margin-bottom: 0.4rem;
+  }
+  .pdp-desc a {
+    color: var(--green);
+  }
+</style>
+
+<script>
+  // Checkout still happens on Shopify: build a cart permalink from the selected
+  // variant and quantity. Replaces the inline onclick handlers of the old pages,
+  // which the Content-Security-Policy in public/_headers now forbids.
+  const qty = document.getElementById('pdp-qty') as HTMLInputElement | null;
+  const variant = document.getElementById('pdp-var') as HTMLSelectElement | null;
+
+  const step = (delta: number) => {
+    if (!qty) return;
+    qty.value = String(Math.max(1, (parseInt(qty.value, 10) || 1) + delta));
+  };
+
+  document.querySelector('.pdp-qty-down')?.addEventListener('click', () => step(-1));
+  document.querySelector('.pdp-qty-up')?.addEventListener('click', () => step(1));
+
+  for (const btn of document.querySelectorAll('[data-checkout]')) {
+    btn.addEventListener('click', () => {
+      const id = variant?.value ?? variant?.dataset.cartId;
+      if (!id) return;
+      const amount = Math.max(1, parseInt(qty?.value ?? '1', 10) || 1);
+      window.open(`https://tangogarden.de/cart/${id}:${amount}`, '_blank', 'noopener');
+    });
+  }
+</script>

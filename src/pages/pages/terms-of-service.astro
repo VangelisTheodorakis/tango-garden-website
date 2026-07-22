@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Terms of Service &#8212; Tango Garden"
+  description="Terms of Service (Allgemeine Gesch&auml;ftsbedingungen) for Tango Garden Cologne."
+  canonical="https://tangogarden.de/pages/terms-of-service"
+  noindex
+>
+  <Fragment set:html={`
+<main class="legal-page">
+  <h1 class="legal-title">Terms of Service (Allgemeine Geschäftsbedingungen)</h1>
+  <p style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:#6b6b6b;margin-bottom:2.5rem;">Last updated: May 20, 2024</p>
+
+  <section class="legal-section">
+    <h2>1. Scope</h2>
+    <p>These Terms of Service apply to all classes, events, practicas, workshops, and services offered by Tango Garden, operated by Evangelos Theodorakis, Cologne, Germany.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>2. Registration &amp; Booking</h2>
+    <p>Bookings are made online via our website or Shopify booking system. A booking becomes binding once payment has been completed.</p>
+    <p>Participation is personal and may not be transferred to another person unless explicitly stated.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>3. Prices &amp; Payments</h2>
+    <p>All prices are stated in euros. Payments are processed via Shopify and its integrated payment providers.</p>
+    <p>According to § 19 UStG (Kleinunternehmerregelung), no VAT is charged or shown.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>4. Packages &amp; Validity</h2>
+    <p>Class packages (e.g. 4-class or full-course bundles) are valid only for the specified period and number of sessions.</p>
+    <p>Unused sessions expire at the end of the validity period unless otherwise stated.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>5. Cancellations &amp; Refunds</h2>
+    <p>Individual classes may be cancelled up to 24 hours before the scheduled start time. Late cancellations or no-shows are not refundable.</p>
+    <p>Packages and courses are non-refundable once started.</p>
+    <p>If Tango Garden cancels a class, a replacement date or refund will be offered.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>6. Schedule Changes</h2>
+    <p>We reserve the right to change instructors, schedules, or formats when necessary. Such changes do not entitle participants to refunds.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>7. Health &amp; Liability</h2>
+    <p>Participation in dance classes is at your own risk. You are responsible for assessing your physical and mental fitness.</p>
+    <p>Tango Garden is not liable for injuries or damages unless caused by gross negligence or intent.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>8. Conduct &amp; Participation</h2>
+    <p>Participants are expected to behave respectfully toward others and follow the Code of Care. We reserve the right to exclude participants who violate these principles.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>9. Photos &amp; Media</h2>
+    <p>Photos and videos may be taken during classes or events. Details are governed by our Privacy Policy.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>10. Governing Law</h2>
+    <p>German law applies. Place of jurisdiction is Cologne, Germany.</p>
+  </section>
+
+  <section class="legal-section">
+    <h2>11. Changes to These Terms</h2>
+    <p>We may update these Terms of Service when necessary. The current version is always available on our website.</p>
+  </section>
+</main>
+`} />
+</BaseLayout>
+
+<style is:global>
+.legal-page { max-width: 860px; margin: 0 auto; padding: 53px 20px 60px; }
+    .legal-title { font-size: clamp(2.2rem, 5vw, 57px); font-weight: 400; color: #252525; line-height: 1.2; margin-bottom: 2.5rem; letter-spacing: -0.5px; }
+    .legal-section { margin-bottom: 2.5rem; }
+    .legal-section h2 { font-size: 19px; font-weight: 700; color: #1f1f1f; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(37,37,37,0.1); margin-bottom: 1.25rem; }
+    .legal-section p { font-size: 16px; line-height: 1.7; color: #252525; margin-bottom: 1rem; }
+    .legal-section p:last-child { margin-bottom: 0; }
+    .legal-section a { color: #252525; }
+    .legal-box { background: rgba(37,37,37,0.03); border: 1px solid rgba(37,37,37,0.1); padding: 25px; line-height: 1.7; color: #252525; font-size: 16px; }
+</style>
