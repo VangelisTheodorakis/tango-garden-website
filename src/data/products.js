@@ -47,26 +47,24 @@ export const products = [
             "addressLocality": "Köln",
             "addressCountry": "DE"
           }
+        },
+        "courseSchedule": {
+          "@type": "Schedule",
+          "duration": "PT1H30M",
+          "repeatFrequency": "Weekly"
         }
       },
-      "offers": [
-        {
-          "@type": "Offer",
-          "name": "General Admission",
-          "price": "10.00",
-          "priceCurrency": "EUR",
-          "category": "Paid",
-          "availability": "https://schema.org/InStock"
-        },
-        {
-          "@type": "Offer",
-          "name": "Student / Under-28",
-          "price": "8.00",
-          "priceCurrency": "EUR",
-          "category": "Paid",
-          "availability": "https://schema.org/InStock"
-        }
-      ]
+      "offers": {
+        "@type": "Offer",
+        "name": "General Admission",
+        "price": "10.00",
+        "priceCurrency": "EUR",
+        "category": "Paid",
+        "availability": "https://schema.org/InStock",
+        "url": "https://tangogarden.de/products/enter-the-garden-general-admission"
+      },
+      "@id": "https://tangogarden.de/products/enter-the-garden-general-admission#course",
+      "url": "https://tangogarden.de/products/enter-the-garden-general-admission"
     }
   },
   {
@@ -100,18 +98,24 @@ export const products = [
             "addressLocality": "Köln",
             "addressCountry": "DE"
           }
+        },
+        "courseSchedule": {
+          "@type": "Schedule",
+          "duration": "PT1H30M",
+          "repeatFrequency": "Weekly"
         }
       },
-      "offers": [
-        {
-          "@type": "Offer",
-          "name": "Student / Under-28",
-          "price": "8.00",
-          "priceCurrency": "EUR",
-          "category": "Paid",
-          "availability": "https://schema.org/InStock"
-        }
-      ]
+      "offers": {
+        "@type": "Offer",
+        "name": "Student / Under-28",
+        "price": "8.00",
+        "priceCurrency": "EUR",
+        "category": "Paid",
+        "availability": "https://schema.org/InStock",
+        "url": "https://tangogarden.de/products/enter-the-garden-introductory-session-student-and-under-28-admission"
+      },
+      "@id": "https://tangogarden.de/products/enter-the-garden-introductory-session-student-and-under-28-admission#course",
+      "url": "https://tangogarden.de/products/enter-the-garden-introductory-session-student-and-under-28-admission"
     }
   },
   {
@@ -145,7 +149,6 @@ export const products = [
       "hasCourseInstance": {
         "@type": "CourseInstance",
         "courseMode": "Onsite",
-        "courseWorkload": "Drop-in",
         "location": {
           "@type": "Place",
           "address": {
@@ -155,17 +158,24 @@ export const products = [
             "addressLocality": "Köln",
             "addressCountry": "DE"
           }
+        },
+        "courseSchedule": {
+          "@type": "Schedule",
+          "duration": "PT2H30M",
+          "repeatFrequency": "Weekly"
         }
       },
-      "offers": [
-        {
-          "@type": "Offer",
-          "name": "Student / Under-28",
-          "price": "8.00",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        }
-      ]
+      "offers": {
+        "@type": "Offer",
+        "name": "Student / Under-28",
+        "price": "8.00",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "category": "Paid",
+        "url": "https://tangogarden.de/products/the-garden-practica-1-practica-pass-door-only-student-and-under-28-admission"
+      },
+      "@id": "https://tangogarden.de/products/the-garden-practica-1-practica-pass-door-only-student-and-under-28-admission#course",
+      "url": "https://tangogarden.de/products/the-garden-practica-1-practica-pass-door-only-student-and-under-28-admission"
     }
   },
   {
@@ -199,7 +209,6 @@ export const products = [
       "hasCourseInstance": {
         "@type": "CourseInstance",
         "courseMode": "Onsite",
-        "courseWorkload": "Drop-in, no enrollment required",
         "location": {
           "@type": "Place",
           "name": "Tango Garden Cologne",
@@ -210,26 +219,24 @@ export const products = [
             "addressLocality": "Köln",
             "addressCountry": "DE"
           }
+        },
+        "courseSchedule": {
+          "@type": "Schedule",
+          "duration": "PT2H30M",
+          "repeatFrequency": "Weekly"
         }
       },
-      "offers": [
-        {
-          "@type": "Offer",
-          "name": "General Admission",
-          "price": "10.00",
-          "priceCurrency": "EUR",
-          "category": "Paid",
-          "availability": "https://schema.org/InStock"
-        },
-        {
-          "@type": "Offer",
-          "name": "Student / Under-28",
-          "price": "8.00",
-          "priceCurrency": "EUR",
-          "category": "Paid",
-          "availability": "https://schema.org/InStock"
-        }
-      ]
+      "offers": {
+        "@type": "Offer",
+        "name": "General Admission",
+        "price": "10.00",
+        "priceCurrency": "EUR",
+        "category": "Paid",
+        "availability": "https://schema.org/InStock",
+        "url": "https://tangogarden.de/products/the-garden-practica-1-practica-pass-general-admission"
+      },
+      "@id": "https://tangogarden.de/products/the-garden-practica-1-practica-pass-general-admission#course",
+      "url": "https://tangogarden.de/products/the-garden-practica-1-practica-pass-general-admission"
     }
   },
   {
@@ -280,24 +287,24 @@ export const products = [
             "addressLocality": "Köln",
             "addressCountry": "DE"
           }
+        },
+        "courseSchedule": {
+          "@type": "Schedule",
+          "duration": "PT1H30M",
+          "repeatFrequency": "Weekly"
         }
       },
-      "offers": [
-        {
-          "@type": "Offer",
-          "name": "General Admission",
-          "price": "18.00",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        },
-        {
-          "@type": "Offer",
-          "name": "Student / Under-28",
-          "price": "15.00",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        }
-      ]
+      "offers": {
+        "@type": "Offer",
+        "name": "General Admission",
+        "price": "18.00",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "category": "Paid",
+        "url": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-1-class-pass-general-admission"
+      },
+      "@id": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-1-class-pass-general-admission#course",
+      "url": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-1-class-pass-general-admission"
     }
   },
   {
@@ -340,24 +347,24 @@ export const products = [
             "addressLocality": "Köln",
             "addressCountry": "DE"
           }
+        },
+        "courseSchedule": {
+          "@type": "Schedule",
+          "duration": "PT1H30M",
+          "repeatFrequency": "Weekly"
         }
       },
-      "offers": [
-        {
-          "@type": "Offer",
-          "name": "General Admission",
-          "price": "18.00",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        },
-        {
-          "@type": "Offer",
-          "name": "Student / Under-28",
-          "price": "15.00",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        }
-      ]
+      "offers": {
+        "@type": "Offer",
+        "name": "Student / Under-28",
+        "price": "15.00",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "category": "Paid",
+        "url": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-1-class-pass-student-and-under-28-admission"
+      },
+      "@id": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-1-class-pass-student-and-under-28-admission#course",
+      "url": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-1-class-pass-student-and-under-28-admission"
     }
   },
   {
@@ -389,24 +396,24 @@ export const products = [
             "addressLocality": "Köln",
             "addressCountry": "DE"
           }
+        },
+        "courseSchedule": {
+          "@type": "Schedule",
+          "duration": "PT1H30M",
+          "repeatFrequency": "Weekly"
         }
       },
-      "offers": [
-        {
-          "@type": "Offer",
-          "name": "Welcome Pass (First-Timers)",
-          "price": "15.00",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        },
-        {
-          "@type": "Offer",
-          "name": "General Admission",
-          "price": "18.00",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        }
-      ]
+      "offers": {
+        "@type": "Offer",
+        "name": "Welcome Pass (First-Timers)",
+        "price": "15.00",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "category": "Paid",
+        "url": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-1-class-welcome-pass"
+      },
+      "@id": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-1-class-welcome-pass#course",
+      "url": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-1-class-welcome-pass"
     }
   },
   {
@@ -460,7 +467,6 @@ export const products = [
       "hasCourseInstance": {
         "@type": "CourseInstance",
         "courseMode": "Onsite",
-        "courseWorkload": "PT1H30M weekly for 4 weeks",
         "location": {
           "@type": "Place",
           "address": {
@@ -470,24 +476,25 @@ export const products = [
             "addressLocality": "Köln",
             "addressCountry": "DE"
           }
+        },
+        "courseSchedule": {
+          "@type": "Schedule",
+          "duration": "PT1H30M",
+          "repeatFrequency": "Weekly",
+          "repeatCount": 4
         }
       },
-      "offers": [
-        {
-          "@type": "Offer",
-          "name": "General Admission",
-          "price": "60.00",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        },
-        {
-          "@type": "Offer",
-          "name": "Student / Under-28",
-          "price": "45.00",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        }
-      ]
+      "offers": {
+        "@type": "Offer",
+        "name": "Student / Under-28",
+        "price": "45.00",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "category": "Paid",
+        "url": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-4-classes-pass-student-and-under-28-admission"
+      },
+      "@id": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-4-classes-pass-student-and-under-28-admission#course",
+      "url": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-4-classes-pass-student-and-under-28-admission"
     }
   },
   {
@@ -523,7 +530,6 @@ export const products = [
         "courseMode": "Onsite",
         "startDate": "2026-04-15",
         "endDate": "2026-06-17",
-        "courseWorkload": "PT1H30M weekly for 10 weeks",
         "location": {
           "@type": "Place",
           "name": "Yoga Drop Studio",
@@ -534,24 +540,25 @@ export const products = [
             "addressLocality": "Köln",
             "addressCountry": "DE"
           }
+        },
+        "courseSchedule": {
+          "@type": "Schedule",
+          "duration": "PT1H30M",
+          "repeatFrequency": "Weekly",
+          "repeatCount": 10
         }
       },
-      "offers": [
-        {
-          "@type": "Offer",
-          "name": "General Admission — Full Course",
-          "price": "130.00",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        },
-        {
-          "@type": "Offer",
-          "name": "Student / Under-28 — Full Course",
-          "price": "100.00",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        }
-      ]
+      "offers": {
+        "@type": "Offer",
+        "name": "General Admission — Full Course",
+        "price": "130.00",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "category": "Paid",
+        "url": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-full-course-pass-general-admission"
+      },
+      "@id": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-full-course-pass-general-admission#course",
+      "url": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-full-course-pass-general-admission"
     }
   },
   {
@@ -587,7 +594,6 @@ export const products = [
         "courseMode": "Onsite",
         "startDate": "2026-04-15",
         "endDate": "2026-06-17",
-        "courseWorkload": "PT1H30M weekly for 10 weeks",
         "location": {
           "@type": "Place",
           "name": "Yoga Drop Studio",
@@ -598,24 +604,25 @@ export const products = [
             "addressLocality": "Köln",
             "addressCountry": "DE"
           }
+        },
+        "courseSchedule": {
+          "@type": "Schedule",
+          "duration": "PT1H30M",
+          "repeatFrequency": "Weekly",
+          "repeatCount": 10
         }
       },
-      "offers": [
-        {
-          "@type": "Offer",
-          "name": "Student / Under-28 — Full Course",
-          "price": "100.00",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        },
-        {
-          "@type": "Offer",
-          "name": "General Admission — Full Course",
-          "price": "130.00",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        }
-      ]
+      "offers": {
+        "@type": "Offer",
+        "name": "Student / Under-28 — Full Course",
+        "price": "100.00",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "category": "Paid",
+        "url": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-full-course-pass-student-and-under28-admission"
+      },
+      "@id": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-full-course-pass-student-and-under28-admission#course",
+      "url": "https://tangogarden.de/products/the-sprouting-sessions-beginner-level-full-course-pass-student-and-under28-admission"
     }
   },
   {
@@ -669,7 +676,6 @@ export const products = [
       "hasCourseInstance": {
         "@type": "CourseInstance",
         "courseMode": "Onsite",
-        "courseWorkload": "PT1H30M weekly for 4 weeks",
         "location": {
           "@type": "Place",
           "address": {
@@ -679,24 +685,25 @@ export const products = [
             "addressLocality": "Köln",
             "addressCountry": "DE"
           }
+        },
+        "courseSchedule": {
+          "@type": "Schedule",
+          "duration": "PT1H30M",
+          "repeatFrequency": "Weekly",
+          "repeatCount": 4
         }
       },
-      "offers": [
-        {
-          "@type": "Offer",
-          "name": "General Admission",
-          "price": "60.00",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        },
-        {
-          "@type": "Offer",
-          "name": "Student / Under-28",
-          "price": "45.00",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        }
-      ]
+      "offers": {
+        "@type": "Offer",
+        "name": "General Admission",
+        "price": "60.00",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "category": "Paid",
+        "url": "https://tangogarden.de/products/the-sprouting-sessions-beginners-level-4-classes-pass-general-admission"
+      },
+      "@id": "https://tangogarden.de/products/the-sprouting-sessions-beginners-level-4-classes-pass-general-admission#course",
+      "url": "https://tangogarden.de/products/the-sprouting-sessions-beginners-level-4-classes-pass-general-admission"
     }
   }
 ];

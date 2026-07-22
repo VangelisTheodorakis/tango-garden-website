@@ -212,6 +212,36 @@ describe('structured data', () => {
     }
   });
 
+  it('only advertises prices that are visible on the page', () => {
+    // Google treats markup that claims a price the page does not show as a
+    // structured-data violation, and the penalty strips rich results sitewide.
+    for (const product of products.filter((p) => p.template === 'pdp')) {
+      const page = pages.find((x) => x.route === `/products/${product.handle}/`);
+      const visible = page.document.querySelector('.pdp-price').textContent;
+      const asDecimal = visible.match(/([\d.]+),(\d{2})/).slice(1).join('.');
+
+      for (const script of page.document.querySelectorAll('script[type="application/ld+json"]')) {
+        const data = JSON.parse(script.textContent);
+        if (!data.offers) continue;
+        const offers = Array.isArray(data.offers) ? data.offers : [data.offers];
+        for (const offer of offers) {
+          expect(offer.price, `${product.handle} advertises ${offer.price}, page shows ${asDecimal}`)
+            .toBe(asDecimal);
+          // Required for the Course Info rich result.
+          expect(offer.category, product.handle).toBeTruthy();
+        }
+      }
+    }
+  });
+
+  it('expresses course duration as an ISO 8601 value', () => {
+    for (const product of products.filter((p) => p.schema?.hasCourseInstance)) {
+      const instance = product.schema.hasCourseInstance;
+      expect(instance.courseWorkload, `${product.handle} still uses courseWorkload`).toBeUndefined();
+      expect(instance.courseSchedule?.duration, product.handle).toMatch(/^PT\d+H(\d+M)?$/);
+    }
+  });
+
   it('describes the business on the home page', () => {
     const home = pages.find((p) => p.route === '/');
     const blocks = [...home.document.querySelectorAll('script[type="application/ld+json"]')].map(
