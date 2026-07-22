@@ -49,19 +49,26 @@ test.describe('product checkout', () => {
     expect(url).toMatch(/:1$/);
   });
 
-  test('hides the variant control when there is nothing to choose', async ({ page }) => {
-    // A one-option <select> labelled "Title / Default Title" is a Shopify
-    // internal name; a screen reader would read it out on the buy step.
+  test('renders the variant control the live store renders', async ({ page }) => {
+    // The pages mirror the live Shopify product template, so a single-variant
+    // product keeps its one-option select rather than hiding it.
     await page.goto(SINGLE_VARIANT);
-    await expect(page.locator('select#pdp-var')).toHaveCount(0);
-    await expect(page.locator('input#pdp-var')).toHaveAttribute('type', 'hidden');
+    await expect(page.locator('select#pdp-var')).toHaveCount(1);
+    await expect(page.locator('#pdp-var option')).toHaveCount(1);
   });
 
-  test('shows a real variant chooser when there is a choice', async ({ page }) => {
+  test('lists every variant when there is a choice', async ({ page }) => {
     await page.goto(MULTI_VARIANT);
     const options = page.locator('#pdp-var option');
     await expect(options).toHaveCount(6);
-    await expect(options.first()).not.toHaveText('Default Title');
+    await expect(options.first()).toHaveText(/Pass #1/);
+  });
+
+  test('carries no back link or badge above the title', async ({ page }) => {
+    await page.goto('/products/enter-the-garden-introductory-session-student-and-under-28-admission');
+    await expect(page.locator('.back-link')).toHaveCount(0);
+    await expect(page.locator('.product-badge')).toHaveCount(0);
+    await expect(page.locator('h1')).toHaveCount(1);
   });
 });
 

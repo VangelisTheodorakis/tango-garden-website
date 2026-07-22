@@ -477,18 +477,6 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
   padding: 60px 20px;
   text-align: center;
 }
-.product-badge {
-  display: inline-block;
-  padding: 4px 14px;
-  background: rgba(78,93,34,0.1);
-  color: var(--green);
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 16px;
-}
 .product-title { font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 700; color: var(--green); margin-bottom: 1.5rem; }
 .product-price-block { margin-bottom: 2rem; }
 .product-price { font-size: 2rem; font-weight: 700; color: var(--green); }
@@ -508,8 +496,6 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
 .product-cta-bottom { background: var(--cream); padding: 3rem 1.5rem; text-align: center; margin-top: 0; }
 .product-cta-bottom h2 { font-size: 1.5rem; font-weight: 700; color: var(--green); margin-bottom: 0.75rem; }
 .product-cta-bottom p { color: var(--text-light); margin-bottom: 1.5rem; }
-.back-link { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--green); text-decoration: none; font-size: 0.9rem; font-weight: 500; margin-bottom: 2rem; }
-.back-link:hover { text-decoration: underline; }
 
 /* =====================
    Placeholder / Legal Pages

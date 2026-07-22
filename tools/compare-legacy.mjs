@@ -5,6 +5,11 @@ import { readFileSync, existsSync } from 'node:fs';
 
 const text = (html) =>
   html
+    // Removed by request from the off-live product pages: the "← ..." back link
+    // and the "X · Y" badge that sat above the title. Stripped from both sides
+    // so the rest of the page is still compared.
+    .replace(/<a[^>]*class="back-link"[^>]*>[\s\S]*?<\/a>/gi, '')
+    .replace(/<div class="product-badge">[\s\S]*?<\/div>/gi, '')
     .replace(/<script[\s\S]*?<\/script>/gi, '')
     .replace(/<style[\s\S]*?<\/style>/gi, '')
     .replace(/<!--[\s\S]*?-->/g, '')
@@ -17,16 +22,10 @@ const text = (html) =>
     .replace(/&times;/g, '✕')
     .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
     .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
-    // Deliberate changes of the migration, not content drift:
-    //  - the skip link is new
-    //  - "Title / Default Title" was Shopify's placeholder for a product with a
-    //    single variant; the control is gone, the real labels stay
     .replace(/\s+/g, ' ')
     .trim()
-    // ...applied after whitespace is normalised, so these match reliably.
-    .replace('Skip to content ', '')
-    .replace(' Title Default Title Quantity', ' Quantity')
-    .replace('Pass Eligibility:', 'Pass Eligibility');
+    // The skip link is a deliberate addition of the migration.
+    .replace('Skip to content ', '');
 
 const pairs = [
   ['legacy/index.html', 'dist/index.html'],

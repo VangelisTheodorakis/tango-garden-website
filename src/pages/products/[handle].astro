@@ -33,35 +33,16 @@ const rawSchema = product.schema ? JSON.stringify(product.schema) : null;
         <div class="pdp-price">{product.price}</div>
         <div class="pdp-stock">{product.stock}</div>
 
-        {
-          /* A one-option select labelled "Title / Default Title" is Shopify's
-             internal field name leaking into the page — a screen reader would
-             announce it verbatim on the buy step. With a single variant there
-             is nothing to choose, so carry the id on a hidden input instead. */
-          (product.variants ?? []).length > 1 ? (
-            <div class="pdp-field">
-              <label for="pdp-var">{product.variantLabel}</label>
-              <select id="pdp-var" data-cart-id={product.cartVariantId}>
-                {(product.variants ?? []).map((v) => (
-                  <option value={v.id ?? product.cartVariantId}>{v.label}</option>
-                ))}
-              </select>
-            </div>
-          ) : (
-            <Fragment>
-              <input type="hidden" id="pdp-var" value={product.cartVariantId} />
-              {/* Some single-variant passes carry real information in the option
-                  label ("Full Course | From April 15th to June 17th"). Keep it
-                  as text — only Shopify's placeholder is worth dropping. */}
-              {product.variants?.[0] && product.variants[0].label !== 'Default Title' && (
-                <p class="pdp-variant-note">
-                  <span class="pdp-variant-note-label">{product.variantLabel}:</span>{' '}
-                  {product.variants[0].label}
-                </p>
-              )}
-            </Fragment>
-          )
-        }
+        {/* Mirrors the live Shopify page exactly, including a single-option
+            "Title / Default Title" select where the store has one variant. */}
+        <div class="pdp-field">
+          <label for="pdp-var">{product.variantLabel}</label>
+          <select id="pdp-var" data-cart-id={product.cartVariantId}>
+            {(product.variants ?? []).map((v) => (
+              <option value={v.id ?? product.cartVariantId}>{v.label}</option>
+            ))}
+          </select>
+        </div>
 
         <div class="pdp-field">
           <label for="pdp-qty">Quantity</label>
@@ -173,15 +154,6 @@ const rawSchema = product.schema ? JSON.stringify(product.schema) : null;
     border-left: 1px solid #767676;
     border-right: 1px solid #767676;
     font-size: 0.95rem;
-  }
-  .pdp-variant-note {
-    max-width: 340px;
-    margin: 0 auto 1.5rem;
-    font-size: 0.95rem;
-    color: #252525;
-  }
-  .pdp-variant-note-label {
-    color: #555;
   }
   .pdp-actions {
     max-width: 340px;
