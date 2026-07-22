@@ -125,7 +125,7 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
 .nav-caret { display: inline-flex; align-items: center; margin-left: 5px; }
 .nav-caret svg { width: 10px; height: 6px; }
 
-@media (min-width: 750px) {
+@media (min-width: 900px) {
   .nav-logo-mobile { display: none; }
   .nav-logo-desktop { display: flex; }
   .nav-toggle { display: none; }
@@ -257,6 +257,12 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
    ===================== */
 .hero {
   position: relative;
+  /* width must be pinned. Once min-height wins over the ratio-derived height —
+     which it does on any narrow screen — aspect-ratio otherwise runs backwards
+     and derives the WIDTH from the height (60vh × 1800/928 ≈ 945px on a 375px
+     phone), overflowing the page and forcing the browser to zoom out. */
+  width: 100%;
+  max-width: 100%;
   aspect-ratio: 1800 / 928; /* match hero image ratio → full photo, no cropping (like live) */
   min-height: 60vh;         /* fallback so text fits on narrow/mobile screens */
   display: flex;
@@ -571,7 +577,7 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
   transition: opacity 0.2s;
 }
 .nav-social-link:hover { opacity: 1; }
-@media (min-width: 750px) {
+@media (min-width: 900px) {
   .nav-social { display: flex; }
 }
 
@@ -722,7 +728,7 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
 .nav-overlay.is-visible { display: block; }
 
 /* Hide drawer elements on desktop */
-@media (min-width: 750px) {
+@media (min-width: 900px) {
   .nav-drawer { display: none !important; }
   .nav-overlay { display: none !important; }
 }
