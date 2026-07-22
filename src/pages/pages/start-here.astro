@@ -282,12 +282,41 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
   const panelOf = (btn: Element) => btn.nextElementSibling as HTMLElement | null;
 
-  const collapse = (btn: Element) => {
+  /**
+   * Collapse a panel. `hidden` is what actually takes the content out of the
+   * tab order, but applying it straight away would cut the closing animation
+   * off, so on a user action we wait for the transition to finish first.
+   */
+  const collapse = (btn: Element, animate = true) => {
     btn.setAttribute('aria-expanded', 'false');
     const panel = panelOf(btn);
     if (!panel) return;
+
+    const wasOpen = panel.classList.contains('is-open');
     panel.classList.remove('is-open');
-    panel.hidden = true;
+
+    if (!animate || !wasOpen) {
+      panel.hidden = true;
+      return;
+    }
+
+    const hide = () => {
+      // Skip if it was reopened while the animation was still running.
+      if (!panel.classList.contains('is-open')) panel.hidden = true;
+    };
+    const onEnd = (e: TransitionEvent) => {
+      // transitionend bubbles, so a link or paragraph inside the panel would
+      // otherwise end the close early. Only the panel's own row animation ends it.
+      if (e.target !== panel || e.propertyName !== 'grid-template-rows') return;
+      panel.removeEventListener('transitionend', onEnd);
+      hide();
+    };
+    panel.addEventListener('transitionend', onEnd);
+    // Fallback: transitionend does not fire when motion is reduced to ~0s.
+    setTimeout(() => {
+      panel.removeEventListener('transitionend', onEnd);
+      hide();
+    }, 400);
   };
 
   buttons.forEach((btn, i) => {
@@ -297,16 +326,21 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       panel.id ||= `start-here-faq-answer-${i}`;
       btn.setAttribute('aria-controls', panel.id);
     }
-    collapse(btn);
+    collapse(btn, false);
 
     btn.addEventListener('click', () => {
       const willOpen = btn.getAttribute('aria-expanded') !== 'true';
-      buttons.forEach(collapse);
+      // Not `forEach(collapse)` — forEach passes the index as the second
+      // argument, which would land in `animate` and skip the animation.
+      buttons.forEach((other) => collapse(other));
       if (!willOpen || !panel) return;
       btn.setAttribute('aria-expanded', 'true');
       panel.hidden = false;
-      // Unhide first, then animate on the next frame.
-      requestAnimationFrame(() => panel.classList.add('is-open'));
+      // Unhide, force a reflow so the browser records the collapsed state, then
+      // animate. Without the reflow it goes straight from display:none to open
+      // and the transition never runs.
+      void panel.offsetHeight;
+      panel.classList.add('is-open');
     });
   });
 </script>

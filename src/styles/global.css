@@ -544,9 +544,14 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
    could focus an invisible link. The old 600px cap also clipped long answers
    at large text sizes. The grid-rows trick keeps the slide animation. */
 .start-here-faq-answer[hidden] { display: none; }
-.start-here-faq-answer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.35s ease; }
+.start-here-faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
+}
 .start-here-faq-answer > * { overflow: hidden; }
-.start-here-faq-answer.is-open { grid-template-rows: 1fr; }
+.start-here-faq-answer.is-open { grid-template-rows: 1fr; opacity: 1; }
 
 /* =====================
    Nav Social Icons (desktop)

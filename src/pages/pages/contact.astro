@@ -87,35 +87,35 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     <div class="faq-item">
       <button class="faq-question">Do I need any dance experience to start?</button>
-      <div class="faq-answer">Not at all. Every session is designed for absolute beginners. We start from scratch — how to stand, how to be present, how to listen through touch. No prior dance experience is needed or expected.</div>
+      <div class="faq-answer"><div class="faq-answer-inner">Not at all. Every session is designed for absolute beginners. We start from scratch — how to stand, how to be present, how to listen through touch. No prior dance experience is needed or expected.</div></div>
     </div>
     <div class="faq-item">
       <button class="faq-question">Do I need to bring a partner?</button>
-      <div class="faq-answer">No. Most people come alone. We rotate partners during class so everyone gets to dance with different people. In fact, coming solo often makes it easier to connect with the community.</div>
+      <div class="faq-answer"><div class="faq-answer-inner">No. Most people come alone. We rotate partners during class so everyone gets to dance with different people. In fact, coming solo often makes it easier to connect with the community.</div></div>
     </div>
     <div class="faq-item">
       <button class="faq-question">What should I wear?</button>
-      <div class="faq-answer">Comfortable clothes you can move in. For shoes, we recommend either a clean pair of cozy socks, or a second pair of indoor shoes. Avoid thick rubber soles — they grip the floor and make turning difficult.</div>
+      <div class="faq-answer"><div class="faq-answer-inner">Comfortable clothes you can move in. For shoes, we recommend either a clean pair of cozy socks, or a second pair of indoor shoes. Avoid thick rubber soles — they grip the floor and make turning difficult.</div></div>
     </div>
     <div class="faq-item">
       <button class="faq-question">Is the class taught in English?</button>
-      <div class="faq-answer">Yes. All teaching is in English. Under request, we can also offer German, Russian and Greek. The deeper language of tango — presence, touch, listening — transcends words entirely.</div>
+      <div class="faq-answer"><div class="faq-answer-inner">Yes. All teaching is in English. Under request, we can also offer German, Russian and Greek. The deeper language of tango — presence, touch, listening — transcends words entirely.</div></div>
     </div>
     <div class="faq-item">
       <button class="faq-question">What's the difference between the three options?</button>
-      <div class="faq-answer">"Enter the Garden" is a one-time introductory event — the easiest way to try tango with no commitment. "Regular Classes" are multi-week courses where you actually learn. "Garden Practica" are open weekly practice sessions for those who want to keep dancing between courses.</div>
+      <div class="faq-answer"><div class="faq-answer-inner">"Enter the Garden" is a one-time introductory event — the easiest way to try tango with no commitment. "Regular Classes" are multi-week courses where you actually learn. "Garden Practica" are open weekly practice sessions for those who want to keep dancing between courses.</div></div>
     </div>
     <div class="faq-item">
       <button class="faq-question">What if I miss a class?</button>
-      <div class="faq-answer">No worries. Students on the multi-week course pass can cover any missed class by attending our Garden Practica during the pass' eligibility cycle, at no extra cost.</div>
+      <div class="faq-answer"><div class="faq-answer-inner">No worries. Students on the multi-week course pass can cover any missed class by attending our Garden Practica during the pass' eligibility cycle, at no extra cost.</div></div>
     </div>
     <div class="faq-item">
       <button class="faq-question">I'm shy. Will I feel awkward?</button>
-      <div class="faq-answer">Probably a little — that's normal. Most people feel that way in the first 20 minutes. Then something shifts. Tango is one of the few spaces where being present and quiet is actually an advantage.</div>
+      <div class="faq-answer"><div class="faq-answer-inner">Probably a little — that's normal. Most people feel that way in the first 20 minutes. Then something shifts. Tango is one of the few spaces where being present and quiet is actually an advantage.</div></div>
     </div>
     <div class="faq-item">
       <button class="faq-question">Where exactly are you located in Cologne?</button>
-      <div class="faq-answer">We're at Thürmchenswall 21, 50668 Cologne — inside the Yoga Drop Studio. It's a 3-minute walk from Ebertplatz, reachable by trams 12, 15, 16, 18 or buses 127 and 140.</div>
+      <div class="faq-answer"><div class="faq-answer-inner">We're at Thürmchenswall 21, 50668 Cologne — inside the Yoga Drop Studio. It's a 3-minute walk from Ebertplatz, reachable by trams 12, 15, 16, 18 or buses 127 and 140.</div></div>
     </div>
 
   </div>
@@ -357,14 +357,37 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       transition: transform 0.2s ease;
     }
     .faq-item.is-open .faq-question::after { transform: rotate(45deg); }
+    /* Animating grid-template-rows from 0fr to 1fr slides the panel open at
+       its natural height — no max-height guess to overshoot or clip. The inner
+       wrapper is what actually gets clipped while the row collapses. */
     .faq-answer {
-      display: none;
-      padding: 0 1.25rem 1.25rem;
+      display: grid;
+      grid-template-rows: 0fr;
+      transition:
+        grid-template-rows 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.22s ease;
+      opacity: 0;
       font-size: 0.97rem;
       color: var(--text-mid);
       line-height: 1.75;
     }
-    .faq-item.is-open .faq-answer { display: block; }
+    .faq-answer-inner {
+      overflow: hidden;
+      padding: 0 1.25rem;
+    }
+    .faq-item.is-open .faq-answer {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+    /* The bottom gap belongs to the open state, otherwise it shows as a sliver
+       of padding while the panel is collapsed. */
+    .faq-item.is-open .faq-answer-inner { padding-bottom: 1.25rem; }
+    .faq-answer-inner { transition: padding-bottom 0.32s cubic-bezier(0.4, 0, 0.2, 1); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .faq-answer,
+      .faq-answer-inner { transition: none; }
+    }
 </style>
 
 <script>
