@@ -16,7 +16,58 @@ async function captureCheckoutUrl(page, click) {
   return page.evaluate(() => window.__opened[0]);
 }
 
-test.describe('product checkout', () => {
+test.describe('purchase controls', () => {
+  test('are hidden on every product page', async ({ page }) => {
+    // Switched off via showPurchaseControls in src/data/site.js: these hand the
+    // visitor to the Shopify cart, which is not where we want to send people.
+    for (const url of [MULTI_VARIANT, SINGLE_VARIANT]) {
+      await page.goto(url);
+      await expect(page.locator('.pdp-stock')).toBeHidden();
+      await expect(page.locator('.pdp-field')).toHaveCount(2);
+      for (const field of await page.locator('.pdp-field').all()) {
+        await expect(field).toBeHidden();
+      }
+      await expect(page.locator('.pdp-actions')).toBeHidden();
+      await expect(page.locator('.pdp-btn-add')).toBeHidden();
+      await expect(page.locator('.pdp-btn-buy')).toBeHidden();
+    }
+  });
+
+  test('leave the title, price and description visible', async ({ page }) => {
+    await page.goto(SINGLE_VARIANT);
+    await expect(page.locator('.pdp h1')).toBeVisible();
+    await expect(page.locator('.pdp-price')).toBeVisible();
+    await expect(page.locator('.pdp-desc')).toBeVisible();
+  });
+
+  test('stay out of the tab order while hidden', async ({ page }) => {
+    await page.goto(MULTI_VARIANT);
+    const reachable = await page.evaluate(() =>
+      [...document.querySelectorAll('.pdp select, .pdp input, .pdp button')].some(
+        (el) => el.offsetParent !== null
+      )
+    );
+    expect(reachable).toBe(false);
+  });
+
+  test('send nothing to Shopify even if a hidden button is clicked', async ({ page }) => {
+    await page.goto(SINGLE_VARIANT);
+    const url = await captureCheckoutUrl(page, () =>
+      page.locator('.pdp-btn-buy').dispatchEvent('click')
+    );
+    expect(url).toBeUndefined();
+  });
+
+  test('are still in the markup, ready to switch back on', async ({ page }) => {
+    await page.goto(MULTI_VARIANT);
+    await expect(page.locator('#pdp-var option')).toHaveCount(6);
+    await expect(page.locator('#pdp-qty')).toHaveCount(1);
+    await expect(page.locator('[data-checkout]')).toHaveCount(2);
+  });
+});
+
+// Kept for when showPurchaseControls goes back to true.
+test.describe.skip('product checkout', () => {
   test('builds a Shopify permalink from the chosen variant and quantity', async ({ page }) => {
     await page.goto(MULTI_VARIANT);
 

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { products } from '../../data/products.js';
+import { showPurchaseControls } from '../../data/site.js';
 
 export function getStaticPaths() {
   return products.map((product) => ({
@@ -31,11 +32,15 @@ const rawSchema = product.schema ? JSON.stringify(product.schema) : null;
       <div class="pdp">
         <h1>{product.heading}</h1>
         <div class="pdp-price">{product.price}</div>
-        <div class="pdp-stock">{product.stock}</div>
+        {/* Everything from here to the description is the Shopify buy flow.
+            It stays in the markup but is hidden while showPurchaseControls is
+            false — see src/data/site.js. `hidden` keeps it out of the rendered
+            page, the tab order and the accessibility tree. */}
+        <div class="pdp-stock" hidden={!showPurchaseControls}>{product.stock}</div>
 
         {/* Mirrors the live Shopify page exactly, including a single-option
             "Title / Default Title" select where the store has one variant. */}
-        <div class="pdp-field">
+        <div class="pdp-field" hidden={!showPurchaseControls}>
           <label for="pdp-var">{product.variantLabel}</label>
           <select id="pdp-var" data-cart-id={product.cartVariantId}>
             {(product.variants ?? []).map((v) => (
@@ -44,7 +49,7 @@ const rawSchema = product.schema ? JSON.stringify(product.schema) : null;
           </select>
         </div>
 
-        <div class="pdp-field">
+        <div class="pdp-field" hidden={!showPurchaseControls}>
           <label for="pdp-qty">Quantity</label>
           <div class="pdp-qty-wrap">
             <button type="button" class="pdp-qty-down" aria-label="Decrease quantity">
@@ -57,7 +62,7 @@ const rawSchema = product.schema ? JSON.stringify(product.schema) : null;
           </div>
         </div>
 
-        <div class="pdp-actions">
+        <div class="pdp-actions" hidden={!showPurchaseControls}>
           <button class="pdp-btn pdp-btn-add" data-checkout>
             Add to cart
           </button>
@@ -76,6 +81,12 @@ const rawSchema = product.schema ? JSON.stringify(product.schema) : null;
 
 <style is:global>
   /* Product detail page — mirrors the live Shopify product template. */
+
+  /* .pdp-stock and .pdp-actions set display, which would otherwise beat the
+     `hidden` attribute used to switch off the purchase controls. */
+  .pdp [hidden] {
+    display: none !important;
+  }
   .pdp {
     max-width: 600px;
     margin: 0 auto;
@@ -233,6 +244,8 @@ const rawSchema = product.schema ? JSON.stringify(product.schema) : null;
 
   for (const btn of document.querySelectorAll('[data-checkout]')) {
     btn.addEventListener('click', () => {
+      // Nothing should reach Shopify while the buy flow is switched off.
+      if (btn.closest('[hidden]')) return;
       const id = variant?.value ?? variant?.dataset.cartId;
       if (!id) return;
       const amount = Math.max(1, parseInt(qty?.value ?? '1', 10) || 1);
