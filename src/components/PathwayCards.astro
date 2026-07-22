@@ -90,20 +90,20 @@ const cards = [
       {
         cards.map((card) => (
           <div class:list={['pathway-card', { featured: card.featured }]}>
-            <div class="card-number">{card.number}</div>
-            <div class="card-icon">{card.icon}</div>
+            <div class="card-number" aria-hidden="true">{card.number}</div>
+            <div class="card-icon" aria-hidden="true">{card.icon}</div>
             <h3 class="card-title">{card.title}</h3>
             <p class="card-desc">{card.description}</p>
             <ul class="card-features">
               {card.features.map((f) => (
                 <li>
-                  <span class="card-check">✓</span>
+                  <span class="card-check" aria-hidden="true">✓</span>
                   {f}
                 </li>
               ))}
             </ul>
             <div class="card-date">
-              <span class="card-date-emoji">🗓️</span>
+              <span class="card-date-emoji" aria-hidden="true">🗓️</span>
               <div style="text-align: left;">
                 <span class="date-label" id={`${card.key}-label`}>
                   {card.dateLabel}
@@ -351,31 +351,9 @@ const cards = [
 </style>
 
 <script>
-  // Populate the pathway cards with dates from JSON. Each file lists dated
-  // events; we show the next one on/after today, else the file's emptyMessage
-  // (e.g. "New dates coming soon (TBA)").
-  const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const MONTHS = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-  ];
-
-  interface GardenEvent {
-    date: string;
-    time?: string;
-  }
-  interface EventFeed {
-    label?: string;
-    prefix?: string;
-    emptyMessage?: string;
-    events?: GardenEvent[];
-  }
-
-  function fmt(iso: string): string {
-    const d = new Date(iso + 'T00:00:00');
-    if (isNaN(d.getTime())) return iso;
-    return `${DAYS[d.getDay()]}, ${String(d.getDate()).padStart(2, '0')} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
-  }
+  // Populate the pathway cards with dates from JSON. The selection rules live
+  // in src/lib/next-event.js so they can be unit tested; this just renders.
+  import { cardContent } from '../lib/next-event.js';
 
   const feeds = [
     { url: '/assets/data/enter-the-garden.json', key: 'etg' },
@@ -383,31 +361,26 @@ const cards = [
     { url: '/assets/data/practicas.json', key: 'prac' },
   ];
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
   for (const feed of feeds) {
     fetch(feed.url, { cache: 'no-store' })
-      .then((res) => (res.ok ? (res.json() as Promise<EventFeed>) : null))
+      .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (!data) return;
-        const label = document.getElementById(`${feed.key}-label`);
+        const labelEl = document.getElementById(`${feed.key}-label`);
         const dateEl = document.getElementById(`${feed.key}-date`);
-        if (label && data.label) label.textContent = data.label;
         if (!dateEl) return;
 
-        // Keep only events on/after today, earliest first.
-        const upcoming = (data.events ?? [])
-          .filter((e) => e.date && new Date(e.date + 'T00:00:00') >= today)
-          .sort((a, b) => +new Date(a.date) - +new Date(b.date));
+        const { label, lines } = cardContent(data, new Date());
 
-        if (upcoming.length) {
-          const next = upcoming[0];
-          const text = (data.prefix ?? '') + fmt(next.date);
-          dateEl.innerHTML = next.time ? `${text}<br>${next.time}` : text;
-        } else {
-          dateEl.textContent = data.emptyMessage ?? 'New dates coming soon (TBA)';
-        }
+        if (labelEl && label) labelEl.textContent = label;
+
+        // textContent per line, not innerHTML — nothing from the feed is
+        // parsed as markup.
+        dateEl.textContent = '';
+        lines.forEach((line, i) => {
+          if (i > 0) dateEl.appendChild(document.createElement('br'));
+          dateEl.appendChild(document.createTextNode(line));
+        });
       })
       .catch(() => {
         /* keep the static fallback text on error */

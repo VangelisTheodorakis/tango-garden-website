@@ -10,7 +10,11 @@
     "build": "astro build",
     "preview": "astro preview --port 3001",
     "check": "astro check",
-    "lhci": "lhci autorun"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "lhci": "lhci autorun",
+    "dead-css": "node tools/find-dead-css.mjs ."
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
@@ -19,7 +23,14 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@lhci/cli": "^0.15.0",
-    "typescript": "^5.9.3"
+    "@playwright/test": "^1.61.1",
+    "css-select": "^7.0.0",
+    "domutils": "^4.0.2",
+    "htmlparser2": "^12.0.0",
+    "linkedom": "^0.18.13",
+    "postcss": "^8.5.22",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
   },
   "allowScripts": {
     "esbuild@0.27.7": true,

@@ -33,23 +33,44 @@ const rawSchema = product.schema ? JSON.stringify(product.schema) : null;
         <div class="pdp-price">{product.price}</div>
         <div class="pdp-stock">{product.stock}</div>
 
-        <div class="pdp-field">
-          <label for="pdp-var">{product.variantLabel}</label>
-          <select id="pdp-var" data-cart-id={product.cartVariantId}>
-            {(product.variants ?? []).map((v) => (
-              <option value={v.id ?? product.cartVariantId}>{v.label}</option>
-            ))}
-          </select>
-        </div>
+        {
+          /* A one-option select labelled "Title / Default Title" is Shopify's
+             internal field name leaking into the page — a screen reader would
+             announce it verbatim on the buy step. With a single variant there
+             is nothing to choose, so carry the id on a hidden input instead. */
+          (product.variants ?? []).length > 1 ? (
+            <div class="pdp-field">
+              <label for="pdp-var">{product.variantLabel}</label>
+              <select id="pdp-var" data-cart-id={product.cartVariantId}>
+                {(product.variants ?? []).map((v) => (
+                  <option value={v.id ?? product.cartVariantId}>{v.label}</option>
+                ))}
+              </select>
+            </div>
+          ) : (
+            <Fragment>
+              <input type="hidden" id="pdp-var" value={product.cartVariantId} />
+              {/* Some single-variant passes carry real information in the option
+                  label ("Full Course | From April 15th to June 17th"). Keep it
+                  as text — only Shopify's placeholder is worth dropping. */}
+              {product.variants?.[0] && product.variants[0].label !== 'Default Title' && (
+                <p class="pdp-variant-note">
+                  <span class="pdp-variant-note-label">{product.variantLabel}:</span>{' '}
+                  {product.variants[0].label}
+                </p>
+              )}
+            </Fragment>
+          )
+        }
 
         <div class="pdp-field">
           <label for="pdp-qty">Quantity</label>
           <div class="pdp-qty-wrap">
-            <button type="button" class="pdp-qty-down" aria-label="Decrease">
+            <button type="button" class="pdp-qty-down" aria-label="Decrease quantity">
               &minus;
             </button>
-            <input id="pdp-qty" type="number" value="1" min="1" aria-label="Quantity" />
-            <button type="button" class="pdp-qty-up" aria-label="Increase">
+            <input id="pdp-qty" type="number" value="1" min="1" />
+            <button type="button" class="pdp-qty-up" aria-label="Increase quantity">
               +
             </button>
           </div>
@@ -121,7 +142,7 @@ const rawSchema = product.schema ? JSON.stringify(product.schema) : null;
   .pdp-field select,
   .pdp-field input {
     width: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.3);
+    border: 1px solid #767676;
     border-radius: 6px;
     padding: 0.7rem 0.9rem;
     font-size: 0.95rem;
@@ -132,7 +153,7 @@ const rawSchema = product.schema ? JSON.stringify(product.schema) : null;
   .pdp-qty-wrap {
     display: inline-flex;
     align-items: center;
-    border: 1px solid rgba(0, 0, 0, 0.3);
+    border: 1px solid #767676;
     border-radius: 6px;
     overflow: hidden;
   }
@@ -149,9 +170,18 @@ const rawSchema = product.schema ? JSON.stringify(product.schema) : null;
     width: 52px;
     text-align: center;
     border: none;
-    border-left: 1px solid rgba(0, 0, 0, 0.15);
-    border-right: 1px solid rgba(0, 0, 0, 0.15);
+    border-left: 1px solid #767676;
+    border-right: 1px solid #767676;
     font-size: 0.95rem;
+  }
+  .pdp-variant-note {
+    max-width: 340px;
+    margin: 0 auto 1.5rem;
+    font-size: 0.95rem;
+    color: #252525;
+  }
+  .pdp-variant-note-label {
+    color: #555;
   }
   .pdp-actions {
     max-width: 340px;
@@ -189,7 +219,9 @@ const rawSchema = product.schema ? JSON.stringify(product.schema) : null;
     text-align: left;
     color: #252525;
   }
-  .pdp-desc h3 {
+  /* h2, not h3 — the body headings sit directly under the page h1, so starting
+     at h3 skipped a level. Size is unchanged from the original design. */
+  .pdp-desc h2 {
     font-size: 1.15rem;
     font-weight: 600;
     margin: 1.5rem 0 0.6rem;
@@ -232,7 +264,13 @@ const rawSchema = product.schema ? JSON.stringify(product.schema) : null;
       const id = variant?.value ?? variant?.dataset.cartId;
       if (!id) return;
       const amount = Math.max(1, parseInt(qty?.value ?? '1', 10) || 1);
-      window.open(`https://tangogarden.de/cart/${id}:${amount}`, '_blank', 'noopener');
+      // Must be the Shopify domain, not tangogarden.de — that now points at
+      // this static site, where /cart/... is a 404.
+      window.open(
+        `https://tangogarden.myshopify.com/cart/${id}:${amount}`,
+        '_blank',
+        'noopener,noreferrer'
+      );
     });
   }
 </script>

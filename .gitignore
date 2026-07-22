@@ -19,3 +19,5 @@ dist/
 .astro/
 node_modules/
 .lighthouseci/
+test-results/
+playwright-report/

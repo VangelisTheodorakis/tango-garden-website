@@ -3,13 +3,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
+  lang="de"
   title="Impressum — Tango Garden"
   description="Impressum — Angaben gemäß §5 TMG für Tango Garden Cologne."
   canonical="https://tangogarden.de/pages/impressum"
   noindex
 >
   <Fragment set:html={`
-<main class="legal-page">
+<div class="legal-page">
   <h1 class="legal-title">Impressum</h1>
 
   <section class="legal-section">
@@ -55,17 +56,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <h2>Online-Streitbeilegung</h2>
     <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr</a>.<br>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
   </section>
-</main>
+</div>
 `} />
 </BaseLayout>
 
-<style is:global>
-.legal-page { max-width: 860px; margin: 0 auto; padding: 53px 20px 60px; }
-    .legal-title { font-size: clamp(2.2rem, 5vw, 57px); font-weight: 400; color: #252525; line-height: 1.2; margin-bottom: 2.5rem; letter-spacing: -0.5px; }
-    .legal-section { margin-bottom: 2.5rem; }
-    .legal-section h2 { font-size: 19px; font-weight: 700; color: #1f1f1f; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(37,37,37,0.1); margin-bottom: 1.25rem; }
-    .legal-section p { font-size: 16px; line-height: 1.7; color: #252525; margin-bottom: 1rem; }
-    .legal-section p:last-child { margin-bottom: 0; }
-    .legal-section a { color: #252525; }
-    .legal-box { background: rgba(37,37,37,0.03); border: 1px solid rgba(37,37,37,0.1); padding: 25px; line-height: 1.7; color: #252525; font-size: 16px; }
-</style>

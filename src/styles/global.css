@@ -109,7 +109,6 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
   border-bottom: 1px solid rgba(0,0,0,0.08);
   gap: 0.25rem;
 }
-.nav-links.is-open { display: flex; }
 .nav-link {
   text-decoration: none;
   font-size: 0.875rem;
@@ -167,35 +166,6 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
 }
 .footer-social a { color: rgba(239,236,236,0.75); display: flex; transition: color 0.2s; }
 .footer-social a:hover { color: #fff; }
-.footer-checkout {
-  text-align: center;
-  padding: 1.75rem 1.5rem;
-  border-top: 1px solid rgba(239,236,236,0.12);
-}
-.footer-checkout-label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: rgba(239,236,236,0.6);
-  margin-bottom: 1rem;
-}
-.payment-icons { display: flex; justify-content: center; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-.payment-icons span {
-  background: #fff;
-  border-radius: 5px;
-  padding: 5px 9px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #1a1a2e;
-  line-height: 1;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
-  font-family: Arial, sans-serif;
-}
-.payment-icons .pay-visa { color: #1a1f71; font-style: italic; }
-.payment-icons .pay-mc { color: #eb5b25; }
-.payment-icons .pay-amex { color: #1379c4; }
-.payment-icons .pay-apple { color: #000; }
-.payment-icons .pay-gpay { color: #5f6368; }
 .footer-inner {
   max-width: var(--page-width);
   margin: 0 auto;
@@ -244,22 +214,6 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
 }
 .btn-primary:hover { background: var(--green-btn); transform: translateY(-2px); }
 
-.btn-outline {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 14px 28px;
-  background: #fff;
-  color: var(--green);
-  font-weight: 600;
-  font-size: 1rem;
-  text-decoration: none;
-  border-radius: 8px;
-  transition: background 0.2s, transform 0.2s;
-  border: 2px solid var(--green);
-}
-.btn-outline:hover { background: var(--cream); transform: translateY(-2px); }
-
 .btn-whatsapp {
   display: inline-flex;
   align-items: center;
@@ -295,12 +249,8 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
 /* =====================
    Page Chrome
    ===================== */
-.page-container { max-width: var(--page-width); margin: 0 auto; padding: 0 1.5rem; }
-.section { padding: 60px 20px; }
-.section-eyebrow { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; color: var(--green); font-weight: 600; margin-bottom: 20px; }
 .section-title { font-size: clamp(28px, 5vw, 42px); font-weight: 700; color: var(--green); margin-bottom: 20px; }
 .section-subtitle { font-size: clamp(18px, 2.5vw, 20px); color: var(--text-light); max-width: 700px; margin: 0 auto; line-height: 1.6; }
-.section-header-center { text-align: center; margin-bottom: 60px; }
 
 /* =====================
    Hero (image-banner)
@@ -602,8 +552,15 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
    FAQ Accordion
    ===================== */
 .start-here-faq-btn[aria-expanded="true"] .start-here-faq-icon { transform: rotate(45deg); }
-.start-here-faq-answer { overflow: hidden; max-height: 0; transition: max-height 0.35s ease, padding 0.3s ease; padding-bottom: 0; }
-.start-here-faq-answer.is-open { max-height: 600px !important; }
+/* `hidden` rather than max-height:0 is what actually collapses these.
+   max-height:0 + overflow:hidden only hides them visually — the links inside
+   stayed in the tab order and in the accessibility tree, so a keyboard user
+   could focus an invisible link. The old 600px cap also clipped long answers
+   at large text sizes. The grid-rows trick keeps the slide animation. */
+.start-here-faq-answer[hidden] { display: none; }
+.start-here-faq-answer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.35s ease; }
+.start-here-faq-answer > * { overflow: hidden; }
+.start-here-faq-answer.is-open { grid-template-rows: 1fr; }
 
 /* =====================
    Nav Social Icons (desktop)
@@ -617,7 +574,9 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
   display: flex;
   align-items: center;
   color: var(--green);
-  opacity: 0.65;
+  /* 0.65 put these icon-only links at 2.87:1 on the #efecec nav — under the
+     3:1 that WCAG 1.4.11 requires for a control's visual affordance. */
+  opacity: 0.8;
   transition: opacity 0.2s;
 }
 .nav-social-link:hover { opacity: 1; }
@@ -796,3 +755,50 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
 }
 .skip-link:focus { top: 0; }
 #main-content:focus { outline: none; }
+
+/* =====================
+   Legal Pages
+   Shared by impressum, code-of-care, privacy-policy, terms-of-service and
+   refund-and-cancellation-policy. Each of those pages used to carry its own
+   byte-identical copy of this block.
+   ===================== */
+.legal-page { max-width: 860px; margin: 0 auto; padding: 53px 20px 60px; }
+.legal-title { font-size: clamp(2.2rem, 5vw, 57px); font-weight: 400; color: #252525; line-height: 1.2; margin-bottom: 2.5rem; letter-spacing: -0.5px; }
+.legal-section { margin-bottom: 2.5rem; }
+.legal-section h2 { font-size: 19px; font-weight: 700; color: #1f1f1f; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(37,37,37,0.1); margin-bottom: 1.25rem; }
+.legal-section p { font-size: 16px; line-height: 1.7; color: #252525; margin-bottom: 1rem; }
+.legal-section p:last-child { margin-bottom: 0; }
+.legal-section ul { margin: 0; padding-left: 1.25rem; }
+.legal-section li { font-size: 16px; line-height: 1.7; color: #252525; margin-bottom: 0.5rem; }
+.legal-section a { color: #252525; }
+.legal-box { background: rgba(37,37,37,0.03); border: 1px solid rgba(37,37,37,0.1); padding: 25px; line-height: 1.7; color: #252525; font-size: 16px; }
+
+/* =====================
+   Reduced motion
+   The scroll-hint arrow on /pages/the-garden animates indefinitely, which
+   WCAG 2.2.2 does not allow without a way to stop it. This also covers the
+   card hover lifts and the smooth scrolling set above.
+   ===================== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =====================
+   Focus visibility
+   The UA default ring is hard to see on the white-on-cream card buttons.
+   ===================== */
+:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 2px;
+}
+.pathway-card.featured :focus-visible,
+.bottom-cta-container :focus-visible,
+.site-footer :focus-visible {
+  outline-color: #fff;
+}

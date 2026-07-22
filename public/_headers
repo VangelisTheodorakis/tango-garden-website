@@ -1,10 +1,19 @@
+# Cloudflare Pages reads this file from the build output root.
+# NOTE: GitHub Pages ignores it entirely — none of these headers are applied
+# while the site deploys there.
+#
+# style-src is split: Astro emits no inline <style> elements (see
+# build.inlineStylesheets in astro.config.mjs), so elements can be locked to
+# 'self'. The 'unsafe-inline' is only for style="..." attributes, of which the
+# ported pages carry a few dozen. Browsers that do not support the -elem/-attr
+# split fall back to the plain style-src line below.
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
-  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-src https://www.google.com https://maps.google.com; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none';
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), interest-cohort=(), browsing-topics=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; style-src-elem 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; object-src 'none'; frame-src https://www.google.com https://maps.google.com; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests
 
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable

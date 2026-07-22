@@ -1,7 +1,15 @@
 # Shopify paths that have no equivalent on the static site.
 # Product and page URLs are unchanged, so they need no redirect.
 
+# The exact-match 200 must come first: Cloudflare Pages applies redirects before
+# static assets, so a bare /collections/* splat would redirect /collections/all
+# to itself forever — taking out the page the whole nav points at.
+/collections/all          /collections/all  200
+/collections              /collections/all  301
 /collections/*            /collections/all  301
+
+# Shopify checkout paths. Safe to bounce home: the buy buttons now point at
+# tangogarden.myshopify.com, so nothing on this site relies on them.
 /cart                     /                 301
 /cart/*                   /                 301
 /checkout                 /                 301

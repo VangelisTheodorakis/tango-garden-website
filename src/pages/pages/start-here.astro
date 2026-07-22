@@ -275,17 +275,38 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <script>
-document.querySelectorAll('.start-here-faq-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var isOpen = btn.getAttribute('aria-expanded') === 'true';
-      document.querySelectorAll('.start-here-faq-btn').forEach(function(b) {
-        b.setAttribute('aria-expanded', 'false');
-        b.nextElementSibling?.classList.remove('is-open');
-      });
-      if (!isOpen) {
-        btn.setAttribute('aria-expanded', 'true');
-        btn.nextElementSibling?.classList.add('is-open');
-      }
+  // FAQ accordion. `hidden` is the source of truth for collapsed state so the
+  // links inside a closed answer are out of the tab order and the a11y tree —
+  // the CSS alone only hid them visually.
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.start-here-faq-btn');
+
+  const panelOf = (btn: Element) => btn.nextElementSibling as HTMLElement | null;
+
+  const collapse = (btn: Element) => {
+    btn.setAttribute('aria-expanded', 'false');
+    const panel = panelOf(btn);
+    if (!panel) return;
+    panel.classList.remove('is-open');
+    panel.hidden = true;
+  };
+
+  buttons.forEach((btn, i) => {
+    const panel = panelOf(btn);
+    if (panel) {
+      // Wire up the relationship the markup never declared.
+      panel.id ||= `start-here-faq-answer-${i}`;
+      btn.setAttribute('aria-controls', panel.id);
+    }
+    collapse(btn);
+
+    btn.addEventListener('click', () => {
+      const willOpen = btn.getAttribute('aria-expanded') !== 'true';
+      buttons.forEach(collapse);
+      if (!willOpen || !panel) return;
+      btn.setAttribute('aria-expanded', 'true');
+      panel.hidden = false;
+      // Unhide first, then animate on the next frame.
+      requestAnimationFrame(() => panel.classList.add('is-open'));
     });
   });
 </script>

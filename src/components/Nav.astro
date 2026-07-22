@@ -145,11 +145,26 @@ const isCurrent = (href: string) => path === href.replace(/\/$/, '');
   if (toggle && drawer) {
     const setOpen = (open: boolean) => {
       toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
       drawer.setAttribute('aria-hidden', String(!open));
       drawer.toggleAttribute('inert', !open);
       drawer.classList.toggle('is-open', open);
       overlay?.classList.toggle('is-visible', open);
       document.body.style.overflow = open ? 'hidden' : '';
+
+      // Making the rest of the page inert gives a real focus boundary without
+      // hand-rolling a focus trap, which is easy to turn into a keyboard trap.
+      document.getElementById('main-content')?.toggleAttribute('inert', open);
+      document.querySelector('.site-footer')?.toggleAttribute('inert', open);
+      // The logo sits behind the overlay too. The toggle itself stays active so
+      // it can still be used to close the drawer.
+      document.querySelector('.nav-logo')?.toggleAttribute('inert', open);
+
+      // Move focus into the drawer, and hand it back to the toggle on close —
+      // otherwise closing drops focus on <body> and the next Tab restarts from
+      // the top of the document.
+      if (open) closeBtn?.focus();
+      else toggle.focus();
     };
 
     toggle.addEventListener('click', () =>

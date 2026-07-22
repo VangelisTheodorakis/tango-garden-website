@@ -8,6 +8,8 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description: string;
+  /** BCP-47 tag for the page's own language — the German legal pages set 'de'. */
+  lang?: 'en' | 'de';
   canonical?: string;
   ogType?: 'website' | 'article' | 'product';
   noindex?: boolean;
@@ -24,6 +26,7 @@ interface Props {
 const {
   title,
   description,
+  lang = 'en',
   canonical,
   ogType = 'website',
   noindex = false,
@@ -33,7 +36,7 @@ const {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -107,7 +107,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     .garden-hero-overlay {
       position: absolute;
       inset: 0;
-      background: none;
+      /* This element exists to guarantee contrast and had been set to
+         `background: none`, leaving dark green text (#4E5D22) over an
+         arbitrary photo. A cream scrim keeps the brand colour readable
+         (~5.4:1) instead of switching the heading to light text. */
+      background: rgba(243, 237, 225, 0.82);
     }
     .garden-hero-content {
       position: relative;

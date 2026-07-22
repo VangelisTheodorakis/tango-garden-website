@@ -1,10 +1,9 @@
 User-agent: *
 Allow: /
 
-# Products that exist but are not live on the store.
-Disallow: /products/enter-the-garden-general-admission
-Disallow: /products/enter-the-garden-introductory-session-student-and-under-28-admission
-Disallow: /products/the-garden-practica-1-time-pass-evey
-Disallow: /products/the-sprouting-sessions-beginner-level-1-class-welcome-pass
+# Note: the products and legal pages we do not want indexed carry a `noindex`
+# meta tag instead of a Disallow rule here. Disallowing them would stop crawlers
+# fetching the page at all, so they could never read the noindex — the usual way
+# a URL ends up indexed with no title or snippet.
 
 Sitemap: https://tangogarden.de/sitemap-index.xml

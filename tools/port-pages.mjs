@@ -78,10 +78,14 @@ for (const [src, dest] of PAGES) {
     src
   ).trim();
 
-  // Drop the nav drawer script — Nav.astro owns that behaviour now.
+  // Drop the nav drawer IIFE — Nav.astro owns that behaviour now.
+  //
+  // Careful: on some pages the nav IIFE shared a <script> tag with page code
+  // (the contact page's FAQ accordion). Dropping the whole tag silently removed
+  // that too, so strip just the IIFE and keep whatever follows it.
   const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)]
-    .map((m) => m[1].trim())
-    .filter((s) => !s.includes('.nav-toggle'))
+    .map((m) => m[1].replace(/\(function\(\)\{var tg=document\.querySelector[\s\S]*?\}\)\(\);/, ''))
+    .map((s) => s.trim())
     .filter(Boolean);
 
   const props = [

@@ -8,7 +8,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   canonical="https://tangogarden.de/pages/code-of-care"
 >
   <Fragment set:html={`
-<main class="legal-page">
+<div class="legal-page">
   <h1 class="legal-title">Code of Care</h1>
   <p style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:#6b6b6b;margin-bottom:2.5rem;">Last updated: May 20, 2024</p>
 
@@ -67,19 +67,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <h2>Growing Together</h2>
     <p>This Code of Care is not about perfection. It is about attention, responsibility, and learning how to share a space well.</p>
   </section>
-</main>
+</div>
 `} />
 </BaseLayout>
 
-<style is:global>
-.legal-page { max-width: 860px; margin: 0 auto; padding: 53px 20px 60px; }
-    .legal-title { font-size: clamp(2.2rem, 5vw, 57px); font-weight: 400; color: #252525; line-height: 1.2; margin-bottom: 2.5rem; letter-spacing: -0.5px; }
-    .legal-section { margin-bottom: 2.5rem; }
-    .legal-section h2 { font-size: 19px; font-weight: 700; color: #1f1f1f; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(37,37,37,0.1); margin-bottom: 1.25rem; }
-    .legal-section p { font-size: 16px; line-height: 1.7; color: #252525; margin-bottom: 1rem; }
-    .legal-section p:last-child { margin-bottom: 0; }
-    .legal-section ul { margin: 0; padding-left: 1.25rem; }
-    .legal-section li { font-size: 16px; line-height: 1.7; color: #252525; margin-bottom: 0.5rem; }
-    .legal-section a { color: #252525; }
-    .legal-box { background: rgba(37,37,37,0.03); border: 1px solid rgba(37,37,37,0.1); padding: 25px; line-height: 1.7; color: #252525; font-size: 16px; }
-</style>

@@ -20,7 +20,8 @@ const {
 
 <title>{title}</title>
 <meta name="description" content={description} />
-{noindex && <meta name="robots" content="noindex, nofollow" />}
+{/* noindex without nofollow: these pages should still pass link equity on. */}
+{noindex && <meta name="robots" content="noindex" />}
 <link rel="canonical" href={canonical} />
 
 <!-- Favicon -->

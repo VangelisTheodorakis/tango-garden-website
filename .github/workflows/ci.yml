@@ -17,12 +17,28 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm ci
+      - run: npm run check
       - run: npm run build
+      # Unit tests plus assertions against the real built HTML in dist/.
+      - run: npm test
       - uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist/
           retention-days: 1
+
+  e2e:
+    name: Browser tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
 
   lighthouse:
     name: Lighthouse CI

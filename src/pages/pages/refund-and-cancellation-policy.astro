@@ -9,7 +9,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   noindex
 >
   <Fragment set:html={`
-<main class="legal-page">
+<div class="legal-page">
   <h1 class="legal-title">Our Cancellation &amp; Refund Policy</h1>
   <p style="font-size:1.05rem;color:#252525;margin-bottom:2.5rem;">We want everyone at Tango Garden to feel safe and supported.</p>
 
@@ -36,17 +36,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     Cancellations before the first 7 calendar days from the beginning of the course are eligible to partial refund of 215€.<br>
     Cancellations after the first 7 calendar days from the beginning of the course not eligible to refund.</p>
   </section>
-</main>
+</div>
 `} />
 </BaseLayout>
 
-<style is:global>
-.legal-page { max-width: 860px; margin: 0 auto; padding: 53px 20px 60px; }
-    .legal-title { font-size: clamp(2.2rem, 5vw, 57px); font-weight: 400; color: #252525; line-height: 1.2; margin-bottom: 2.5rem; letter-spacing: -0.5px; }
-    .legal-section { margin-bottom: 2.5rem; }
-    .legal-section h2 { font-size: 19px; font-weight: 700; color: #1f1f1f; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(37,37,37,0.1); margin-bottom: 1.25rem; }
-    .legal-section p { font-size: 16px; line-height: 1.7; color: #252525; margin-bottom: 1rem; }
-    .legal-section p:last-child { margin-bottom: 0; }
-    .legal-section a { color: #252525; }
-    .legal-box { background: rgba(37,37,37,0.03); border: 1px solid rgba(37,37,37,0.1); padding: 25px; line-height: 1.7; color: #252525; font-size: 16px; }
-</style>

@@ -25,13 +25,13 @@ const year = new Date().getFullYear();
       <img src="/images/logo-stacked-light.svg" alt="Tango Garden" width="210" loading="lazy" />
     </div>
     <div class="footer-col">
-      <h3 class="footer-heading">Connect</h3>
+      <h2 class="footer-heading">Connect</h2>
       <ul class="footer-links" role="list">
         {connectLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
       </ul>
     </div>
     <div class="footer-col">
-      <h3 class="footer-heading">Legal</h3>
+      <h2 class="footer-heading">Legal</h2>
       <ul class="footer-links" role="list">
         {legalLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
       </ul>
@@ -49,7 +49,10 @@ const year = new Date().getFullYear();
     <p>© {year} Tango Garden Cologne</p>
     <p>
       All prices are final prices. No VAT charged according to §19 UStG.<br />
-      Alle Preise sind Endpreise. Gemäß §19 UStG wird keine Umsatzsteuer berechnet.
+      {/* lang marks the switch so screen readers do not read German with an English voice. */}
+      <span lang="de"
+        >Alle Preise sind Endpreise. Gemäß §19 UStG wird keine Umsatzsteuer berechnet.</span
+      >
     </p>
     <p class="footer-credit">Made with love ♥ and AI ✨</p>
   </div>

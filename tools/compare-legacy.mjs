@@ -17,10 +17,16 @@ const text = (html) =>
     .replace(/&times;/g, '✕')
     .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
     .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
-    // Expected additions of the migration, not content drift.
-    .replace(/Skip to content /, '')
+    // Deliberate changes of the migration, not content drift:
+    //  - the skip link is new
+    //  - "Title / Default Title" was Shopify's placeholder for a product with a
+    //    single variant; the control is gone, the real labels stay
     .replace(/\s+/g, ' ')
-    .trim();
+    .trim()
+    // ...applied after whitespace is normalised, so these match reliably.
+    .replace('Skip to content ', '')
+    .replace(' Title Default Title Quantity', ' Quantity')
+    .replace('Pass Eligibility:', 'Pass Eligibility');
 
 const pairs = [
   ['legacy/index.html', 'dist/index.html'],
