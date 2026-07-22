@@ -1,0 +1,20 @@
+{
+  // Assets-only Worker: no Worker script, Cloudflare serves the built site
+  // directly. `_headers` and `_redirects` are read from the assets directory,
+  // and Astro copies them there from public/ during the build.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tango-garden-website",
+  "compatibility_date": "2026-07-22",
+  "assets": {
+    "directory": "./dist",
+    // Serve dist/404.html for unmatched paths. Not "single-page-application" —
+    // this is a static multi-page site, and that setting would answer every
+    // unknown URL with 200 + the homepage, which would wreck indexing.
+    "not_found_handling": "404-page",
+    // Serve /pages/contact directly and redirect /pages/contact/ to it. The
+    // default (auto-trailing-slash) does the opposite, which would 307 every
+    // canonical URL and every internal link on the site through a redirect —
+    // these URLs are indexed without the slash today.
+    "html_handling": "drop-trailing-slash"
+  }
+}

@@ -169,14 +169,35 @@ describe('indexing', () => {
     }
   });
 
-  it('lists every indexable page in the sitemap', () => {
+  it('lists every indexable page in the sitemap, by its canonical URL', () => {
     const sitemap = readFileSync(join(DIST, 'sitemap-0.xml'), 'utf8');
+    const listed = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+
     for (const p of contentPages()) {
       if (p.document.querySelector('meta[name="robots"]')) continue;
       if (p.route === '/collections/') continue; // canonicalised to /collections/all
-      const url = SITE + p.route;
-      expect(sitemap, `${p.file} missing from sitemap`).toContain(url);
+      // The sitemap must list the same string the page declares as canonical,
+      // or the two disagree about which URL is the real one.
+      const canonical = p.document.querySelector('link[rel="canonical"]').getAttribute('href');
+      expect(listed, `${p.file} canonical not in sitemap`).toContain(canonical);
     }
+  });
+
+  it('uses one trailing-slash convention across canonicals and the sitemap', () => {
+    // These URLs are indexed without a trailing slash, and the host serves them
+    // that way, so a canonical or sitemap entry with one would point at a
+    // redirect. Root is the only exception.
+    const sitemap = readFileSync(join(DIST, 'sitemap-0.xml'), 'utf8');
+    const slashed = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)]
+      .map((m) => m[1])
+      .filter((url) => url.endsWith('/') && url !== `${SITE}/`);
+    expect(slashed, 'sitemap entries with a trailing slash').toEqual([]);
+
+    const badCanonicals = pages
+      .map((p) => [p.file, p.document.querySelector('link[rel="canonical"]')?.getAttribute('href')])
+      .filter(([, href]) => href && href.endsWith('/') && href !== `${SITE}/`)
+      .map(([file]) => file);
+    expect(badCanonicals, 'canonicals with a trailing slash').toEqual([]);
   });
 
   it('does not Disallow anything that relies on a noindex tag', () => {

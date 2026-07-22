@@ -8,10 +8,17 @@ interface Props {
   noindex?: boolean;
 }
 
+/**
+ * One canonical shape for the whole site: no trailing slash (except the root).
+ * That is how the URLs are indexed today, it is what the sitemap emits, and it
+ * is what the host serves directly — so a canonical never points at a redirect.
+ */
+const canonicalPath = Astro.url.pathname.replace(/(.)\/$/, '$1');
+
 const {
   title,
   description,
-  canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href,
+  canonical = new URL(canonicalPath, Astro.site ?? Astro.url).href,
   ogImage = new URL('/images/og-image.jpg', Astro.site ?? Astro.url).href,
   ogType = 'website',
   noindex = false,

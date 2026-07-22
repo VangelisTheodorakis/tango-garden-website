@@ -36,6 +36,9 @@ export default defineConfig({
   integrations: [
     sitemap({
       filter: (page) => !hiddenPaths.includes(page),
+      // Match the canonical shape: no trailing slash except on the root. The
+      // host serves these URLs directly, so the sitemap lists no redirects.
+      serialize: (item) => ({ ...item, url: item.url.replace(/(.)\/$/, '$1') }),
     }),
   ],
 });
