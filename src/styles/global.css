@@ -255,66 +255,110 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
 /* =====================
    Hero (image-banner)
    ===================== */
+/* Two layouts, switching at 750px exactly as the live storefront does:
+   below it the image sits at its natural ratio with the green box stacked
+   full-width underneath; above it the box overlays the image, anchored 160px
+   from the bottom. Values measured off the live site. */
 .hero {
   position: relative;
-  /* width must be pinned. Once min-height wins over the ratio-derived height —
-     which it does on any narrow screen — aspect-ratio otherwise runs backwards
-     and derives the WIDTH from the height (60vh × 1800/928 ≈ 945px on a 375px
-     phone), overflowing the page and forcing the browser to zoom out. */
   width: 100%;
   max-width: 100%;
-  aspect-ratio: 1800 / 928; /* match hero image ratio → full photo, no cropping (like live) */
-  min-height: 60vh;         /* fallback so text fits on narrow/mobile screens */
   display: flex;
-  align-items: flex-end;    /* live anchors the text box near the bottom */
-  justify-content: center;
-  overflow: hidden;
+  flex-direction: column;
 }
 .hero-bg {
-  position: absolute;
-  inset: 0;
   width: 100%;
-  height: 100%;
+  height: auto;
+  /* Ratio on the image itself, never on .hero — putting it on the section
+     alongside a min-height let it run backwards and derive the section's WIDTH
+     from its height, which overflowed the page on phones. */
+  aspect-ratio: 1800 / 928;
   object-fit: cover;
   object-position: center;
 }
 .hero-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  padding: 2rem 1.5rem 2.5rem;
-  max-width: 1000px;
   width: 100%;
+  text-align: center;
 }
 .hero-box {
   background: rgb(78, 93, 34);
   color: #efecec;
-  border-radius: 12px;
-  padding: 2rem 1.5rem;
-  max-width: 710px;
-  width: fit-content;
-  margin: 0 auto;
+  /* Full-bleed and square-cornered on mobile, like the original. */
+  width: 100%;
+  border-radius: 0;
+  padding: 40px 35px;
 }
 .hero-h1 {
-  font-size: clamp(1.4rem, 4.9vw, 2.4rem);
-  font-weight: 700;
+  /* Scales with the viewport up to 768px, then snaps to a fixed 44px — the
+     live site changes size, line-height and letter-spacing together at 769px. */
+  font-size: 4.9vw;
+  font-weight: 400;
   color: #efecec;
-  margin-bottom: 0.75rem;
-  line-height: 1.27;
-  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
 }
 .hero-subtitle {
-  font-size: 1rem;
-  color: rgba(239,236,236,0.92);
-  font-weight: 500;
+  font-size: 18px;
+  color: rgba(239, 236, 236, 0.7);
+  font-weight: 400;
+  line-height: 1.8;
+  /* live wraps this in .banner__text, which carries the 10px gap */
+  margin-top: 10px;
+}
+/* The markup carries <strong> here, but the live theme renders it at normal
+   weight — the whole hero is 400. */
+.hero-subtitle strong {
+  font-weight: 400;
 }
 @media (min-width: 750px) {
-  .hero-content { padding-bottom: 160px; }
-  .hero-box { padding: 2.5rem 2.2rem; }
-  .hero-h1 { font-size: clamp(1.6rem, 3.45vw, 2.75rem); }
+  .hero {
+    flex-direction: row;
+    align-items: flex-end; /* live anchors the text box near the bottom */
+    justify-content: center;
+    overflow: hidden;
+  }
+  /* Zero-width spacer whose percentage padding resolves against the section's
+     width, giving it the image's ratio as a MINIMUM height. Using aspect-ratio
+     here instead would fix the height outright and clip the box on the widths
+     where the heading wraps to more lines — measured clipping at 800px. The
+     live banner behaves as max(ratio height, box height + 320px). */
+  .hero::before {
+    content: '';
+    display: block;
+    width: 0;
+    padding-top: 51.5556%; /* 928 / 1800 */
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1000px;
+    padding: 2rem 1.5rem 160px;
+  }
+  .hero-box {
+    /* Tracks the viewport 1:1 until it reaches its cap, matching the live box
+       across 800–1265px exactly. */
+    width: min(calc(100vw - 320px), 710px);
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 6px;
+  }
+}
+@media (min-width: 769px) {
+  .hero-h1 {
+    font-size: 44px;
+    line-height: 56px;
+    letter-spacing: 0.66px;
+  }
 }
 @media (min-width: 1440px) {
-  .hero-box { max-width: 900px; }
+  .hero-box { width: min(calc(100vw - 320px), 900px); }
 }
 
 /* =====================

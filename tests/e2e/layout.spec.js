@@ -55,25 +55,56 @@ for (const path of PAGES) {
   });
 }
 
-test('the hero fills the width and keeps its ratio on desktop', async ({ page }) => {
+/**
+ * The hero has two layouts, switching at 750px to match the live storefront:
+ * below it the image sits at its natural ratio with the green box stacked
+ * underneath; above it the box overlays the image. All figures below were
+ * measured off tangogarden.de.
+ */
+test('the hero overlays the image on desktop', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('/');
 
   const hero = await page.locator('.hero').boundingBox();
+  const img = await page.locator('.hero-bg').boundingBox();
+  const box = await page.locator('.hero-box').boundingBox();
+
   expect(Math.round(hero.width)).toBe(1280);
-  // Wide enough that the image ratio, not the min-height, sets the height.
   expect(hero.height / hero.width).toBeCloseTo(928 / 1800, 2);
+
+  // Overlaid, not stacked, and anchored near the bottom of the image.
+  expect(box.y).toBeLessThan(img.y + img.height);
+  expect(Math.round(img.y + img.height - (box.y + box.height))).toBeCloseTo(160, -1);
 });
 
-test('the hero stays full-bleed and readable on a phone', async ({ page }) => {
+test('the hero stacks below the image on a phone', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('/');
 
-  const hero = await page.locator('.hero').boundingBox();
-  expect(Math.round(hero.width)).toBe(375);
-  // min-height takes over here; the image crops rather than the box widening.
-  expect(hero.height).toBeGreaterThanOrEqual(812 * 0.6 - 1);
-
+  const img = await page.locator('.hero-bg').boundingBox();
   const box = await page.locator('.hero-box').boundingBox();
-  expect(box.width).toBeLessThanOrEqual(375);
+
+  // Full photo at its natural ratio — no cropping, no forced viewport height.
+  expect(Math.round(img.width)).toBe(375);
+  expect(Math.round(img.height)).toBe(193);
+
+  // Green box full-bleed directly underneath, square-cornered.
+  expect(Math.round(box.width)).toBe(375);
+  expect(Math.round(box.y)).toBeGreaterThanOrEqual(Math.round(img.y + img.height) - 1);
+  await expect(page.locator('.hero-box')).toHaveCSS('border-radius', '0px');
+});
+
+test('the hero box never gets clipped at any width', async ({ page }) => {
+  // At 800px the box used to overflow the fixed-ratio hero and lose text.
+  for (const width of [750, 769, 800, 850, 900, 1000, 1200]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+
+    const hero = await page.locator('.hero').boundingBox();
+    const box = await page.locator('.hero-box').boundingBox();
+    expect(
+      box.y + box.height,
+      `hero box clipped at ${width}px`
+    ).toBeLessThanOrEqual(hero.y + hero.height + 1);
+  }
 });
