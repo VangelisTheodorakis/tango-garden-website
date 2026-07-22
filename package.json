@@ -5,7 +5,7 @@
   "private": true,
   "description": "Tango Garden Cologne — static Astro site (tangogarden.de)",
   "engines": {
-    "node": "^18.20.8 || ^20.3.0 || >=22.0.0"
+    "node": ">=22.0.0"
   },
   "scripts": {
     "dev": "astro dev --port 3001",

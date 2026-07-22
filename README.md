@@ -63,6 +63,13 @@ edit — no code change.
 `.github/workflows/ci.yml` builds every push and PR to `main`, then runs Lighthouse CI against the
 budget in `lighthouserc.json`: performance ≥ 90, accessibility ≥ 95, best practices ≥ 90, SEO = 100.
 
+## Node version
+
+Pinned to 22 in `.node-version` and `engines`. Astro 5 would accept 18.20.8 or
+20.3+, but Wrangler 4 — which runs the deploy — requires 22 or newer, so 22 is
+the floor for the whole project. CI uses the same version, so it cannot pass on
+a Node the deploy would reject.
+
 ## Deployment notes
 
 `_headers` and `_redirects` are Cloudflare Pages conventions and are ignored by GitHub Pages. On
