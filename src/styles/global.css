@@ -305,10 +305,15 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
   /* live wraps this in .banner__text, which carries the 10px gap */
   margin-top: 10px;
 }
-/* The markup carries <strong> here, but the live theme renders it at normal
-   weight — the whole hero is 400. */
+/* Each sentence is wrapped in <strong>. Up to 768px the live theme lays those
+   out as `display: table` boxes centred with auto margins, so every sentence
+   gets its own line; from 769px they go back to inline and reflow normally.
+   They render at normal weight throughout — the whole hero is 400. */
 .hero-subtitle strong {
+  display: table;
+  margin: 0 auto 2px;
   font-weight: 400;
+  line-height: 1.1;
 }
 @media (min-width: 750px) {
   .hero {
@@ -338,7 +343,10 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
     position: relative;
     z-index: 2;
     max-width: 1000px;
-    padding: 2rem 1.5rem 160px;
+    /* 160px above as well as below: live's banner is box height + 320 whenever
+       that exceeds the image ratio, so the box clears the top by the same gap
+       it keeps from the bottom. */
+    padding: 160px 1.5rem;
   }
   .hero-box {
     /* Tracks the viewport 1:1 until it reaches its cap, matching the live box
@@ -354,6 +362,11 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
     font-size: 44px;
     line-height: 56px;
     letter-spacing: 0.66px;
+  }
+  .hero-subtitle strong {
+    display: inline;
+    margin: 0;
+    line-height: inherit;
   }
 }
 @media (min-width: 1440px) {
