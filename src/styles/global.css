@@ -172,6 +172,12 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
+  /* Single column on mobile, so the logo and both link lists are centred.
+     The columns sit side by side from 750px and go back to left-aligned. */
+  text-align: center;
+}
+.footer-logo-col img {
+  margin-inline: auto;
 }
 .footer-heading { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: #efecec; margin-bottom: 1rem; font-weight: 600; }
 .footer-links li + li { margin-top: 0.5rem; }
@@ -191,7 +197,11 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
 .footer-credit { font-style: italic; opacity: 0.8; margin-top: 0.5rem; }
 
 @media (min-width: 750px) {
-  .footer-inner { grid-template-columns: 1.5fr 1fr 1fr; }
+  .footer-inner {
+    grid-template-columns: 1.5fr 1fr 1fr;
+    text-align: start;
+  }
+  .footer-logo-col img { margin-inline: 0; }
 }
 
 /* =====================
