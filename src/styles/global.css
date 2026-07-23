@@ -74,9 +74,11 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
   gap: 1rem;
 }
 .nav-logo { text-decoration: none; display: flex; align-items: center; }
-.nav-logo-desktop { display: none; align-items: center; gap: 0.75rem; }
+.nav-logo-desktop { display: flex; align-items: center; gap: 0.75rem; }
+/* Both dimensions pinned: the global `img { height: auto }` reset otherwise
+   beats the width/height attributes and the icon takes its intrinsic size. */
+.nav-logo-desktop img { width: 36px; height: 36px; flex-shrink: 0; }
 .nav-logo-text { font-size: 1.25rem; font-weight: 600; color: var(--green); white-space: nowrap; }
-.nav-logo-mobile { display: flex; }
 .nav-toggle {
   display: flex;
   flex-direction: column;
@@ -126,8 +128,6 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
 .nav-caret svg { width: 10px; height: 6px; }
 
 @media (min-width: 900px) {
-  .nav-logo-mobile { display: none; }
-  .nav-logo-desktop { display: flex; }
   .nav-toggle { display: none; }
   .nav-links {
     display: flex;
@@ -147,7 +147,6 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
     align-items: center;
   }
   .nav-link:hover { color: #252525; text-decoration: underline; text-underline-offset: 4px; }
-  .nav-logo-desktop img { width: 36px; height: 36px; }
 }
 
 /* =====================

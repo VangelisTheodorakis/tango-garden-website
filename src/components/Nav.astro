@@ -8,20 +8,14 @@ const isCurrent = (href: string) => path === href.replace(/\/$/, '');
 
 <nav class="site-nav">
   <div class="nav-container">
+    <!-- One lockup at every width, as the live storefront does: 36px icon plus
+         the wordmark. The stacked logo that used to appear below 900px had no
+         height cap and rendered 118px tall inside a 72px bar. -->
     <a href="/" class="nav-logo" aria-label="Tango Garden — Home">
       <span class="nav-logo-desktop"
-        ><img src="/assets/logo-icon.svg" alt="" width="32" height="32" loading="eager" /><span
+        ><img src="/assets/logo-icon.svg" alt="" width="36" height="36" loading="eager" /><span
           class="nav-logo-text">Tango Garden</span
         ></span
-      >
-      <span class="nav-logo-mobile"
-        ><img
-          src="/images/logo-stacked-green.svg"
-          alt="Tango Garden"
-          width="100"
-          height="40"
-          loading="eager"
-        /></span
       >
     </a>
     <button

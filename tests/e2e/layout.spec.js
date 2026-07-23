@@ -55,6 +55,37 @@ for (const path of PAGES) {
   });
 }
 
+test('the logo fits inside the nav bar at every width', async ({ page }) => {
+  // The mobile logo had width/height attributes but the global `img { height:
+  // auto }` reset overrode them, so it rendered 118px tall in a 72px bar and
+  // spilled over the hero.
+  for (const width of [320, 375, 414, 768, 900, 1280, 1920]) {
+    await page.setViewportSize({ width, height: 812 });
+    await page.goto('/');
+
+    const nav = await page.locator('.nav-container').boundingBox();
+    const logo = await page.locator('.nav-logo').boundingBox();
+
+    expect(logo.y, `logo starts above the nav at ${width}px`).toBeGreaterThanOrEqual(nav.y - 1);
+    expect(
+      logo.y + logo.height,
+      `logo overflows the nav at ${width}px`
+    ).toBeLessThanOrEqual(nav.y + nav.height + 1);
+    expect(logo.height, `logo too tall at ${width}px`).toBeLessThanOrEqual(nav.height);
+  }
+});
+
+test('the logo shows the icon and wordmark together', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/');
+
+  const icon = await page.locator('.nav-logo img').boundingBox();
+  expect(Math.round(icon.width)).toBe(36);
+  expect(Math.round(icon.height)).toBe(36);
+  await expect(page.locator('.nav-logo-text')).toBeVisible();
+  await expect(page.locator('.nav-logo-text')).toHaveText('Tango Garden');
+});
+
 /**
  * The hero has two layouts, switching at 750px to match the live storefront:
  * below it the image sits at its natural ratio with the green box stacked
