@@ -32,10 +32,10 @@ const pairs = [
   ['legacy/404.html', 'dist/404.html'],
 ];
 
+// agb / datenschutz / widerruf were deleted — English legal pages cover them.
 for (const slug of [
   'the-garden', 'start-here', 'contact', 'impressum', 'code-of-care',
   'privacy-policy', 'terms-of-service', 'refund-and-cancellation-policy',
-  'agb', 'datenschutz', 'widerruf',
 ]) {
   pairs.push([`legacy/pages/${slug}/index.html`, `dist/pages/${slug}/index.html`]);
 }

@@ -25,9 +25,7 @@ const PAGES = [
     'legacy/pages/refund-and-cancellation-policy/index.html',
     'src/pages/pages/refund-and-cancellation-policy.astro',
   ],
-  ['legacy/pages/agb/index.html', 'src/pages/pages/agb.astro'],
-  ['legacy/pages/datenschutz/index.html', 'src/pages/pages/datenschutz.astro'],
-  ['legacy/pages/widerruf/index.html', 'src/pages/pages/widerruf.astro'],
+  // agb / datenschutz / widerruf were later deleted — do not re-port them.
   ['legacy/404.html', 'src/pages/404.astro'],
 ];
 

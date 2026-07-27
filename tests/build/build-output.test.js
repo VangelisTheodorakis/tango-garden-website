@@ -49,8 +49,8 @@ const contentPages = () => pages.filter((p) => p.route !== '/404');
 
 describe('pages', () => {
   it('builds every expected route', () => {
-    // 1 home + 11 content/legal + 12 products + 2 collections + 404
-    expect(pages).toHaveLength(27);
+    // 1 home + 8 content/legal + 12 products + 2 collections + 404
+    expect(pages).toHaveLength(24);
   });
 
   it('gives every page a non-empty title', () => {
@@ -156,16 +156,11 @@ describe('indexing', () => {
     expect(contradictions).toEqual([]);
   });
 
-  it('keeps the unfinished German legal placeholders unindexed', () => {
-    // These pages say "wird hier ergänzt" — publishing an empty AGB or
-    // Datenschutzerklärung is a legal risk for a German business.
+  it('does not ship the removed German legal placeholder pages', () => {
+    // agb / datenschutz / widerruf were empty stubs that duplicated and
+    // contradicted the English legal pages; they were deleted.
     for (const slug of ['agb', 'datenschutz', 'widerruf']) {
-      const page = pages.find((p) => p.route === `/pages/${slug}/`);
-      expect(page, slug).toBeTruthy();
-      expect(
-        page.document.querySelector('meta[name="robots"]')?.getAttribute('content'),
-        slug
-      ).toContain('noindex');
+      expect(pages.find((p) => p.route === `/pages/${slug}/`), slug).toBeUndefined();
     }
   });
 

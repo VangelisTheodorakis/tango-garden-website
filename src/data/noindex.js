@@ -7,14 +7,10 @@
  *
  * Legal boilerplate is deliberately kept out of search results — it is linked
  * from the footer for humans, but has no business ranking for the studio.
- * The German pages are additionally unfinished placeholders.
  */
 export const noindexRoutes = [
   '/pages/impressum/',
   '/pages/privacy-policy/',
   '/pages/terms-of-service/',
   '/pages/refund-and-cancellation-policy/',
-  '/pages/agb/',
-  '/pages/datenschutz/',
-  '/pages/widerruf/',
 ];
