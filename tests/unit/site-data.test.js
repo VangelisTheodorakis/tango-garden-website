@@ -60,11 +60,11 @@ describe('products data', () => {
     });
   });
 
-  it('marks exactly the four off-live products hidden', () => {
+  it('marks exactly the two off-live products hidden', () => {
+    // The Enter the Garden drop-in tiers were made live and indexable; the two
+    // remaining stubs have no live equivalent.
     const hidden = products.filter((p) => p.hidden).map((p) => p.handle);
     expect(hidden.sort()).toEqual([
-      'enter-the-garden-general-admission',
-      'enter-the-garden-introductory-session-student-and-under-28-admission',
       'the-garden-practica-1-time-pass-evey',
       'the-sprouting-sessions-beginner-level-1-class-welcome-pass',
     ]);
@@ -98,14 +98,10 @@ describe('navigation data', () => {
     }
   });
 
-  // KNOWN ISSUE, awaiting a product decision — do not delete this test.
-  // The "Enter the Garden" item in the Classes menu (and the first pathway card
-  // on the home page) points at a product marked hidden: noindex, disallowed in
-  // robots.txt, absent from the sitemap. So every page links to a page we tell
-  // search engines to ignore, and the destination is an off-live page with an
-  // older design and a WhatsApp booking flow instead of checkout.
-  // Either the product goes live, or those links should point somewhere else.
-  it.skip('does not feature hidden products in the menu', () => {
+  // Every product the menu links to must be indexable — a sitewide nav link to
+  // a noindexed page is the "indexed, though blocked" trap. The Enter the Garden
+  // drop-in was made live to satisfy this.
+  it('does not feature hidden products in the menu', () => {
     const hidden = new Set(products.filter((p) => p.hidden).map((p) => p.handle));
     const classes = navItems.find((i) => i.label === 'Classes');
     for (const child of classes.children) {
