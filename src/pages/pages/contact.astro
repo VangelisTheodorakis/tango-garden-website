@@ -52,13 +52,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 <section class="contact-location-section" id="location">
   <div class="contact-location-inner">
     <div class="contact-map">
-      <iframe
-        src="https://maps.google.com/maps?q=Th%C3%BCrmchenswall+21%2C+50668+K%C3%B6ln%2C+Germany&t=&z=16&ie=UTF8&iwloc=B&output=embed"
-        allowfullscreen
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        title="Tango Garden Cologne location">
-      </iframe>
+      <div class="contact-map-consent"
+           data-map-src="https://maps.google.com/maps?q=Th%C3%BCrmchenswall+21%2C+50668+K%C3%B6ln%2C+Germany&t=&z=16&ie=UTF8&iwloc=B&output=embed">
+        <p class="contact-map-consent-title">Map not loaded</p>
+        <p class="contact-map-consent-text">
+          We don't load Google Maps until you ask us to. Doing so would send your
+          IP address to Google before you've had a chance to decide — so for your
+          privacy, the map stays off until you tap below. The full address and
+          directions are listed beside this box either way.
+        </p>
+        <button type="button" class="contact-map-consent-btn">Load Google Map</button>
+      </div>
     </div>
     <div class="contact-location-details">
       <h2>Tango Garden Cologne</h2>
@@ -239,6 +243,45 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       border: none;
       display: block;
     }
+    /* Click-to-load placeholder shown until the visitor opts in, so no request
+       reaches Google (and no IP is sent) on page load. */
+    .contact-map-consent {
+      height: 340px;
+      border-radius: 12px;
+      border: 1px solid rgba(78, 93, 34, 0.2);
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1.5rem;
+      gap: 0.75rem;
+    }
+    .contact-map-consent-title {
+      font-weight: 700;
+      color: var(--green);
+      font-size: 1.05rem;
+    }
+    .contact-map-consent-text {
+      font-size: 0.85rem;
+      color: var(--text-mid);
+      line-height: 1.6;
+      max-width: 46ch;
+    }
+    .contact-map-consent-btn {
+      margin-top: 0.25rem;
+      padding: 0.7rem 1.4rem;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .contact-map-consent-btn:hover { background: var(--green-btn); }
     .contact-location-details h2 {
       font-size: 1.7rem;
       font-weight: 700;
@@ -413,6 +456,29 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         item.classList.add('is-open');
         btn.setAttribute('aria-expanded', 'true');
       }
+    });
+  }
+</script>
+
+<script>
+  // Click-to-load Google Map. Nothing is fetched from Google until the visitor
+  // opts in, so no request (and no IP address) reaches Google on page load —
+  // the reason the placeholder exists. The real embed URL rides on a data
+  // attribute so it is never requested until the iframe is created.
+  const consent = document.querySelector<HTMLElement>('.contact-map-consent');
+  const btn = consent?.querySelector<HTMLButtonElement>('.contact-map-consent-btn');
+  const src = consent?.dataset.mapSrc;
+
+  if (consent && btn && src) {
+    btn.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = src;
+      iframe.title = 'Tango Garden Cologne location';
+      iframe.loading = 'lazy';
+      iframe.allowFullscreen = true;
+      iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+      consent.replaceWith(iframe);
+      iframe.focus();
     });
   }
 </script>
