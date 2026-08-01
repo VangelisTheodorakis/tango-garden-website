@@ -37,7 +37,8 @@ const cards = [
     ],
     dateLabel: 'Next Class (Course open until 01/10)',
     dateFallback: 'No upcoming dates scheduled (TBA)',
-    price: 'from €13 or €10 per class *',
+    price: '€13 a class',
+    priceNote: '€160 · full 12-class course',
     cta: {
       label: 'Commit to learning →',
       href: '/products/the-sprouting-sessions-beginner-level-full-course-pass-general-admission',
@@ -114,6 +115,7 @@ const cards = [
             <div class="card-foot">
               <div class="card-price-wrap">
                 <p class="card-price">{card.price}</p>
+                {card.priceNote && <p class="card-price-note">{card.priceNote}</p>}
               </div>
               <a class="card-btn" href={card.cta.href}>
                 {card.cta.label}
@@ -317,6 +319,20 @@ const cards = [
     color: white;
     margin-bottom: 10px;
     line-height: 1.1;
+  }
+  /* Value framing: the big number is the hook, this muted line names the total
+     so the per-class figure can never read as a hidden "€13 → €160" trap. */
+  .card-price:has(+ .card-price-note) {
+    margin-bottom: 2px;
+  }
+  .card-price-note {
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+    margin: 0 0 15px;
+  }
+  .featured .card-price-note {
+    color: rgba(255, 255, 255, 0.85);
   }
 
   .card-btn {

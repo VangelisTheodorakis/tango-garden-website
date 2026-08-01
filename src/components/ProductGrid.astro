@@ -4,6 +4,23 @@ import { products } from '../data/products.js';
 // Only the products that are live on the store are listed.
 const live = products.filter((p) => !p.hidden);
 
+// Per-class caption shown under each total, so the ladder reads apples-to-apples
+// (€18 → €15 → €13 as commitment rises) and the €160 course stops looking dear
+// next to the €18 drop-in. Figures are rounded to whole euros; the total above
+// each caption is the exact payable price and the source of truth.
+const perClass: Record<string, string> = {
+  'the-sprouting-sessions-beginner-level-1-class-pass-general-admission': 'per class',
+  'the-sprouting-sessions-beginner-level-1-class-pass-student-and-under-28-admission': 'per class',
+  'the-sprouting-sessions-beginners-level-4-classes-pass-general-admission': '€15 / class',
+  'the-sprouting-sessions-beginner-level-4-classes-pass-student-and-under-28-admission': '€11 / class',
+  'the-sprouting-sessions-beginner-level-full-course-pass-general-admission': '€13 / class',
+  'the-sprouting-sessions-beginner-level-full-course-pass-student-and-under28-admission': '€10 / class',
+};
+const bestValue = new Set([
+  'the-sprouting-sessions-beginner-level-full-course-pass-general-admission',
+  'the-sprouting-sessions-beginner-level-full-course-pass-student-and-under28-admission',
+]);
+
 // Group the passes so the page reads as three offerings rather than eight SKUs.
 const groups = [
   {
@@ -21,7 +38,21 @@ const groups = [
     blurb: 'Open-level guided practice sessions. Drop in whenever you like.',
     match: (h: string) => h.startsWith('the-garden-practica'),
   },
-].map((g) => ({ ...g, items: live.filter((p) => g.match(p.handle)) }))
+];
+
+// Order each group by commitment (drop-in → 4-class → full course), general
+// before student, so the per-class caption visibly descends down the list —
+// which is what makes the full course read as the best deal.
+const tier = (h: string) =>
+  (h.includes('full-course') ? 3 : /4-class/.test(h) ? 2 : /1-class|1-practica/.test(h) ? 1 : 0) *
+    10 +
+  (/student|under-?28/.test(h) ? 1 : 0);
+
+const orderedGroups = groups
+  .map((g) => ({
+    ...g,
+    items: live.filter((p) => g.match(p.handle)).sort((a, b) => tier(a.handle) - tier(b.handle)),
+  }))
   .filter((g) => g.items.length > 0);
 ---
 
@@ -34,7 +65,7 @@ const groups = [
 
 <div class="collection">
   {
-    groups.map((group) => (
+    orderedGroups.map((group) => (
       <section class="collection-group">
         <h2>{group.title}</h2>
         <p class="collection-blurb">{group.blurb}</p>
@@ -42,8 +73,18 @@ const groups = [
           {group.items.map((product) => (
             <li>
               <a class="collection-card" href={`/products/${product.handle}`}>
-                <span class="collection-card-title">{product.heading ?? product.title}</span>
-                <span class="collection-card-price">{product.price}</span>
+                <span class="collection-card-title">
+                  {product.heading ?? product.title}
+                  {bestValue.has(product.handle) && (
+                    <span class="collection-card-tag">Best value</span>
+                  )}
+                </span>
+                <span class="collection-card-price">
+                  <span class="collection-card-total">{product.price}</span>
+                  {perClass[product.handle] && (
+                    <small class="collection-card-perclass">{perClass[product.handle]}</small>
+                  )}
+                </span>
               </a>
             </li>
           ))}
@@ -125,10 +166,35 @@ const groups = [
     font-size: 0.95rem;
     line-height: 1.4;
   }
+  .collection-card-tag {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--green);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
   .collection-card-price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .collection-card-total {
     font-weight: 700;
     color: var(--green);
-    white-space: nowrap;
+  }
+  .collection-card-perclass {
+    margin-top: 2px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-light);
   }
   .collection-note {
     margin-top: 40px;
