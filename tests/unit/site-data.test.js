@@ -60,11 +60,13 @@ describe('products data', () => {
     });
   });
 
-  it('marks exactly the two off-live products hidden', () => {
-    // The Enter the Garden drop-in tiers were made live and indexable; the two
-    // remaining stubs have no live equivalent.
+  it('marks exactly the three off-live products hidden', () => {
+    // Enter the Garden is now a single free event, so the Student/Under-28 tier
+    // was retired (hidden + 301 to the general page). The other two stubs have
+    // no live equivalent.
     const hidden = products.filter((p) => p.hidden).map((p) => p.handle);
     expect(hidden.sort()).toEqual([
+      'enter-the-garden-introductory-session-student-and-under-28-admission',
       'the-garden-practica-1-time-pass-evey',
       'the-sprouting-sessions-beginner-level-1-class-welcome-pass',
     ]);

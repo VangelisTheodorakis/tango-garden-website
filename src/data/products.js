@@ -15,15 +15,15 @@ export const products = [
   {
     "handle": "enter-the-garden-general-admission",
     "title": "Enter the Garden — Introductory Session",
-    "description": "Your first 90-minute, zero-pressure introduction to Argentine Tango in Cologne. No partner needed. No experience required. 01/08/2026.",
+    "description": "A free, open-air introduction to Argentine Tango at Rheinpark in Cologne. One hour, no partner needed, no experience required. Next: 01/08/2026.",
     "hidden": false,
     "template": "legacy",
-    "bodyHtml": "<div class=\"product-hero\">\n  <h1 class=\"product-title\">Enter the Garden<br><span style=\"font-size: 0.65em; font-weight: 500; color: #666;\">(Introductory Session)</span></h1>\n  <div class=\"product-price-block\">\n    <div class=\"product-price\">€10</div>\n    <div class=\"product-price-note\">Leader / Follower / Double-Role · 01/08/2026</div>\n  </div>\n  <div class=\"product-cta-row\">\n    <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20book%20Enter%20the%20Garden%20(General%20Admission).\" class=\"btn-whatsapp\">💬 Book via WhatsApp</a>\n    <a href=\"/products/enter-the-garden-introductory-session-student-and-under-28-admission\" class=\"btn-ghost\">Student / Under 28 — €8</a>\n  </div>\n</div>\n\n<div class=\"product-body\">\n  <h2>What to Expect</h2>\n  <p>A 90-minute, zero-pressure introduction to Argentine Tango. You will learn the very basics of connection, weight shifts, and the embrace — not as performance, but as conversation between two people.</p>\n  <p>No partner needed. We rotate throughout the session so everyone dances with everyone. No experience of any kind is required.</p>\n\n  <h2>What's Included</h2>\n  <ul>\n    <li>90-minute guided introductory session</li>\n    <li>Drinks &amp; snacks included</li>\n    <li>Partner rotation — come solo</li>\n    <li>Role of your choice: Leader, Follower, or Double-Role</li>\n    <li>Garden Ambassador greeting — you'll never stand alone</li>\n  </ul>\n\n  <h2>Date &amp; Location</h2>\n  <p><strong>Date:</strong> 01/08/2026 · Exact time TBA this week<br>\n  <strong>Location:</strong> Thürmchenswall 21, 50668 Köln (Yoga Drop Studio) — 3 min walk from Ebertplatz</p>\n\n  <div class=\"product-variants\">\n    <table>\n      <thead><tr><th>Option</th><th>Price</th></tr></thead>\n      <tbody>\n        <tr><td>Leader</td><td>€10</td></tr>\n        <tr><td>Follower</td><td>€10</td></tr>\n        <tr><td>Double-Role</td><td>€10</td></tr>\n      </tbody>\n    </table>\n  </div>\n\n  <h2>Cancellation Policy</h2>\n  <p>Plans change — just let us know in advance via WhatsApp and we'll work something out.</p>\n</div>\n\n<div class=\"product-cta-bottom\">\n  <h2>Ready to take your first step?</h2>\n  <p>Reserve your spot via WhatsApp. We'll confirm within a few hours.</p>\n  <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20book%20Enter%20the%20Garden%20(General%20Admission).\" class=\"btn-whatsapp\">💬 Book via WhatsApp — €10</a>\n</div>",
+    "bodyHtml": "<div class=\"product-hero\">\n  <h1 class=\"product-title\">Enter the Garden<br><span style=\"font-size: 0.65em; font-weight: 500; color: #666;\">(Introductory Session)</span></h1>\n  <div class=\"product-price-block\">\n    <div class=\"product-price\">Free</div>\n    <div class=\"product-price-note\">Open air at Rheinpark · Leader / Follower / Double-Role</div>\n  </div>\n  <div class=\"product-cta-row\">\n    <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20join%20Enter%20the%20Garden%20at%20Rheinpark.\" class=\"btn-whatsapp\">💬 Reserve via WhatsApp</a>\n  </div>\n</div>\n\n<div class=\"product-body\">\n  <h2>What to Expect</h2>\n  <p>A free, one-hour, open-air introduction to Argentine Tango in the Rheinpark. You will learn the very basics of connection, weight shifts, and the embrace — not as performance, but as conversation between two people.</p>\n  <p>No partner needed. We rotate throughout the session so everyone dances with everyone. No experience of any kind is required.</p>\n\n  <h2>What's Included</h2>\n  <ul>\n    <li>One-hour guided introductory session</li>\n    <li>Open air at Rheinpark</li>\n    <li>Partner rotation — come solo</li>\n    <li>Role of your choice: Leader, Follower, or Double-Role</li>\n    <li>Garden Ambassador greeting — you'll never stand alone</li>\n  </ul>\n\n  <h2>Dates &amp; Location</h2>\n  <p><strong>Upcoming dates:</strong> 01/08, 08/08, 05/09 &amp; 19/09 2026 · exact times announced on WhatsApp<br>\n  <strong>Location:</strong> Open air at Rheinpark, Köln</p>\n\n  <h2>Cancellation Policy</h2>\n  <p>Plans change — just let us know via WhatsApp so we can keep an eye out for you.</p>\n</div>\n\n<div class=\"product-cta-bottom\">\n  <h2>Ready to take your first step?</h2>\n  <p>It's free — just message us on WhatsApp so we know to expect you.</p>\n  <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20join%20Enter%20the%20Garden%20at%20Rheinpark.\" class=\"btn-whatsapp\">💬 Reserve via WhatsApp</a>\n</div>",
     "schema": {
       "@context": "https://schema.org",
       "@type": "Course",
       "name": "Enter the Garden — Introductory Tango Session Cologne",
-      "description": "One-time 90-minute introductory Argentine tango session in Cologne. No partner or experience needed. Drinks and snacks included.",
+      "description": "Free one-hour open-air introductory Argentine tango session at Rheinpark in Cologne. No partner or experience needed.",
       "provider": {
         "@type": "LocalBusiness",
         "name": "Tango Garden Cologne",
@@ -39,27 +39,24 @@ export const products = [
         "startDate": "2026-08-01",
         "location": {
           "@type": "Place",
-          "name": "Tango Garden Cologne",
+          "name": "Rheinpark",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Thürmchenswall 21",
-            "postalCode": "50668",
             "addressLocality": "Köln",
             "addressCountry": "DE"
           }
         },
         "courseSchedule": {
           "@type": "Schedule",
-          "duration": "PT1H30M",
-          "repeatFrequency": "Weekly"
+          "duration": "PT1H"
         }
       },
       "offers": {
         "@type": "Offer",
-        "name": "General Admission",
-        "price": "10.00",
+        "name": "Free admission",
+        "price": "0",
         "priceCurrency": "EUR",
-        "category": "Paid",
+        "category": "Free",
         "availability": "https://schema.org/InStock",
         "url": "https://tangogarden.de/products/enter-the-garden-general-admission"
       },
@@ -71,14 +68,14 @@ export const products = [
     "handle": "enter-the-garden-introductory-session-student-and-under-28-admission",
     "title": "Enter the Garden — Student & Under 28",
     "description": "Discounted introductory Argentine Tango session in Cologne for students and anyone 28 or under. No partner needed.",
-    "hidden": false,
+    "hidden": true,
     "template": "legacy",
     "bodyHtml": "<div class=\"product-hero\">\n  <h1 class=\"product-title\">Enter the Garden<br><span style=\"font-size: 0.65em; font-weight: 500; color: #666;\">Student &amp; Under 28</span></h1>\n  <div class=\"product-price-block\">\n    <div class=\"product-price\">€8</div>\n    <div class=\"product-price-note\">For students and anyone 28 years old or under · 01/08/2026</div>\n  </div>\n  <div class=\"product-cta-row\">\n    <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20book%20Enter%20the%20Garden%20(Student%20%2F%20Under%2028).\" class=\"btn-whatsapp\">💬 Book via WhatsApp</a>\n    <a href=\"/products/enter-the-garden-general-admission\" class=\"btn-ghost\">General Admission — €10</a>\n  </div>\n</div>\n\n<div class=\"product-body\">\n  <h2>What to Expect</h2>\n  <p>A 90-minute, zero-pressure introduction to Argentine Tango. Same experience as the General Admission — discounted for students and anyone 28 years old or under.</p>\n  <p>No partner needed. We rotate throughout the session so everyone dances with everyone. No experience of any kind is required.</p>\n\n  <h2>What's Included</h2>\n  <ul>\n    <li>90-minute guided introductory session</li>\n    <li>Drinks &amp; snacks included</li>\n    <li>Partner rotation — come solo</li>\n    <li>Role of your choice: Leader, Follower, or Double-Role</li>\n    <li>Garden Ambassador greeting — you'll never stand alone</li>\n  </ul>\n\n  <h2>Date &amp; Location</h2>\n  <p><strong>Date:</strong> 01/08/2026 · Exact time TBA this week<br>\n  <strong>Location:</strong> Thürmchenswall 21, 50668 Köln (Yoga Drop Studio) — 3 min walk from Ebertplatz</p>\n\n  <h2>Eligibility</h2>\n  <p>This pass is for currently enrolled students (any institution) or anyone who is 28 years old or younger. No proof required — we trust you.</p>\n</div>\n\n<div class=\"product-cta-bottom\">\n  <h2>Ready to take your first step?</h2>\n  <p>Reserve your spot via WhatsApp. We'll confirm within a few hours.</p>\n  <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20book%20Enter%20the%20Garden%20(Student%20%2F%20Under%2028).\" class=\"btn-whatsapp\">💬 Book via WhatsApp — €8</a>\n</div>",
     "schema": {
       "@context": "https://schema.org",
       "@type": "Course",
       "name": "Enter the Garden — Introductory Tango Session Cologne",
-      "description": "One-time 90-minute introductory Argentine tango session in Cologne. No partner or experience needed. Drinks and snacks included.",
+      "description": "Free one-hour open-air introductory Argentine tango session at Rheinpark in Cologne. No partner or experience needed.",
       "provider": {
         "@type": "LocalBusiness",
         "name": "Tango Garden Cologne",
@@ -90,11 +87,9 @@ export const products = [
         "startDate": "2026-08-01",
         "location": {
           "@type": "Place",
-          "name": "Tango Garden Cologne",
+          "name": "Rheinpark",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Thürmchenswall 21",
-            "postalCode": "50668",
             "addressLocality": "Köln",
             "addressCountry": "DE"
           }
@@ -211,11 +206,9 @@ export const products = [
         "courseMode": "Onsite",
         "location": {
           "@type": "Place",
-          "name": "Tango Garden Cologne",
+          "name": "Rheinpark",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Thürmchenswall 21",
-            "postalCode": "50668",
             "addressLocality": "Köln",
             "addressCountry": "DE"
           }

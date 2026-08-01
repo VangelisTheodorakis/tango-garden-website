@@ -18,5 +18,9 @@
 /search                   /                 301
 /apps/*                   /                 301
 
-# The four off-live products deliberately keep their pages: reachable by direct
-# URL, noindex + robots-disallowed, absent from the sitemap. No redirect here.
+# Enter the Garden is now a single free open-air event. The old Student/Under-28
+# tier was retired and permanently redirects to the general page.
+/products/enter-the-garden-introductory-session-student-and-under-28-admission  /products/enter-the-garden-general-admission  301
+
+# The remaining off-live products deliberately keep their pages: reachable by
+# direct URL, noindex + absent from the sitemap. No redirect here.
