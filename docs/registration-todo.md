@@ -3,16 +3,35 @@
 Code is done and tested. These are the manual wiring steps left for the owner.
 Full detail: [registration-setup.md](registration-setup.md).
 
+## Prerequisite: push the privacy-policy update
+- [ ] `src/pages/pages/privacy-policy.astro` has a new "8. WhatsApp Community"
+      section, drafted and on the `registration-calendar-email` branch, not
+      yet live. The WhatsApp opt-in checkbox links to this page, so it needs
+      to be live (merged to main and deployed) before the form is published,
+      or the link points at a policy that doesn't yet cover what it's
+      consenting to.
+
 ## Deploy the render Worker
 - [ ] From `workers/registration-email/`: `npx wrangler deploy`
 - [ ] Note the Worker URL (`https://tango-garden-registration.<subdomain>.workers.dev`)
 - [ ] Generate a secret (`openssl rand -hex 32`) and set it: `npx wrangler secret put SHARED_SECRET`
 - [ ] Sanity check: `curl -X POST <worker-url>` returns `401` (protected)
 
-## Build the Google Form
-- [ ] Add a **Name** question
-- [ ] Turn on **Settings > Collect email addresses** (or add an **Email** question)
-- [ ] Add a required **consent** checkbox (confirmation email; not marketing)
+## Build the Google Form (done)
+Full copy: [registration-form-spec.md](registration-form-spec.md).
+- [x] Add a **Name** question
+- [x] Turn on **Settings > Collect email addresses** (Verified)
+- [x] Add a required **confirmation consent** checkbox (transactional email only)
+- [x] Add a required **Role** question (Leading / Following / Not sure yet)
+- [x] Add an optional **Reduced rate (student / under 28)** checkbox
+- [x] Add an optional **Phone number** question
+- [x] Add a separate, optional **WhatsApp Community opt-in** checkbox (unticked
+      by default; not merged with the confirmation checkbox)
+- [x] Confirmed all checkboxes load unticked in preview
+- [ ] Meta/Instagram ads retargeting consent is deferred, not part of this
+      form; see the spec doc for what's needed when that's revisited
+- [ ] Still **not published** ("Not Published" in the form editor). Publish
+      once the privacy-policy update below is live, not before.
 
 ## Wire the Apps Script
 - [ ] Form **⋮ > Script editor**; paste `apps-script/Code.gs`
