@@ -33,7 +33,19 @@ describe('confirmationEmail', () => {
   it('omits the name gracefully when none is given', () => {
     const { html } = render({ name: undefined });
     expect(html).toContain("You're in</h2>");
-    expect(html).not.toContain('🎫 Attendee');
+    expect(html).not.toContain('>Attendee<');
+  });
+
+  it('uses no astral-plane emoji (surrogate pairs corrupt in GmailApp)', () => {
+    // Confirmed in production: Apps Script's GmailApp.sendEmail garbles
+    // characters above U+FFFF (calendar/clock/pin/ticket emoji all showed as
+    // replacement boxes) while lower-plane characters like umlauts survive
+    // intact. So no code point outside the Basic Multilingual Plane belongs
+    // in this template.
+    const { html } = render();
+    for (const char of html) {
+      expect(char.codePointAt(0), `astral-plane character: ${char}`).toBeLessThanOrEqual(0xffff);
+    }
   });
 
   it('summarises the whole schedule, without doubling the weekday', () => {

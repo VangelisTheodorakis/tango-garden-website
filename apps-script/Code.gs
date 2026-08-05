@@ -35,11 +35,14 @@ function onFormSubmit(e) {
   });
 
   if (res.getResponseCode() !== 200) {
-    console.error('Render Worker error ' + res.getResponseCode() + ': ' + res.getContentText());
+    console.error('Render Worker error ' + res.getResponseCode() + ': ' + res.getContentText('UTF-8'));
     return;
   }
 
-  var email = JSON.parse(res.getContentText());
+  // getContentText() with no charset argument can mis-decode multi-byte
+  // UTF-8 (emoji, four bytes each) even though the response declares
+  // charset=utf-8; forcing 'UTF-8' here fixes it.
+  var email = JSON.parse(res.getContentText('UTF-8'));
 
   var attachments = (email.attachments || []).map(function (a) {
     // text/calendar Blob so mail clients offer "Add to calendar".
