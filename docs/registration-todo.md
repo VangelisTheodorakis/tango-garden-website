@@ -3,13 +3,10 @@
 Code is done and tested. These are the manual wiring steps left for the owner.
 Full detail: [registration-setup.md](registration-setup.md).
 
-## Prerequisite: push the privacy-policy update
-- [ ] `src/pages/pages/privacy-policy.astro` has a new "8. WhatsApp Community"
-      section, drafted and on the `registration-calendar-email` branch, not
-      yet live. The WhatsApp opt-in checkbox links to this page, so it needs
-      to be live (merged to main and deployed) before the form is published,
-      or the link points at a policy that doesn't yet cover what it's
-      consenting to.
+## Prerequisite: push the privacy-policy update (done)
+- [x] `src/pages/pages/privacy-policy.astro`'s new "8. WhatsApp Community"
+      section is merged to main and confirmed live at
+      tangogarden.de/pages/privacy-policy ("Last updated: August 5, 2026").
 
 ## Deploy the render Worker
 - [ ] From `workers/registration-email/`: `npx wrangler deploy`
