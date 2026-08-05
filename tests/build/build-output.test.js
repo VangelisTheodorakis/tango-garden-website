@@ -387,6 +387,31 @@ describe('third-party independence', () => {
   });
 });
 
+describe('calendar feed', () => {
+  const icsPath = join(DIST, 'calendar', 'regular-classes.ics');
+
+  it('ships the semester .ics', () => {
+    expect(existsSync(icsPath), 'run `npm run build` — calendar/regular-classes.ics missing').toBe(
+      true
+    );
+  });
+
+  it('carries one VEVENT per class in the source feed', () => {
+    const ics = readFileSync(icsPath, 'utf8');
+    const feed = JSON.parse(
+      readFileSync(join(DIST, 'assets', 'data', 'regular-classes.json'), 'utf8')
+    );
+    expect(ics.match(/BEGIN:VEVENT/g) ?? []).toHaveLength(feed.events.length);
+  });
+
+  it('anchors the classes to Europe/Berlin so DST does not shift them', () => {
+    const ics = readFileSync(icsPath, 'utf8');
+    expect(ics).toContain('TZID:Europe/Berlin');
+    // A class after the 25 Oct 2026 switch must still start 19:30 local.
+    expect(ics).toContain('DTSTART;TZID=Europe/Berlin:20261105T193000');
+  });
+});
+
 describe('deploy artefacts', () => {
   it.each(['_headers', '_redirects', 'robots.txt', 'CNAME', '.nojekyll', 'sitemap-index.xml'])(
     'ships %s',

@@ -26,3 +26,6 @@
 
 /assets/data/*
   Cache-Control: no-cache
+
+/calendar/*
+  Cache-Control: no-cache

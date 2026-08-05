@@ -1,0 +1,12 @@
+# Registration-email render Worker. Separate from the site's assets-only
+# wrangler.jsonc: this is a real script Worker with its own *.workers.dev URL.
+#
+# Deploy from this directory:
+#   npx wrangler deploy
+# Set the shared secret (never commit it):
+#   npx wrangler secret put SHARED_SECRET
+#
+# The default *.workers.dev URL is fine; Apps Script calls it server-to-server.
+name = "tango-garden-registration"
+main = "worker.js"
+compatibility_date = "2026-07-22"
