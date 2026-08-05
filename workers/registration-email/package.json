@@ -1,0 +1,5 @@
+{
+  "name": "tango-garden-registration-worker",
+  "private": true,
+  "type": "module"
+}

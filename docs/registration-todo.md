@@ -8,11 +8,15 @@ Full detail: [registration-setup.md](registration-setup.md).
       section is merged to main and confirmed live at
       tangogarden.de/pages/privacy-policy ("Last updated: August 5, 2026").
 
-## Deploy the render Worker
-- [ ] From `workers/registration-email/`: `npx wrangler deploy`
-- [ ] Note the Worker URL (`https://tango-garden-registration.<subdomain>.workers.dev`)
-- [ ] Generate a secret (`openssl rand -hex 32`) and set it: `npx wrangler secret put SHARED_SECRET`
-- [ ] Sanity check: `curl -X POST <worker-url>` returns `401` (protected)
+## Deploy the render Worker (done)
+- [x] Deployed from `workers/registration-email/` with
+      `npx wrangler deploy --config ./wrangler.toml` (the `--config` matters:
+      a plain `wrangler deploy` from this directory silently redeployed the
+      site's own Worker instead the first time, see wrangler.toml comments)
+- [x] Worker URL: `https://tango-garden-registration.vangelis-theodorakis.workers.dev`
+- [x] `SHARED_SECRET` generated and set via
+      `npx wrangler secret put SHARED_SECRET --config ./wrangler.toml`
+- [x] Confirmed: no secret and wrong secret both return 401; GET returns 405
 
 ## Build the Google Form (done)
 Full copy: [registration-form-spec.md](registration-form-spec.md).

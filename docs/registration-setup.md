@@ -30,8 +30,15 @@ Source:
 From `workers/registration-email/`:
 
 ```bash
-npx wrangler deploy
+npx wrangler deploy --config ./wrangler.toml
 ```
+
+**Always pass `--config ./wrangler.toml` explicitly.** Without it, a plain
+`wrangler deploy` run from this directory has been observed silently
+resolving the site's root `wrangler.jsonc` instead, redeploying the site's
+Worker (harmlessly, since the content is unchanged, but the registration
+Worker never gets created). Confirmed 2026-08-05; a local `package.json` in
+this directory did not fix it.
 
 This is a **separate** Worker from the site (the site deploys via `git push`).
 It gets its own URL, e.g. `https://tango-garden-registration.<subdomain>.workers.dev`.
@@ -43,7 +50,7 @@ Generate a shared secret and set it on the Worker (never commit it):
 # generate one, e.g.:
 openssl rand -hex 32
 # then:
-npx wrangler secret put SHARED_SECRET
+npx wrangler secret put SHARED_SECRET --config ./wrangler.toml
 ```
 
 Quick check that it is protected (should return 401 without the secret):

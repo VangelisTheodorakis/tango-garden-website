@@ -1,10 +1,16 @@
 # Registration-email render Worker. Separate from the site's assets-only
 # wrangler.jsonc: this is a real script Worker with its own *.workers.dev URL.
 #
+# IMPORTANT: always pass --config explicitly. Without it, Wrangler run from
+# this directory has been observed silently resolving the site's root
+# wrangler.jsonc instead of this file (confirmed 2026-08-05: a plain
+# `wrangler deploy` here redeployed "tango-garden-website", not this Worker).
+# A local package.json in this directory did not fix it; --config does.
+#
 # Deploy from this directory:
-#   npx wrangler deploy
+#   npx wrangler deploy --config ./wrangler.toml
 # Set the shared secret (never commit it):
-#   npx wrangler secret put SHARED_SECRET
+#   npx wrangler secret put SHARED_SECRET --config ./wrangler.toml
 #
 # The default *.workers.dev URL is fine; Apps Script calls it server-to-server.
 name = "tango-garden-registration"
