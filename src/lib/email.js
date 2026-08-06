@@ -100,14 +100,14 @@ export function confirmationEmail({ name, course, events, baseUrl = 'https://tan
 
   const attendeeRow = safeName
     ? `<div class="event-info-row">
-                        <div class="event-info-label">Attendee</div>
+                        <div class="event-info-label">&#x1F3AB; Attendee</div>
                         <div class="event-info-value">${safeName}</div>
                     </div>`
     : '';
 
   const timeRow = weeklyTime
     ? `<div class="event-info-row">
-                        <div class="event-info-label">Time</div>
+                        <div class="event-info-label">&#x1F556; Time</div>
                         <div class="event-info-value">${htmlEscape(weeklyTime)}</div>
                     </div>`
     : '';
@@ -190,12 +190,12 @@ export function confirmationEmail({ name, course, events, baseUrl = 'https://tan
                 <div class="section-title">Course Details</div>
                 <div class="event-info-grid">
                     <div class="event-info-row">
-                        <div class="event-info-label">Dates</div>
+                        <div class="event-info-label">&#x1F4C5; Dates</div>
                         <div class="event-info-value">${htmlEscape(schedule)}</div>
                     </div>
                     ${timeRow}
                     <div class="event-info-row">
-                        <div class="event-info-label">Location</div>
+                        <div class="event-info-label">&#x1F4CD; Location</div>
                         <div class="event-info-value">${safeLocation}</div>
                     </div>
                     ${attendeeRow}
@@ -203,7 +203,7 @@ export function confirmationEmail({ name, course, events, baseUrl = 'https://tan
             </div>
 
             <div class="calendar-section">
-                <h3>Add the classes to your calendar</h3>
+                <h3>&#x1F4C5; Add the classes to your calendar</h3>
                 <p class="hint">The calendar file is attached to this email. Open it to add every class at once, or use a button below.</p>
                 <div class="calendar-links">
                     ${googleUrl ? `<a href="${htmlEscape(googleUrl)}" class="calendar-link" target="_blank" rel="noopener">Google Calendar</a>` : ''}
@@ -222,7 +222,7 @@ export function confirmationEmail({ name, course, events, baseUrl = 'https://tan
             </div>
 
             <div class="info-section">
-                <h3>Where to find us</h3>
+                <h3>&#x1F4CD; Where to find us</h3>
                 <p><strong>${safeVenue}</strong>${mapsUrl ? `<br><a href="${mapsUrl}" target="_blank" rel="noopener">Get Directions</a>` : ''}</p>
             </div>
         </div>

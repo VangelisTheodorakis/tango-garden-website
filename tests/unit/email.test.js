@@ -36,16 +36,26 @@ describe('confirmationEmail', () => {
     expect(html).not.toContain('>Attendee<');
   });
 
-  it('uses no astral-plane emoji (surrogate pairs corrupt in GmailApp)', () => {
+  it('uses no literal astral-plane character (surrogate pairs corrupt in GmailApp)', () => {
     // Confirmed in production: Apps Script's GmailApp.sendEmail garbles
     // characters above U+FFFF (calendar/clock/pin/ticket emoji all showed as
     // replacement boxes) while lower-plane characters like umlauts survive
-    // intact. So no code point outside the Basic Multilingual Plane belongs
-    // in this template.
+    // intact. The emoji are back, but as HTML numeric entities (&#x1F4C5;
+    // etc.): pure ASCII in the string itself, decoded to the glyph only by
+    // the recipient's HTML renderer, so this assertion still holds and still
+    // guards against a literal astral character creeping back in.
     const { html } = render();
     for (const char of html) {
       expect(char.codePointAt(0), `astral-plane character: ${char}`).toBeLessThanOrEqual(0xffff);
     }
+  });
+
+  it('still shows the section emoji, via HTML numeric entities', () => {
+    const { html } = render();
+    expect(html).toContain('&#x1F4C5; Dates'); // calendar
+    expect(html).toContain('&#x1F556; Time'); // clock
+    expect(html).toContain('&#x1F4CD; Location'); // pin
+    expect(html).toContain('&#x1F3AB; Attendee'); // ticket
   });
 
   it('summarises the whole schedule, without doubling the weekday', () => {
