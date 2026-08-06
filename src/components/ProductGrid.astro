@@ -1,59 +1,43 @@
 ---
 import { products } from '../data/products.js';
+import { classPages } from '../data/classPages.js';
 
-// Only the products that are live on the store are listed.
-const live = products.filter((p) => !p.hidden);
+// Landing grid for /collections/all. Each class used to expand into a wall of
+// per-SKU cards (general admission, student/under-28, 1-class, 4-class...);
+// now each class is one consolidated page (src/data/classPages.js) with its
+// own pricing/perks table, so this is just 3 cards pointing at those pages.
 
-// Per-class caption shown under each total, so the ladder reads apples-to-apples
-// (€18 → €15 → €13 as commitment rises) and the €160 course stops looking dear
-// next to the €18 drop-in. Figures are rounded to whole euros; the total above
-// each caption is the exact payable price and the source of truth.
-const perClass: Record<string, string> = {
-  'the-sprouting-sessions-beginner-level-1-class-pass-general-admission': 'per class',
-  'the-sprouting-sessions-beginner-level-1-class-pass-student-and-under-28-admission': 'per class',
-  'the-sprouting-sessions-beginners-level-4-classes-pass-general-admission': '€15 / class',
-  'the-sprouting-sessions-beginner-level-4-classes-pass-student-and-under-28-admission': '€11 / class',
-  'the-sprouting-sessions-beginner-level-full-course-pass-general-admission': '€13 / class',
-  'the-sprouting-sessions-beginner-level-full-course-pass-student-and-under28-admission': '€10 / class',
+const priceOf = (handle: string) => {
+  const price = products.find((p) => p.handle === handle)?.price ?? '';
+  const match = price.match(/€(\d+)/);
+  return match ? `€${match[1]}` : price;
 };
-const bestValue = new Set([
-  'the-sprouting-sessions-beginner-level-full-course-pass-general-admission',
-  'the-sprouting-sessions-beginner-level-full-course-pass-student-and-under28-admission',
-]);
 
-// Group the passes so the page reads as three offerings rather than eight SKUs.
+const rowFor = (slug: string, label: string) =>
+  classPages.find((c) => c.slug === slug)!.table.rows.find((r) => r.label === label)!;
+
+const fullCourseRow = rowFor('beginner-course', 'Full Course (12 classes)');
+
 const groups = [
   {
     title: 'Enter the Garden',
-    blurb: 'One-time event for those who want to try without commitment.',
-    match: (h: string) => h.startsWith('enter-the-garden'),
+    blurb: 'One-time, free introductory session for anyone who wants to try without commitment.',
+    price: priceOf('enter-the-garden-general-admission'),
+    href: '/pages/enter-the-garden',
   },
   {
     title: 'The Sprouting Sessions',
-    blurb: 'Beginner course passes — one class, four classes, or the full course.',
-    match: (h: string) => h.startsWith('the-sprouting-sessions'),
+    blurb: 'A 12-week beginner course — one class, four classes, or the full course.',
+    price: `from ${fullCourseRow.perClass?.general}/class`,
+    href: '/pages/beginner-course',
   },
   {
     title: 'The Garden Practica',
     blurb: 'Open-level guided practice sessions. Drop in whenever you like.',
-    match: (h: string) => h.startsWith('the-garden-practica'),
+    price: `${priceOf('the-garden-practica-1-practica-pass-general-admission')} or ${priceOf('the-garden-practica-1-practica-pass-door-only-student-and-under-28-admission')}*`,
+    href: '/pages/garden-practica',
   },
 ];
-
-// Order each group by commitment (drop-in → 4-class → full course), general
-// before student, so the per-class caption visibly descends down the list —
-// which is what makes the full course read as the best deal.
-const tier = (h: string) =>
-  (h.includes('full-course') ? 3 : /4-class/.test(h) ? 2 : /1-class|1-practica/.test(h) ? 1 : 0) *
-    10 +
-  (/student|under-?28/.test(h) ? 1 : 0);
-
-const orderedGroups = groups
-  .map((g) => ({
-    ...g,
-    items: live.filter((p) => g.match(p.handle)).sort((a, b) => tier(a.handle) - tier(b.handle)),
-  }))
-  .filter((g) => g.items.length > 0);
 ---
 
 <section class="page-hero">
@@ -64,34 +48,19 @@ const orderedGroups = groups
 </section>
 
 <div class="collection">
-  {
-    orderedGroups.map((group) => (
-      <section class="collection-group">
-        <h2>{group.title}</h2>
-        <p class="collection-blurb">{group.blurb}</p>
-        <ul class="collection-list" role="list">
-          {group.items.map((product) => (
-            <li>
-              <a class="collection-card" href={`/products/${product.handle}`}>
-                <span class="collection-card-title">
-                  {product.heading ?? product.title}
-                  {bestValue.has(product.handle) && (
-                    <span class="collection-card-tag">Best value</span>
-                  )}
-                </span>
-                <span class="collection-card-price">
-                  <span class="collection-card-total">{product.price}</span>
-                  {perClass[product.handle] && (
-                    <small class="collection-card-perclass">{perClass[product.handle]}</small>
-                  )}
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    ))
-  }
+  <ul class="collection-list" role="list">
+    {
+      groups.map((group) => (
+        <li>
+          <a class="collection-card" href={group.href}>
+            <span class="collection-card-title">{group.title}</span>
+            <span class="collection-card-blurb">{group.blurb}</span>
+            <span class="collection-card-price">{group.price}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
 
   <p class="collection-why">
     Young people are the future of tango. We keep a reduced rate so the next generation
@@ -124,40 +93,27 @@ const orderedGroups = groups
     margin: 0 auto;
     padding: 60px 20px;
   }
-  .collection-group + .collection-group {
-    margin-top: 50px;
-  }
-  .collection-group h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--green);
-    margin-bottom: 0.4rem;
-  }
-  .collection-blurb {
-    color: var(--text-light);
-    margin-bottom: 1.25rem;
-  }
   .collection-list {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 16px;
   }
   @media (min-width: 750px) {
     .collection-list {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
   }
   .collection-card {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 10px;
     background: var(--cream);
     border: 2px solid transparent;
     border-radius: 12px;
-    padding: 18px 20px;
+    padding: 24px 22px;
     text-decoration: none;
     color: var(--text);
+    height: 100%;
     transition:
       transform 0.2s ease,
       box-shadow 0.2s ease,
@@ -169,38 +125,19 @@ const orderedGroups = groups
     border-color: var(--green);
   }
   .collection-card-title {
-    font-size: 0.95rem;
-    line-height: 1.4;
-  }
-  .collection-card-tag {
-    display: inline-block;
-    margin-left: 8px;
-    padding: 2px 8px;
-    border-radius: 999px;
-    background: var(--green);
-    color: #fff;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    vertical-align: middle;
-  }
-  .collection-card-price {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    text-align: right;
-    white-space: nowrap;
-  }
-  .collection-card-total {
+    font-size: 1.15rem;
     font-weight: 700;
     color: var(--green);
   }
-  .collection-card-perclass {
-    margin-top: 2px;
-    font-size: 0.78rem;
-    font-weight: 500;
+  .collection-card-blurb {
+    font-size: 0.9rem;
+    line-height: 1.5;
     color: var(--text-light);
+    flex-grow: 1;
+  }
+  .collection-card-price {
+    font-weight: 700;
+    color: var(--green);
   }
   .collection-why {
     margin: 40px auto 0;

@@ -19,6 +19,9 @@ const PAGES = [
   '/pages/start-here',
   '/pages/contact',
   '/collections/all',
+  '/pages/enter-the-garden',
+  '/pages/beginner-course',
+  '/pages/garden-practica',
   '/products/the-sprouting-sessions-beginner-level-full-course-pass-general-admission',
   '/products/enter-the-garden-general-admission',
   '/pages/impressum',
@@ -36,11 +39,30 @@ for (const path of PAGES) {
 
       const { viewport, scrollWidth, offenders } = await page.evaluate(() => {
         const vw = document.documentElement.clientWidth;
+
+        // An element deliberately wider than the viewport is fine as long as
+        // it scrolls inside its own contained ancestor (e.g. the pricing
+        // table's `.class-table-wrap`, which is narrower than the viewport
+        // and scrolls internally) rather than pushing the whole page sideways.
+        const scrollsWithinContainedAncestor = (el) => {
+          for (let node = el.parentElement; node; node = node.parentElement) {
+            const style = getComputedStyle(node);
+            if (
+              (style.overflowX === 'auto' || style.overflowX === 'scroll') &&
+              node.getBoundingClientRect().width <= vw + 1
+            ) {
+              return true;
+            }
+          }
+          return false;
+        };
+
         return {
           viewport: vw,
           scrollWidth: document.documentElement.scrollWidth,
           offenders: [...document.querySelectorAll('body *')]
             .filter((el) => el.getBoundingClientRect().width > vw + 1)
+            .filter((el) => !scrollsWithinContainedAncestor(el))
             .slice(0, 5)
             .map((el) => {
               const cls = typeof el.className === 'string' ? el.className : '';

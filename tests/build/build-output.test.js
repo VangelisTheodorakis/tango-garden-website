@@ -49,8 +49,10 @@ const contentPages = () => pages.filter((p) => p.route !== '/404');
 
 describe('pages', () => {
   it('builds every expected route', () => {
-    // 1 home + 8 content/legal + 12 products + 2 collections + 404
-    expect(pages).toHaveLength(24);
+    // 1 home + 11 content/legal (incl. the 3 consolidated class pages)
+    // + 12 products (all hidden, kept for direct-URL + price/variant data)
+    // + 2 collections + 404
+    expect(pages).toHaveLength(27);
   });
 
   it('gives every page a non-empty title', () => {

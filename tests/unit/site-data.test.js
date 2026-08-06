@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { products } from '../../src/data/products.js';
 import { navItems, social } from '../../src/data/nav.js';
+import { classPages } from '../../src/data/classPages.js';
 
 const feed = (name) =>
   JSON.parse(readFileSync(new URL(`../../public/assets/data/${name}.json`, import.meta.url), 'utf8'));
@@ -35,9 +36,11 @@ describe('products data', () => {
   describe('purchasable products', () => {
     const pdp = products.filter((p) => p.template === 'pdp');
 
-    it('are the eight products live on the store', () => {
+    it('are the eight Shopify SKUs behind the pricing tables', () => {
+      // These no longer have their own live page (see src/data/classPages.js),
+      // but their price/variant data still has to stay accurate for the day
+      // showPurchaseControls goes back on.
       expect(pdp).toHaveLength(8);
-      expect(pdp.every((p) => !p.hidden)).toBe(true);
     });
 
     it.each(pdp)('$handle prices in euros', (p) => {
@@ -60,16 +63,17 @@ describe('products data', () => {
     });
   });
 
-  it('marks exactly the three off-live products hidden', () => {
-    // Enter the Garden is now a single free event, so the Student/Under-28 tier
-    // was retired (hidden + 301 to the general page). The other two stubs have
-    // no live equivalent.
+  it('hides every product now that classes are presented on consolidated pages', () => {
+    // Each class used to be N separate per-SKU pages; now it's one page with a
+    // combined pricing table (src/data/classPages.js), so every product handle
+    // is hidden — reachable by direct URL, noindexed, out of the sitemap — and
+    // public/_redirects sends the old live handles to their new page.
     const hidden = products.filter((p) => p.hidden).map((p) => p.handle);
-    expect(hidden.sort()).toEqual([
-      'enter-the-garden-introductory-session-student-and-under-28-admission',
-      'the-garden-practica-1-time-pass-evey',
-      'the-sprouting-sessions-beginner-level-1-class-welcome-pass',
-    ]);
+    expect(hidden.sort()).toEqual(
+      products
+        .map((p) => p.handle)
+        .sort()
+    );
   });
 
   it('carries valid structured data where present', () => {
@@ -92,28 +96,65 @@ describe('navigation data', () => {
     walk(navItems);
   });
 
-  it('points the Classes menu at products that exist', () => {
+  it('points the Classes menu at the consolidated class pages', () => {
     const classes = navItems.find((i) => i.label === 'Classes');
+    const slugs = classPages.map((c) => c.slug);
     for (const child of classes.children) {
-      const handle = child.href.replace('/products/', '');
-      expect(products.some((p) => p.handle === handle), child.href).toBe(true);
-    }
-  });
-
-  // Every product the menu links to must be indexable — a sitewide nav link to
-  // a noindexed page is the "indexed, though blocked" trap. The Enter the Garden
-  // drop-in was made live to satisfy this.
-  it('does not feature hidden products in the menu', () => {
-    const hidden = new Set(products.filter((p) => p.hidden).map((p) => p.handle));
-    const classes = navItems.find((i) => i.label === 'Classes');
-    for (const child of classes.children) {
-      expect(hidden.has(child.href.replace('/products/', '')), child.href).toBe(false);
+      expect(child.href, child.href).toMatch(/^\/pages\//);
+      expect(slugs, child.href).toContain(child.href.replace('/pages/', ''));
     }
   });
 
   it('uses https for every social link', () => {
     for (const url of Object.values(social)) {
       expect(url).toMatch(/^https:\/\//);
+    }
+  });
+});
+
+describe('classPages data', () => {
+  it('uses unique, URL-safe slugs', () => {
+    const slugs = classPages.map((c) => c.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+    for (const slug of slugs) expect(slug).toMatch(/^[a-z0-9-]+$/);
+  });
+
+  it('references product handles that exist', () => {
+    for (const page of classPages) {
+      for (const row of page.table.rows) {
+        expect(products.some((p) => p.handle === row.general.handle), row.label).toBe(true);
+        if (row.student) {
+          expect(products.some((p) => p.handle === row.student.handle), row.label).toBe(true);
+        }
+      }
+    }
+  });
+
+  it('lists every table handle in offerHandles, so the Course schema stays complete', () => {
+    for (const page of classPages) {
+      const tableHandles = page.table.rows.flatMap((r) =>
+        r.student ? [r.general.handle, r.student.handle] : [r.general.handle]
+      );
+      for (const handle of tableHandles) {
+        expect(page.offerHandles, `${page.slug}: ${handle}`).toContain(handle);
+      }
+    }
+  });
+
+  it('only points offerHandles at products with structured-data offers', () => {
+    for (const page of classPages) {
+      for (const handle of page.offerHandles) {
+        const product = products.find((p) => p.handle === handle);
+        expect(product?.schema?.offers, `${page.slug}: ${handle}`).toBeTruthy();
+      }
+    }
+  });
+
+  it('points every class page nav/pathway link at a page that exists', () => {
+    const slugs = new Set(classPages.map((c) => c.slug));
+    const classes = navItems.find((i) => i.label === 'Classes');
+    for (const child of classes.children) {
+      expect(slugs.has(child.href.replace('/pages/', '')), child.href).toBe(true);
     }
   });
 });

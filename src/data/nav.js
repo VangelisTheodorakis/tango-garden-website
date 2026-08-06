@@ -28,15 +28,9 @@ export const navItems = [
     href: '/collections/all',
     label: 'Classes',
     children: [
-      { href: '/products/enter-the-garden-general-admission', label: 'Enter the Garden' },
-      {
-        href: '/products/the-sprouting-sessions-beginner-level-full-course-pass-general-admission',
-        label: 'Sprouting Sessions',
-      },
-      {
-        href: '/products/the-garden-practica-1-practica-pass-general-admission',
-        label: 'Garden Practica',
-      },
+      { href: '/pages/enter-the-garden', label: 'Enter the Garden' },
+      { href: '/pages/beginner-course', label: 'Sprouting Sessions' },
+      { href: '/pages/garden-practica', label: 'Garden Practica' },
     ],
   },
   { href: '/pages/contact', label: 'Connect with us' },

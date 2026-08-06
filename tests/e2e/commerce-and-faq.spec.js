@@ -148,6 +148,23 @@ test.describe('FAQ accordions', () => {
     await expect(page.locator('.faq-item.is-open')).toHaveCount(1);
   });
 
+  test('class page FAQ answers open, close, and stay out of the tab order while collapsed', async ({
+    page,
+  }) => {
+    await page.goto('/pages/beginner-course');
+
+    const first = page.locator('.class-faq-question').first();
+    const answer = page.locator('.class-faq-item').first().locator('.class-faq-answer');
+
+    await expect(answer).toBeHidden();
+    await first.click();
+    await expect(answer).toBeVisible();
+    await expect(first).toHaveAttribute('aria-expanded', 'true');
+
+    await first.click();
+    await expect(answer).toBeHidden();
+  });
+
   test('start-here answers are not focusable while collapsed', async ({ page }) => {
     // max-height:0 hid them visually but left their links in the tab order.
     await page.goto('/pages/start-here');
