@@ -298,6 +298,11 @@ const cards = [
 
   .card-foot {
     border-top: 2px solid rgba(45, 80, 22, 0.1);
+    /* Guarantees breathing room below the separator even on the card whose
+       content above (date-status text especially) runs longer and would
+       otherwise leave the price/button block with almost no flex-grow
+       space to work with. */
+    padding-top: 24px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
