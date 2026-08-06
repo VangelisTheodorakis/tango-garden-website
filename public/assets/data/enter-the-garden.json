@@ -1,5 +1,5 @@
 {
-  "label": "Next Event",
+  "label": "Next introductory class",
   "emptyMessage": "New dates coming soon (TBA)",
   "events": [
     { "date": "2026-08-01", "time": "19:00 – 20:00" },
