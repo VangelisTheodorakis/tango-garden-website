@@ -104,7 +104,8 @@ describe('confirmationEmail', () => {
     expect(ics.filename).toBe('the-sprouting-sessions-beginner-level.ics');
     expect(ics.contentType).toMatch(/^text\/calendar/);
     expect(ics.content).toContain('BEGIN:VCALENDAR');
-    expect(ics.content.match(/BEGIN:VEVENT/g)).toHaveLength(3);
+    expect(ics.content.match(/BEGIN:VEVENT/g)).toHaveLength(1);
+    expect(ics.content).toContain('RRULE:FREQ=WEEKLY');
     // The body should tell the reader the file is attached.
     expect(html).toContain('attached to this email');
   });

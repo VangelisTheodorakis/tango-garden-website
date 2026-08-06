@@ -396,19 +396,25 @@ describe('calendar feed', () => {
     );
   });
 
-  it('carries one VEVENT per class in the source feed', () => {
+  it('represents the whole semester as one recurring VEVENT matching the feed', () => {
+    // A single RRULE-based VEVENT, not one VEVENT per class: Gmail's own
+    // "Add to calendar" chip only recognises the former as a real series.
     const ics = readFileSync(icsPath, 'utf8');
     const feed = JSON.parse(
       readFileSync(join(DIST, 'assets', 'data', 'regular-classes.json'), 'utf8')
     );
-    expect(ics.match(/BEGIN:VEVENT/g) ?? []).toHaveLength(feed.events.length);
+    expect(ics.match(/BEGIN:VEVENT/g) ?? []).toHaveLength(1);
+    expect(ics).toContain(`RRULE:FREQ=WEEKLY;BYDAY=TH;COUNT=${feed.events.length}`);
+    // The real feed has no gaps, so no EXDATE should appear. If one does,
+    // the DST-safe weekly-slot arithmetic in ics.js has regressed (it
+    // previously miscalculated dates after the 25 Oct clock change).
+    expect(ics).not.toContain('EXDATE');
   });
 
-  it('anchors the classes to Europe/Berlin so DST does not shift them', () => {
+  it('anchors the series to Europe/Berlin so DST does not shift it', () => {
     const ics = readFileSync(icsPath, 'utf8');
     expect(ics).toContain('TZID:Europe/Berlin');
-    // A class after the 25 Oct 2026 switch must still start 19:30 local.
-    expect(ics).toContain('DTSTART;TZID=Europe/Berlin:20261105T193000');
+    expect(ics).toContain('DTSTART;TZID=Europe/Berlin:20260910T193000');
   });
 });
 

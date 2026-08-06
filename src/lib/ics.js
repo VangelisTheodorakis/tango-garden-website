@@ -11,6 +11,15 @@
  * local on both sides of the 25 Oct 2026 CEST-to-CET switch; a plain UTC or
  * floating time would drift the later classes by an hour.
  *
+ * The whole series is ONE recurring VEVENT (RRULE + EXDATE for any skipped
+ * week), not one VEVENT per class. An earlier version emitted a separate
+ * VEVENT per date; that shipped, and Gmail's own inline "Add to calendar"
+ * chip showed "Unable to load event" for it, confirmed by comparing against
+ * a working reference .ics that used a single RRULE-based VEVENT. Twelve
+ * disconnected one-off meetings in one file is not a shape calendar-smart
+ * parsers recognise as a series. EXDATE (rather than just enumerating dates)
+ * is what still lets a future holiday week be skipped correctly.
+ *
  * @typedef {import('./next-event.js').GardenEvent} GardenEvent
  * @typedef {import('../data/courses.js').Course} Course
  */
@@ -120,8 +129,39 @@ function foldLine(line) {
   return parts.join('\r\n ');
 }
 
+const WEEKDAY_CODES = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
+const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
+
 /**
- * Builds the full VCALENDAR string for a course.
+ * "2026-09-10" as a calendar date anchored at UTC midnight, so stepping by
+ * exact weeks (below) never drifts across a DST boundary. Real-world local
+ * time (Europe/Berlin) does have a DST jump on these dates; UTC never does,
+ * so it is the only safe axis for pure calendar-day arithmetic. Using local
+ * time here (as an earlier version did) silently produced dates one day
+ * early for every occurrence after the 25 Oct clock change.
+ *
+ * @param {string} iso
+ * @returns {Date}
+ */
+function utcDateOnly(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(Date.UTC(y, m - 1, d));
+}
+
+/** The reverse of utcDateOnly: a UTC-midnight Date back to "2026-09-10". */
+function toIso(utcDate) {
+  const y = utcDate.getUTCFullYear();
+  const m = String(utcDate.getUTCMonth() + 1).padStart(2, '0');
+  const d = String(utcDate.getUTCDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+/**
+ * Builds the full VCALENDAR string for a course: a single recurring VEVENT
+ * spanning the first occurrence to the last, with any date from the feed
+ * that does not fall on the expected weekly cadence added as an EXDATE.
+ * Every occurrence shares the first one's time of day, matching how the
+ * course actually runs (one weekly time slot).
  *
  * @param {Course} course
  * @param {GardenEvent[]} events
@@ -142,21 +182,50 @@ export function buildIcs(course, events, opts = {}) {
     ...BERLIN_VTIMEZONE,
   ];
 
-  for (const event of events ?? []) {
-    const date = parseDate(event?.date);
-    const time = parseTimeRange(event?.time);
-    // Skip anything malformed rather than emit a broken VEVENT.
-    if (!date || !time) continue;
+  const valid = (events ?? [])
+    .map((e) => ({ event: e, date: parseDate(e?.date), time: parseTimeRange(e?.time) }))
+    .filter((x) => x.date && x.time)
+    .sort((a, b) => a.date - b.date);
+
+  if (valid.length) {
+    const first = valid[0];
+    const last = valid[valid.length - 1];
+    const firstUtc = utcDateOnly(first.event.date);
+    const lastUtc = utcDateOnly(last.event.date);
+    const weekly = Math.round((lastUtc - firstUtc) / MS_PER_WEEK) + 1;
+
+    // Any weekly slot between the first and last date that is NOT one of the
+    // actual feed dates is a skipped week (a holiday) and becomes an EXDATE.
+    const actualDates = new Set(valid.map((x) => x.event.date));
+    const exdates = [];
+    for (let i = 0; i < weekly; i++) {
+      const iso = toIso(new Date(firstUtc.getTime() + i * MS_PER_WEEK));
+      if (!actualDates.has(iso)) exdates.push(iso);
+    }
 
     lines.push(
       'BEGIN:VEVENT',
-      `UID:${course.slug}-${event.date}@tangogarden.de`,
+      `UID:${course.slug}@tangogarden.de`,
       `DTSTAMP:${stamp}`,
-      `DTSTART;TZID=${course.timezone}:${localStamp(event.date, time.start)}`,
-      `DTEND;TZID=${course.timezone}:${localStamp(event.date, time.end)}`,
-      `SUMMARY:${escapeText(course.title)}`,
-      `LOCATION:${escapeText(course.location)}`,
+      `DTSTART;TZID=${course.timezone}:${localStamp(first.event.date, first.time.start)}`,
+      `DTEND;TZID=${course.timezone}:${localStamp(first.event.date, first.time.end)}`,
+      `RRULE:FREQ=WEEKLY;BYDAY=${WEEKDAY_CODES[firstUtc.getUTCDay()]};COUNT=${weekly}`
+    );
+    if (exdates.length) {
+      lines.push(
+        `EXDATE;TZID=${course.timezone}:` +
+          exdates.map((iso) => localStamp(iso, first.time.start)).join(',')
+      );
+    }
+    lines.push(`SUMMARY:${escapeText(course.title)}`, `LOCATION:${escapeText(course.location)}`);
+    if (course.mapsUrl) lines.push(`URL:${course.mapsUrl}`);
+    lines.push(
       `DESCRIPTION:${escapeText(course.description)}`,
+      'BEGIN:VALARM',
+      'ACTION:DISPLAY',
+      `DESCRIPTION:${escapeText(course.title)}`,
+      'TRIGGER:-P2D',
+      'END:VALARM',
       'END:VEVENT'
     );
   }
