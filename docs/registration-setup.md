@@ -63,9 +63,11 @@ curl -s -o /dev/null -w "%{http_code}\n" -X POST https://tango-garden-registrati
 
 Create a form with at least:
 - **Name** (short answer)
-- Prefer **Settings > Collect email addresses** over a free-text "Email"
-  question: Google validates and attaches it to the response itself, so a
-  malformed or fake address in a short-answer field never reaches the sender.
+- **Email** (short answer, with Response validation > Email turned on). Do
+  not use Settings > Collect email addresses: Verified; it requires the
+  respondent to sign into a Google account before they can respond at all,
+  which blocks anyone without one and contradicts the low-friction goal of
+  this form. See `registration-form-spec.md` for the full reasoning.
 - A **consent** checkbox (required), e.g. "I agree to receive a confirmation
   email about this course." (GDPR: a confirmation for a registration the person
   submitted is fine. Do **not** add them to any marketing list without a

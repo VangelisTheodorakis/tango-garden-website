@@ -44,14 +44,19 @@ business benefit.
      description needed.
 
 2. **Email**
-   - Use Form **Settings > Responses > Collect email addresses**, set to
-     **Verified**. This validates the address and attaches it to the
-     response directly (`e.response.getRespondentEmail()`), which the script
-     reads automatically. No separate question needed, and no risk of a
-     typo'd address breaking the confirmation send.
-   - Fallback only if you cannot use verified collection: a Short answer
-     question titled "Email" with **Response validation > Email** turned on.
-     Weaker: nothing stops a respondent typing a garbage address.
+   - Type: Short answer, required, titled "Email", with **Response
+     validation > Email** turned on.
+   - Do **not** use Form **Settings > Responses > Collect email addresses:
+     Verified**, even though it sounds like the safer option. It requires
+     the respondent to be signed into a Google account before they can fill
+     out anything at all, not necessarily Gmail, but *some* Google account.
+     Anyone without one (common among Outlook/Yahoo/web.de/iCloud users) is
+     blocked at the door, which directly contradicts the low-friction,
+     under-a-minute goal this form was designed around.
+   - `Code.gs`'s `extractAnswers_` already handles a plain Email question
+     (it matches any item titled "email"/"mail" in `e.response.getItemResponses()`),
+     so no code change is needed either way; this was purely a Form-settings
+     choice.
 
 3. **Confirmation consent** (required, GDPR)
    - Type: Checkbox (single option).
@@ -128,8 +133,7 @@ business benefit.
    - Confirmed: the Privacy Policy link points to
      `tangogarden.de/pages/privacy-policy`.
 
-That's the whole form: seven items, one of them just a setting (email
-collection), so it reads as six questions in the UI: Name, confirmation
+That's the whole form: seven questions in the UI: Name, Email, confirmation
 consent, Role, reduced-rate checkbox, Phone, WhatsApp checkbox.
 
 ## What was checked against a reference form, and why
@@ -203,7 +207,9 @@ map it to the right slug in `src/data/courses.js`.
 
 ## Form settings to check
 
-- **Settings > Responses > Collect email addresses**: Verified (see above).
+- **Settings > Responses > Collect email addresses**: leave **off** (see the
+  Email field above; a plain question is used instead so no Google sign-in
+  is required to respond).
 - **Settings > Responses > Send respondents a copy of their response**: leave
   at its default ("Respondent can choose", or off). Do **not** turn on
   automatic receipts; the Apps Script confirmation email is the one

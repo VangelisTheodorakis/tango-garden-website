@@ -18,10 +18,14 @@ Full detail: [registration-setup.md](registration-setup.md).
       `npx wrangler secret put SHARED_SECRET --config ./wrangler.toml`
 - [x] Confirmed: no secret and wrong secret both return 401; GET returns 405
 
-## Build the Google Form (done)
+## Build the Google Form
 Full copy: [registration-form-spec.md](registration-form-spec.md).
 - [x] Add a **Name** question
-- [x] Turn on **Settings > Collect email addresses** (Verified)
+- [ ] **Fix pending:** switch off **Settings > Collect email addresses:
+      Verified** and add a plain **Email** question (Response validation >
+      Email) instead. Verified requires a Google sign-in to respond at all,
+      excluding anyone without a Google account; this contradicts the
+      low-friction goal and needs to change on the live form.
 - [x] Add a required **confirmation consent** checkbox (transactional email only)
 - [x] Add a required **Role** question (Leading / Following / Not sure yet)
 - [x] Add an optional **Reduced rate (student / under 28)** checkbox
@@ -48,6 +52,10 @@ Full copy: [registration-form-spec.md](registration-form-spec.md).
 - [ ] Submit the form with your own email
 - [ ] Confirm: name in greeting, calendar buttons present, `.ics` attached,
       Maps links in "Where to find us" + footer
+- [ ] After switching off Verified email collection, confirm the form can be
+      opened and submitted in a private/incognito window with no Google
+      account signed in at all, proving non-Google-account respondents
+      aren't blocked
 - [ ] If nothing arrives, check the Apps Script **Executions** log
 
 ## After go-live
