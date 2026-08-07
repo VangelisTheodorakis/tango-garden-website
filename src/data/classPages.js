@@ -98,7 +98,12 @@ export const classPages = [
     ],
     whatsIncluded: [],
     registerUrl: 'https://forms.gle/mAqzDEYasFyCrdoz8',
-    heroImage: '/images/hero-dancers.webp',
+    heroImage: '/images/beginner-course-hero.webp',
+    gallery: [
+      '/images/beginner-course-1.webp',
+      '/images/beginner-course-2.webp',
+      '/images/beginner-course-3.webp',
+    ],
     showTeachers: true,
     table: {
       caption: 'Passes',
