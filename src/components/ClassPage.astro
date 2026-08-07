@@ -701,17 +701,24 @@ const waLabel = '💬 Chat on WhatsApp';
     text-align: left;
   }
   .class-location-toggle {
-    background: none;
-    border: none;
-    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(78, 93, 34, 0.08);
+    border: 1px solid rgba(78, 93, 34, 0.2);
+    border-radius: 999px;
+    padding: 10px 18px;
     font-family: inherit;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 700;
     color: var(--green);
+    transition: background 0.2s, transform 0.2s;
   }
   .class-location-toggle:hover {
-    text-decoration: underline;
+    background: var(--green);
+    color: #efecec;
+    transform: translateY(-1px);
   }
   .class-location-panel {
     margin-top: 10px;
