@@ -140,6 +140,12 @@ const courseSchema = {
   url: canonical,
 };
 
+const mapQuery = [loc.streetAddress, loc.postalCode, loc.addressLocality].filter(Boolean).join(', ');
+const mapUrl = mapQuery ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}` : null;
+const locationLabel = [loc.streetAddress, [loc.postalCode, loc.addressLocality].filter(Boolean).join(' ')]
+  .filter(Boolean)
+  .join(', ');
+
 const waMessage = data.registerUrl
   ? `Hi! I have a question about ${data.heading}.`
   : `Hi! I'd like to join ${data.heading}.`;
@@ -182,6 +188,11 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
         </div>
       ) : (
         <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
+      )}
+      {data.registerUrl && mapUrl && (
+        <a class="class-location-link" href={mapUrl} target="_blank" rel="noopener">
+          📍 {locationLabel}{loc.name ? ` (${loc.name})` : ''}
+        </a>
       )}
     </div>
   </section>
@@ -512,8 +523,9 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
   }
   .class-teacher-card img {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 3 / 4;
     object-fit: cover;
+    object-position: center top;
     display: block;
   }
   .class-teacher-card-body {
@@ -629,6 +641,17 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
     flex-wrap: wrap;
     justify-content: center;
     gap: 14px;
+  }
+  .class-location-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--green);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
   .btn-register {
     display: inline-flex;
