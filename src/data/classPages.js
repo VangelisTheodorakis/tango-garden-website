@@ -34,7 +34,7 @@ export const classPages = [
     ],
     heroImage: '/images/enter-the-garden-hero.webp',
     gallery: [
-      '/images/enter-the-garden-4.webp',
+      '/images/enter-the-garden-1.webp',
       '/images/enter-the-garden-2.webp',
       '/images/enter-the-garden-3.webp',
     ],
@@ -97,7 +97,7 @@ export const classPages = [
     ],
     whatsIncluded: [],
     registerUrl: 'https://forms.gle/mAqzDEYasFyCrdoz8',
-    heroImage: '/images/beginner-course-hero.webp',
+    heroImage: '/images/hero-dancers.webp',
     gallery: [
       '/images/beginner-course-2.webp',
       '/images/beginner-course-1.webp',
