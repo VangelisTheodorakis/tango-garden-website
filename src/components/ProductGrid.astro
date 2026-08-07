@@ -27,7 +27,7 @@ const groups = [
   },
   {
     title: 'The Sprouting Sessions',
-    blurb: 'A 12-week beginner course — one class, four classes, or the full course.',
+    blurb: 'A 12-week beginner course: one class, four classes, or the full course.',
     price: `from ${fullCourseRow.perClass?.general}/class`,
     href: '/pages/beginner-course',
   },
@@ -56,6 +56,7 @@ const groups = [
             <span class="collection-card-title">{group.title}</span>
             <span class="collection-card-blurb">{group.blurb}</span>
             <span class="collection-card-price">{group.price}</span>
+            <span class="collection-card-cta">View details &amp; prices →</span>
           </a>
         </li>
       ))
@@ -67,7 +68,7 @@ const groups = [
     can always find their way onto the floor.
   </p>
   <p class="collection-note">
-    * Reduced rate for students and anyone 28 and under. No proof needed — we trust you.
+    * Reduced rate for students and anyone 28 and under. No proof needed, we trust you.
   </p>
 
   <div class="collection-help">
@@ -107,9 +108,9 @@ const groups = [
     display: flex;
     flex-direction: column;
     gap: 10px;
-    background: var(--cream);
-    border: 2px solid transparent;
-    border-radius: 12px;
+    background: var(--cream-light);
+    border: 1px solid rgba(78, 93, 34, 0.12);
+    border-radius: 14px;
     padding: 24px 22px;
     text-decoration: none;
     color: var(--text);
@@ -138,6 +139,25 @@ const groups = [
   .collection-card-price {
     font-weight: 700;
     color: var(--green);
+  }
+  .collection-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 6px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(78, 93, 34, 0.15);
+    background: rgba(78, 93, 34, 0.05);
+    color: var(--green);
+    font-weight: 600;
+    font-size: 0.85rem;
+    width: fit-content;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .collection-card:hover .collection-card-cta {
+    background: var(--green);
+    color: #efecec;
   }
   .collection-why {
     margin: 40px auto 0;
