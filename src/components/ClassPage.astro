@@ -354,6 +354,7 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
     ) : (
       <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
     )}
+    {data.registerUrl && <p class="class-cta-note">No payment required to register. Pay in cash at your first class.</p>}
   </section>
 </BaseLayout>
 
@@ -453,13 +454,14 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
   }
 
   .class-tier-toggle {
-    display: inline-flex;
+    display: flex;
     flex-wrap: wrap;
+    width: fit-content;
     gap: 4px;
     background: var(--cream-light);
     border-radius: 999px;
     padding: 4px;
-    margin-bottom: 0.6rem;
+    margin: 0 auto 0.6rem;
   }
   .class-tier-btn {
     border: none;
@@ -482,6 +484,7 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
   .class-tier-hint {
     font-size: 0.85rem;
     color: var(--text-light);
+    text-align: center;
     margin-bottom: 1rem;
   }
   .class-table-wrap {
@@ -697,6 +700,11 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
   .class-cta p {
     color: var(--text-light);
     margin-bottom: 1.5rem;
+  }
+  .class-cta-note {
+    margin: 1rem 0 0;
+    font-size: 0.85rem;
+    color: var(--text-light);
   }
   .class-btn-row {
     display: flex;
