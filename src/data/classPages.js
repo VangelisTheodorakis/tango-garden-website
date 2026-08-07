@@ -72,39 +72,38 @@ export const classPages = [
   },
   {
     slug: 'beginner-course',
-    title: 'The Sprouting Sessions — 12-Week Beginner Tango Course',
-    metaTitle: 'Beginner Tango Course Cologne — The Sprouting Sessions',
+    title: 'The Sprouting Sessions: 12-Week Beginner Tango Course',
+    metaTitle: 'Beginner Tango Course Cologne: The Sprouting Sessions',
     metaDescription:
       'A 12-week Argentine tango beginner course in Cologne. No partner needed, weekly classes, free makeup sessions. Everything you need to start dancing with us.',
     eyebrow: 'Step Two',
     heading: 'The Sprouting Sessions',
     intro:
-      'A 12-week beginner course that takes you from zero to dancing with confidence — a steady weekly rhythm, not a rush. This is the most effective path if you want to actually learn tango.',
+      'A 12-week beginner course that takes you from zero to dancing with confidence, a steady weekly rhythm, not a rush. This is the most effective path if you want to actually learn tango.',
     feed: '/assets/data/regular-classes.json',
     feedLabel: 'Next Beginner Course · Group closes 01/10',
     whatToExpect: [
       "Each 1.5-hour class builds on the last: connection, weight shifts, the embrace, and musicality, taught calmly and without pressure to perform.",
-      "No partner needed — we rotate throughout the course, and you choose your role each week: Leader, Follower, or Double-Role.",
+      "No partner needed. We rotate throughout the course, and you choose your role each week: Leader, Follower, or Double-Role.",
       "You want to make tango a gentle weekly ritual, whether you're here for the best value per class or the flexibility to try it first.",
     ],
-    whatsIncluded: [
-      '12 weekly 1.5-hour classes with structured progression',
-      'Free makeup at the Garden Practica if you miss a class',
-      'Role of your choice, every week: Leader, Follower, or Double-Role',
-      "New students can join until 1 October — after that the group closes to keep the class cohesive",
-    ],
+    whatsIncluded: [],
+    registerUrl: 'https://forms.gle/mAqzDEYasFyCrdoz8',
     table: {
       caption: 'Passes',
       rows: [
         {
-          label: '1-Class Pass',
-          general: { handle: 'the-sprouting-sessions-beginner-level-1-class-pass-general-admission' },
-          student: {
-            handle: 'the-sprouting-sessions-beginner-level-1-class-pass-student-and-under-28-admission',
+          label: 'Full Course (12 classes)',
+          general: {
+            handle: 'the-sprouting-sessions-beginner-level-full-course-pass-general-admission',
           },
-          perClass: null,
-          bestFor: "You've taken a class with us before and want to decide week by week.",
-          bestValue: false,
+          student: {
+            handle: 'the-sprouting-sessions-beginner-level-full-course-pass-student-and-under28-admission',
+          },
+          perClass: { general: '€13', student: '€10' },
+          bestFor: 'The full 12-week journey, and the best value per class.',
+          bestValue: true,
+          makeupIncluded: true,
         },
         {
           label: '4-Class Pass',
@@ -117,27 +116,26 @@ export const classPages = [
           perClass: { general: '€15', student: '€11' },
           bestFor: 'A gentle weekly ritual, without locking into the full course.',
           bestValue: false,
+          makeupIncluded: true,
         },
         {
-          label: 'Full Course (12 classes)',
-          general: {
-            handle: 'the-sprouting-sessions-beginner-level-full-course-pass-general-admission',
-          },
+          label: '1-Class Pass',
+          general: { handle: 'the-sprouting-sessions-beginner-level-1-class-pass-general-admission' },
           student: {
-            handle: 'the-sprouting-sessions-beginner-level-full-course-pass-student-and-under28-admission',
+            handle: 'the-sprouting-sessions-beginner-level-1-class-pass-student-and-under-28-admission',
           },
-          perClass: { general: '€13', student: '€10' },
-          bestFor: 'The full 12-week journey, and the best value per class.',
-          bestValue: true,
+          perClass: null,
+          bestFor: "You've taken a class with us before and want to decide week by week.",
+          bestValue: false,
+          makeupIncluded: false,
         },
       ],
     },
-    cancellationNote:
-      'Cancel up to 1 calendar day before your pass starts for a full refund. Cancel within the first 7 days and you can still get a partial refund — €115 (Full Course, general) / €90 (Full Course, student) / €50 (4-Class Pass). After that, passes are non-refundable. The 1-Class Pass follows the simple 1-day rule only.',
+    cancellationNote: null,
     faq: [
       {
         q: 'Do I need any dance experience to start?',
-        a: 'Not at all. Every class is designed for absolute beginners. We start from scratch — how to stand, how to be present, how to listen through touch.',
+        a: 'Not at all. Every class is designed for absolute beginners. We start from scratch: how to stand, how to be present, how to listen through touch.',
       },
       {
         q: 'Do I need to bring a partner?',
@@ -145,7 +143,7 @@ export const classPages = [
       },
       {
         q: 'What should I wear?',
-        a: 'Comfortable clothes you can move in. For shoes, a clean pair of cozy socks or a second pair of indoor shoes works well — avoid thick rubber soles, they grip the floor and make turning difficult.',
+        a: 'Comfortable clothes you can move in. For shoes, a clean pair of cozy socks or a second pair of indoor shoes works well. Avoid thick rubber soles, they grip the floor and make turning difficult.',
       },
       {
         q: 'Is the class taught in English?',
@@ -157,7 +155,7 @@ export const classPages = [
       },
       {
         q: 'Where exactly are you located in Cologne?',
-        a: 'Thürmchenswall 21, 50668 Köln (Yoga Drop Studio) — a 3-minute walk from Ebertplatz.',
+        a: 'Thürmchenswall 21, 50668 Köln (Yoga Drop Studio), a 3-minute walk from Ebertplatz.',
       },
     ],
     offerHandles: [
@@ -169,7 +167,7 @@ export const classPages = [
       'the-sprouting-sessions-beginner-level-full-course-pass-student-and-under28-admission',
     ],
     courseSchema: {
-      name: 'The Sprouting Sessions — Beginner Argentine Tango Course Cologne',
+      name: 'The Sprouting Sessions: Beginner Argentine Tango Course Cologne',
       description:
         'Complete 12-week beginner Argentine tango course in Cologne. From zero to dancing with confidence. No partner or experience needed.',
       duration: 'PT1H30M',
