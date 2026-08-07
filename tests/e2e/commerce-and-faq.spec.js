@@ -164,20 +164,4 @@ test.describe('FAQ accordions', () => {
     await first.click();
     await expect(answer).toBeHidden();
   });
-
-  test('start-here answers are not focusable while collapsed', async ({ page }) => {
-    // max-height:0 hid them visually but left their links in the tab order.
-    await page.goto('/pages/start-here');
-
-    const collapsedLinks = page.locator('.start-here-faq-answer[hidden] a');
-    const count = await collapsedLinks.count();
-    for (let i = 0; i < count; i++) {
-      await expect(collapsedLinks.nth(i)).toBeHidden();
-    }
-
-    const btn = page.locator('.start-here-faq-btn').first();
-    await btn.click();
-    await expect(btn).toHaveAttribute('aria-expanded', 'true');
-    await expect(page.locator('.start-here-faq-answer').first()).toBeVisible();
-  });
 });

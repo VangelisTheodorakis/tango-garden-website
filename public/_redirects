@@ -22,6 +22,11 @@
 # tier was retired and permanently redirects to the general page.
 /products/enter-the-garden-introductory-session-student-and-under-28-admission  /products/enter-the-garden-general-admission  301
 
+# Start Here was consolidated into The Garden (its "Is This For You" content
+# now lives at /pages/the-garden#is-this-for-you; the pathway cards it hosted
+# are on the homepage and /collections/all).
+/pages/start-here        /pages/the-garden  301
+
 # The three classes each moved from N separate per-SKU product pages to one
 # consolidated page with a combined pricing/perks table (src/data/classPages.js).
 # Old SKU URLs 301 to the new page so any existing links/bookmarks/indexing

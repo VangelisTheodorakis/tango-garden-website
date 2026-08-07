@@ -13,15 +13,7 @@ export const navItems = [
     children: [
       { href: '/pages/the-garden#our-story', label: 'Our Story' },
       { href: '/pages/the-garden#our-gardeners', label: 'Our Gardeners' },
-    ],
-  },
-  {
-    href: '/pages/start-here',
-    label: 'Start Here',
-    children: [
-      { href: '/pages/start-here#three-ways-to-enter', label: 'Three Ways to Enter the Garden' },
-      { href: '/pages/start-here#is-this-for-you', label: 'Is This For Me?' },
-      { href: '/pages/start-here#common-questions', label: 'Common Questions' },
+      { href: '/pages/the-garden#is-this-for-you', label: 'Is This For Me?' },
     ],
   },
   {
