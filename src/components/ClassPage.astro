@@ -29,7 +29,6 @@ interface ClassPageEntry {
       general: { handle: string };
       student: { handle: string } | null;
       perClass: { general: string; student: string } | null;
-      bestFor: string;
       bestValue: boolean;
       makeupIncluded?: boolean;
     }[];
@@ -281,18 +280,6 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
     )}
   </section>
 
-  <section class="class-section">
-    <h2>Who It's For</h2>
-    <dl class="class-fit-list">
-      {data.table.rows.map((row) => (
-        <div class="class-fit-item">
-          <dt>{row.label}</dt>
-          <dd>{row.bestFor}</dd>
-        </div>
-      ))}
-    </dl>
-  </section>
-
   {data.showTeachers && (
     <section class="class-section">
       <h2>Meet Your Teachers</h2>
@@ -437,6 +424,22 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
     font-weight: 600;
     color: var(--green);
   }
+  .class-hero--photo .class-schedule {
+    background: var(--green);
+  }
+  .class-hero--photo .class-schedule-label,
+  .class-hero--photo .class-schedule-date {
+    color: #efecec;
+  }
+  .class-hero--photo .btn-ghost {
+    background: var(--green);
+    color: #efecec;
+    border-color: var(--green);
+  }
+  .class-hero--photo .btn-ghost:hover {
+    background: var(--green-btn);
+    border-color: var(--green-btn);
+  }
 
   .class-section {
     max-width: 760px;
@@ -551,27 +554,6 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
     margin-top: 0.75rem;
     font-size: 0.85rem;
     color: var(--text-light);
-  }
-
-  .class-fit-list {
-    margin: 0;
-  }
-  .class-fit-item {
-    padding: 0.9rem 0;
-  }
-  .class-fit-item + .class-fit-item {
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
-  }
-  .class-fit-item dt {
-    font-weight: 600;
-    color: var(--green);
-    margin-bottom: 0.25rem;
-  }
-  .class-fit-item dd {
-    margin: 0;
-    font-size: 0.97rem;
-    line-height: 1.7;
-    color: var(--text-mid);
   }
 
   .class-teacher-cards {
