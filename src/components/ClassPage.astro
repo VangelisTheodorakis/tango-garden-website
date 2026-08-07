@@ -79,6 +79,12 @@ const perClassNum = (label: string) => {
   return match ? Number(match[1]) : null;
 };
 
+const priceCell = (row: ClassPageEntry['table']['rows'][number]) => {
+  const general = priceLabel(row.general.handle);
+  if (!row.student) return general;
+  return `${general} / ${priceLabel(row.student.handle)}`;
+};
+
 /** Pass price minus the cost of one class — the amount refunded on a within-1-week cancellation. */
 const refundFor = (row: ClassPageEntry['table']['rows'][number]) => {
   if (!row.perClass) return null;
@@ -214,9 +220,7 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
         <thead>
           <tr>
             <th scope="col">Option</th>
-            {!hasStudent && <th scope="col">Price</th>}
-            {hasStudent && <th scope="col">General</th>}
-            {hasStudent && <th scope="col">Student / Under 28*</th>}
+            <th scope="col">{hasStudent ? 'Price*' : 'Price'}</th>
             {hasPerClass && <th scope="col">Per class</th>}
             {hasMakeup && <th scope="col">Free practica if you miss a class</th>}
             {hasPerClass && <th scope="col">Refund within 1 week†</th>}
@@ -231,9 +235,7 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
                   {row.label}
                   {row.bestValue && <span class="class-table-tag">Best value</span>}
                 </th>
-                {!hasStudent && <td>{priceLabel(row.general.handle)}</td>}
-                {hasStudent && <td>{priceLabel(row.general.handle)}</td>}
-                {hasStudent && <td>{row.student ? priceLabel(row.student.handle) : '—'}</td>}
+                <td>{priceCell(row)}</td>
                 {hasPerClass && (
                   <td>{row.perClass ? `${row.perClass.general} / ${row.perClass.student}` : '—'}</td>
                 )}
@@ -254,7 +256,7 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
       </table>
     </div>
     {hasStudent && (
-      <p class="class-note">* Reduced price for students and anyone aged 28 or under. No proof needed.</p>
+      <p class="class-note">* General / student price. Reduced price for students and anyone aged 28 or under. No proof needed.</p>
     )}
     {hasPerClass && (
       <p class="class-note">
