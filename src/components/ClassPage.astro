@@ -79,12 +79,6 @@ const perClassNum = (label: string) => {
   return match ? Number(match[1]) : null;
 };
 
-const priceCell = (row: ClassPageEntry['table']['rows'][number]) => {
-  const general = priceLabel(row.general.handle);
-  if (!row.student) return general;
-  return `${general} / ${priceLabel(row.student.handle)}`;
-};
-
 /** Pass price minus the cost of one class — the amount refunded on a within-1-week cancellation. */
 const refundFor = (row: ClassPageEntry['table']['rows'][number]) => {
   if (!row.perClass) return null;
@@ -215,12 +209,21 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
 
   <section class="class-section" id="pricing">
     <h2>Pricing</h2>
-    <div class="class-table-wrap">
+    {hasStudent && (
+      <div class="class-tier-toggle" role="tablist" aria-label="Pricing group">
+        <button type="button" class="class-tier-btn is-active" data-tier="general" role="tab" aria-selected="true">General</button>
+        <button type="button" class="class-tier-btn" data-tier="student" role="tab" aria-selected="false">Reduced</button>
+      </div>
+    )}
+    {hasStudent && (
+      <p class="class-tier-hint">Reduced pricing for students and anyone aged 28 or under. No proof needed.</p>
+    )}
+    <div class="class-table-wrap" data-tier="general">
       <table class="class-table">
         <thead>
           <tr>
             <th scope="col">Option</th>
-            <th scope="col">{hasStudent ? 'Price*' : 'Price'}</th>
+            <th scope="col">Price</th>
             {hasPerClass && <th scope="col">Per class</th>}
             {hasMakeup && <th scope="col">Free practica if you miss a class</th>}
             {hasPerClass && <th scope="col">Refund within 1 week†</th>}
@@ -235,19 +238,32 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
                   {row.label}
                   {row.bestValue && <span class="class-table-tag">Best value</span>}
                 </th>
-                <td>{priceCell(row)}</td>
-                {hasPerClass && (
-                  <td>{row.perClass ? `${row.perClass.general} / ${row.perClass.student}` : '—'}</td>
+                {hasStudent ? (
+                  <td>
+                    <span class="tier-value tier-general">{priceLabel(row.general.handle)}</span>
+                    <span class="tier-value tier-student">{row.student ? priceLabel(row.student.handle) : '—'}</span>
+                  </td>
+                ) : (
+                  <td>{priceLabel(row.general.handle)}</td>
+                )}
+                {hasPerClass && hasStudent && (
+                  <td>
+                    <span class="tier-value tier-general">{row.perClass ? row.perClass.general : '—'}</span>
+                    <span class="tier-value tier-student">{row.perClass ? row.perClass.student : '—'}</span>
+                  </td>
+                )}
+                {hasPerClass && !hasStudent && (
+                  <td>{row.perClass ? row.perClass.general : '—'}</td>
                 )}
                 {hasMakeup && <td>{row.makeupIncluded ? '✓' : '—'}</td>}
-                {hasPerClass && (
+                {hasPerClass && hasStudent && (
                   <td>
-                    {refund
-                      ? hasStudent && refund.student != null
-                        ? `€${refund.general} / €${refund.student}`
-                        : `€${refund.general}`
-                      : '—'}
+                    <span class="tier-value tier-general">{refund ? `€${refund.general}` : '—'}</span>
+                    <span class="tier-value tier-student">{refund && refund.student != null ? `€${refund.student}` : '—'}</span>
                   </td>
+                )}
+                {hasPerClass && !hasStudent && (
+                  <td>{refund ? `€${refund.general}` : '—'}</td>
                 )}
               </tr>
             );
@@ -255,9 +271,6 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
         </tbody>
       </table>
     </div>
-    {hasStudent && (
-      <p class="class-note">* General / student price. Reduced price for students and anyone aged 28 or under. No proof needed.</p>
-    )}
     {hasPerClass && (
       <p class="class-note">
         † Refundable if the cancellation is made within 1 week of the pass purchase. After that, passes are non-refundable.
@@ -439,10 +452,48 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
     margin-bottom: 1rem;
   }
 
+  .class-tier-toggle {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    background: var(--cream-light);
+    border-radius: 999px;
+    padding: 4px;
+    margin-bottom: 0.6rem;
+  }
+  .class-tier-btn {
+    border: none;
+    background: none;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--green);
+    transition: background 0.2s, color 0.2s;
+  }
+  .class-tier-btn.is-active {
+    background: var(--green);
+    color: #fff;
+  }
+  .class-tier-hint {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+  }
   .class-table-wrap {
     overflow-x: auto;
     border-radius: 12px;
     border: 1px solid rgba(78, 93, 34, 0.12);
+  }
+  .class-table-wrap[data-tier="general"] .tier-value.tier-student {
+    display: none;
+  }
+  .class-table-wrap[data-tier="student"] .tier-value.tier-general {
+    display: none;
   }
   .class-table {
     width: 100%;
@@ -747,6 +798,23 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
     const willOpen = locationPanel.hidden;
     locationPanel.hidden = !willOpen;
     locationToggle.setAttribute('aria-expanded', String(willOpen));
+  });
+
+  // Pricing tier toggle: swaps which of the general/student values show in
+  // the table without re-rendering it.
+  const tierWrap = document.querySelector('.class-table-wrap') as HTMLElement | null;
+  const tierButtons = document.querySelectorAll('.class-tier-btn') as NodeListOf<HTMLButtonElement>;
+  tierButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const tier = btn.dataset.tier;
+      if (!tier || !tierWrap) return;
+      tierWrap.dataset.tier = tier;
+      tierButtons.forEach((b) => {
+        const active = b === btn;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-selected', String(active));
+      });
+    });
   });
 
   // FAQ accordion, single-open, `hidden` as the source of truth for collapsed
