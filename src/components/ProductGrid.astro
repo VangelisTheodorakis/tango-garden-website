@@ -17,23 +17,28 @@ const rowFor = (slug: string, label: string) =>
   classPages.find((c) => c.slug === slug)!.table.rows.find((r) => r.label === label)!;
 
 const fullCourseRow = rowFor('beginner-course', 'Full Course (12 classes)');
+const beginnerCourseRegisterUrl = classPages.find((c) => c.slug === 'beginner-course')?.registerUrl;
 
 const groups = [
   {
     title: 'Enter the Garden',
     blurb: 'One-time, free introductory session for anyone who wants to try without commitment.',
+    bestFor: 'anyone curious about tango, zero experience needed.',
     price: priceOf('enter-the-garden-general-admission'),
     href: '/pages/enter-the-garden',
   },
   {
     title: 'The Sprouting Sessions',
     blurb: 'A 12-week beginner course: one class, four classes, or the full course.',
+    bestFor: 'complete beginners ready to commit to learning tango.',
     price: `from ${fullCourseRow.perClass?.general}/class`,
     href: '/pages/beginner-course',
+    registerUrl: beginnerCourseRegisterUrl,
   },
   {
     title: 'The Garden Practica',
     blurb: 'Open-level guided practice sessions. Drop in whenever you like.',
+    bestFor: 'dancers with some experience who want to practice.',
     price: `${priceOf('the-garden-practica-1-practica-pass-general-admission')} or ${priceOf('the-garden-practica-1-practica-pass-door-only-student-and-under-28-admission')}*`,
     href: '/pages/garden-practica',
   },
@@ -52,12 +57,20 @@ const groups = [
     {
       groups.map((group) => (
         <li>
-          <a class="collection-card" href={group.href}>
+          <div class="collection-card">
             <span class="collection-card-title">{group.title}</span>
             <span class="collection-card-blurb">{group.blurb}</span>
+            <span class="collection-card-best-for"><strong>Best for:</strong> {group.bestFor}</span>
             <span class="collection-card-price">{group.price}</span>
-            <span class="collection-card-cta">View details &amp; prices →</span>
-          </a>
+            <div class="collection-card-actions">
+              <a class="collection-card-cta" href={group.href}>View details &amp; prices →</a>
+              {group.registerUrl && (
+                <a class="collection-card-register" href={group.registerUrl} target="_blank" rel="noopener">
+                  Register Now
+                </a>
+              )}
+            </div>
+          </div>
         </li>
       ))
     }
@@ -107,12 +120,11 @@ const groups = [
   .collection-card {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     background: var(--cream-light);
     border: 1px solid rgba(78, 93, 34, 0.12);
     border-radius: 14px;
     padding: 24px 22px;
-    text-decoration: none;
     color: var(--text);
     height: 100%;
     transition:
@@ -134,17 +146,30 @@ const groups = [
     font-size: 0.9rem;
     line-height: 1.5;
     color: var(--text-light);
+  }
+  .collection-card-best-for {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--text-light);
     flex-grow: 1;
+  }
+  .collection-card-best-for strong {
+    color: var(--text);
   }
   .collection-card-price {
     font-weight: 700;
     color: var(--green);
   }
+  .collection-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
   .collection-card-cta {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    margin-top: 6px;
     padding: 10px 18px;
     border-radius: 999px;
     border: 1px solid rgba(78, 93, 34, 0.15);
@@ -152,12 +177,28 @@ const groups = [
     color: var(--green);
     font-weight: 600;
     font-size: 0.85rem;
-    width: fit-content;
-    transition: background 0.2s, transform 0.2s;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
   }
-  .collection-card:hover .collection-card-cta {
+  .collection-card-cta:hover {
     background: var(--green);
     color: #efecec;
+  }
+  .collection-card-register {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: #c9703e;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .collection-card-register:hover {
+    background: #b25f31;
+    transform: translateY(-1px);
   }
   .collection-why {
     margin: 40px auto 0;
