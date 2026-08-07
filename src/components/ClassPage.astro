@@ -140,9 +140,6 @@ const courseSchema = {
 
 const mapQuery = [loc.streetAddress, loc.postalCode, loc.addressLocality].filter(Boolean).join(', ');
 const mapUrl = mapQuery ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}` : null;
-const locationLabel = [loc.streetAddress, [loc.postalCode, loc.addressLocality].filter(Boolean).join(' ')]
-  .filter(Boolean)
-  .join(', ');
 
 const waMessage = `Hi! I have a question about ${data.heading}.`;
 const waHref = `https://wa.me/491602368723?text=${encodeURIComponent(waMessage)}`;
@@ -178,14 +175,7 @@ const waLabel = '💬 Chat on WhatsApp';
         <p class="class-cta-note">No payment required to register. Pay in cash at your first class.</p>
       )}
       {mapUrl && (
-        <div class="class-location">
-          <button type="button" class="class-location-toggle" aria-expanded="false">📍 Where is it?</button>
-          <div class="class-location-panel" hidden>
-            {loc.name && <p class="class-location-name">{loc.name}</p>}
-            <p>{locationLabel}</p>
-            <a href={mapUrl} target="_blank" rel="noopener">Open in Google Maps →</a>
-          </div>
-        </div>
+        <a class="class-location-toggle" href={mapUrl} target="_blank" rel="noopener">📍 Where is it?</a>
       )}
     </div>
   </section>
@@ -723,20 +713,18 @@ const waLabel = '💬 Chat on WhatsApp';
     justify-content: center;
     gap: 14px;
   }
-  .class-location {
-    margin-top: 18px;
-    display: inline-block;
-    text-align: left;
-  }
   .class-location-toggle {
-    display: inline-flex;
+    display: flex;
+    width: fit-content;
     align-items: center;
     gap: 0.4rem;
+    margin: 18px auto 0;
     background: rgba(78, 93, 34, 0.08);
     border: 1px solid rgba(78, 93, 34, 0.2);
     border-radius: 999px;
     padding: 10px 18px;
     font-family: inherit;
+    text-decoration: none;
     cursor: pointer;
     font-size: 0.85rem;
     font-weight: 700;
@@ -747,27 +735,6 @@ const waLabel = '💬 Chat on WhatsApp';
     background: var(--green);
     color: #efecec;
     transform: translateY(-1px);
-  }
-  .class-location-panel {
-    margin-top: 10px;
-    padding: 12px 16px;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 10px;
-    font-size: 0.88rem;
-    color: var(--text-mid);
-  }
-  .class-location-panel p {
-    margin: 0 0 0.3rem;
-  }
-  .class-location-name {
-    font-weight: 600;
-    color: var(--green);
-  }
-  .class-location-panel a {
-    display: inline-block;
-    margin-top: 0.3rem;
-    font-weight: 600;
-    color: var(--green);
   }
   .btn-register {
     display: inline-flex;
@@ -817,15 +784,6 @@ const waLabel = '💬 Chat on WhatsApp';
 
   // Location disclosure, `hidden` as the source of truth so the map link
   // stays out of the tab order until the visitor asks to see it.
-  const locationToggle = document.querySelector('.class-location-toggle') as HTMLButtonElement | null;
-  const locationPanel = document.querySelector('.class-location-panel') as HTMLElement | null;
-  locationToggle?.addEventListener('click', () => {
-    if (!locationPanel) return;
-    const willOpen = locationPanel.hidden;
-    locationPanel.hidden = !willOpen;
-    locationToggle.setAttribute('aria-expanded', String(willOpen));
-  });
-
   // Pricing tier toggle: swaps which of the general/student values show in
   // the table without re-rendering it.
   const tierWrap = document.querySelector('.class-table-wrap') as HTMLElement | null;
