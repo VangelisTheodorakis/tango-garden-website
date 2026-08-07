@@ -189,6 +189,9 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
       ) : (
         <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
       )}
+      {data.registerUrl && (
+        <p class="class-cta-note">No payment required to register. Pay in cash at your first class.</p>
+      )}
       {data.registerUrl && mapUrl && (
         <div class="class-location">
           <button type="button" class="class-location-toggle" aria-expanded="false">📍 Where is it?</button>
