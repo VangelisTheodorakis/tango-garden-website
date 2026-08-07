@@ -66,7 +66,7 @@ export const classPages = [
       },
       {
         q: 'Where exactly are you located in Cologne?',
-        a: '<a href="https://www.google.com/maps/search/?api=1&query=Rheinpark%2C%20K%C3%B6ln%2C%20Germany" target="_blank" rel="noopener">Rheinpark</a>, on the Rhine near the Rheinparkweg entrance.',
+        a: '<a href="https://www.google.com/maps/search/?api=1&query=Tango+Garden+Tanzpavillon+vor+der+Claudius-Therme+K%C3%B6ln" target="_blank" rel="noopener">Rheinpark, Tanzpavillon vor der Claudius-Therme</a>, on the Rhine near the Rheinparkweg entrance.',
         raw: true,
       },
     ],
@@ -76,7 +76,11 @@ export const classPages = [
       description:
         'Free one-hour open-air introductory Argentine tango session at Rheinpark in Cologne. No partner or experience needed.',
       duration: 'PT1H',
-      location: { name: 'Rheinpark', addressLocality: 'Köln' },
+      location: {
+        name: 'Rheinpark, Tanzpavillon vor der Claudius-Therme',
+        streetAddress: 'Tanzpavillon vor der Claudius-Therme',
+        addressLocality: 'Köln',
+      },
     },
   },
   {
