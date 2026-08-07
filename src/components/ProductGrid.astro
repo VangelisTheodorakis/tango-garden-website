@@ -172,17 +172,18 @@ const groups = [
     gap: 0.4rem;
     padding: 10px 18px;
     border-radius: 999px;
-    border: 1px solid rgba(78, 93, 34, 0.15);
-    background: rgba(78, 93, 34, 0.05);
-    color: var(--green);
+    border: 1px solid var(--green);
+    background: var(--green);
+    color: #efecec;
     font-weight: 600;
     font-size: 0.85rem;
     text-decoration: none;
-    transition: background 0.2s, color 0.2s;
+    transition: background 0.2s, transform 0.2s;
   }
   .collection-card-cta:hover {
-    background: var(--green);
-    color: #efecec;
+    background: var(--green-btn);
+    border-color: var(--green-btn);
+    transform: translateY(-1px);
   }
   .collection-card-register {
     display: inline-flex;
