@@ -81,9 +81,9 @@ export const classPages = [
     feed: '/assets/data/regular-classes.json',
     feedLabel: 'Next Beginner Course · Group closes 01/10',
     whatToExpect: [
-      "Each 1.5-hour class builds on the last: connection, weight shifts, the embrace, and musicality, taught calmly and without pressure to perform.",
+      "A gentle weekly ritual, whether you're here for the best value per class or the flexibility to try it first.",
+      "Each 1.5-hour class builds on the last: connection, weight shifts, the embrace, and musicality, taught in a fun and engaging way that builds confidence and momentum.",
       "No partner needed. We rotate partners throughout the course, and you choose which role you'd like to learn: Leader, Follower, or Double-Role.",
-      "You want to make tango a gentle weekly ritual, whether you're here for the best value per class or the flexibility to try it first.",
     ],
     whatsIncluded: [],
     registerUrl: 'https://forms.gle/mAqzDEYasFyCrdoz8',
