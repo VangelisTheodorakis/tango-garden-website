@@ -76,15 +76,14 @@ export const classPages = [
     metaTitle: 'Beginner Tango Course Cologne: The Sprouting Sessions',
     metaDescription:
       'A 12-week Argentine tango beginner course in Cologne. No partner needed, weekly classes, free makeup sessions. Everything you need to start dancing with us.',
-    eyebrow: 'Step Two',
-    heading: 'The Sprouting Sessions',
-    intro:
-      'A 12-week beginner course that takes you from zero to dancing with confidence, a steady weekly rhythm, not a rush. This is the most effective path if you want to actually learn tango.',
+    eyebrow: 'The Sprouting Sessions',
+    heading: 'Start Dancing Argentine Tango',
+    intro: 'A gentle, structured 12-week beginning for people who have never danced tango before.',
     feed: '/assets/data/regular-classes.json',
     feedLabel: 'Next Beginner Course · Group closes 01/10',
     whatToExpect: [
       "Each 1.5-hour class builds on the last: connection, weight shifts, the embrace, and musicality, taught calmly and without pressure to perform.",
-      "No partner needed. We rotate throughout the course, and you choose your role each week: Leader, Follower, or Double-Role.",
+      "No partner needed. We rotate partners throughout the course, and you choose which role you'd like to learn: Leader, Follower, or Double-Role.",
       "You want to make tango a gentle weekly ritual, whether you're here for the best value per class or the flexibility to try it first.",
     ],
     whatsIncluded: [],
