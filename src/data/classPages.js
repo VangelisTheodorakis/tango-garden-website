@@ -33,6 +33,7 @@ export const classPages = [
       'Partner rotation, so you can come solo',
       'A Garden Ambassador greeting, so you never stand alone',
     ],
+    heroImage: true,
     table: {
       caption: 'Price',
       rows: [
@@ -58,6 +59,11 @@ export const classPages = [
       {
         q: 'What should I wear?',
         a: "Comfortable clothes and shoes you can move in — we're outdoors on grass at Rheinpark.",
+      },
+      {
+        q: 'Where exactly are you located in Cologne?',
+        a: '<a href="https://www.google.com/maps/search/?api=1&query=Rheinpark%2C%20K%C3%B6ln%2C%20Germany" target="_blank" rel="noopener">Rheinpark</a>, on the Rhine near the Rheinparkweg entrance.',
+        raw: true,
       },
     ],
     offerHandles: ['enter-the-garden-general-admission'],
@@ -198,6 +204,7 @@ export const classPages = [
       'All levels and roles welcome, including Double-Role',
       'A relaxed space to apply what you’re learning',
     ],
+    heroImage: true,
     table: {
       caption: 'Price',
       rows: [
@@ -212,9 +219,12 @@ export const classPages = [
         },
       ],
     },
-    cancellationNote:
-      'Cancel up to 1 calendar day before the practica for a full refund. Same-day cancellations aren’t eligible for a refund. Passes are door-only and valid for that one practica.',
+    cancellationNote: null,
     faq: [
+      {
+        q: 'Do I need any dance experience to start?',
+        a: 'The practica works best if you already know the basics, but if you’re completely new, we recommend starting with Enter the Garden or the Sprouting Sessions first.',
+      },
       {
         q: 'Do I need to bring a partner?',
         a: 'No. We rotate throughout the practica, so you can come solo and still dance with everyone.',
@@ -225,7 +235,8 @@ export const classPages = [
       },
       {
         q: 'Where exactly are you located in Cologne?',
-        a: 'Thürmchenswall 21, 50668 Köln (Yoga Drop Studio) — a 3-minute walk from Ebertplatz.',
+        a: '<a href="https://www.google.com/maps/search/?api=1&query=Th%C3%BCrmchenswall+21%2C+50668+K%C3%B6ln" target="_blank" rel="noopener">Thürmchenswall 21, 50668 Köln</a> (Yoga Drop Studio), a 3-minute walk from Ebertplatz.',
+        raw: true,
       },
     ],
     offerHandles: [
