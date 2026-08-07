@@ -119,11 +119,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <li>You're comfortable in English, or want a space where language isn't a barrier</li>
       <li>You're curious about dance, but more curious about people</li>
       <li>You want to meet others without small talk, apps, or performance pressure</li>
-      <li>You believe connection can be learned — and practiced</li>
+      <li>You believe connection can be learned, and practiced</li>
     </ul>
     <div class="garden-fit-note">
-      <p>Here, we speak English first. But more importantly, we share a deeper language — touch, presence, and attention.</p>
+      <p>Here, we speak English first. But more importantly, we share a deeper language: touch, presence, and attention.</p>
       <p class="garden-fit-note-italic">It may not be for you if you're looking for a drop-in workout with no community. And that's okay.</p>
+    </div>
+    <div class="garden-fit-cta">
+      <a href="/pages/beginner-course" class="btn-primary">See regular classes</a>
+      <a href="https://wa.me/491602368723?text=Hi!%20I%20have%20a%20question%20before%20joining..." class="btn-ghost">💬 Chat on WhatsApp</a>
     </div>
   </div>
 </section>
@@ -473,6 +477,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       color: var(--text-light);
       font-style: italic;
       margin-bottom: 0 !important;
+    }
+    .garden-fit-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
     }
 
     /* Responsive */
