@@ -25,11 +25,11 @@ export const classPages = [
     feedLabel: 'Next introductory class',
     whatToExpect: [
       'A one-hour, guided introduction to connection, weight shifts, and the embrace, not performance, just conversation between two people.',
-      "We rotate throughout the session so everyone dances with everyone. Come solo, it's normal here.",
+      "We rotate throughout the session so everyone dances with everyone. Come solo or with a partner.",
     ],
     whatsIncluded: [
       'One hour, guided, outdoors at Rheinpark',
-      'Partner rotation, so you can come solo',
+      'Partner rotation, come solo or with a partner',
       'A Garden Ambassador greeting, so you never stand alone',
     ],
     heroImage: true,
