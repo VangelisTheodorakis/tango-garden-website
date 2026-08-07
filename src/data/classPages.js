@@ -14,18 +14,17 @@
 export const classPages = [
   {
     slug: 'enter-the-garden',
-    title: 'Enter the Garden — Introductory Session',
-    metaTitle: 'Enter the Garden — Free Intro Tango Session in Cologne',
+    title: 'Enter the Garden: Introductory Session',
+    metaTitle: 'Enter the Garden: Free Intro Tango Session in Cologne',
     metaDescription:
       'A free, open-air introduction to Argentine Tango at Rheinpark in Cologne. One hour, no partner needed, no experience required.',
-    eyebrow: 'Step One',
     heading: 'Enter the Garden',
     intro:
-      "A free, open-air introduction to Argentine Tango at Rheinpark. No partner, no experience, no pressure — just an hour to see how it feels.",
+      "A free, open-air introduction to Argentine Tango at Rheinpark. No partner, no experience, no pressure. Just an hour to see how it feels.",
     feed: '/assets/data/enter-the-garden.json',
     feedLabel: 'Next introductory class',
     whatToExpect: [
-      'A one-hour, guided introduction to connection, weight shifts, and the embrace — not performance, just conversation between two people.',
+      'A one-hour, guided introduction to connection, weight shifts, and the embrace, not performance, just conversation between two people.',
       "We rotate throughout the session so everyone dances with everyone. Come solo, it's normal here.",
     ],
     whatsIncluded: [
@@ -50,7 +49,7 @@ export const classPages = [
     faq: [
       {
         q: 'Do I need any dance experience to start?',
-        a: 'Not at all. Every session is designed for absolute beginners. We start from scratch — how to stand, how to be present, how to listen through touch.',
+        a: 'Not at all. Every session is designed for absolute beginners. We start from scratch: how to stand, how to be present, how to listen through touch.',
       },
       {
         q: 'Do I need to bring a partner?',
@@ -58,7 +57,7 @@ export const classPages = [
       },
       {
         q: 'What should I wear?',
-        a: "Comfortable clothes and shoes you can move in — we're outdoors on grass at Rheinpark.",
+        a: "Comfortable clothes and shoes you can move in. We're outdoors on grass at Rheinpark.",
       },
       {
         q: 'Where exactly are you located in Cologne?',
@@ -68,7 +67,7 @@ export const classPages = [
     ],
     offerHandles: ['enter-the-garden-general-admission'],
     courseSchema: {
-      name: 'Enter the Garden — Introductory Tango Session Cologne',
+      name: 'Enter the Garden: Introductory Tango Session Cologne',
       description:
         'Free one-hour open-air introductory Argentine tango session at Rheinpark in Cologne. No partner or experience needed.',
       duration: 'PT1H',
@@ -185,18 +184,17 @@ export const classPages = [
   },
   {
     slug: 'garden-practica',
-    title: 'The Garden Practica — Weekly Open Practice',
-    metaTitle: 'Tango Practica Cologne — The Garden Practica',
+    title: 'The Garden Practica: Weekly Open Practice',
+    metaTitle: 'Tango Practica Cologne: The Garden Practica',
     metaDescription:
       'Drop-in Argentine Tango practica in Cologne. Open-level, no partner needed, 2.5-hour guided practice session every week.',
-    eyebrow: 'Step Three',
     heading: 'The Garden Practica',
     intro:
-      'A relaxed, guided practica for dancers with some tango experience — a space to apply what you know, try new roles, and get inspired, drop in whenever you like.',
+      'A relaxed, guided practica for dancers with some tango experience, a space to apply what you know, try new roles, and get inspired, drop in whenever you like.',
     feed: '/assets/data/practicas.json',
     feedLabel: 'Next Practica',
     whatToExpect: [
-      '2.5 hours of open, guided practice time, not a lesson — a space to dance what you already know and pick up feedback along the way.',
+      '2.5 hours of open, guided practice time, not a lesson, a space to dance what you already know and pick up feedback along the way.',
       'Open-level and open-role: come as a Leader, Follower, or Double-Role, whatever you feel like that week.',
     ],
     whatsIncluded: [
@@ -231,7 +229,7 @@ export const classPages = [
       },
       {
         q: 'What should I wear?',
-        a: 'Comfortable clothes you can move in. For shoes, a clean pair of cozy socks or a second pair of indoor shoes works well — avoid thick rubber soles.',
+        a: 'Comfortable clothes you can move in. For shoes, a clean pair of cozy socks or a second pair of indoor shoes works well. Avoid thick rubber soles.',
       },
       {
         q: 'Where exactly are you located in Cologne?',

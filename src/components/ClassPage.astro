@@ -16,7 +16,7 @@ interface ClassPageEntry {
   slug: string;
   metaTitle: string;
   metaDescription: string;
-  eyebrow: string;
+  eyebrow?: string;
   heading: string;
   intro: string;
   feed: string;
@@ -145,11 +145,9 @@ const locationLabel = [loc.streetAddress, [loc.postalCode, loc.addressLocality].
   .filter(Boolean)
   .join(', ');
 
-const waMessage = data.registerUrl
-  ? `Hi! I have a question about ${data.heading}.`
-  : `Hi! I'd like to join ${data.heading}.`;
+const waMessage = `Hi! I have a question about ${data.heading}.`;
 const waHref = `https://wa.me/491602368723?text=${encodeURIComponent(waMessage)}`;
-const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via WhatsApp';
+const waLabel = '💬 Chat on WhatsApp';
 ---
 
 <BaseLayout title={`${data.metaTitle} — Tango Garden`} description={data.metaDescription} canonical={canonical}>
@@ -170,7 +168,7 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
     )}
     {data.heroImage && <div class="class-hero-overlay" />}
     <div class="class-hero-content">
-      <div class="class-eyebrow">{data.eyebrow}</div>
+      {data.eyebrow && <div class="class-eyebrow">{data.eyebrow}</div>}
       <h1>{data.heading}</h1>
       <p class="class-intro">{data.intro}</p>
       <div class="class-schedule" data-feed={data.feed}>
@@ -335,7 +333,7 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
   <section class="class-cta">
     <h2>Ready to take the next step?</h2>
     {data.registerUrl && <p>Register with the form below, or message us on WhatsApp with any questions first.</p>}
-    {!data.registerUrl && <p>Message us on WhatsApp and we'll help you find your way in.</p>}
+    {!data.registerUrl && <p>No need to reserve a spot, just come. Message us on WhatsApp if you have any questions.</p>}
     {data.registerUrl ? (
       <div class="class-btn-row">
         <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">Reserve your spot</a>
