@@ -1,0 +1,8 @@
+---
+import ClassPage from '../../components/ClassPage.astro';
+import { classPages } from '../../data/classPages.js';
+
+const data = classPages.find((c) => c.slug === 'garden-practica')!;
+---
+
+<ClassPage data={data} />

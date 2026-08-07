@@ -1,0 +1,587 @@
+---
+/**
+ * Renders one of the three consolidated class pages (Enter the Garden, the
+ * Beginner Course, the Garden Practica) from a `classPages.js` entry. One
+ * component, three thin page files — see src/pages/pages/*.astro — so the
+ * markup for "what to expect / pricing table / FAQ" exists exactly once
+ * instead of being hand-duplicated per class the way the old per-SKU product
+ * pages were.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { products } from '../data/products.js';
+
+interface ClassPageEntry {
+  slug: string;
+  metaTitle: string;
+  metaDescription: string;
+  eyebrow: string;
+  heading: string;
+  intro: string;
+  feed: string;
+  feedLabel: string;
+  whatToExpect: string[];
+  whatsIncluded: string[];
+  table: {
+    rows: {
+      label: string;
+      general: { handle: string };
+      student: { handle: string } | null;
+      perClass: { general: string; student: string } | null;
+      bestFor: string;
+      bestValue: boolean;
+      makeupIncluded?: boolean;
+    }[];
+  };
+  cancellationNote: string | null;
+  faq: { q: string; a: string }[];
+  offerHandles: string[];
+  registerUrl?: string;
+  courseSchema: {
+    name: string;
+    description: string;
+    duration: string;
+    location: {
+      name: string;
+      streetAddress?: string;
+      postalCode?: string;
+      addressLocality: string;
+    };
+  };
+}
+
+interface Props {
+  data: ClassPageEntry;
+}
+
+const { data } = Astro.props;
+
+const productByHandle = (handle: string) => products.find((p) => p.handle === handle);
+
+/** "€18,00 EUR" -> "€18". Falls back to the raw string (e.g. "Free"). */
+const priceLabel = (handle: string) => {
+  const price = productByHandle(handle)?.price ?? '';
+  const match = price.match(/€(\d+)/);
+  return match ? `€${match[1]}` : price;
+};
+
+const priceNum = (handle: string) => {
+  const price = productByHandle(handle)?.price ?? '';
+  const match = price.match(/€(\d+)/);
+  return match ? Number(match[1]) : null;
+};
+
+const perClassNum = (label: string) => {
+  const match = label.match(/€(\d+)/);
+  return match ? Number(match[1]) : null;
+};
+
+/** Pass price minus the cost of one class — the amount refunded on a within-1-week cancellation. */
+const refundFor = (row: ClassPageEntry['table']['rows'][number]) => {
+  if (!row.perClass) return null;
+  const generalTotal = priceNum(row.general.handle);
+  const generalPerClass = perClassNum(row.perClass.general);
+  const general = generalTotal != null && generalPerClass != null ? generalTotal - generalPerClass : null;
+
+  let student: number | null = null;
+  if (row.student && row.perClass.student) {
+    const studentTotal = priceNum(row.student.handle);
+    const studentPerClass = perClassNum(row.perClass.student);
+    student = studentTotal != null && studentPerClass != null ? studentTotal - studentPerClass : null;
+  }
+  return { general, student };
+};
+
+const canonical = `https://tangogarden.de/pages/${data.slug}`;
+const hasStudent = data.table.rows.some((r) => r.student);
+const hasPerClass = data.table.rows.some((r) => r.perClass);
+const hasMakeup = data.table.rows.some((r) => r.makeupIncluded !== undefined);
+
+const offers = data.offerHandles
+  .map((h) => productByHandle(h)?.schema?.offers)
+  .filter(Boolean);
+
+const loc = data.courseSchema.location;
+const courseSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  name: data.courseSchema.name,
+  description: data.courseSchema.description,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'Tango Garden Cologne',
+    url: 'https://tangogarden.de',
+  },
+  hasCourseInstance: {
+    '@type': 'CourseInstance',
+    courseMode: 'Onsite',
+    location: {
+      '@type': 'Place',
+      name: loc.name,
+      address: {
+        '@type': 'PostalAddress',
+        ...(loc.streetAddress && { streetAddress: loc.streetAddress }),
+        ...(loc.postalCode && { postalCode: loc.postalCode }),
+        addressLocality: loc.addressLocality,
+        addressCountry: 'DE',
+      },
+    },
+    courseSchedule: {
+      '@type': 'Schedule',
+      duration: data.courseSchema.duration,
+      repeatFrequency: 'Weekly',
+    },
+  },
+  offers,
+  '@id': `${canonical}#course`,
+  url: canonical,
+};
+
+const waMessage = data.registerUrl
+  ? `Hi! I have a question about ${data.heading}.`
+  : `Hi! I'd like to join ${data.heading}.`;
+const waHref = `https://wa.me/491602368723?text=${encodeURIComponent(waMessage)}`;
+const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via WhatsApp';
+---
+
+<BaseLayout title={`${data.metaTitle} — Tango Garden`} description={data.metaDescription} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(courseSchema)} slot="head" />
+
+  <section class="class-hero">
+    <div class="class-eyebrow">{data.eyebrow}</div>
+    <h1>{data.heading}</h1>
+    <p class="class-intro">{data.intro}</p>
+    <div class="class-schedule" data-feed={data.feed}>
+      <span class="class-schedule-emoji" aria-hidden="true">🗓️</span>
+      <div>
+        <span class="class-schedule-label">{data.feedLabel}</span>
+        <span class="class-schedule-date">Loading dates…</span>
+      </div>
+    </div>
+    {data.registerUrl ? (
+      <div class="class-btn-row">
+        <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">🌱 Register Now</a>
+        <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
+      </div>
+    ) : (
+      <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
+    )}
+  </section>
+
+  <section class="class-section">
+    <h2>What to Expect</h2>
+    {data.whatToExpect.map((p) => <p>{p}</p>)}
+  </section>
+
+  <section class="class-section">
+    <h2>Pricing</h2>
+    <div class="class-table-wrap">
+      <table class="class-table">
+        <thead>
+          <tr>
+            <th scope="col">Option</th>
+            {!hasStudent && <th scope="col">Price</th>}
+            {hasStudent && <th scope="col">General</th>}
+            {hasStudent && <th scope="col">Student / Under 28*</th>}
+            {hasPerClass && <th scope="col">Per class</th>}
+            {hasMakeup && <th scope="col">Free practica if you miss a class</th>}
+            {hasPerClass && <th scope="col">Refund within 1 week†</th>}
+          </tr>
+        </thead>
+        <tbody>
+          {data.table.rows.map((row) => {
+            const refund = refundFor(row);
+            return (
+              <tr>
+                <th scope="row">
+                  {row.label}
+                  {row.bestValue && <span class="class-table-tag">Best value</span>}
+                </th>
+                {!hasStudent && <td>{priceLabel(row.general.handle)}</td>}
+                {hasStudent && <td>{priceLabel(row.general.handle)}</td>}
+                {hasStudent && <td>{row.student ? priceLabel(row.student.handle) : '—'}</td>}
+                {hasPerClass && (
+                  <td>{row.perClass ? `${row.perClass.general} / ${row.perClass.student}` : '—'}</td>
+                )}
+                {hasMakeup && <td>{row.makeupIncluded ? '✓' : '—'}</td>}
+                {hasPerClass && (
+                  <td>
+                    {refund
+                      ? hasStudent && refund.student != null
+                        ? `€${refund.general} / €${refund.student}`
+                        : `€${refund.general}`
+                      : '—'}
+                  </td>
+                )}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+    {hasStudent && (
+      <p class="class-note">* Reduced price for students and anyone aged 28 or under. No proof needed.</p>
+    )}
+    {hasPerClass && (
+      <p class="class-note">
+        † Refundable if the cancellation is made within 1 week of the pass purchase. After that, passes are non-refundable.
+      </p>
+    )}
+  </section>
+
+  <section class="class-section">
+    <h2>Who It's For</h2>
+    <dl class="class-fit-list">
+      {data.table.rows.map((row) => (
+        <div class="class-fit-item">
+          <dt>{row.label}</dt>
+          <dd>{row.bestFor}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  {data.whatsIncluded.length > 0 && (
+    <section class="class-section">
+      <h2>What's Included</h2>
+      <ul class="class-included">
+        {data.whatsIncluded.map((i) => <li>{i}</li>)}
+      </ul>
+      {data.cancellationNote && <p class="class-cancellation">{data.cancellationNote}</p>}
+    </section>
+  )}
+
+  <section class="class-section class-faq">
+    <h2>Common Questions</h2>
+    {data.faq.map((item) => (
+      <div class="class-faq-item">
+        <button class="class-faq-question" aria-expanded="false">
+          {item.q}
+        </button>
+        <div class="class-faq-answer" hidden={true}>
+          <div class="class-faq-answer-inner">{item.a}</div>
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <section class="class-cta">
+    <h2>Ready to take the next step?</h2>
+    {data.registerUrl && <p>Register with the form below, or message us on WhatsApp with any questions first.</p>}
+    {!data.registerUrl && <p>Message us on WhatsApp and we'll help you find your way in.</p>}
+    {data.registerUrl ? (
+      <div class="class-btn-row">
+        <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">🌱 Register Now</a>
+        <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
+      </div>
+    ) : (
+      <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .class-hero {
+    background: var(--cream);
+    padding: 70px 20px 50px;
+    text-align: center;
+  }
+  .class-eyebrow {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--green);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .class-hero h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 18px;
+    line-height: 1.15;
+  }
+  .class-intro {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--text-mid);
+    max-width: 620px;
+    margin: 0 auto 28px;
+  }
+  .class-schedule {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(78, 93, 34, 0.06);
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin: 0 auto 28px;
+    width: fit-content;
+    max-width: 100%;
+    text-align: left;
+  }
+  .class-schedule-label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--green);
+    font-weight: 700;
+  }
+  .class-schedule-date {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--green);
+  }
+
+  .class-section {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 50px 20px;
+  }
+  .class-section h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 1rem;
+  }
+  .class-section p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-mid);
+    margin-bottom: 1rem;
+  }
+
+  .class-table-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid rgba(78, 93, 34, 0.12);
+  }
+  .class-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 560px;
+  }
+  .class-table th,
+  .class-table td {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    font-size: 0.92rem;
+    vertical-align: top;
+  }
+  .class-table thead th {
+    background: var(--cream-light);
+    color: var(--green);
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .class-table tbody th {
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .class-table tbody tr + tr td,
+  .class-table tbody tr + tr th {
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .class-table-tag {
+    display: block;
+    margin-top: 4px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--green);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    width: fit-content;
+  }
+  .class-note {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--text-light);
+  }
+
+  .class-fit-list {
+    margin: 0;
+  }
+  .class-fit-item {
+    padding: 0.9rem 0;
+  }
+  .class-fit-item + .class-fit-item {
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  .class-fit-item dt {
+    font-weight: 600;
+    color: var(--green);
+    margin-bottom: 0.25rem;
+  }
+  .class-fit-item dd {
+    margin: 0;
+    font-size: 0.97rem;
+    line-height: 1.7;
+    color: var(--text-mid);
+  }
+
+  .class-included {
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 1rem;
+  }
+  .class-included li {
+    padding: 0.4rem 0 0.4rem 1.75rem;
+    position: relative;
+    font-size: 1rem;
+    color: var(--text-mid);
+    line-height: 1.7;
+  }
+  .class-included li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-weight: 700;
+  }
+  .class-cancellation {
+    font-size: 0.88rem;
+    color: var(--text-light);
+    line-height: 1.7;
+    background: var(--cream-light);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+  }
+
+  .class-faq-item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .class-faq-item:first-of-type {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .class-faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 1.1rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--green);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    font-family: inherit;
+  }
+  .class-faq-question::after {
+    content: '+';
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--green);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+  .class-faq-item.is-open .class-faq-question::after {
+    transform: rotate(45deg);
+  }
+  .class-faq-answer-inner {
+    padding-bottom: 1.1rem;
+    font-size: 0.97rem;
+    color: var(--text-mid);
+    line-height: 1.75;
+  }
+
+  .class-cta {
+    background: var(--cream);
+    padding: 50px 20px;
+    text-align: center;
+  }
+  .class-cta h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 0.5rem;
+  }
+  .class-cta p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+  }
+  .class-btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+  }
+  .btn-register {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 14px 32px;
+    background: #C9703E;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    border-radius: 999px;
+    box-shadow: 0 6px 16px rgba(201, 112, 62, 0.35);
+    transition: background 0.3s, transform 0.2s;
+  }
+  .btn-register:hover {
+    background: #b25f31;
+    transform: translateY(-2px);
+  }
+</style>
+
+<script>
+  import { cardContent } from '../lib/next-event.js';
+
+  const box = document.querySelector('.class-schedule') as HTMLElement | null;
+  const feedUrl = box?.dataset.feed;
+  const dateEl = box?.querySelector('.class-schedule-date') as HTMLElement | null;
+  const labelEl = box?.querySelector('.class-schedule-label') as HTMLElement | null;
+
+  if (feedUrl && dateEl) {
+    fetch(feedUrl, { cache: 'no-store' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!data) return;
+        const { label, lines } = cardContent(data, new Date());
+        if (labelEl && label) labelEl.textContent = label;
+        dateEl.textContent = '';
+        lines.forEach((line, i) => {
+          if (i > 0) dateEl.appendChild(document.createElement('br'));
+          dateEl.appendChild(document.createTextNode(line));
+        });
+      })
+      .catch(() => {
+        if (dateEl) dateEl.textContent = 'New dates coming soon (TBA)';
+      });
+  }
+
+  // FAQ accordion, single-open, `hidden` as the source of truth for collapsed
+  // state so closed answers are out of the tab order and the a11y tree.
+  const buttons = document.querySelectorAll('.class-faq-question') as NodeListOf<HTMLButtonElement>;
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.class-faq-item');
+      const panel = item?.querySelector('.class-faq-answer') as HTMLElement | null;
+      if (!item || !panel) return;
+      const willOpen = panel.hidden;
+
+      for (const other of document.querySelectorAll('.class-faq-item.is-open')) {
+        other.classList.remove('is-open');
+        other.querySelector('.class-faq-question')?.setAttribute('aria-expanded', 'false');
+        const otherPanel = other.querySelector('.class-faq-answer') as HTMLElement | null;
+        if (otherPanel) otherPanel.hidden = true;
+      }
+
+      if (willOpen) {
+        item.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+        panel.hidden = false;
+      }
+    });
+  });
+</script>

@@ -8,6 +8,13 @@
  * their page (reachable by direct URL) but carry noindex and stay out of the
  * sitemap — see astro.config.mjs.
  *
+ * All previously-live products are now hidden: the site presents them through
+ * the three consolidated class pages instead (src/data/classPages.js +
+ * src/components/ClassPage.astro), which read price/variant data from here by
+ * handle. `public/_redirects` sends the old /products/<handle> URLs to the new
+ * pages. This file stays the single source of truth for prices and Shopify
+ * variant ids either way — nothing here was renumbered or retyped.
+ *
  * Generated from the legacy HTML by tools/extract-products.mjs, then maintained
  * by hand.
  */
@@ -16,7 +23,7 @@ export const products = [
     "handle": "enter-the-garden-general-admission",
     "title": "Enter the Garden — Introductory Session",
     "description": "A free, open-air introduction to Argentine Tango at Rheinpark in Cologne. One hour, no partner needed, no experience required. Next: 01/08/2026.",
-    "hidden": false,
+    "hidden": true,
     "template": "legacy",
     "price": "Free",
     "bodyHtml": "<div class=\"product-hero\">\n  <h1 class=\"product-title\">Enter the Garden<br><span style=\"font-size: 0.65em; font-weight: 500; color: #666;\">(Introductory Session)</span></h1>\n  <div class=\"product-price-block\">\n    <div class=\"product-price\">Free</div>\n    <div class=\"product-price-note\">Open air at Rheinpark</div>\n  </div>\n  <div class=\"product-cta-row\">\n    <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20join%20Enter%20the%20Garden%20at%20Rheinpark.\" class=\"btn-whatsapp\">💬 Reserve via WhatsApp</a>\n  </div>\n</div>\n\n<div class=\"product-body\">\n  <h2>What to Expect</h2>\n  <p>A free, one-hour, open-air introduction to Argentine Tango in the Rheinpark. You will learn the very basics of connection, weight shifts, and the embrace, not as performance, but as conversation between two people.</p>\n  <p>No partner needed. We rotate throughout the session so everyone dances with everyone. No experience of any kind is required.</p>\n\n  <h2>What's Included</h2>\n  <ul>\n    <li>One-hour guided introductory session</li>\n    <li>Open air at Rheinpark</li>\n    <li>Partner rotation, so you can come solo</li>\n    <li>Garden Ambassador greeting, so you'll never stand alone</li>\n  </ul>\n\n  <h2>Dates &amp; Location</h2>\n  <p><strong>Upcoming dates:</strong> 01/08, 08/08, 05/09 &amp; 19/09 2026 · 19:00 – 20:00<br>\n  <strong>Location:</strong> <a href=\"https://share.google/BT2MdL1JftbgvoP8S\" target=\"_blank\" rel=\"noopener noreferrer\">Open air at Rheinpark, Köln</a></p>\n</div>\n\n<div class=\"product-cta-bottom\">\n  <h2>Ready to take your first step?</h2>\n  <p>It's free, just message us on WhatsApp so we know to expect you.</p>\n  <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20join%20Enter%20the%20Garden%20at%20Rheinpark.\" class=\"btn-whatsapp\">💬 Reserve via WhatsApp</a>\n</div>",
@@ -118,7 +125,7 @@ export const products = [
     "handle": "the-garden-practica-1-practica-pass-door-only-student-and-under-28-admission",
     "title": "The Garden Practica | 1-Practica Pass (Door-only)| Student & Under 28 Admission",
     "description": "Discounted drop-in Argentine Tango practica in Cologne for students and anyone 28 or under. Open-level, no partner needed. €8.",
-    "hidden": false,
+    "hidden": true,
     "template": "pdp",
     "heading": "The Garden Practica | 1-Practica Pass (Door-only)| Student & Under 28 Admission",
     "price": "€8,00 EUR",
@@ -178,7 +185,7 @@ export const products = [
     "handle": "the-garden-practica-1-practica-pass-general-admission",
     "title": "The Garden Practica | 1-Practica Pass (Door-only)| General Admission",
     "description": "Drop-in Argentine Tango practica in Cologne. Open-level, no partner needed. 2.5-hour guided practice session. €10 door-only.",
-    "hidden": false,
+    "hidden": true,
     "template": "pdp",
     "heading": "The Garden Practica | 1-Practica Pass (Door-only)| General Admission",
     "price": "€10,00 EUR",
@@ -245,7 +252,7 @@ export const products = [
     "handle": "the-sprouting-sessions-beginner-level-1-class-pass-general-admission",
     "title": "The Sprouting Sessions (Beginner Level) | 1-Class Pass | General Admission",
     "description": "Try a single Argentine Tango class in Cologne. No partner needed. Part of The Sprouting Sessions beginner course. €18.",
-    "hidden": false,
+    "hidden": true,
     "template": "pdp",
     "heading": "The Sprouting Sessions (Beginner Level) | 1-Class Pass | General Admission",
     "price": "€18,00 EUR",
@@ -305,7 +312,7 @@ export const products = [
     "handle": "the-sprouting-sessions-beginner-level-1-class-pass-student-and-under-28-admission",
     "title": "The Sprouting Sessions (Beginner Level) | 1-Class Pass | Student & Under 28 Admission",
     "description": "Try a single Argentine Tango class in Cologne at a discounted rate for students and anyone under 28. Part of The Sprouting Sessions beginner course. €15.",
-    "hidden": false,
+    "hidden": true,
     "template": "pdp",
     "heading": "The Sprouting Sessions (Beginner Level) | 1-Class Pass | Student & Under 28 Admission",
     "price": "€15,00 EUR",
@@ -414,7 +421,7 @@ export const products = [
     "handle": "the-sprouting-sessions-beginner-level-4-classes-pass-student-and-under-28-admission",
     "title": "The Sprouting Sessions (Beginner Level) | 4-Classes Pass | Student & Under 28 Admission",
     "description": "4 consecutive Argentine Tango classes in Cologne for students and anyone under 28. The Sprouting Sessions beginner course. €45.",
-    "hidden": false,
+    "hidden": true,
     "template": "pdp",
     "heading": "The Sprouting Sessions (Beginner Level) | 4-Classes Pass | Student & Under 28 Admission",
     "price": "€45,00 EUR",
@@ -495,7 +502,7 @@ export const products = [
     "handle": "the-sprouting-sessions-beginner-level-full-course-pass-general-admission",
     "title": "Sprouting Sessions — Full Course Pass",
     "description": "The complete Sprouting Sessions beginner Argentine Tango course in Cologne. 12 weekly classes, no partner needed. €160 — from €13 per class.",
-    "hidden": false,
+    "hidden": true,
     "template": "pdp",
     "heading": "The Sprouting Sessions (Beginner Level) | Full Course Pass | General Admission",
     "price": "€160,00 EUR",
@@ -559,7 +566,7 @@ export const products = [
     "handle": "the-sprouting-sessions-beginner-level-full-course-pass-student-and-under28-admission",
     "title": "The Sprouting Sessions (Beginner Level) | Full Course Pass | Student & Under 28 Admission",
     "description": "The complete Sprouting Sessions beginner Argentine Tango course in Cologne for students and anyone under 28. 12 weekly classes. €120 — from €10 per class.",
-    "hidden": false,
+    "hidden": true,
     "template": "pdp",
     "heading": "The Sprouting Sessions (Beginner Level) | Full Course Pass | Student & Under 28 Admission",
     "price": "€120,00 EUR",
@@ -623,7 +630,7 @@ export const products = [
     "handle": "the-sprouting-sessions-beginners-level-4-classes-pass-general-admission",
     "title": "The Sprouting Sessions (Beginner Level) | 4-Classes Pass | General Admission",
     "description": "4 consecutive Argentine Tango classes in Cologne with The Sprouting Sessions. Choose your 4-week cohort window. No partner needed. €60 general admission.",
-    "hidden": false,
+    "hidden": true,
     "template": "pdp",
     "heading": "The Sprouting Sessions (Beginner Level) | 4-Classes Pass | General Admission",
     "price": "€60,00 EUR",

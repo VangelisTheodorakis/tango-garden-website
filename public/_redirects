@@ -22,5 +22,22 @@
 # tier was retired and permanently redirects to the general page.
 /products/enter-the-garden-introductory-session-student-and-under-28-admission  /products/enter-the-garden-general-admission  301
 
-# The remaining off-live products deliberately keep their pages: reachable by
-# direct URL, noindex + absent from the sitemap. No redirect here.
+# The three classes each moved from N separate per-SKU product pages to one
+# consolidated page with a combined pricing/perks table (src/data/classPages.js).
+# Old SKU URLs 301 to the new page so any existing links/bookmarks/indexing
+# carry over instead of dead-ending on a hidden, noindexed page.
+/products/enter-the-garden-general-admission                                                         /pages/enter-the-garden  301
+
+/products/the-sprouting-sessions-beginner-level-1-class-pass-general-admission                        /pages/beginner-course   301
+/products/the-sprouting-sessions-beginner-level-1-class-pass-student-and-under-28-admission            /pages/beginner-course   301
+/products/the-sprouting-sessions-beginners-level-4-classes-pass-general-admission                      /pages/beginner-course   301
+/products/the-sprouting-sessions-beginner-level-4-classes-pass-student-and-under-28-admission          /pages/beginner-course   301
+/products/the-sprouting-sessions-beginner-level-full-course-pass-general-admission                     /pages/beginner-course   301
+/products/the-sprouting-sessions-beginner-level-full-course-pass-student-and-under28-admission         /pages/beginner-course   301
+
+/products/the-garden-practica-1-practica-pass-general-admission                                        /pages/garden-practica   301
+/products/the-garden-practica-1-practica-pass-door-only-student-and-under-28-admission                 /pages/garden-practica   301
+
+# The remaining off-live products (Evey pass, Welcome pass) deliberately keep
+# their pages: reachable by direct URL, noindex + absent from the sitemap.
+# No redirect here.
