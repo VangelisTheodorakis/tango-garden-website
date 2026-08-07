@@ -183,16 +183,21 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
       </div>
       {data.registerUrl ? (
         <div class="class-btn-row">
-          <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">🌱 Register Now</a>
-          <a class="btn-ghost" href="#pricing">See Course Prices</a>
+          <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">Reserve your spot</a>
+          <a class="btn-ghost" href="#pricing">See course prices</a>
         </div>
       ) : (
         <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
       )}
       {data.registerUrl && mapUrl && (
-        <a class="class-location-link" href={mapUrl} target="_blank" rel="noopener">
-          📍 {locationLabel}{loc.name ? ` (${loc.name})` : ''}
-        </a>
+        <div class="class-location">
+          <button type="button" class="class-location-toggle" aria-expanded="false">📍 Where is it?</button>
+          <div class="class-location-panel" hidden>
+            {loc.name && <p class="class-location-name">{loc.name}</p>}
+            <p>{locationLabel}</p>
+            <a href={mapUrl} target="_blank" rel="noopener">Open in Google Maps →</a>
+          </div>
+        </div>
       )}
     </div>
   </section>
@@ -328,7 +333,7 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
     {!data.registerUrl && <p>Message us on WhatsApp and we'll help you find your way in.</p>}
     {data.registerUrl ? (
       <div class="class-btn-row">
-        <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">🌱 Register Now</a>
+        <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">Reserve your spot</a>
         <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
       </div>
     ) : (
@@ -448,6 +453,7 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
     text-align: left;
     font-size: 0.92rem;
     vertical-align: top;
+    white-space: nowrap;
   }
   .class-table thead th {
     background: var(--cream-light);
@@ -642,16 +648,44 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
     justify-content: center;
     gap: 14px;
   }
-  .class-location-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
+  .class-location {
     margin-top: 18px;
+    display: inline-block;
+    text-align: left;
+  }
+  .class-location-toggle {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    cursor: pointer;
     font-size: 0.9rem;
     font-weight: 600;
     color: var(--green);
+  }
+  .class-location-toggle:hover {
     text-decoration: underline;
-    text-underline-offset: 3px;
+  }
+  .class-location-panel {
+    margin-top: 10px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    font-size: 0.88rem;
+    color: var(--text-mid);
+  }
+  .class-location-panel p {
+    margin: 0 0 0.3rem;
+  }
+  .class-location-name {
+    font-weight: 600;
+    color: var(--green);
+  }
+  .class-location-panel a {
+    display: inline-block;
+    margin-top: 0.3rem;
+    font-weight: 600;
+    color: var(--green);
   }
   .btn-register {
     display: inline-flex;
@@ -698,6 +732,17 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
         if (dateEl) dateEl.textContent = 'New dates coming soon (TBA)';
       });
   }
+
+  // Location disclosure, `hidden` as the source of truth so the map link
+  // stays out of the tab order until the visitor asks to see it.
+  const locationToggle = document.querySelector('.class-location-toggle') as HTMLButtonElement | null;
+  const locationPanel = document.querySelector('.class-location-panel') as HTMLElement | null;
+  locationToggle?.addEventListener('click', () => {
+    if (!locationPanel) return;
+    const willOpen = locationPanel.hidden;
+    locationPanel.hidden = !willOpen;
+    locationToggle.setAttribute('aria-expanded', String(willOpen));
+  });
 
   // FAQ accordion, single-open, `hidden` as the source of truth for collapsed
   // state so closed answers are out of the tab order and the a11y tree.
