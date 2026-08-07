@@ -7,8 +7,10 @@
  * instead of being hand-duplicated per class the way the old per-SKU product
  * pages were.
  */
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { products } from '../data/products.js';
+import heroDancersImage from '../assets/hero-dancers.png';
 
 interface ClassPageEntry {
   slug: string;
@@ -33,9 +35,11 @@ interface ClassPageEntry {
     }[];
   };
   cancellationNote: string | null;
-  faq: { q: string; a: string }[];
+  faq: { q: string; a: string; raw?: boolean }[];
   offerHandles: string[];
   registerUrl?: string;
+  heroImage?: boolean;
+  showTeachers?: boolean;
   courseSchema: {
     name: string;
     description: string;
@@ -146,25 +150,40 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
 <BaseLayout title={`${data.metaTitle} — Tango Garden`} description={data.metaDescription} canonical={canonical}>
   <script type="application/ld+json" set:html={JSON.stringify(courseSchema)} slot="head" />
 
-  <section class="class-hero">
-    <div class="class-eyebrow">{data.eyebrow}</div>
-    <h1>{data.heading}</h1>
-    <p class="class-intro">{data.intro}</p>
-    <div class="class-schedule" data-feed={data.feed}>
-      <span class="class-schedule-emoji" aria-hidden="true">🗓️</span>
-      <div>
-        <span class="class-schedule-label">{data.feedLabel}</span>
-        <span class="class-schedule-date">Loading dates…</span>
-      </div>
-    </div>
-    {data.registerUrl ? (
-      <div class="class-btn-row">
-        <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">🌱 Register Now</a>
-        <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
-      </div>
-    ) : (
-      <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
+  <section class:list={['class-hero', data.heroImage && 'class-hero--photo']}>
+    {data.heroImage && (
+      <Image
+        class="class-hero-bg"
+        src={heroDancersImage}
+        alt=""
+        widths={[480, 768, 1200, 1600]}
+        sizes="100vw"
+        format="webp"
+        quality={80}
+        loading="eager"
+      />
     )}
+    {data.heroImage && <div class="class-hero-overlay" />}
+    <div class="class-hero-content">
+      <div class="class-eyebrow">{data.eyebrow}</div>
+      <h1>{data.heading}</h1>
+      <p class="class-intro">{data.intro}</p>
+      <div class="class-schedule" data-feed={data.feed}>
+        <span class="class-schedule-emoji" aria-hidden="true">🗓️</span>
+        <div>
+          <span class="class-schedule-label">{data.feedLabel}</span>
+          <span class="class-schedule-date">Loading dates…</span>
+        </div>
+      </div>
+      {data.registerUrl ? (
+        <div class="class-btn-row">
+          <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">🌱 Register Now</a>
+          <a class="btn-ghost" href="#pricing">See Course Prices</a>
+        </div>
+      ) : (
+        <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
+      )}
+    </div>
   </section>
 
   <section class="class-section">
@@ -172,7 +191,7 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
     {data.whatToExpect.map((p) => <p>{p}</p>)}
   </section>
 
-  <section class="class-section">
+  <section class="class-section" id="pricing">
     <h2>Pricing</h2>
     <div class="class-table-wrap">
       <table class="class-table">
@@ -240,6 +259,30 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
     </dl>
   </section>
 
+  {data.showTeachers && (
+    <section class="class-section">
+      <h2>Meet Your Teachers</h2>
+      <div class="class-teacher-cards">
+        <div class="class-teacher-card">
+          <img src="/images/vangelis.webp" alt="Vangelis Theodorakis" loading="lazy" />
+          <div class="class-teacher-card-body">
+            <h3>Vangelis Theodorakis</h3>
+            <p class="class-teacher-role">Lead Instructor</p>
+            <p>Built Tango Garden after discovering his love for community. He believes tradition means passing the fire forward, not worshipping the ashes.</p>
+          </div>
+        </div>
+        <div class="class-teacher-card">
+          <img src="/images/kristina.webp" alt="Kristina Yanushko" loading="lazy" />
+          <div class="class-teacher-card-body">
+            <h3>Kristina Yanushko</h3>
+            <p class="class-teacher-role">Lead Instructor</p>
+            <p>Kristina focuses on helping students develop body awareness, confidence, and real connection, creating a space where people can grow both on and off the dance floor.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
   {data.whatsIncluded.length > 0 && (
     <section class="class-section">
       <h2>What's Included</h2>
@@ -258,7 +301,11 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
           {item.q}
         </button>
         <div class="class-faq-answer" hidden={true}>
-          <div class="class-faq-answer-inner">{item.a}</div>
+          {item.raw ? (
+            <div class="class-faq-answer-inner" set:html={item.a} />
+          ) : (
+            <div class="class-faq-answer-inner">{item.a}</div>
+          )}
         </div>
       </div>
     ))}
@@ -281,9 +328,32 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
 
 <style>
   .class-hero {
+    position: relative;
     background: var(--cream);
     padding: 70px 20px 50px;
     text-align: center;
+  }
+  .class-hero--photo {
+    background: none;
+    overflow: hidden;
+  }
+  .class-hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  .class-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(243, 237, 225, 0.82);
+    z-index: 1;
+  }
+  .class-hero-content {
+    position: relative;
+    z-index: 2;
   }
   .class-eyebrow {
     font-size: 14px;
@@ -423,6 +493,52 @@ const waLabel = data.registerUrl ? '💬 Chat on WhatsApp' : '💬 Reserve via W
     font-size: 0.97rem;
     line-height: 1.7;
     color: var(--text-mid);
+  }
+
+  .class-teacher-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  @media (min-width: 560px) {
+    .class-teacher-cards {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .class-teacher-card {
+    background: var(--cream-light);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .class-teacher-card img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+  }
+  .class-teacher-card-body {
+    padding: 1.2rem 1.4rem 1.5rem;
+    text-align: left;
+  }
+  .class-teacher-card-body h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 0.15rem;
+  }
+  .class-teacher-card-body p.class-teacher-role {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-light);
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+  .class-teacher-card-body p:last-child {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text-mid);
+    margin-bottom: 0;
   }
 
   .class-included {

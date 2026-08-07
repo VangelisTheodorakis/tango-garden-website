@@ -89,6 +89,8 @@ export const classPages = [
     ],
     whatsIncluded: [],
     registerUrl: 'https://forms.gle/mAqzDEYasFyCrdoz8',
+    heroImage: true,
+    showTeachers: true,
     table: {
       caption: 'Passes',
       rows: [
@@ -155,7 +157,8 @@ export const classPages = [
       },
       {
         q: 'Where exactly are you located in Cologne?',
-        a: 'Thürmchenswall 21, 50668 Köln (Yoga Drop Studio), a 3-minute walk from Ebertplatz.',
+        a: '<a href="https://www.google.com/maps/search/?api=1&query=Th%C3%BCrmchenswall+21%2C+50668+K%C3%B6ln" target="_blank" rel="noopener">Thürmchenswall 21, 50668 Köln</a> (Yoga Drop Studio), a 3-minute walk from Ebertplatz.',
+        raw: true,
       },
     ],
     offerHandles: [
