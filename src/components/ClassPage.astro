@@ -7,10 +7,8 @@
  * instead of being hand-duplicated per class the way the old per-SKU product
  * pages were.
  */
-import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { products } from '../data/products.js';
-import heroDancersImage from '../assets/hero-dancers.png';
 
 interface ClassPageEntry {
   slug: string;
@@ -37,7 +35,8 @@ interface ClassPageEntry {
   faq: { q: string; a: string; raw?: boolean }[];
   offerHandles: string[];
   registerUrl?: string;
-  heroImage?: boolean;
+  heroImage?: string;
+  gallery?: string[];
   showTeachers?: boolean;
   courseSchema: {
     name: string;
@@ -154,18 +153,7 @@ const waLabel = '💬 Chat on WhatsApp';
   <script type="application/ld+json" set:html={JSON.stringify(courseSchema)} slot="head" />
 
   <section class:list={['class-hero', data.heroImage && 'class-hero--photo']}>
-    {data.heroImage && (
-      <Image
-        class="class-hero-bg"
-        src={heroDancersImage}
-        alt=""
-        widths={[480, 768, 1200, 1600]}
-        sizes="100vw"
-        format="webp"
-        quality={80}
-        loading="eager"
-      />
-    )}
+    {data.heroImage && <img class="class-hero-bg" src={data.heroImage} alt="" loading="eager" />}
     {data.heroImage && <div class="class-hero-overlay" />}
     <div class="class-hero-content">
       {data.eyebrow && <div class="class-eyebrow">{data.eyebrow}</div>}
@@ -206,6 +194,21 @@ const waLabel = '💬 Chat on WhatsApp';
     <h2>What to Expect</h2>
     {data.whatToExpect.map((p) => <p>{p}</p>)}
   </section>
+
+  {data.gallery && data.gallery.length > 0 && (
+    <section class="class-section">
+      {data.gallery[0] && (
+        <img class="class-gallery-wide" src={data.gallery[0]} alt={`${data.heading} photo 1`} loading="lazy" />
+      )}
+      {data.gallery.length > 1 && (
+        <div class="class-gallery-pair">
+          {data.gallery.slice(1).map((src, i) => (
+            <img src={src} alt={`${data.heading} photo ${i + 2}`} loading="lazy" />
+          ))}
+        </div>
+      )}
+    </section>
+  )}
 
   <section class="class-section" id="pricing">
     <h2>Pricing</h2>
@@ -552,6 +555,30 @@ const waLabel = '💬 Chat on WhatsApp';
     margin-top: 0.75rem;
     font-size: 0.85rem;
     color: var(--text-light);
+  }
+
+  .class-gallery-wide {
+    width: 100%;
+    max-height: 460px;
+    object-fit: cover;
+    border-radius: 14px;
+  }
+  .class-gallery-pair {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .class-gallery-pair img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 14px;
+  }
+  @media (min-width: 560px) {
+    .class-gallery-pair {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   .class-teacher-cards {

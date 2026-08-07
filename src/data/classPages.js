@@ -32,7 +32,12 @@ export const classPages = [
       'Partner rotation, come solo or with a partner',
       'A Garden Ambassador greeting, so you never stand alone',
     ],
-    heroImage: true,
+    heroImage: '/images/enter-the-garden-hero.webp',
+    gallery: [
+      '/images/enter-the-garden-1.webp',
+      '/images/enter-the-garden-2.webp',
+      '/images/enter-the-garden-3.webp',
+    ],
     table: {
       caption: 'Price',
       rows: [
@@ -92,7 +97,7 @@ export const classPages = [
     ],
     whatsIncluded: [],
     registerUrl: 'https://forms.gle/mAqzDEYasFyCrdoz8',
-    heroImage: true,
+    heroImage: '/images/hero-dancers.webp',
     showTeachers: true,
     table: {
       caption: 'Passes',
@@ -202,7 +207,7 @@ export const classPages = [
       'All levels and roles welcome, including Double-Role',
       'A relaxed space to apply what you’re learning',
     ],
-    heroImage: true,
+    heroImage: '/images/hero-dancers.webp',
     table: {
       caption: 'Price',
       rows: [
