@@ -63,7 +63,6 @@ const groups = [
             <span class="collection-card-best-for"><strong>Best for:</strong> {group.bestFor}</span>
             <span class="collection-card-price">{group.price}</span>
             <div class="collection-card-actions">
-              <a class="collection-card-cta" href={group.href}>View details &amp; prices →</a>
               {group.registerUrl ? (
                 <a class="collection-card-register" href={group.registerUrl} target="_blank" rel="noopener">
                   Register Now
@@ -74,6 +73,7 @@ const groups = [
                 // same horizontal line across all three cards.
                 <span class="collection-card-register is-spacer" aria-hidden="true">Register Now</span>
               )}
+              <a class="collection-card-cta" href={group.href}>View details &amp; prices →</a>
             </div>
           </div>
         </li>
