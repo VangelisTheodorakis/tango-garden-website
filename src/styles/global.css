@@ -198,7 +198,7 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
 
 @media (min-width: 750px) {
   .footer-inner {
-    grid-template-columns: 1.5fr 1fr 1fr;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
     text-align: start;
   }
   .footer-logo-col img { margin-inline: 0; }

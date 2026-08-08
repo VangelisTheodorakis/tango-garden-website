@@ -7,6 +7,13 @@ const connectLinks = [
   { href: '/pages/contact', label: 'Contact' },
 ];
 
+const classLinks = [
+  { href: '/collections/all', label: 'Classes & Passes' },
+  { href: '/pages/enter-the-garden', label: 'Enter the Garden' },
+  { href: '/pages/beginner-course', label: 'Sprouting Sessions' },
+  { href: '/pages/garden-practica', label: 'Garden Practica' },
+];
+
 const legalLinks = [
   { href: '/pages/refund-and-cancellation-policy', label: 'Refund & Cancellation Policy' },
   { href: '/pages/terms-of-service', label: 'Terms of Service' },
@@ -30,6 +37,12 @@ const year = new Date().getFullYear();
       </ul>
     </div>
     <div class="footer-col">
+      <h2 class="footer-heading">Classes</h2>
+      <ul class="footer-links" role="list">
+        {classLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </div>
+    <div class="footer-col">
       <h2 class="footer-heading">Legal</h2>
       <ul class="footer-links" role="list">
         {legalLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
@@ -42,6 +55,9 @@ const year = new Date().getFullYear();
     >
     <a href={social.instagram} target="_blank" rel="noopener" aria-label="Instagram"
       ><Icon name="instagram" size={22} /></a
+    >
+    <a href={social.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp"
+      ><Icon name="whatsapp" size={22} /></a
     >
   </div>
   <div class="footer-bottom">
