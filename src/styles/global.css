@@ -709,21 +709,37 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
   color: var(--text);
 }
 .nav-drawer-links > li > a:hover { color: var(--green); }
-.nav-drawer-detail { border: none; outline: none; }
-.nav-drawer-summary {
+.nav-drawer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-drawer-row-link {
+  flex: 1;
+  display: block;
   padding: 0.9rem 0;
+  text-decoration: none;
   font-size: 1.05rem;
   font-weight: 600;
   color: var(--text);
-  cursor: pointer;
-  list-style: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
-.nav-drawer-summary::-webkit-details-marker { display: none; }
-.nav-drawer-summary::after { content: '›'; color: var(--green); font-size: 1.3em; line-height: 1; }
-.nav-drawer-detail[open] > .nav-drawer-summary::after { content: '›'; transform: rotate(90deg); display: inline-block; }
+.nav-drawer-row-link:hover { color: var(--green); }
+.nav-drawer-expand {
+  background: none;
+  border: none;
+  padding: 0.9rem 0 0.9rem 0.75rem;
+  margin: 0;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--green);
+}
+.nav-drawer-expand-icon {
+  display: inline-block;
+  font-size: 1.3em;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+.nav-drawer-expand[aria-expanded="true"] .nav-drawer-expand-icon { transform: rotate(90deg); }
 .nav-drawer-submenu {
   list-style: none;
   padding: 0 0 0.75rem 1rem;

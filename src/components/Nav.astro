@@ -95,18 +95,38 @@ const isCurrent = (href: string) => path === href.replace(/\/$/, '');
         navItems.map((item) => (
           <li>
             {item.children ? (
-              <details class="nav-drawer-detail">
-                <summary class="nav-drawer-summary">{item.label}</summary>
-                <ul class="nav-drawer-submenu" role="list">
+              <Fragment>
+                <div class="nav-drawer-row">
+                  <a
+                    href={item.href}
+                    class="nav-drawer-row-link"
+                    aria-current={isCurrent(item.href) ? 'page' : undefined}
+                  >
+                    {item.label}
+                  </a>
+                  <button
+                    type="button"
+                    class="nav-drawer-expand"
+                    aria-expanded="false"
+                    aria-label={`Show ${item.label} submenu`}
+                  >
+                    <span class="nav-drawer-expand-icon" aria-hidden="true">
+                      ›
+                    </span>
+                  </button>
+                </div>
+                <ul class="nav-drawer-submenu" role="list" hidden>
                   {item.children.map((child) => (
                     <li>
                       <a href={child.href}>{child.label}</a>
                     </li>
                   ))}
                 </ul>
-              </details>
+              </Fragment>
             ) : (
-              <a href={item.href}>{item.label}</a>
+              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
             )}
           </li>
         ))
@@ -168,6 +188,20 @@ const isCurrent = (href: string) => path === href.replace(/\/$/, '');
     overlay?.addEventListener('click', () => setOpen(false));
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && drawer.classList.contains('is-open')) setOpen(false);
+    });
+
+    // Submenu toggle. Kept separate from the row's own link so tapping the
+    // label navigates straight to the page, the way desktop already works —
+    // only the chevron button expands the submenu.
+    const expandButtons = drawer.querySelectorAll<HTMLButtonElement>('.nav-drawer-expand');
+    expandButtons.forEach((btn) => {
+      const submenu = btn.closest('li')?.querySelector<HTMLElement>('.nav-drawer-submenu');
+      if (!submenu) return;
+      btn.addEventListener('click', () => {
+        const willOpen = submenu.hidden;
+        submenu.hidden = !willOpen;
+        btn.setAttribute('aria-expanded', String(willOpen));
+      });
     });
   }
 </script>
