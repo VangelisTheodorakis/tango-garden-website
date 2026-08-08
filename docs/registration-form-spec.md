@@ -25,7 +25,7 @@ Original suggestion: "The Sprouting Sessions: Reserve Your Spot"
 > Takes under a minute, we'll email your spot and the class schedule right
 > away.
 >
-> Questions? Check our FAQ: tangogarden.de/pages/start-here#common-questions
+> Questions? Check our FAQ: tangogarden.de/pages/beginner-course
 
 This is the only place the 18 to 40 audience gets signaled, and it's done as
 tone, not a gate. No separate age question. Reasoning: there's no operational
