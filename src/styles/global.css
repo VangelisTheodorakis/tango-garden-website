@@ -636,13 +636,17 @@ h1,h2,h3,h4,h5 { line-height: 1.2; }
 .nav-dropdown {
   display: none;
   position: absolute;
-  top: calc(100% + 6px);
+  /* Flush against the link (no gap) so the cursor never crosses a dead zone
+     on its way down — a gap here meant leaving hover before reaching the
+     dropdown, hiding it early on any slow or non-vertical mouse path. The
+     6px of visual breathing room moves into padding-top instead. */
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
   background: #fff;
   border: 1px solid rgba(0,0,0,0.08);
   border-radius: 10px;
-  padding: 0.4rem;
+  padding: calc(0.4rem + 6px) 0.4rem 0.4rem;
   min-width: 230px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
   z-index: 200;
