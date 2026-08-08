@@ -138,6 +138,29 @@ const courseSchema = {
   url: canonical,
 };
 
+// FAQ answers can carry a raw <a> (the map link) — schema.org wants text, not markup.
+const stripHtml = (s: string) => s.replace(/<[^>]+>/g, '');
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: data.faq.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: stripHtml(item.a) },
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://tangogarden.de/' },
+    { '@type': 'ListItem', position: 2, name: 'Classes', item: 'https://tangogarden.de/collections/all' },
+    { '@type': 'ListItem', position: 3, name: data.heading, item: canonical },
+  ],
+};
+
 const mapQuery = [loc.streetAddress, loc.postalCode, loc.addressLocality].filter(Boolean).join(', ');
 const mapUrl = mapQuery ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}` : null;
 
@@ -148,6 +171,8 @@ const waLabel = '💬 Chat on WhatsApp';
 
 <BaseLayout title={`${data.metaTitle} | Tango Garden`} description={data.metaDescription} canonical={canonical}>
   <script type="application/ld+json" set:html={JSON.stringify(courseSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
 
   <section class:list={['class-hero', data.heroImage && 'class-hero--photo']}>
     {data.heroImage && <img class="class-hero-bg" src={data.heroImage} alt="" loading="eager" />}

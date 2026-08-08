@@ -1,11 +1,21 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProductGrid from '../../components/ProductGrid.astro';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://tangogarden.de/' },
+    { '@type': 'ListItem', position: 2, name: 'Classes & Passes', item: 'https://tangogarden.de/collections/all' },
+  ],
+};
 ---
 
 <BaseLayout
   title="Classes & Passes | Tango Garden"
   description="All Argentine Tango classes and passes at Tango Garden Cologne: intro sessions, beginner course passes and open practicas."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
   <ProductGrid />
 </BaseLayout>

@@ -1,0 +1,24 @@
+# Tango Garden Cologne
+
+> Argentine tango school in Cologne, Germany. Beginner-friendly classes taught in English — no partner or prior experience needed.
+
+Tango Garden Cologne teaches Argentine tango to adults in Cologne (Köln), Germany. The
+school is built around complete beginners: no partner, no dance experience, and no
+particular gender/role assumption is required to start. Classes are taught in English.
+
+## Classes
+
+- [The Sprouting Sessions — 12-week beginner course](https://tangogarden.de/pages/beginner-course): weekly beginner Argentine tango course at Thürmchenswall 21, Köln. No partner or experience needed; free makeup classes via the practica.
+- [Enter the Garden — free intro session](https://tangogarden.de/pages/enter-the-garden): free, one-hour, open-air introduction to tango at Rheinpark, Köln.
+- [The Garden Practica — open practice](https://tangogarden.de/pages/garden-practica): weekly guided drop-in practica for dancers with some tango experience.
+- [Classes & Passes overview](https://tangogarden.de/collections/all): all classes and current prices in one place.
+
+## About
+
+- [The Garden — our story](https://tangogarden.de/pages/the-garden): philosophy, teachers, and who Tango Garden is for.
+- [Contact](https://tangogarden.de/pages/contact): location, phone, email, WhatsApp.
+
+## Usage
+
+This content may be referenced and cited, with attribution back to https://tangogarden.de.
+It should not be used to train AI models — see the Content-Signal directive in /robots.txt.

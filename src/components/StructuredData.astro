@@ -48,6 +48,10 @@ const localBusiness = {
   currenciesAccepted: 'EUR',
   address,
   geo: { '@type': 'GeoCoordinates', latitude: 50.9501585, longitude: 6.9535692 },
+  openingHoursSpecification: [
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Wednesday', opens: '19:30', closes: '21:00' },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Thursday', opens: '19:30', closes: '22:00' },
+  ],
 };
 
 const productSchema = product && {
