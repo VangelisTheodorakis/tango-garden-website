@@ -14,11 +14,14 @@ backend.
 These are the reasons this project exists the way it does. Breaking one is a real problem,
 not a style nit.
 
-1. **Zero third-party requests on page load (GDPR).** German visitors' IPs must never leak
-   to third parties without consent. That means: **self-host everything** (fonts are local
-   woff2 in the repo — never link Google Fonts or any CDN), no external scripts, no external
-   stylesheets, no remote images, no analytics beacons. The Google Map is **click-to-load**
-   with a stated privacy reason — never auto-embedded. Before adding *any* `<script src>`,
+1. **Zero third-party requests on page load (GDPR), with one accepted exception.** German
+   visitors' IPs must never leak to third parties without consent. That means: **self-host
+   everything** (fonts are local woff2 in the repo — never link Google Fonts or any CDN), no
+   external scripts, no external stylesheets, no remote images, no analytics beacons. The
+   sole exception, at the owner's explicit request (2026-08-08, overriding the prior
+   click-to-load default): the Google Map on `/pages/contact` auto-embeds on page load,
+   sending visitor IPs to Google without a consent step. Do not extend this exception to any
+   other embed without asking first. Before adding *any other* `<script src>`,
    `<link href>`, `<img src>`, `@font-face`, or `fetch()` to an external host, stop and flag
    it. The live CSP is `default-src 'self'` (self-only) — keep it that way.
 2. **Deploy = `git push` to `main`.** There is no separate deploy step. Cloudflare rebuilds
@@ -84,7 +87,7 @@ islands.** Start by reading `astro.config.mjs`, `src/pages/index.astro`, and `sr
 - `npm test` (Vitest) covers `src/data` integrity (prices, variant IDs, hidden set, feed shape)
   and build-output assertions (page count, noindex, sitemap). Keep these green — the
   variant-ID and hidden-product tests are guarding real checkout/SEO correctness.
-- `npm run test:e2e` (Playwright) covers nav, layout, commerce controls, FAQ, map-consent.
+- `npm run test:e2e` (Playwright) covers nav, layout, commerce controls, FAQ.
 - After a change that's observable in the browser, verify it (dev server / curl) before
   claiming it's done — don't ask the user to check manually.
 
