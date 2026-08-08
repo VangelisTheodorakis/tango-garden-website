@@ -68,7 +68,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <ul class="contact-transport-list">
         <li><span class="icon">🚊</span> <span>Trams <strong>12, 15, 16, 18</strong> to Ebertplatz (3 min walk)</span></li>
         <li><span class="icon">🚌</span> <span>Buses <strong>127, 140</strong> to Ebertplatz</span></li>
-        <li><span class="icon">🚲</span> <span>Bike: Plenty of racks right at Ebertplatz</span></li>
+        <li><span class="icon">🚲</span> <span>Bike: Racks in the building's inner courtyard</span></li>
       </ul>
       <div class="contact-rule-box">
         <strong>The "First 10 Minutes" Rule:</strong>
@@ -227,14 +227,19 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 3rem;
-      align-items: start;
+      align-items: stretch;
     }
     @media (max-width: 720px) {
       .contact-location-inner { grid-template-columns: 1fr; }
     }
+    .contact-map {
+      min-height: 340px;
+      height: 100%;
+    }
     .contact-map iframe {
       width: 100%;
-      height: 340px;
+      height: 100%;
+      min-height: 340px;
       border-radius: 12px;
       border: none;
       display: block;
@@ -280,7 +285,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     .contact-transport-list li span.icon { flex-shrink: 0; }
     .contact-rule-box {
       background: var(--cream);
-      border-left: 4px solid var(--green);
       border-radius: 6px;
       padding: 1rem 1.25rem;
     }
