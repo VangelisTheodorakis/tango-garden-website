@@ -21,7 +21,7 @@
 export const products = [
   {
     "handle": "enter-the-garden-general-admission",
-    "title": "Enter the Garden — Introductory Session",
+    "title": "Enter the Garden: Introductory Session",
     "description": "A free, open-air introduction to Argentine Tango at Rheinpark in Cologne. One hour, no partner needed, no experience required. Next: 01/08/2026.",
     "hidden": true,
     "template": "legacy",
@@ -30,7 +30,7 @@ export const products = [
     "schema": {
       "@context": "https://schema.org",
       "@type": "Course",
-      "name": "Enter the Garden — Introductory Tango Session Cologne",
+      "name": "Enter the Garden: Introductory Tango Session Cologne",
       "description": "Free one-hour open-air introductory Argentine tango session at Rheinpark in Cologne. No partner or experience needed.",
       "provider": {
         "@type": "LocalBusiness",
@@ -74,15 +74,15 @@ export const products = [
   },
   {
     "handle": "enter-the-garden-introductory-session-student-and-under-28-admission",
-    "title": "Enter the Garden — Student & Under 28",
+    "title": "Enter the Garden: Student & Under 28",
     "description": "Discounted introductory Argentine Tango session in Cologne for students and anyone 28 or under. No partner needed.",
     "hidden": true,
     "template": "legacy",
-    "bodyHtml": "<div class=\"product-hero\">\n  <h1 class=\"product-title\">Enter the Garden<br><span style=\"font-size: 0.65em; font-weight: 500; color: #666;\">Student &amp; Under 28</span></h1>\n  <div class=\"product-price-block\">\n    <div class=\"product-price\">€8</div>\n    <div class=\"product-price-note\">For students and anyone 28 years old or under · 01/08/2026</div>\n  </div>\n  <div class=\"product-cta-row\">\n    <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20book%20Enter%20the%20Garden%20(Student%20%2F%20Under%2028).\" class=\"btn-whatsapp\">💬 Book via WhatsApp</a>\n    <a href=\"/products/enter-the-garden-general-admission\" class=\"btn-ghost\">General Admission — €10</a>\n  </div>\n</div>\n\n<div class=\"product-body\">\n  <h2>What to Expect</h2>\n  <p>A 90-minute, zero-pressure introduction to Argentine Tango. Same experience as the General Admission — discounted for students and anyone 28 years old or under.</p>\n  <p>No partner needed. We rotate throughout the session so everyone dances with everyone. No experience of any kind is required.</p>\n\n  <h2>What's Included</h2>\n  <ul>\n    <li>90-minute guided introductory session</li>\n    <li>Drinks &amp; snacks included</li>\n    <li>Partner rotation — come solo</li>\n    <li>Role of your choice: Leader, Follower, or Double-Role</li>\n    <li>Garden Ambassador greeting — you'll never stand alone</li>\n  </ul>\n\n  <h2>Date &amp; Location</h2>\n  <p><strong>Date:</strong> 01/08/2026 · Exact time TBA this week<br>\n  <strong>Location:</strong> Thürmchenswall 21, 50668 Köln (Yoga Drop Studio) — 3 min walk from Ebertplatz</p>\n\n  <h2>Eligibility</h2>\n  <p>This pass is for currently enrolled students (any institution) or anyone who is 28 years old or younger. No proof required — we trust you.</p>\n</div>\n\n<div class=\"product-cta-bottom\">\n  <h2>Ready to take your first step?</h2>\n  <p>Reserve your spot via WhatsApp. We'll confirm within a few hours.</p>\n  <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20book%20Enter%20the%20Garden%20(Student%20%2F%20Under%2028).\" class=\"btn-whatsapp\">💬 Book via WhatsApp — €8</a>\n</div>",
+    "bodyHtml": "<div class=\"product-hero\">\n  <h1 class=\"product-title\">Enter the Garden<br><span style=\"font-size: 0.65em; font-weight: 500; color: #666;\">Student &amp; Under 28</span></h1>\n  <div class=\"product-price-block\">\n    <div class=\"product-price\">€8</div>\n    <div class=\"product-price-note\">For students and anyone 28 years old or under · 01/08/2026</div>\n  </div>\n  <div class=\"product-cta-row\">\n    <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20book%20Enter%20the%20Garden%20(Student%20%2F%20Under%2028).\" class=\"btn-whatsapp\">💬 Book via WhatsApp</a>\n    <a href=\"/products/enter-the-garden-general-admission\" class=\"btn-ghost\">General Admission: €10</a>\n  </div>\n</div>\n\n<div class=\"product-body\">\n  <h2>What to Expect</h2>\n  <p>A 90-minute, zero-pressure introduction to Argentine Tango. Same experience as the General Admission, discounted for students and anyone 28 years old or under.</p>\n  <p>No partner needed. We rotate throughout the session so everyone dances with everyone. No experience of any kind is required.</p>\n\n  <h2>What's Included</h2>\n  <ul>\n    <li>90-minute guided introductory session</li>\n    <li>Drinks &amp; snacks included</li>\n    <li>Partner rotation, come solo</li>\n    <li>Role of your choice: Leader, Follower, or Double-Role</li>\n    <li>Garden Ambassador greeting, you'll never stand alone</li>\n  </ul>\n\n  <h2>Date &amp; Location</h2>\n  <p><strong>Date:</strong> 01/08/2026 · Exact time TBA this week<br>\n  <strong>Location:</strong> Thürmchenswall 21, 50668 Köln (Yoga Drop Studio), 3 min walk from Ebertplatz</p>\n\n  <h2>Eligibility</h2>\n  <p>This pass is for currently enrolled students (any institution) or anyone who is 28 years old or younger. No proof required, we trust you.</p>\n</div>\n\n<div class=\"product-cta-bottom\">\n  <h2>Ready to take your first step?</h2>\n  <p>Reserve your spot via WhatsApp. We'll confirm within a few hours.</p>\n  <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20book%20Enter%20the%20Garden%20(Student%20%2F%20Under%2028).\" class=\"btn-whatsapp\">💬 Book via WhatsApp: €8</a>\n</div>",
     "schema": {
       "@context": "https://schema.org",
       "@type": "Course",
-      "name": "Enter the Garden — Introductory Tango Session Cologne",
+      "name": "Enter the Garden: Introductory Tango Session Cologne",
       "description": "Free one-hour open-air introductory Argentine tango session at Rheinpark in Cologne. No partner or experience needed.",
       "provider": {
         "@type": "LocalBusiness",
@@ -242,11 +242,11 @@ export const products = [
   },
   {
     "handle": "the-garden-practica-1-time-pass-evey",
-    "title": "Garden Practica — Evey Pass",
+    "title": "Garden Practica: Evey Pass",
     "description": "Special Evey pass for the Garden Practica in Cologne. Drop-in Argentine Tango practice session. €10.",
     "hidden": true,
     "template": "legacy",
-    "bodyHtml": "<div class=\"product-hero\">\n  <h1 class=\"product-title\">Garden Practica<br><span style=\"font-size: 0.65em; font-weight: 500; color: #666;\">Evey Pass</span></h1>\n  <div class=\"product-price-block\">\n    <div class=\"product-price\">€10</div>\n    <div class=\"product-price-note\">1-time drop-in pass</div>\n  </div>\n  <div class=\"product-cta-row\">\n    <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20use%20my%20Evey%20pass%20for%20the%20Garden%20Practica.\" class=\"btn-whatsapp\">💬 Contact via WhatsApp</a>\n  </div>\n</div>\n\n<div class=\"product-body\">\n  <p>This is a special 1-time Practica pass. If you received this link directly, you know what it's for. Questions? Message us on WhatsApp.</p>\n\n  <h2>Location</h2>\n  <p>Thürmchenswall 21, 50668 Köln (Yoga Drop Studio) — 3 min walk from Ebertplatz</p>\n</div>\n\n<div class=\"product-cta-bottom\">\n  <h2>Questions?</h2>\n  <p>Message us directly and we'll sort it out.</p>\n  <a href=\"https://wa.me/491602368723?text=Hi!%20I%20have%20a%20question%20about%20the%20Evey%20pass.\" class=\"btn-whatsapp\">💬 WhatsApp</a>\n</div>"
+    "bodyHtml": "<div class=\"product-hero\">\n  <h1 class=\"product-title\">Garden Practica<br><span style=\"font-size: 0.65em; font-weight: 500; color: #666;\">Evey Pass</span></h1>\n  <div class=\"product-price-block\">\n    <div class=\"product-price\">€10</div>\n    <div class=\"product-price-note\">1-time drop-in pass</div>\n  </div>\n  <div class=\"product-cta-row\">\n    <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20use%20my%20Evey%20pass%20for%20the%20Garden%20Practica.\" class=\"btn-whatsapp\">💬 Contact via WhatsApp</a>\n  </div>\n</div>\n\n<div class=\"product-body\">\n  <p>This is a special 1-time Practica pass. If you received this link directly, you know what it's for. Questions? Message us on WhatsApp.</p>\n\n  <h2>Location</h2>\n  <p>Thürmchenswall 21, 50668 Köln (Yoga Drop Studio), 3 min walk from Ebertplatz</p>\n</div>\n\n<div class=\"product-cta-bottom\">\n  <h2>Questions?</h2>\n  <p>Message us directly and we'll sort it out.</p>\n  <a href=\"https://wa.me/491602368723?text=Hi!%20I%20have%20a%20question%20about%20the%20Evey%20pass.\" class=\"btn-whatsapp\">💬 WhatsApp</a>\n</div>"
   },
   {
     "handle": "the-sprouting-sessions-beginner-level-1-class-pass-general-admission",
@@ -370,11 +370,11 @@ export const products = [
   },
   {
     "handle": "the-sprouting-sessions-beginner-level-1-class-welcome-pass",
-    "title": "Sprouting Sessions — Welcome Pass (First-Timers)",
+    "title": "Sprouting Sessions: Welcome Pass (First-Timers)",
     "description": "First time at Tango Garden? Try a single Argentine Tango class for €15. The Sprouting Sessions Welcome Pass is for first-timers only.",
     "hidden": true,
     "template": "legacy",
-    "bodyHtml": "<div class=\"product-hero\">\n  <h1 class=\"product-title\">The Sprouting Sessions<br><span style=\"font-size: 0.65em; font-weight: 500; color: #666;\">Welcome Pass — First Time Here?</span></h1>\n  <div class=\"product-price-block\">\n    <div class=\"product-price\">€15</div>\n    <div class=\"product-price-note\">Single class · First visit only · Course runs 10/09–26/11/2026</div>\n  </div>\n  <div class=\"product-cta-row\">\n    <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20try%20The%20Sprouting%20Sessions%20with%20the%20Welcome%20Pass.\" class=\"btn-whatsapp\">💬 Book via WhatsApp</a>\n    <a href=\"/products/the-sprouting-sessions-beginner-level-1-class-pass-general-admission\" class=\"btn-ghost\">General Admission — €18</a>\n  </div>\n</div>\n\n<div class=\"product-body\">\n  <h2>Your First Class, at a Lower Price</h2>\n  <p>The Welcome Pass is a one-off introductory rate for anyone attending The Sprouting Sessions for the first time. Same class, same experience — just €15 instead of the regular €18.</p>\n  <p>No partner needed, no experience required. Come and see if tango is for you.</p>\n\n  <h2>What's Included</h2>\n  <ul>\n    <li>1 x 1.5-hour class in the Sprouting Sessions course</li>\n    <li>Partner rotation throughout</li>\n    <li>Role of your choice: Leader, Follower, or Double-Role</li>\n    <li>Course runs: 10 September – 26 November 2026 (12 sessions)</li>\n  </ul>\n\n  <h2>Eligibility</h2>\n  <p>This pass is for people who have never attended a Sprouting Sessions class before. One per person. After your first class, the regular 1-class price (€18) applies — or consider a multi-class pass for better value.</p>\n\n  <h2>Location</h2>\n  <p>Thürmchenswall 21, 50668 Köln (Yoga Drop Studio) — 3 min walk from Ebertplatz</p>\n\n  <div class=\"product-variants\">\n    <table>\n      <thead><tr><th>Option</th><th>Price</th></tr></thead>\n      <tbody>\n        <tr><td>Welcome Pass (first visit)</td><td>€15</td></tr>\n        <tr><td>General Admission</td><td>€18</td></tr>\n        <tr><td>Student / Under 28</td><td>€15</td></tr>\n      </tbody>\n    </table>\n  </div>\n\n  <p style=\"font-size: 0.9rem; color: #888;\">Loved it? The <a href=\"/products/the-sprouting-sessions-beginner-level-full-course-pass-general-admission\" style=\"color: #4E5D22;\">Full Course Pass (€160)</a> covers all 12 classes — from €13/class.</p>\n</div>\n\n<div class=\"product-cta-bottom\">\n  <h2>Take Your First Step</h2>\n  <p>Message us to book your Welcome Pass. We'll confirm your spot.</p>\n  <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20try%20The%20Sprouting%20Sessions%20with%20the%20Welcome%20Pass.\" class=\"btn-whatsapp\">💬 Book via WhatsApp — €15</a>\n</div>",
+    "bodyHtml": "<div class=\"product-hero\">\n  <h1 class=\"product-title\">The Sprouting Sessions<br><span style=\"font-size: 0.65em; font-weight: 500; color: #666;\">Welcome Pass: First Time Here?</span></h1>\n  <div class=\"product-price-block\">\n    <div class=\"product-price\">€15</div>\n    <div class=\"product-price-note\">Single class · First visit only · Course runs 10/09–26/11/2026</div>\n  </div>\n  <div class=\"product-cta-row\">\n    <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20try%20The%20Sprouting%20Sessions%20with%20the%20Welcome%20Pass.\" class=\"btn-whatsapp\">💬 Book via WhatsApp</a>\n    <a href=\"/products/the-sprouting-sessions-beginner-level-1-class-pass-general-admission\" class=\"btn-ghost\">General Admission: €18</a>\n  </div>\n</div>\n\n<div class=\"product-body\">\n  <h2>Your First Class, at a Lower Price</h2>\n  <p>The Welcome Pass is a one-off introductory rate for anyone attending The Sprouting Sessions for the first time. Same class, same experience, just €15 instead of the regular €18.</p>\n  <p>No partner needed, no experience required. Come and see if tango is for you.</p>\n\n  <h2>What's Included</h2>\n  <ul>\n    <li>1 x 1.5-hour class in the Sprouting Sessions course</li>\n    <li>Partner rotation throughout</li>\n    <li>Role of your choice: Leader, Follower, or Double-Role</li>\n    <li>Course runs: 10 September – 26 November 2026 (12 sessions)</li>\n  </ul>\n\n  <h2>Eligibility</h2>\n  <p>This pass is for people who have never attended a Sprouting Sessions class before. One per person. After your first class, the regular 1-class price (€18) applies, or consider a multi-class pass for better value.</p>\n\n  <h2>Location</h2>\n  <p>Thürmchenswall 21, 50668 Köln (Yoga Drop Studio), 3 min walk from Ebertplatz</p>\n\n  <div class=\"product-variants\">\n    <table>\n      <thead><tr><th>Option</th><th>Price</th></tr></thead>\n      <tbody>\n        <tr><td>Welcome Pass (first visit)</td><td>€15</td></tr>\n        <tr><td>General Admission</td><td>€18</td></tr>\n        <tr><td>Student / Under 28</td><td>€15</td></tr>\n      </tbody>\n    </table>\n  </div>\n\n  <p style=\"font-size: 0.9rem; color: #888;\">Loved it? The <a href=\"/products/the-sprouting-sessions-beginner-level-full-course-pass-general-admission\" style=\"color: #4E5D22;\">Full Course Pass (€160)</a> covers all 12 classes, from €13/class.</p>\n</div>\n\n<div class=\"product-cta-bottom\">\n  <h2>Take Your First Step</h2>\n  <p>Message us to book your Welcome Pass. We'll confirm your spot.</p>\n  <a href=\"https://wa.me/491602368723?text=Hi!%20I'd%20like%20to%20try%20The%20Sprouting%20Sessions%20with%20the%20Welcome%20Pass.\" class=\"btn-whatsapp\">💬 Book via WhatsApp: €15</a>\n</div>",
     "schema": {
       "@context": "https://schema.org",
       "@type": "Course",
@@ -458,7 +458,7 @@ export const products = [
     "schema": {
       "@context": "https://schema.org",
       "@type": "Course",
-      "name": "4-Class Pass: The Sprouting Sessions — Argentine Tango Cologne",
+      "name": "4-Class Pass: The Sprouting Sessions, Argentine Tango Cologne",
       "description": "4 consecutive beginner Argentine tango classes in Cologne. Rolling 4-week windows available. No partner needed.",
       "provider": {
         "@type": "LocalBusiness",
@@ -500,8 +500,8 @@ export const products = [
   },
   {
     "handle": "the-sprouting-sessions-beginner-level-full-course-pass-general-admission",
-    "title": "Sprouting Sessions — Full Course Pass",
-    "description": "The complete Sprouting Sessions beginner Argentine Tango course in Cologne. 12 weekly classes, no partner needed. €160 — from €13 per class.",
+    "title": "Sprouting Sessions: Full Course Pass",
+    "description": "The complete Sprouting Sessions beginner Argentine Tango course in Cologne. 12 weekly classes, no partner needed. €160, from €13 per class.",
     "hidden": true,
     "template": "pdp",
     "heading": "The Sprouting Sessions (Beginner Level) | Full Course Pass | General Admission",
@@ -519,7 +519,7 @@ export const products = [
     "schema": {
       "@context": "https://schema.org",
       "@type": "Course",
-      "name": "The Sprouting Sessions — Beginner Argentine Tango Course Cologne",
+      "name": "The Sprouting Sessions: Beginner Argentine Tango Course Cologne",
       "description": "Complete 12-week beginner Argentine tango course in Cologne. From zero to dancing with confidence. No partner or experience needed.",
       "provider": {
         "@type": "LocalBusiness",
@@ -551,7 +551,7 @@ export const products = [
       },
       "offers": {
         "@type": "Offer",
-        "name": "General Admission — Full Course",
+        "name": "General Admission: Full Course",
         "price": "160.00",
         "priceCurrency": "EUR",
         "availability": "https://schema.org/InStock",
@@ -565,7 +565,7 @@ export const products = [
   {
     "handle": "the-sprouting-sessions-beginner-level-full-course-pass-student-and-under28-admission",
     "title": "The Sprouting Sessions (Beginner Level) | Full Course Pass | Student & Under 28 Admission",
-    "description": "The complete Sprouting Sessions beginner Argentine Tango course in Cologne for students and anyone under 28. 12 weekly classes. €120 — from €10 per class.",
+    "description": "The complete Sprouting Sessions beginner Argentine Tango course in Cologne for students and anyone under 28. 12 weekly classes. €120, from €10 per class.",
     "hidden": true,
     "template": "pdp",
     "heading": "The Sprouting Sessions (Beginner Level) | Full Course Pass | Student & Under 28 Admission",
@@ -583,7 +583,7 @@ export const products = [
     "schema": {
       "@context": "https://schema.org",
       "@type": "Course",
-      "name": "The Sprouting Sessions — Beginner Argentine Tango Course Cologne",
+      "name": "The Sprouting Sessions: Beginner Argentine Tango Course Cologne",
       "description": "Complete 12-week beginner Argentine tango course in Cologne. From zero to dancing with confidence. No partner or experience needed.",
       "provider": {
         "@type": "LocalBusiness",
@@ -615,7 +615,7 @@ export const products = [
       },
       "offers": {
         "@type": "Offer",
-        "name": "Student / Under-28 — Full Course",
+        "name": "Student / Under-28: Full Course",
         "price": "120.00",
         "priceCurrency": "EUR",
         "availability": "https://schema.org/InStock",
@@ -667,7 +667,7 @@ export const products = [
     "schema": {
       "@context": "https://schema.org",
       "@type": "Course",
-      "name": "4-Class Pass: The Sprouting Sessions — Argentine Tango Cologne",
+      "name": "4-Class Pass: The Sprouting Sessions, Argentine Tango Cologne",
       "description": "4 consecutive beginner Argentine tango classes in Cologne. Rolling 4-week windows available. No partner needed.",
       "provider": {
         "@type": "LocalBusiness",
