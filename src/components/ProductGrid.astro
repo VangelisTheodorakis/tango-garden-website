@@ -64,10 +64,15 @@ const groups = [
             <span class="collection-card-price">{group.price}</span>
             <div class="collection-card-actions">
               <a class="collection-card-cta" href={group.href}>View details &amp; prices →</a>
-              {group.registerUrl && (
+              {group.registerUrl ? (
                 <a class="collection-card-register" href={group.registerUrl} target="_blank" rel="noopener">
                   Register Now
                 </a>
+              ) : (
+                // Invisible same-size placeholder so cards without a register
+                // button still reserve its row, keeping the green CTA on the
+                // same horizontal line across all three cards.
+                <span class="collection-card-register is-spacer" aria-hidden="true">Register Now</span>
               )}
             </div>
           </div>
@@ -200,6 +205,10 @@ const groups = [
   .collection-card-register:hover {
     background: #b25f31;
     transform: translateY(-1px);
+  }
+  .collection-card-register.is-spacer {
+    visibility: hidden;
+    pointer-events: none;
   }
   .collection-why {
     margin: 40px auto 0;
