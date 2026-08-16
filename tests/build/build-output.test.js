@@ -366,14 +366,16 @@ describe('third-party independence', () => {
     expect(offenders).toEqual([]);
   });
 
-  it('self-hosts every stylesheet, script and font', () => {
+  it('self-hosts every stylesheet, script and font except the approved GA4 loader', () => {
     const external = [];
     const selector =
       'link[rel="stylesheet"], link[rel="preload"], link[rel="icon"], script[src]';
     for (const p of pages) {
       for (const el of p.document.querySelectorAll(selector)) {
         const url = el.getAttribute('href') ?? el.getAttribute('src');
-        if (/^https?:\/\//.test(url)) external.push(`${p.file} -> ${url}`);
+        if (!/^https?:\/\//.test(url)) continue;
+        if (url.startsWith('https://www.googletagmanager.com/gtag/js?id=')) continue;
+        external.push(`${p.file} -> ${url}`);
       }
     }
     expect(external).toEqual([]);
