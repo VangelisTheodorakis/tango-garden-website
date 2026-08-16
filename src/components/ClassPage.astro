@@ -818,6 +818,7 @@ const waLabel = '💬 Chat on WhatsApp';
       const tier = btn.dataset.tier;
       if (!tier || !tierWrap) return;
       tierWrap.dataset.tier = tier;
+      if (typeof window.gtag === 'function') window.gtag('event', 'pricing_tier_toggle', { tier });
       tierButtons.forEach((b) => {
         const active = b === btn;
         b.classList.toggle('is-active', active);
@@ -847,6 +848,9 @@ const waLabel = '💬 Chat on WhatsApp';
         item.classList.add('is-open');
         btn.setAttribute('aria-expanded', 'true');
         panel.hidden = false;
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'faq_expand', { faq_question: btn.textContent?.trim() });
+        }
       }
     });
   });

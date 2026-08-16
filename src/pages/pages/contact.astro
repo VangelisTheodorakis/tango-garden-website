@@ -416,6 +416,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       if (!wasOpen) {
         item.classList.add('is-open');
         btn.setAttribute('aria-expanded', 'true');
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'faq_expand', { faq_question: btn.textContent?.trim() });
+        }
       }
     });
   }

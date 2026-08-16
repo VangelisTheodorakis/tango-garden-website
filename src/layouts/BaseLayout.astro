@@ -3,6 +3,7 @@ import MetaTags from '../components/MetaTags.astro';
 import StructuredData from '../components/StructuredData.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import { gaMeasurementId } from '../data/site.js';
 import '../styles/global.css';
 
 interface Props {
@@ -55,6 +56,12 @@ const {
       noindex={noindex}
     />
     <StructuredData type={schema} product={product} />
+    {gaMeasurementId && (
+      <>
+        <meta name="ga-measurement-id" content={gaMeasurementId} />
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}></script>
+      </>
+    )}
     <slot name="head" />
   </head>
   <body>
@@ -64,5 +71,16 @@ const {
       <slot />
     </main>
     <Footer />
+    <script>
+      const gaId = document.querySelector('meta[name="ga-measurement-id"]')?.getAttribute('content');
+      if (gaId) {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function gtag(...args: unknown[]) {
+          window.dataLayer.push(args);
+        };
+        window.gtag('js', new Date());
+        window.gtag('config', gaId);
+      }
+    </script>
   </body>
 </html>

@@ -12,3 +12,9 @@
  * working buy flow with no other change.
  */
 export const showPurchaseControls = false;
+
+/**
+ * Google Analytics 4 Measurement ID (e.g. "G-XXXXXXX"). Leave empty to keep
+ * GA4 off — BaseLayout only loads gtag.js when this is set.
+ */
+export const gaMeasurementId = 'G-35BD84HHPR';
