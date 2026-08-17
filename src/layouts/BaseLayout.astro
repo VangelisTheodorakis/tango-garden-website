@@ -34,6 +34,16 @@ const {
   schema = 'none',
   product,
 } = Astro.props;
+
+/** GA4 content_group, so reports can compare the three pathway pages as one group. */
+const pathname = Astro.url.pathname;
+const contentGroup = pathname.startsWith('/pages/enter-the-garden')
+  ? 'Enter the Garden'
+  : pathname.startsWith('/pages/beginner-course')
+    ? 'Beginner Course'
+    : pathname.startsWith('/pages/garden-practica')
+      ? 'Garden Practica'
+      : null;
 ---
 
 <!doctype html>
@@ -59,6 +69,7 @@ const {
     {gaMeasurementId && (
       <>
         <meta name="ga-measurement-id" content={gaMeasurementId} />
+        {contentGroup && <meta name="ga-content-group" content={contentGroup} />}
         <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}></script>
       </>
     )}
@@ -81,6 +92,14 @@ const {
           window.dataLayer.push(arguments);
         };
         window.gtag('js', new Date());
+        const contentGroup = document
+          .querySelector('meta[name="ga-content-group"]')
+          ?.getAttribute('content');
+        if (contentGroup) {
+          // `set` (not `config`) so content_group is attached to every
+          // subsequent hit on this page, including outbound-click events.
+          window.gtag('set', 'content_group', contentGroup);
+        }
         window.gtag('config', gaId);
       }
     </script>
