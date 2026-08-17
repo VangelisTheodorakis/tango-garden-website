@@ -75,8 +75,10 @@ const {
       const gaId = document.querySelector('meta[name="ga-measurement-id"]')?.getAttribute('content');
       if (gaId) {
         window.dataLayer = window.dataLayer || [];
-        window.gtag = function gtag(...args: unknown[]) {
-          window.dataLayer.push(args);
+        window.gtag = function gtag() {
+          // Must push `arguments` itself (not a rest-param array) — gtag.js's
+          // dataLayer listener doesn't recognize a plain Array as a command.
+          window.dataLayer.push(arguments);
         };
         window.gtag('js', new Date());
         window.gtag('config', gaId);
