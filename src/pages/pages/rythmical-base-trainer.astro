@@ -310,9 +310,28 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
       let raf = 0;
       let lit = -1;
 
+      // Mobile browsers (Safari in particular) only update
+      // `player.currentTime` in coarse steps, well behind the actual audio
+      // output — reading it straight in a rAF loop makes the highlight visibly
+      // trail the click. Between updates, extrapolate from performance.now()
+      // instead, and only resync to currentTime when the browser actually
+      // reports a new value.
+      let syncedAudioTime = 0;
+      let syncedAtPerf = 0;
+
+      function estimatedAudioTime() {
+        const reported = player.currentTime;
+        const now = performance.now();
+        if (reported !== syncedAudioTime) {
+          syncedAudioTime = reported;
+          syncedAtPerf = now;
+        }
+        return reported + (now - syncedAtPerf) / 1000;
+      }
+
       function followPlayhead() {
         if (player.paused) return;
-        const t = player.currentTime % loopSeconds;
+        const t = estimatedAudioTime() % loopSeconds;
         const slot = Math.min(SLOTS - 1, Math.floor(t / slotSeconds()));
         if (slot !== lit) {
           if (lit >= 0) bars[lit].classList.remove('is-now');
@@ -343,6 +362,10 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
         loopSeconds = seconds;
         player.src = url;
         player.loop = true;
+        // A fresh src resets currentTime to 0 — resync immediately so the
+        // playhead doesn't extrapolate from the previous loop's timeline.
+        syncedAudioTime = 0;
+        syncedAtPerf = performance.now();
         await player.play();
         if (previous) URL.revokeObjectURL(previous);
       }
