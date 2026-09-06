@@ -1027,7 +1027,6 @@ h1,h2,h3,h4 { line-height: 1.2; }
 .rhythm-glossary-entry dd {
   margin-top: 0.25rem;
   color: var(--text-mid);
-  max-width: 60ch;
 }
 
 .rhythm-next-steps-cards {
