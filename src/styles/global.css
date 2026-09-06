@@ -1000,14 +1000,15 @@ h1,h2,h3,h4 { line-height: 1.2; }
   flex-direction: column;
   gap: 0.4rem;
   padding: 1.25rem;
-  text-decoration: none;
-  color: var(--text-mid);
   background: var(--cream-light);
   border-radius: var(--radius);
-  transition: background 0.15s;
 }
-.rhythm-next-steps-card:hover { background: #f0ead9; }
 .rhythm-next-steps-title { font-weight: 600; color: var(--green); }
+.rhythm-next-steps-card .btn-primary,
+.rhythm-next-steps-card .btn-ghost {
+  margin-top: 0.4rem;
+  align-self: flex-start;
+}
 
 .visually-hidden {
   position: absolute;
