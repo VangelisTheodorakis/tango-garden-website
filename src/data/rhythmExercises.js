@@ -109,9 +109,8 @@ export const exercises = [
   },
   {
     id: 'exercise-3',
-    name: 'Exercise 3',
-    spanish: '3-3-2',
-    note: 'The tresillo, tango’s signature cell. Three eighths, three eighths, two eighths.',
+    name: 'Tresillo (3-3-2)',
+    note: 'Tango’s signature rhythmic cell: three eighths, three eighths, two eighths, often counted "pa-na-ma, pa-na-ma, cu-ba".',
     pattern: 'x..x..x.x..x..x.',
   },
   {
@@ -204,7 +203,7 @@ export const glossary = [
     term: 'Tresillo',
     spanish: '3-3-2',
     definition:
-      "Tango's signature rhythmic cell: three eighths, three eighths, two eighths.",
+      'Tango’s signature rhythmic cell: three eighths, three eighths, two eighths, often counted "pa-na-ma, pa-na-ma, cu-ba".',
   },
   {
     term: 'Doble tiempo',
