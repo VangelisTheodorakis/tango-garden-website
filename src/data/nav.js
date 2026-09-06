@@ -25,6 +25,11 @@ export const navItems = [
       { href: '/pages/garden-practica', label: 'Garden Practica' },
     ],
   },
+  {
+    href: '/pages/rythmical-base-trainer',
+    label: 'Training Material',
+    children: [{ href: '/pages/rythmical-base-trainer', label: 'Rythmical Base Trainer' }],
+  },
   { href: '/pages/contact', label: 'Connect with us' },
 ];
 

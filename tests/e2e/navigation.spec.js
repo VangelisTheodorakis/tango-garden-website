@@ -66,7 +66,7 @@ test.describe('mobile drawer', () => {
   test('links to every top-level destination', async ({ page }) => {
     await page.goto('/');
     await page.locator('.nav-toggle').click();
-    await expect(page.locator('#nav-drawer a')).toHaveCount(12);
+    await expect(page.locator('#nav-drawer a')).toHaveCount(14);
   });
 });
 
