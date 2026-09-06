@@ -108,6 +108,12 @@ export const exercises = [
     pattern: 'x..x..x.x..x..x.',
   },
   {
+    id: 'four-one',
+    name: '4-1',
+    note: 'A bridging figure across the barline: land on beat 4, then beat 1 of the next compás.',
+    pattern: '......x.x.......',
+  },
+  {
     id: 'all-eighths',
     name: 'All eighths',
     spanish: 'Doble tiempo continuo',
