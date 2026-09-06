@@ -879,6 +879,16 @@ h1,h2,h3,h4 { line-height: 1.2; }
   cursor: pointer;
 }
 .rhythm-play[aria-pressed="true"] { background: var(--green-dark); }
+.rhythm-reset {
+  font: inherit;
+  font-size: 0.875rem;
+  padding: 0.6rem 1rem;
+  color: var(--green-btn);
+  background: none;
+  border: 1px solid var(--green-btn);
+  border-radius: 999px;
+  cursor: pointer;
+}
 .rhythm-tempo, .rhythm-preset { display: flex; align-items: center; gap: 0.5rem; }
 .rhythm-controls label { font-size: 0.875rem; color: var(--text-light); }
 .rhythm-tempo input[type="range"] { width: 8rem; accent-color: var(--green); }
@@ -893,6 +903,27 @@ h1,h2,h3,h4 { line-height: 1.2; }
 }
 .rhythm-pulse { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
 .rhythm-pulse input { width: 1.1rem; height: 1.1rem; accent-color: var(--green); }
+
+.rhythm-orchestras {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-top: 1rem;
+}
+.rhythm-orchestras-label { font-size: 0.875rem; color: var(--text-light); }
+.rhythm-orchestra-btn {
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 0.4rem 0.75rem;
+  color: var(--green);
+  background: var(--cream-light);
+  border: 1px solid var(--green);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.rhythm-orchestra-btn span { font-weight: 400; color: var(--text-light); }
 
 .rhythm-note {
   min-height: 3rem;

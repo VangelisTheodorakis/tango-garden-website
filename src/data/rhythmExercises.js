@@ -33,7 +33,7 @@ export const exercises = [
     id: 'marcato-2',
     name: 'Marcato in 2',
     spanish: 'Marcato en dos',
-    note: 'The tango walk. Beats 1 and 3 — the strong beats of each compás.',
+    note: 'The tango walk. Beats 1 and 3, the strong beats of each compás.',
     pattern: 'x...x...x...x...',
   },
   {
@@ -60,13 +60,13 @@ export const exercises = [
     id: 'sincopa-aire',
     name: 'Síncopa (aire)',
     spanish: 'Aire',
-    note: 'The held variant: no attack on beat 1 at all — just the early anticipation, then hold all the way to the landing on 3.',
+    note: 'The held variant: no attack on beat 1 at all, just the early anticipation, then hold all the way to the landing on 3.',
     pattern: '.x..x....x..x...',
   },
   {
     id: 'sincopa-1-3',
     name: 'Síncopa 1 & 3',
-    note: 'Both syncopations in one compás — 1, the "&" of 1, the "&" of 2, then 3.',
+    note: 'Both syncopations in one compás: 1, the "&" of 1, the "&" of 2, then 3.',
     pattern: 'xx.xx...xx.xx...',
   },
   {
@@ -111,7 +111,7 @@ export const exercises = [
     id: 'exercise-3',
     name: 'Exercise 3',
     spanish: '3-3-2',
-    note: 'The tresillo — tango’s signature cell. Three eighths, three eighths, two eighths.',
+    note: 'The tresillo, tango’s signature cell. Three eighths, three eighths, two eighths.',
     pattern: 'x..x..x.x..x..x.',
   },
   {
@@ -152,3 +152,17 @@ export function slotStrength(i) {
 export function slotLabel(i) {
   return i % 2 === 1 ? '&' : String(i / 2 + 1);
 }
+
+/**
+ * A quick way to match the loop's tempo to a real recording: the midpoint of
+ * each orchestra's typical dance tempo, measured the way this app counts
+ * (quarter note, same units as the BPM slider).
+ * @typedef {{ name: string, bpm: number }} OrchestraTempo
+ * @type {OrchestraTempo[]}
+ */
+export const orchestraTempos = [
+  { name: 'Troilo', bpm: 105 },
+  { name: 'Pugliese', bpm: 110 },
+  { name: 'Di Sarli', bpm: 115 },
+  { name: "D'Arienzo", bpm: 130 },
+];
