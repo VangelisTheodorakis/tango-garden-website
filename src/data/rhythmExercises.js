@@ -101,6 +101,13 @@ export const exercises = [
     pattern: 'x.x.......x.x...',
   },
   {
+    id: 'exercise-3',
+    name: 'Exercise 3',
+    spanish: '3-3-2',
+    note: 'The tresillo — tango’s signature cell. Three eighths, three eighths, two eighths.',
+    pattern: 'x..x..x.x..x..x.',
+  },
+  {
     id: 'all-eighths',
     name: 'All eighths',
     spanish: 'Doble tiempo continuo',

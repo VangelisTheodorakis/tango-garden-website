@@ -75,9 +75,9 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
   </div>
 
   <script>
-    import { exercises, SLOTS, slotStrength } from '../../data/rhythmExercises.js';
+    import { exercises, SLOTS } from '../../data/rhythmExercises.js';
 
-    type Voice = 'strong' | 'medium' | 'weak' | 'pulse';
+    type Voice = 'beat' | 'pulse';
 
     const grid = document.getElementById('rhythm-grid');
     if (grid) {
@@ -109,11 +109,9 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
 
       // --- audio ------------------------------------------------------------
 
-      /** Timbre per bar height, mirroring the three heights in the grid. */
+      /** One click for every active note, whatever its bar height; the pulse is a quieter, lower reference tick. */
       const VOICE: Record<Voice, { freq: number; gain: number }> = {
-        strong: { freq: 1320, gain: 0.9 },
-        medium: { freq: 990, gain: 0.62 },
-        weak: { freq: 740, gain: 0.42 },
+        beat: { freq: 1100, gain: 0.75 },
         pulse: { freq: 520, gain: 0.1 },
       };
 
@@ -155,7 +153,7 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
         if (!ctx) return;
         while (nextTime < ctx.currentTime + LOOKAHEAD) {
           if (active[nextSlot]) {
-            click(ctx, slotStrength(nextSlot) as Voice, nextTime);
+            click(ctx, 'beat', nextTime);
           } else if (pulseInput.checked && nextSlot % 2 === 0) {
             click(ctx, 'pulse', nextTime);
           }
