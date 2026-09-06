@@ -223,6 +223,25 @@ h1,h2,h3,h4 { line-height: 1.2; }
 }
 .btn-primary:hover { background: var(--green-btn); transform: translateY(-2px); }
 
+/* The class pages' "register/reserve" CTA — moved here from ClassPage.astro's
+   scoped styles so other pages (the rhythm trainer's "Take it further" links)
+   can reuse the exact same primary-button treatment instead of duplicating it. */
+.btn-register {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 14px 32px;
+  background: #C9703E;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(201, 112, 62, 0.35);
+  transition: background 0.3s, transform 0.2s;
+}
+.btn-register:hover { background: #b25f31; transform: translateY(-2px); }
+
 .btn-whatsapp {
   display: inline-flex;
   align-items: center;
@@ -254,6 +273,26 @@ h1,h2,h3,h4 { line-height: 1.2; }
   transition: background 0.2s, transform 0.2s;
 }
 .btn-ghost:hover { background: rgba(78,93,34,0.12); transform: translateY(-1px); }
+
+/* A solid, unambiguously-green secondary pill — for a clearly-clickable
+   action that still shouldn't out-compete a .btn-register/.btn-primary
+   sitting next to it (e.g. the rhythm trainer's "Contact us"). .btn-ghost's
+   5% tint reads as grey on a cream card background, which is why this
+   exists instead of reusing it there. */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 12px 24px;
+  background: var(--green);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  border-radius: 30px;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-secondary:hover { background: var(--green-btn); transform: translateY(-2px); }
 
 /* =====================
    Page Chrome
@@ -856,7 +895,7 @@ h1,h2,h3,h4 { line-height: 1.2; }
   padding: 2.5rem 1.25rem 4rem;
 }
 .rhythm-title { font-size: clamp(1.75rem, 5vw, 2.5rem); color: var(--green); margin-bottom: 0.75rem; }
-.rhythm-intro { color: var(--text-mid); max-width: 60ch; margin-bottom: 2rem; }
+.rhythm-intro { color: var(--text-mid); margin-bottom: 2rem; }
 
 .rhythm-controls {
   display: flex;
@@ -1004,9 +1043,12 @@ h1,h2,h3,h4 { line-height: 1.2; }
   border-radius: var(--radius);
 }
 .rhythm-next-steps-title { font-weight: 600; color: var(--green); }
-.rhythm-next-steps-card .btn-primary,
-.rhythm-next-steps-card .btn-ghost {
-  margin-top: 0.4rem;
+.rhythm-next-steps-card .btn-register,
+.rhythm-next-steps-card .btn-secondary {
+  /* Pins the button to the card's bottom edge regardless of how much body
+     copy sits above it, so both buttons land on the same line even when
+     the two cards' text runs to different lengths. */
+  margin-top: auto;
   align-self: flex-start;
 }
 
