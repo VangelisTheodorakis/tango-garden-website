@@ -904,14 +904,14 @@ h1,h2,h3,h4 { line-height: 1.2; }
 .rhythm-pulse { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
 .rhythm-pulse input { width: 1.1rem; height: 1.1rem; accent-color: var(--green); }
 
-.rhythm-orchestras {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem 0.75rem;
-  margin-top: 1rem;
+.rhythm-orchestras { margin-top: 1rem; }
+.rhythm-orchestras-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-light);
 }
-.rhythm-orchestras-label { font-size: 0.875rem; color: var(--text-light); }
+.rhythm-orchestra-list { display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; }
 .rhythm-orchestra-btn {
   font: inherit;
   font-size: 0.8125rem;

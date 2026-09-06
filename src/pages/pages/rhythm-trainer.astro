@@ -63,13 +63,15 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
 
     <div class="rhythm-orchestras">
       <span class="rhythm-orchestras-label">Match a Golden Age orchestra:</span>
-      {
-        orchestraTempos.map((o) => (
-          <button type="button" class="rhythm-orchestra-btn" data-bpm={o.bpm}>
-            {o.name} <span>{o.bpm} BPM</span>
-          </button>
-        ))
-      }
+      <div class="rhythm-orchestra-list">
+        {
+          orchestraTempos.map((o) => (
+            <button type="button" class="rhythm-orchestra-btn" data-bpm={o.bpm}>
+              {o.name} <span>{o.bpm} BPM</span>
+            </button>
+          ))
+        }
+      </div>
     </div>
 
     <p class="rhythm-note" id="rhythm-note"></p>
@@ -93,10 +95,9 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
       }
     </div>
 
-    <p class="rhythm-hint">
-      Sound starts when you press Start. Nothing loads or plays before that. Everything runs in
-      your browser; nothing you tap leaves this page.
-    </p>
+    <p class="rhythm-hint">Sound only starts when you press Start. Nothing plays before that.</p>
+
+    <audio id="rhythm-audio" playsinline preload="auto" class="visually-hidden"></audio>
   </div>
 
   <script>
@@ -115,9 +116,11 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
       const pulseInput = document.querySelector<HTMLInputElement>('#rhythm-pulse')!;
       const noteEl = document.querySelector<HTMLParagraphElement>('#rhythm-note')!;
       const bars = [...grid.querySelectorAll<HTMLButtonElement>('.rhythm-bar')];
+      const player = document.querySelector<HTMLAudioElement>('#rhythm-audio')!;
 
       /** Which slots sound. Index 0–15. */
       const active: boolean[] = new Array(SLOTS).fill(false);
+      let currentName = 'Marcato in 2';
 
       // --- pattern <-> UI ---------------------------------------------------
 
@@ -129,11 +132,20 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
         const ex = exercises.find((e) => e.id === id);
         if (!ex) return;
         for (let i = 0; i < SLOTS; i++) active[i] = ex.pattern[i] === 'x';
+        currentName = ex.name;
         noteEl.textContent = ex.spanish ? `${ex.spanish}: ${ex.note}` : ex.note;
         paint();
       }
 
-      // --- audio ------------------------------------------------------------
+      // --- audio --------------------------------------------------------------
+      // The loop is rendered up front as one exact repeat and handed to a native
+      // <audio> element with `loop` set, instead of scheduling clicks from JS as
+      // the loop plays. A real media element keeps looping on the device's own
+      // media pipeline once started, so it survives the screen locking or the
+      // browser going to the background — a live-scheduled Web Audio graph does
+      // not, since the timers that feed it get suspended right along with the
+      // page. That's what lets a dancer run this hands-free with the phone in a
+      // pocket.
 
       /** One click for every active note, whatever its bar height; the pulse is a quieter, lower reference tick. */
       const VOICE: Record<Voice, { freq: number; gain: number }> = {
@@ -141,91 +153,182 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
         pulse: { freq: 520, gain: 0.1 },
       };
 
-      let ctx: AudioContext | null = null;
-      /** Slot to schedule next. */
-      let nextSlot = 0;
-      /** AudioContext time at which `nextSlot` sounds. */
-      let nextTime = 0;
-      let timer = 0;
-      let raf = 0;
-      /** Scheduled [slot, time] pairs, drained by the animation frame. */
-      let queue: [number, number][] = [];
-      let lit = -1;
-
       /** One eighth note in seconds. */
       const slotSeconds = () => 60 / Number(bpmInput.value) / 2;
 
-      function click(audio: AudioContext, kind: Voice, time: number) {
+      function click(ctx: BaseAudioContext, kind: Voice, time: number) {
         const { freq, gain } = VOICE[kind];
-        const osc = audio.createOscillator();
-        const amp = audio.createGain();
+        const osc = ctx.createOscillator();
+        const amp = ctx.createGain();
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(freq, time);
-        // A short percussive envelope — no click at the edges, no ringing tail.
+        // A short percussive envelope: no click at the edges, no ringing tail.
         amp.gain.setValueAtTime(0.0001, time);
         amp.gain.exponentialRampToValueAtTime(gain, time + 0.004);
         amp.gain.exponentialRampToValueAtTime(0.0001, time + 0.06);
-        osc.connect(amp).connect(audio.destination);
+        osc.connect(amp).connect(ctx.destination);
         osc.start(time);
         osc.stop(time + 0.08);
       }
 
-      // Scheduling runs ahead of the audio clock: setInterval is far too jittery
-      // to place notes with, so it only decides what the sample-accurate
-      // AudioContext clock should play over the next 100 ms.
-      const LOOKAHEAD = 0.1;
+      /** Encode a rendered buffer as a 16-bit PCM WAV Blob (self-hosted, no library). */
+      function encodeWav(buffer: AudioBuffer): Blob {
+        const channels = buffer.numberOfChannels;
+        const rate = buffer.sampleRate;
+        const frames = buffer.length;
+        const blockAlign = channels * 2;
+        const dataSize = frames * blockAlign;
+        const view = new DataView(new ArrayBuffer(44 + dataSize));
 
-      function schedule() {
-        if (!ctx) return;
-        while (nextTime < ctx.currentTime + LOOKAHEAD) {
-          if (active[nextSlot]) {
-            click(ctx, 'beat', nextTime);
-          } else if (pulseInput.checked && nextSlot % 2 === 0) {
-            click(ctx, 'pulse', nextTime);
+        const writeString = (offset: number, s: string) => {
+          for (let i = 0; i < s.length; i++) view.setUint8(offset + i, s.charCodeAt(i));
+        };
+
+        writeString(0, 'RIFF');
+        view.setUint32(4, 36 + dataSize, true);
+        writeString(8, 'WAVE');
+        writeString(12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, channels, true);
+        view.setUint32(24, rate, true);
+        view.setUint32(28, rate * blockAlign, true);
+        view.setUint16(32, blockAlign, true);
+        view.setUint16(34, 16, true);
+        writeString(36, 'data');
+        view.setUint32(40, dataSize, true);
+
+        const data = Array.from({ length: channels }, (_, c) => buffer.getChannelData(c));
+        let offset = 44;
+        for (let i = 0; i < frames; i++) {
+          for (let c = 0; c < channels; c++) {
+            const s = Math.max(-1, Math.min(1, data[c][i]));
+            view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+            offset += 2;
           }
-          queue.push([nextSlot, nextTime]);
-          nextTime += slotSeconds();
-          nextSlot = (nextSlot + 1) % SLOTS;
+        }
+        return new Blob([view], { type: 'audio/wav' });
+      }
+
+      /**
+       * A silent WAV, used only to prime the <audio> element on the very first
+       * Start press. iOS in particular only allows play() from a user gesture,
+       * and by the time the real loop above finishes rendering that gesture has
+       * expired — but once an element has played anything at all from directly
+       * inside a click handler, later play() calls on that same element keep
+       * working without a fresh gesture, even after its src is swapped out.
+       */
+      function silentWavUrl(seconds: number, rate = 44100): string {
+        const dataSize = Math.ceil(rate * seconds) * 2;
+        const view = new DataView(new ArrayBuffer(44 + dataSize));
+        const writeString = (offset: number, s: string) => {
+          for (let i = 0; i < s.length; i++) view.setUint8(offset + i, s.charCodeAt(i));
+        };
+        writeString(0, 'RIFF');
+        view.setUint32(4, 36 + dataSize, true);
+        writeString(8, 'WAVE');
+        writeString(12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, 1, true);
+        view.setUint32(24, rate, true);
+        view.setUint32(28, rate * 2, true);
+        view.setUint16(32, 2, true);
+        view.setUint16(34, 16, true);
+        writeString(36, 'data');
+        view.setUint32(40, dataSize, true);
+        // The rest of the buffer is already zero-filled — that is the silence.
+        return URL.createObjectURL(new Blob([view], { type: 'audio/wav' }));
+      }
+
+      /** Render the current pattern and tempo as exactly one loop iteration. */
+      async function renderLoop(): Promise<{ url: string; seconds: number }> {
+        const seconds = SLOTS * slotSeconds();
+        const rate = 44100;
+        const offline = new OfflineAudioContext(1, Math.ceil(rate * seconds), rate);
+        for (let i = 0; i < SLOTS; i++) {
+          const t = i * slotSeconds();
+          if (active[i]) click(offline, 'beat', t);
+          else if (pulseInput.checked && i % 2 === 0) click(offline, 'pulse', t);
+        }
+        const rendered = await offline.startRendering();
+        return { url: URL.createObjectURL(encodeWav(rendered)), seconds };
+      }
+
+      let loopSeconds = SLOTS * slotSeconds();
+      let objectUrl: string | null = silentWavUrl(0.2);
+      player.src = objectUrl;
+      let raf = 0;
+      let lit = -1;
+
+      function followPlayhead() {
+        if (player.paused) return;
+        const t = player.currentTime % loopSeconds;
+        const slot = Math.min(SLOTS - 1, Math.floor(t / slotSeconds()));
+        if (slot !== lit) {
+          if (lit >= 0) bars[lit].classList.remove('is-now');
+          bars[slot].classList.add('is-now');
+          lit = slot;
+        }
+        raf = requestAnimationFrame(followPlayhead);
+      }
+
+      function setMediaSession(playing: boolean) {
+        if (!('mediaSession' in navigator)) return;
+        try {
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: currentName,
+            artist: 'Tango Garden Rhythm Trainer',
+          });
+          navigator.mediaSession.playbackState = playing ? 'playing' : 'paused';
+        } catch {
+          // Media Session isn't available everywhere; playback itself doesn't need it.
         }
       }
 
-      function follow() {
-        if (!ctx) return;
-        while (queue.length && queue[0][1] <= ctx.currentTime) {
-          const slot = queue.shift()![0];
-          if (slot !== lit) {
-            if (lit >= 0) bars[lit].classList.remove('is-now');
-            bars[slot].classList.add('is-now');
-            lit = slot;
-          }
-        }
-        raf = requestAnimationFrame(follow);
+      /** Rebuild the loop from the current pattern/tempo and start it playing. */
+      async function refreshLoop() {
+        const { url, seconds } = await renderLoop();
+        const previous = objectUrl;
+        objectUrl = url;
+        loopSeconds = seconds;
+        player.src = url;
+        player.loop = true;
+        await player.play();
+        if (previous) URL.revokeObjectURL(previous);
       }
 
-      function start() {
-        // Created on the click, not on load: browsers refuse an AudioContext
-        // without a user gesture, and we want no audio work at all before Start.
-        if (!ctx) ctx = new AudioContext();
-        ctx.resume();
-        nextSlot = 0;
-        nextTime = ctx.currentTime + 0.06;
-        queue = [];
-        timer = window.setInterval(schedule, 25);
-        schedule();
-        raf = requestAnimationFrame(follow);
+      async function start() {
+        // Play whatever is currently loaded (the silent primer, first time
+        // round) directly inside this click handler. The real loop is assigned
+        // after an await in refreshLoop() below, too late on its own to count
+        // as the user gesture some browsers require to allow playback.
+        try {
+          await player.play();
+        } catch {
+          // Some browsers still refuse this first attempt; refreshLoop() below
+          // tries again once the real loop is ready.
+        }
+        await refreshLoop();
         playBtn.setAttribute('aria-pressed', 'true');
         playLabel.textContent = 'Stop';
+        setMediaSession(true);
+        raf = requestAnimationFrame(followPlayhead);
       }
 
       function stop() {
-        window.clearInterval(timer);
+        player.pause();
         cancelAnimationFrame(raf);
-        queue = [];
         if (lit >= 0) bars[lit].classList.remove('is-now');
         lit = -1;
-        ctx?.suspend();
         playBtn.setAttribute('aria-pressed', 'false');
         playLabel.textContent = 'Start';
+        setMediaSession(false);
+      }
+
+      /** If the loop is currently playing, rebuild it in place so an edit takes effect immediately. */
+      function reloadIfPlaying() {
+        if (!player.paused) refreshLoop();
       }
 
       // --- wiring -----------------------------------------------------------
@@ -235,31 +338,48 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
         else start();
       });
 
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.setActionHandler('play', () => start());
+        navigator.mediaSession.setActionHandler('pause', () => stop());
+      }
+
       bars.forEach((b, i) => {
         b.addEventListener('click', () => {
           active[i] = !active[i];
           paint();
           // The grid no longer matches the chosen exercise.
           select.value = 'custom';
+          currentName = 'Your own pattern';
           noteEl.textContent = 'Your own pattern.';
+          reloadIfPlaying();
         });
       });
 
-      select.addEventListener('change', () => load(select.value));
+      select.addEventListener('change', () => {
+        load(select.value);
+        reloadIfPlaying();
+      });
 
       resetBtn.addEventListener('click', () => {
         select.value = 'marcato-2';
         load('marcato-2');
+        reloadIfPlaying();
       });
 
       bpmInput.addEventListener('input', () => {
         bpmOut.textContent = `${bpmInput.value} BPM`;
       });
+      // 'change' (fires on release), not 'input' (fires on every drag tick) —
+      // re-rendering the loop on every pixel of a drag would be wasted work.
+      bpmInput.addEventListener('change', () => reloadIfPlaying());
+
+      pulseInput.addEventListener('change', () => reloadIfPlaying());
 
       document.querySelectorAll<HTMLButtonElement>('.rhythm-orchestra-btn').forEach((b) => {
         b.addEventListener('click', () => {
           bpmInput.value = b.dataset.bpm!;
           bpmInput.dispatchEvent(new Event('input'));
+          reloadIfPlaying();
         });
       });
 
