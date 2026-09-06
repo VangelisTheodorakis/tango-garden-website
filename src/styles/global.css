@@ -845,7 +845,7 @@ h1,h2,h3,h4 { line-height: 1.2; }
 }
 
 /* =====================
-   Rhythm Trainer (/pages/rhythm-trainer)
+   Rhythm Trainer (/pages/rythmical-base-trainer)
    The grid is 16 eighth-note slots. Below 640px it wraps to two rows of 8 —
    one compás per row — because 16 columns on a 320px phone leaves each bar
    too narrow to tap (WCAG 2.5.8 wants 24px).
@@ -857,6 +857,37 @@ h1,h2,h3,h4 { line-height: 1.2; }
 }
 .rhythm-title { font-size: clamp(1.75rem, 5vw, 2.5rem); color: var(--green); margin-bottom: 0.75rem; }
 .rhythm-intro { color: var(--text-mid); max-width: 60ch; margin-bottom: 2rem; }
+
+.rhythm-gate-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  max-width: 26rem;
+  padding: 2rem;
+  background: var(--cream-light);
+  border-radius: var(--radius);
+}
+.rhythm-gate-form label { font-size: 0.9375rem; color: var(--text-mid); }
+.rhythm-gate-form input[type="password"] {
+  width: 100%;
+  font: inherit;
+  font-size: 1rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.rhythm-gate-submit {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  color: #fff;
+  background: var(--green-btn);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.rhythm-gate-error { font-size: 0.875rem; color: #a4342a; }
 
 .rhythm-controls {
   display: flex;

@@ -18,17 +18,35 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
 <BaseLayout
   title="Rhythm Trainer | Tango Garden"
   description="A free rhythm trainer for tango dancers. Hear marcato, síncopa and contratiempo, tap the beats on and off, and practise at your own tempo."
-  canonical="https://tangogarden.de/pages/rhythm-trainer"
+  canonical="https://tangogarden.de/pages/rythmical-base-trainer"
+  noindex
 >
   <div class="rhythm-page">
     <h1 class="rhythm-title">Rhythm Trainer</h1>
-    <p class="rhythm-intro">
-      Two compases of tango, counted <strong>1 to 8</strong> with an <strong>&amp;</strong> between
-      each beat. Dark bars sound; tap any bar to switch it on or off. Tall bars are the strong
-      beats, short bars the offbeats.
-    </p>
 
-    <div class="rhythm-controls">
+    <div id="rhythm-gate" class="rhythm-gate">
+      <form id="rhythm-gate-form" class="rhythm-gate-form">
+        <label for="rhythm-gate-password">This is a test build. Enter the password to continue.</label>
+        <input
+          type="password"
+          id="rhythm-gate-password"
+          name="password"
+          autocomplete="off"
+          required
+        />
+        <button type="submit" class="rhythm-gate-submit">Unlock</button>
+        <p id="rhythm-gate-error" class="rhythm-gate-error" hidden>Wrong password.</p>
+      </form>
+    </div>
+
+    <div id="rhythm-content" hidden>
+      <p class="rhythm-intro">
+        Two compases of tango, counted <strong>1 to 8</strong> with an <strong>&amp;</strong>
+        between each beat. Dark bars sound; tap any bar to switch it on or off. Tall bars are the
+        strong beats, short bars the offbeats.
+      </p>
+
+      <div class="rhythm-controls">
       <button type="button" id="rhythm-play" class="rhythm-play" aria-pressed="false">
         <span class="rhythm-play-label">Start</span>
       </button>
@@ -95,10 +113,58 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
       }
     </div>
 
-    <p class="rhythm-hint">Sound only starts when you press Start. Nothing plays before that.</p>
+      <p class="rhythm-hint">Sound only starts when you press Start. Nothing plays before that.</p>
 
-    <audio id="rhythm-audio" playsinline preload="auto" class="visually-hidden"></audio>
+      <audio id="rhythm-audio" playsinline preload="auto" class="visually-hidden"></audio>
+    </div>
   </div>
+
+  <script>
+    // --- password gate ------------------------------------------------------
+    // A soft speed bump, not real access control: this is a client-rendered
+    // static page, so the check (and the content it's gating) ships in the
+    // page either way. It exists to keep an unlisted, noindexed test URL from
+    // being casually stumbled into, not to protect anything sensitive.
+    {
+      const PASSWORD_HASH = 'aea2cf22e4a270c4badab63a4d4d59553699f25a3968636fd3b3c070ff59fda3';
+      const STORAGE_KEY = 'rythmicalBaseTrainerAuth';
+
+      async function sha256Hex(text: string): Promise<string> {
+        const bytes = new TextEncoder().encode(text);
+        const digest = await crypto.subtle.digest('SHA-256', bytes);
+        return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
+      }
+
+      const gate = document.getElementById('rhythm-gate');
+      const content = document.getElementById('rhythm-content');
+      const form = document.querySelector<HTMLFormElement>('#rhythm-gate-form');
+      const passwordInput = document.querySelector<HTMLInputElement>('#rhythm-gate-password');
+      const error = document.getElementById('rhythm-gate-error');
+
+      function unlock() {
+        gate?.setAttribute('hidden', '');
+        content?.removeAttribute('hidden');
+      }
+
+      if (gate && content && form && passwordInput) {
+        if (localStorage.getItem(STORAGE_KEY) === PASSWORD_HASH) unlock();
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const hash = await sha256Hex(passwordInput.value);
+          if (hash === PASSWORD_HASH) {
+            localStorage.setItem(STORAGE_KEY, hash);
+            error?.setAttribute('hidden', '');
+            unlock();
+          } else {
+            error?.removeAttribute('hidden');
+            passwordInput.value = '';
+            passwordInput.focus();
+          }
+        });
+      }
+    }
+  </script>
 
   <script>
     import { exercises, SLOTS } from '../../data/rhythmExercises.js';
