@@ -14,13 +14,19 @@ interface Props {
   canonical?: string;
   ogType?: 'website' | 'article' | 'product';
   noindex?: boolean;
-  schema?: 'localbusiness' | 'product' | 'none';
+  schema?: 'localbusiness' | 'product' | 'learningresource' | 'none';
   product?: {
     name: string;
     description: string;
     url: string;
     price: string;
     availability: 'InStock' | 'OutOfStock';
+  };
+  learningResource?: {
+    name: string;
+    description: string;
+    url: string;
+    teaches: string[];
   };
 }
 
@@ -33,6 +39,7 @@ const {
   noindex = false,
   schema = 'none',
   product,
+  learningResource,
 } = Astro.props;
 
 /** GA4 content_group, so reports can compare the three pathway pages as one group. */
@@ -65,7 +72,7 @@ const contentGroup = pathname.startsWith('/pages/enter-the-garden')
       ogType={ogType}
       noindex={noindex}
     />
-    <StructuredData type={schema} product={product} />
+    <StructuredData type={schema} product={product} learningResource={learningResource} />
     {gaMeasurementId && (
       <>
         <meta name="ga-measurement-id" content={gaMeasurementId} />

@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { exercises, SLOTS, slotStrength, slotLabel } from '../../src/data/rhythmExercises.js';
+import {
+  exercises,
+  glossary,
+  SLOTS,
+  slotStrength,
+  slotLabel,
+} from '../../src/data/rhythmExercises.js';
 
 describe('rhythm exercises', () => {
   it('gives every exercise a pattern of exactly SLOTS on/off characters', () => {
@@ -28,5 +34,18 @@ describe('rhythm exercises', () => {
     expect(Array.from({ length: SLOTS }, (_, i) => slotLabel(i)).join(' ')).toBe(
       '1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 &'
     );
+  });
+});
+
+describe('rhythm glossary', () => {
+  it('gives every term a non-empty definition', () => {
+    for (const g of glossary) {
+      expect(g.term.trim(), JSON.stringify(g)).not.toBe('');
+      expect(g.definition.trim(), g.term).not.toBe('');
+    }
+  });
+
+  it('has unique terms', () => {
+    expect(new Set(glossary.map((g) => g.term)).size).toBe(glossary.length);
   });
 });

@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import {
   exercises,
   orchestraTempos,
+  glossary,
   SLOTS,
   slotStrength,
   slotLabel,
@@ -17,15 +18,24 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
 
 <BaseLayout
   title="Rythmical Base Trainer | Tango Garden"
-  description="A free rhythm trainer for tango dancers. Hear marcato, síncopa and contratiempo, tap the beats on and off, and practise at your own tempo."
+  description="A free, browser-based rhythm trainer for tango dancers: practise marcato, síncopa, contratiempo and tresillo, tap beats on and off, play at your tempo."
   canonical="https://tangogarden.de/pages/rythmical-base-trainer"
+  schema="learningresource"
+  learningResource={{
+    name: 'Rythmical Base Trainer',
+    description:
+      'An interactive, browser-based tool for practising the core rhythmic patterns of Golden Age tango: marcato, síncopa, contratiempo, tresillo and more.',
+    url: 'https://tangogarden.de/pages/rythmical-base-trainer',
+    teaches: glossary.map((g) => g.term),
+  }}
 >
   <div class="rhythm-page">
     <h1 class="rhythm-title">Rythmical Base Trainer</h1>
     <p class="rhythm-intro">
-      Two compases of tango, counted <strong>1 to 8</strong> with an <strong>&amp;</strong> between
-      each beat. Dark bars sound; tap any bar to switch it on or off. Tall bars are the strong
-      beats, short bars the offbeats.
+      A free, browser-based tango rhythm trainer: practise marcato, síncopa, contratiempo, tresillo
+      and more of the rhythmic vocabulary behind Golden Age tango. Two compases, counted
+      <strong>1 to 8</strong> with an <strong>&amp;</strong> between each beat. Dark bars sound; tap
+      any bar to switch it on or off. Tall bars are the strong beats, short bars the offbeats.
     </p>
 
     <div class="rhythm-controls">
@@ -98,6 +108,43 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
     <p class="rhythm-hint">Sound only starts when you press Start. Nothing plays before that.</p>
 
     <audio id="rhythm-audio" playsinline preload="auto" class="visually-hidden"></audio>
+
+    <section class="rhythm-glossary" aria-labelledby="rhythm-glossary-heading">
+      <h2 id="rhythm-glossary-heading">Rhythm vocabulary</h2>
+      <dl>
+        {
+          glossary.map((g) => (
+            <div class="rhythm-glossary-entry">
+              <dt>
+                {g.term}
+                {g.spanish && <span class="rhythm-glossary-spanish">{g.spanish}</span>}
+              </dt>
+              <dd>{g.definition}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="rhythm-next-steps" aria-labelledby="rhythm-next-steps-heading">
+      <h2 id="rhythm-next-steps-heading">Take it further</h2>
+      <div class="rhythm-next-steps-cards">
+        <a class="rhythm-next-steps-card" href="/pages/garden-practica">
+          <span class="rhythm-next-steps-title">Come practise with us</span>
+          <span>
+            The Garden Practica is our weekly open practice session — bring what you've drilled
+            here onto the floor, with real music and real partners.
+          </span>
+        </a>
+        <a class="rhythm-next-steps-card" href="/pages/contact">
+          <span class="rhythm-next-steps-title">Got an idea for an exercise?</span>
+          <span>
+            Feedback, corrections, or a pattern you'd like to see added — tell us on the contact
+            page.
+          </span>
+        </a>
+      </div>
+    </section>
   </div>
 
   <script>

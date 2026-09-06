@@ -166,3 +166,53 @@ export const orchestraTempos = [
   { name: 'Di Sarli', bpm: 115 },
   { name: "D'Arienzo", bpm: 130 },
 ];
+
+/**
+ * The rhythmic vocabulary behind the exercises above — one entry per family
+ * of pattern, not one per exercise (several exercises share a term, e.g. the
+ * three síncopa variants).
+ * @typedef {{ term: string, spanish?: string, definition: string }} GlossaryTerm
+ * @type {GlossaryTerm[]}
+ */
+export const glossary = [
+  {
+    term: 'Compás',
+    definition: 'The four-beat measure tango is built on. This grid is two compases long.',
+  },
+  {
+    term: 'Marcato',
+    spanish: 'Marcato en dos / cuatro / uno',
+    definition:
+      'Playing or stepping on the beat. "Marcato en X" says how many of the four beats you mark each compás: two, four, or just one.',
+  },
+  {
+    term: 'Síncopa',
+    definition:
+      'A syncopation: anticipating a beat by landing early, on the "&" just before it.',
+  },
+  {
+    term: 'Aire',
+    definition:
+      'A held, suspended síncopa: no attack on the beat itself, just the early anticipation, sustained through to the landing.',
+  },
+  {
+    term: 'Contratiempo',
+    spanish: 'Opposite',
+    definition: 'Stepping on the off-beats (2, 4, 6, 8) instead of the walking pulse.',
+  },
+  {
+    term: 'Tresillo',
+    spanish: '3-3-2',
+    definition:
+      "Tango's signature rhythmic cell: three eighths, three eighths, two eighths.",
+  },
+  {
+    term: 'Doble tiempo',
+    spanish: 'Double time',
+    definition: 'Stepping on every eighth note instead of every beat, twice the density of marcato en dos.',
+  },
+  {
+    term: '4-1',
+    definition: 'A bridging figure that lands on beat 4 of one compás and beat 1 of the next.',
+  },
+];

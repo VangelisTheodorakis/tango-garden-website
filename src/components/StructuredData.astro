@@ -1,7 +1,9 @@
 ---
 /**
  * Emits JSON-LD. `type="localbusiness"` renders the site-wide LocalBusiness
- * entity (homepage only); `type="product"` renders a Product/Offer for a PDP.
+ * entity (homepage only); `type="product"` renders a Product/Offer for a PDP;
+ * `type="learningresource"` renders a LearningResource for an interactive
+ * teaching tool (e.g. the rhythm trainer).
  */
 interface ProductInfo {
   name: string;
@@ -11,12 +13,20 @@ interface ProductInfo {
   availability: 'InStock' | 'OutOfStock';
 }
 
-interface Props {
-  type?: 'localbusiness' | 'product' | 'none';
-  product?: ProductInfo;
+interface LearningResourceInfo {
+  name: string;
+  description: string;
+  url: string;
+  teaches: string[];
 }
 
-const { type = 'none', product } = Astro.props;
+interface Props {
+  type?: 'localbusiness' | 'product' | 'learningresource' | 'none';
+  product?: ProductInfo;
+  learningResource?: LearningResourceInfo;
+}
+
+const { type = 'none', product, learningResource } = Astro.props;
 
 const business = {
   name: 'Tango Garden Cologne',
@@ -70,7 +80,27 @@ const productSchema = product && {
   },
 };
 
-const schema = type === 'localbusiness' ? localBusiness : type === 'product' ? productSchema : null;
+const learningResourceSchema = learningResource && {
+  '@context': 'https://schema.org',
+  '@type': 'LearningResource',
+  name: learningResource.name,
+  description: learningResource.description,
+  url: learningResource.url,
+  inLanguage: 'en',
+  isAccessibleForFree: true,
+  learningResourceType: 'Interactive Resource',
+  teaches: learningResource.teaches,
+  provider: { '@type': 'Organization', name: 'Tango Garden Cologne', url: 'https://tangogarden.de' },
+};
+
+const schema =
+  type === 'localbusiness'
+    ? localBusiness
+    : type === 'product'
+      ? productSchema
+      : type === 'learningresource'
+        ? learningResourceSchema
+        : null;
 ---
 
 {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}

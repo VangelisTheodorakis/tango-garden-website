@@ -965,6 +965,50 @@ h1,h2,h3,h4 { line-height: 1.2; }
 
 .rhythm-hint { font-size: 0.8125rem; color: var(--text-light); max-width: 60ch; }
 
+.rhythm-glossary, .rhythm-next-steps { margin-top: 3rem; }
+.rhythm-glossary h2, .rhythm-next-steps h2 {
+  font-size: 1.25rem;
+  color: var(--green);
+  margin-bottom: 1rem;
+}
+.rhythm-glossary dl {
+  display: grid;
+  gap: 1.25rem;
+}
+.rhythm-glossary-entry dt {
+  font-weight: 600;
+  color: var(--text);
+}
+.rhythm-glossary-spanish {
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text-light);
+  margin-left: 0.5rem;
+}
+.rhythm-glossary-entry dd {
+  margin-top: 0.25rem;
+  color: var(--text-mid);
+  max-width: 60ch;
+}
+
+.rhythm-next-steps-cards {
+  display: grid;
+  gap: 1rem;
+}
+.rhythm-next-steps-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.25rem;
+  text-decoration: none;
+  color: var(--text-mid);
+  background: var(--cream-light);
+  border-radius: var(--radius);
+  transition: background 0.15s;
+}
+.rhythm-next-steps-card:hover { background: #f0ead9; }
+.rhythm-next-steps-title { font-weight: 600; color: var(--green); }
+
 .visually-hidden {
   position: absolute;
   width: 1px; height: 1px;
@@ -979,4 +1023,5 @@ h1,h2,h3,h4 { line-height: 1.2; }
   .rhythm-bar[data-strength="strong"] { height: 200px; }
   .rhythm-bar[data-strength="medium"] { height: 167px; }
   .rhythm-bar[data-strength="weak"]   { height: 100px; }
+  .rhythm-next-steps-cards { grid-template-columns: 1fr 1fr; }
 }
