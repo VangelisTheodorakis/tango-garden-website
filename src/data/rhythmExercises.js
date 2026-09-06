@@ -57,6 +57,13 @@ export const exercises = [
     pattern: 'x..xx...x..xx...',
   },
   {
+    id: 'sincopa-aire',
+    name: 'Síncopa (aire)',
+    spanish: 'Aire',
+    note: 'The held variant: no attack on beat 1 at all — just the early anticipation, then hold all the way to the landing on 3.',
+    pattern: '.x..x....x..x...',
+  },
+  {
     id: 'sincopa-1-3',
     name: 'Síncopa 1 & 3',
     note: 'Both syncopations in one compás — 1, the "&" of 1, the "&" of 2, then 3.',
