@@ -843,3 +843,109 @@ h1,h2,h3,h4 { line-height: 1.2; }
 .site-footer :focus-visible {
   outline-color: #fff;
 }
+
+/* =====================
+   Rhythm Trainer (/pages/rhythm-trainer)
+   The grid is 16 eighth-note slots. Below 640px it wraps to two rows of 8 —
+   one compás per row — because 16 columns on a 320px phone leaves each bar
+   too narrow to tap (WCAG 2.5.8 wants 24px).
+   ===================== */
+.rhythm-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+.rhythm-title { font-size: clamp(1.75rem, 5vw, 2.5rem); color: var(--green); margin-bottom: 0.75rem; }
+.rhythm-intro { color: var(--text-mid); max-width: 60ch; margin-bottom: 2rem; }
+
+.rhythm-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--cream-light);
+  border-radius: var(--radius);
+}
+.rhythm-play {
+  font: inherit;
+  font-weight: 600;
+  min-width: 7rem;
+  padding: 0.75rem 1.5rem;
+  color: #fff;
+  background: var(--green-btn);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.rhythm-play[aria-pressed="true"] { background: var(--green-dark); }
+.rhythm-tempo, .rhythm-preset { display: flex; align-items: center; gap: 0.5rem; }
+.rhythm-controls label { font-size: 0.875rem; color: var(--text-light); }
+.rhythm-tempo input[type="range"] { width: 8rem; accent-color: var(--green); }
+.rhythm-tempo output { font-size: 0.875rem; font-variant-numeric: tabular-nums; min-width: 5rem; }
+.rhythm-preset select {
+  font: inherit;
+  font-size: 0.9375rem;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+}
+.rhythm-pulse { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+.rhythm-pulse input { width: 1.1rem; height: 1.1rem; accent-color: var(--green); }
+
+.rhythm-note {
+  min-height: 3rem;
+  margin: 1.25rem 0 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--text-mid);
+}
+
+.rhythm-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 1.5rem 0.5rem;
+  margin-bottom: 2rem;
+}
+.rhythm-slot { display: flex; flex-direction: column; justify-content: flex-end; gap: 0.5rem; }
+.rhythm-bar {
+  /* Bars share a baseline and rise to three heights, as in the printed layout. */
+  width: 100%;
+  flex: none;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: #d9d9d9;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.rhythm-bar[data-strength="strong"] { height: 168px; }
+.rhythm-bar[data-strength="medium"] { height: 140px; }
+.rhythm-bar[data-strength="weak"]   { height: 84px; }
+.rhythm-bar[aria-pressed="true"] { background: var(--green); }
+.rhythm-bar.is-now { box-shadow: 0 0 0 3px var(--green-btn); }
+.rhythm-bar.is-now[aria-pressed="false"] { background: #bdbdbd; }
+.rhythm-count {
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--text-light);
+  font-variant-numeric: tabular-nums;
+}
+
+.rhythm-hint { font-size: 0.8125rem; color: var(--text-light); max-width: 60ch; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .rhythm-grid { grid-template-columns: repeat(16, 1fr); gap: 0.75rem 0.4rem; }
+  .rhythm-bar[data-strength="strong"] { height: 200px; }
+  .rhythm-bar[data-strength="medium"] { height: 167px; }
+  .rhythm-bar[data-strength="weak"]   { height: 100px; }
+}

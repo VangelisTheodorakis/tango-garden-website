@@ -1,0 +1,234 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { exercises, SLOTS, slotStrength, slotLabel } from '../../data/rhythmExercises.js';
+
+const slots = Array.from({ length: SLOTS }, (_, i) => ({
+  i,
+  strength: slotStrength(i),
+  label: slotLabel(i),
+}));
+---
+
+<BaseLayout
+  title="Rhythm Trainer | Tango Garden"
+  description="A free rhythm trainer for tango dancers. Hear marcato, síncopa and contratiempo, tap the beats on and off, and practise at your own tempo."
+  canonical="https://tangogarden.de/pages/rhythm-trainer"
+>
+  <div class="rhythm-page">
+    <h1 class="rhythm-title">Rhythm Trainer</h1>
+    <p class="rhythm-intro">
+      Two compases of tango, counted <strong>1 to 8</strong> with an <strong>&amp;</strong> between
+      each beat. Dark bars sound; tap any bar to switch it on or off. Tall bars are the strong
+      beats, short bars the offbeats.
+    </p>
+
+    <div class="rhythm-controls">
+      <button type="button" id="rhythm-play" class="rhythm-play" aria-pressed="false">
+        <span class="rhythm-play-label">Start</span>
+      </button>
+
+      <div class="rhythm-tempo">
+        <label for="rhythm-bpm">Tempo</label>
+        <input type="range" id="rhythm-bpm" min="40" max="100" step="1" value="60" />
+        <output for="rhythm-bpm" id="rhythm-bpm-out">60 BPM</output>
+      </div>
+
+      <div class="rhythm-preset">
+        <label for="rhythm-exercise">Exercise</label>
+        <select id="rhythm-exercise">
+          {exercises.map((e) => <option value={e.id}>{e.name}</option>)}
+          <option value="custom" hidden>Your own</option>
+        </select>
+      </div>
+
+      <label class="rhythm-pulse">
+        <input type="checkbox" id="rhythm-pulse" />
+        <span>Hear the pulse</span>
+      </label>
+    </div>
+
+    <p class="rhythm-note" id="rhythm-note"></p>
+
+    <div class="rhythm-grid" id="rhythm-grid">
+      {
+        slots.map((s) => (
+          <div class="rhythm-slot">
+            <button
+              type="button"
+              class="rhythm-bar"
+              data-slot={s.i}
+              data-strength={s.strength}
+              aria-pressed="false"
+            >
+              <span class="visually-hidden">Count {s.label}</span>
+            </button>
+            <span class="rhythm-count" aria-hidden="true">{s.label}</span>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="rhythm-hint">
+      Sound starts when you press Start — nothing loads or plays before that. Everything runs in
+      your browser; nothing you tap leaves this page.
+    </p>
+  </div>
+
+  <script>
+    import { exercises, SLOTS, slotStrength } from '../../data/rhythmExercises.js';
+
+    type Voice = 'strong' | 'medium' | 'weak' | 'pulse';
+
+    const grid = document.getElementById('rhythm-grid');
+    if (grid) {
+      const playBtn = document.querySelector<HTMLButtonElement>('#rhythm-play')!;
+      const playLabel = playBtn.querySelector<HTMLSpanElement>('.rhythm-play-label')!;
+      const bpmInput = document.querySelector<HTMLInputElement>('#rhythm-bpm')!;
+      const bpmOut = document.querySelector<HTMLOutputElement>('#rhythm-bpm-out')!;
+      const select = document.querySelector<HTMLSelectElement>('#rhythm-exercise')!;
+      const pulseInput = document.querySelector<HTMLInputElement>('#rhythm-pulse')!;
+      const noteEl = document.querySelector<HTMLParagraphElement>('#rhythm-note')!;
+      const bars = [...grid.querySelectorAll<HTMLButtonElement>('.rhythm-bar')];
+
+      /** Which slots sound. Index 0–15. */
+      const active: boolean[] = new Array(SLOTS).fill(false);
+
+      // --- pattern <-> UI ---------------------------------------------------
+
+      function paint() {
+        bars.forEach((b, i) => b.setAttribute('aria-pressed', String(active[i])));
+      }
+
+      function load(id: string) {
+        const ex = exercises.find((e) => e.id === id);
+        if (!ex) return;
+        for (let i = 0; i < SLOTS; i++) active[i] = ex.pattern[i] === 'x';
+        noteEl.textContent = ex.spanish ? `${ex.spanish} — ${ex.note}` : ex.note;
+        paint();
+      }
+
+      // --- audio ------------------------------------------------------------
+
+      /** Timbre per bar height, mirroring the three heights in the grid. */
+      const VOICE: Record<Voice, { freq: number; gain: number }> = {
+        strong: { freq: 1320, gain: 0.9 },
+        medium: { freq: 990, gain: 0.62 },
+        weak: { freq: 740, gain: 0.42 },
+        pulse: { freq: 520, gain: 0.1 },
+      };
+
+      let ctx: AudioContext | null = null;
+      /** Slot to schedule next. */
+      let nextSlot = 0;
+      /** AudioContext time at which `nextSlot` sounds. */
+      let nextTime = 0;
+      let timer = 0;
+      let raf = 0;
+      /** Scheduled [slot, time] pairs, drained by the animation frame. */
+      let queue: [number, number][] = [];
+      let lit = -1;
+
+      /** One eighth note in seconds. */
+      const slotSeconds = () => 60 / Number(bpmInput.value) / 2;
+
+      function click(audio: AudioContext, kind: Voice, time: number) {
+        const { freq, gain } = VOICE[kind];
+        const osc = audio.createOscillator();
+        const amp = audio.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, time);
+        // A short percussive envelope — no click at the edges, no ringing tail.
+        amp.gain.setValueAtTime(0.0001, time);
+        amp.gain.exponentialRampToValueAtTime(gain, time + 0.004);
+        amp.gain.exponentialRampToValueAtTime(0.0001, time + 0.06);
+        osc.connect(amp).connect(audio.destination);
+        osc.start(time);
+        osc.stop(time + 0.08);
+      }
+
+      // Scheduling runs ahead of the audio clock: setInterval is far too jittery
+      // to place notes with, so it only decides what the sample-accurate
+      // AudioContext clock should play over the next 100 ms.
+      const LOOKAHEAD = 0.1;
+
+      function schedule() {
+        if (!ctx) return;
+        while (nextTime < ctx.currentTime + LOOKAHEAD) {
+          if (active[nextSlot]) {
+            click(ctx, slotStrength(nextSlot) as Voice, nextTime);
+          } else if (pulseInput.checked && nextSlot % 2 === 0) {
+            click(ctx, 'pulse', nextTime);
+          }
+          queue.push([nextSlot, nextTime]);
+          nextTime += slotSeconds();
+          nextSlot = (nextSlot + 1) % SLOTS;
+        }
+      }
+
+      function follow() {
+        if (!ctx) return;
+        while (queue.length && queue[0][1] <= ctx.currentTime) {
+          const slot = queue.shift()![0];
+          if (slot !== lit) {
+            if (lit >= 0) bars[lit].classList.remove('is-now');
+            bars[slot].classList.add('is-now');
+            lit = slot;
+          }
+        }
+        raf = requestAnimationFrame(follow);
+      }
+
+      function start() {
+        // Created on the click, not on load: browsers refuse an AudioContext
+        // without a user gesture, and we want no audio work at all before Start.
+        if (!ctx) ctx = new AudioContext();
+        ctx.resume();
+        nextSlot = 0;
+        nextTime = ctx.currentTime + 0.06;
+        queue = [];
+        timer = window.setInterval(schedule, 25);
+        schedule();
+        raf = requestAnimationFrame(follow);
+        playBtn.setAttribute('aria-pressed', 'true');
+        playLabel.textContent = 'Stop';
+      }
+
+      function stop() {
+        window.clearInterval(timer);
+        cancelAnimationFrame(raf);
+        queue = [];
+        if (lit >= 0) bars[lit].classList.remove('is-now');
+        lit = -1;
+        ctx?.suspend();
+        playBtn.setAttribute('aria-pressed', 'false');
+        playLabel.textContent = 'Start';
+      }
+
+      // --- wiring -----------------------------------------------------------
+
+      playBtn.addEventListener('click', () => {
+        if (playBtn.getAttribute('aria-pressed') === 'true') stop();
+        else start();
+      });
+
+      bars.forEach((b, i) => {
+        b.addEventListener('click', () => {
+          active[i] = !active[i];
+          paint();
+          // The grid no longer matches the chosen exercise.
+          select.value = 'custom';
+          noteEl.textContent = 'Your own pattern.';
+        });
+      });
+
+      select.addEventListener('change', () => load(select.value));
+
+      bpmInput.addEventListener('input', () => {
+        bpmOut.textContent = `${bpmInput.value} BPM`;
+      });
+
+      select.value = 'marcato-2';
+      load('marcato-2');
+    }
+  </script>
+</BaseLayout>

@@ -49,10 +49,11 @@ const contentPages = () => pages.filter((p) => p.route !== '/404');
 
 describe('pages', () => {
   it('builds every expected route', () => {
-    // 1 home + 10 content/legal (incl. the 3 consolidated class pages)
+    // 1 home + 11 content/legal (incl. the 3 consolidated class pages and the
+    // rhythm trainer)
     // + 12 products (all hidden, kept for direct-URL + price/variant data)
     // + 2 collections + 404
-    expect(pages).toHaveLength(26);
+    expect(pages).toHaveLength(27);
   });
 
   it('gives every page a non-empty title', () => {
