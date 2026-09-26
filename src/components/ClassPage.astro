@@ -7,6 +7,8 @@
  * instead of being hand-duplicated per class the way the old per-SKU product
  * pages were.
  */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { products } from '../data/products.js';
 import { absoluteUrl, formatPrice, localizePath } from '../i18n/index.js';
@@ -37,6 +39,7 @@ interface ClassPageEntry {
   faq: { q: string; a: string; raw?: boolean; key?: string }[];
   offerHandles: string[];
   registerUrl?: string;
+  /** File name in src/assets/. */
   heroImage?: string;
   gallery?: string[];
   showTeachers?: boolean;
@@ -60,6 +63,12 @@ interface Props {
 
 const { data, locale = 'en' } = Astro.props;
 
+// The hero is the LCP element, so it goes through astro:assets for srcset
+// variants — phones download a ~750px image instead of the 1800px original.
+const heroAssets = import.meta.glob<{ default: ImageMetadata }>('../assets/*.{png,jpg,webp}', { eager: true });
+const heroImage = data.heroImage ? heroAssets[`../assets/${data.heroImage}`]?.default : undefined;
+if (data.heroImage && !heroImage) throw new Error(`heroImage not found in src/assets: ${data.heroImage}`);
+
 const text = {
   en: {
     home: 'Home',
@@ -82,10 +91,10 @@ const text = {
     price: 'Price',
     perClass: 'Per class',
     makeup: 'Free practica if you miss a class',
-    refund: 'Refund within 1 week†',
+    refund: 'Refund within 1 week*',
     bestValue: 'Best value',
     refundNote:
-      '† Refundable if the cancellation is made within 1 week of the pass purchase. After that, passes are non-refundable.',
+      '* Refundable if the cancellation is made within 1 week of the pass purchase. After that, passes are non-refundable.',
     teachers: 'Meet Your Teachers',
     teacherRole: 'Lead Instructor',
     vangelisBio:
@@ -123,10 +132,10 @@ const text = {
     price: 'Preis',
     perClass: 'Pro Stunde',
     makeup: 'Kostenlose Practica, wenn du eine Stunde verpasst',
-    refund: 'Erstattung innerhalb 1 Woche†',
+    refund: 'Erstattung innerhalb 1 Woche*',
     bestValue: 'Bester Preis',
     refundNote:
-      '† Erstattung möglich, wenn du innerhalb von 1 Woche nach dem Kauf des Passes stornierst. Danach sind Pässe nicht erstattbar.',
+      '* Erstattung möglich, wenn du innerhalb von 1 Woche nach dem Kauf des Passes stornierst. Danach sind Pässe nicht erstattbar.',
     teachers: 'Deine Lehrer:innen',
     teacherRole: 'Lead Instructor',
     vangelisBio:
@@ -266,7 +275,19 @@ const waLabel = text.waLabel;
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
 
   <section class:list={['class-hero', data.heroImage && 'class-hero--photo']}>
-    {data.heroImage && <img class="class-hero-bg" src={data.heroImage} alt="" loading="eager" />}
+    {heroImage && (
+      <Image
+        class="class-hero-bg"
+        src={heroImage}
+        alt=""
+        widths={[750, 1100, 1500, 1800]}
+        sizes="100vw"
+        format="webp"
+        quality={80}
+        loading="eager"
+        fetchpriority="high"
+      />
+    )}
     {data.heroImage && <div class="class-hero-overlay" />}
     <div class="class-hero-content">
       {data.eyebrow && <div class="class-eyebrow">{data.eyebrow}</div>}

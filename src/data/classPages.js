@@ -10,6 +10,9 @@
  * `products.js`, the single source of truth for Shopify-mirrored prices, and
  * `ClassPage.astro` reads the price from there at build time. This file only
  * owns page copy, structure, and which handles belong together.
+ *
+ * `heroImage` is a file name in `src/assets/` (not a /public URL), so
+ * ClassPage.astro can serve it as responsive, right-sized variants.
  */
 export const classPages = [
   {
@@ -32,7 +35,7 @@ export const classPages = [
       'Partner rotation, come solo or with a partner',
       'A Garden Ambassador greeting, so you never stand alone',
     ],
-    heroImage: '/images/enter-the-garden-hero.webp',
+    heroImage: 'enter-the-garden-hero.webp',
     gallery: [
       '/images/enter-the-garden-1.webp',
       '/images/enter-the-garden-2.webp',
@@ -101,7 +104,7 @@ export const classPages = [
     ],
     whatsIncluded: [],
     registerUrl: 'https://forms.gle/mAqzDEYasFyCrdoz8',
-    heroImage: '/images/hero-dancers.webp',
+    heroImage: 'hero-dancers.png',
     gallery: [
       '/images/beginner-course-2.webp',
       '/images/beginner-course-1.webp',
@@ -218,7 +221,7 @@ export const classPages = [
       'All levels and roles welcome, including Double-Role',
       'Teachers and more experienced dancers on hand for your questions',
     ],
-    heroImage: '/images/hero-dancers.webp',
+    heroImage: 'hero-dancers.png',
     table: {
       caption: 'Price',
       rows: [

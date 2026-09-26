@@ -107,11 +107,6 @@ const contentGroup = pathname.startsWith('/pages/enter-the-garden')
       // check they made up over half of the recorded sessions.
       const PRODUCTION_HOSTS = ['tangogarden.de', 'www.tangogarden.de'];
       if (gaId && PRODUCTION_HOSTS.includes(location.hostname)) {
-        const loader = document.createElement('script');
-        loader.async = true;
-        loader.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
-        document.head.appendChild(loader);
-
         window.dataLayer = window.dataLayer || [];
         window.gtag = function gtag() {
           // Must push `arguments` itself (not a rest-param array) — gtag.js's
@@ -125,6 +120,22 @@ const contentGroup = pathname.startsWith('/pages/enter-the-garden')
         // content_group goes on the config call: GA4 never recorded it when it
         // was sent via gtag('set', 'content_group', …) — every page read (not set).
         window.gtag('config', gaId, contentGroup ? { content_group: contentGroup } : {});
+
+        // Fetch gtag.js only once the page has loaded and painted: its ~170KB
+        // download otherwise competes with the hero image and cost ~1s of
+        // mobile LCP. Everything above (and any event fired before then) waits
+        // in dataLayer and is sent as soon as it runs.
+        const loadGtag = () => {
+          const script = document.createElement('script');
+          script.async = true;
+          script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+          document.head.append(script);
+        };
+        // Safari has no requestIdleCallback.
+        const whenIdle = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 200));
+        const afterLoad = () => whenIdle(loadGtag);
+        if (document.readyState === 'complete') afterLoad();
+        else window.addEventListener('load', afterLoad, { once: true });
       }
     </script>
   </body>
