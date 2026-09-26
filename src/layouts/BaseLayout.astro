@@ -89,7 +89,6 @@ const contentGroup = pathname.startsWith('/pages/enter-the-garden')
       <>
         <meta name="ga-measurement-id" content={gaMeasurementId} />
         {contentGroup && <meta name="ga-content-group" content={contentGroup} />}
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}></script>
       </>
     )}
     <slot name="head" />
@@ -103,7 +102,16 @@ const contentGroup = pathname.startsWith('/pages/enter-the-garden')
     <Footer />
     <script>
       const gaId = document.querySelector('meta[name="ga-measurement-id"]')?.getAttribute('content');
-      if (gaId) {
+      // Only the live site reports to GA. Dev servers, the test suites and
+      // Lighthouse (locally and in CI) all run on localhost, and until this
+      // check they made up over half of the recorded sessions.
+      const PRODUCTION_HOSTS = ['tangogarden.de', 'www.tangogarden.de'];
+      if (gaId && PRODUCTION_HOSTS.includes(location.hostname)) {
+        const loader = document.createElement('script');
+        loader.async = true;
+        loader.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+        document.head.appendChild(loader);
+
         window.dataLayer = window.dataLayer || [];
         window.gtag = function gtag() {
           // Must push `arguments` itself (not a rest-param array) — gtag.js's
@@ -114,12 +122,9 @@ const contentGroup = pathname.startsWith('/pages/enter-the-garden')
         const contentGroup = document
           .querySelector('meta[name="ga-content-group"]')
           ?.getAttribute('content');
-        if (contentGroup) {
-          // `set` (not `config`) so content_group is attached to every
-          // subsequent hit on this page, including outbound-click events.
-          window.gtag('set', 'content_group', contentGroup);
-        }
-        window.gtag('config', gaId);
+        // content_group goes on the config call: GA4 never recorded it when it
+        // was sent via gtag('set', 'content_group', …) — every page read (not set).
+        window.gtag('config', gaId, contentGroup ? { content_group: contentGroup } : {});
       }
     </script>
   </body>
