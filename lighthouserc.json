@@ -6,7 +6,7 @@
         "http://localhost/index.html",
         "http://localhost/collections/all/index.html",
         "http://localhost/pages/the-garden/index.html",
-        "http://localhost/products/the-sprouting-sessions-beginner-level-full-course-pass-general-admission/index.html"
+        "http://localhost/pages/beginner-course/index.html"
       ],
       "numberOfRuns": 2
     },
