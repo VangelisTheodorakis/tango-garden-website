@@ -1,10 +1,48 @@
 ---
-const principles = [
-  ['Enjoyment leads to progress', ', validated processes for stress free progression'],
-  ['Invitation, not intimidation', ', no partner or experience required'],
-  ['Growth over performance', ', confidence, presence, real friendships'],
-  ['Choice and inclusivity', ', roles by curiosity, not gender'],
-];
+interface Props {
+  locale?: 'en' | 'de';
+}
+const { locale = 'en' } = Astro.props;
+
+const copy = {
+  en: {
+    eyebrow: 'Our Philosophy',
+    h2: 'Why Tango Garden',
+    lead: 'Because many young people are craving connection, not performance.',
+    paras: [
+      'Tango Garden was created for people who want to meet others in real life, feel at home in their bodies, and grow through shared experience.',
+      'In a world of gyms, apps, and quick interactions, we choose to build something slower and more human, a place where you can show up alone, be welcomed immediately, and belong over time.',
+      'Most of our students are young adults navigating work, relationships, and identity, looking for a place that feels genuine and warm.',
+    ],
+    principlesTitle: 'Our Principles',
+    principlesLead: 'Here, tango is the vehicle, not the goal.',
+    principles: [
+      ['Enjoyment leads to progress', ', validated processes for stress free progression'],
+      ['Invitation, not intimidation', ', no partner or experience required'],
+      ['Growth over performance', ', confidence, presence, real friendships'],
+      ['Choice and inclusivity', ', roles by curiosity, not gender'],
+    ],
+  },
+  de: {
+    eyebrow: 'Unsere Philosophie',
+    h2: 'Warum Tango Garden',
+    lead: 'Weil sich viele junge Menschen nach Verbindung sehnen, nicht nach Performance.',
+    paras: [
+      'Tango Garden ist für Menschen entstanden, die andere im echten Leben treffen, sich in ihrem Körper zu Hause fühlen und durch gemeinsame Erfahrungen wachsen wollen.',
+      'In einer Welt voller Gyms, Apps und flüchtiger Begegnungen bauen wir bewusst etwas Langsameres, Menschlicheres: einen Ort, an dem du allein auftauchen kannst, sofort willkommen bist und mit der Zeit dazugehörst.',
+      'Die meisten von uns sind junge Erwachsene zwischen Job, Beziehungen und der Frage, wer sie sein wollen, auf der Suche nach einem Ort, der sich echt und warm anfühlt.',
+    ],
+    principlesTitle: 'Unsere Prinzipien',
+    principlesLead: 'Hier ist Tango das Mittel, nicht das Ziel.',
+    principles: [
+      ['Spaß führt zu Fortschritt', ', mit erprobten Methoden für stressfreies Vorankommen'],
+      ['Einladung statt Einschüchterung', ', kein Partner und keine Erfahrung nötig'],
+      ['Wachstum statt Performance', ', Selbstvertrauen, Präsenz, echte Freundschaften'],
+      ['Wahlfreiheit und Inklusion', ', Rollen nach Neugier, nicht nach Geschlecht'],
+    ],
+  },
+};
+const c = copy[locale];
 ---
 
 <section id="garden-intro-v2" style="background: white; padding: 70px 20px;">
@@ -13,17 +51,17 @@ const principles = [
       <div
         style="font-size: 14px; text-transform: uppercase; letter-spacing: 2px; color: #4E5D22; font-weight: 600; margin-bottom: 20px;"
       >
-        Our Philosophy
+        {c.eyebrow}
       </div>
       <h2
         style="font-size: 42px; font-weight: 700; color: #4E5D22; margin-bottom: 25px; line-height: 1.2;"
       >
-        Why Tango Garden
+        {c.h2}
       </h2>
       <p
         style="font-size: 24px; color: #4E5D22; font-weight: 500; max-width: 800px; margin: 0 auto; line-height: 1.4;"
       >
-        Because many young people are craving connection, not performance.
+        {c.lead}
       </p>
     </div>
 
@@ -32,17 +70,13 @@ const principles = [
         style="font-size: 18px; line-height: 1.8; color: #444; text-align: center; max-width: 850px; margin: 0 auto;"
       >
         <p style="margin-bottom: 20px;">
-          Tango Garden was created for people who want to meet others in real life, feel at home in
-          their bodies, and grow through shared experience.
+          {c.paras[0]}
         </p>
         <p>
-          In a world of gyms, apps, and quick interactions, we choose to build something slower and
-          more human, a place where you can show up alone, be welcomed immediately, and belong over
-          time.
+          {c.paras[1]}
         </p>
         <p>
-          Most of our students are young adults navigating work, relationships, and identity,
-          looking for a place that feels genuine and warm.
+          {c.paras[2]}
         </p>
       </div>
 
@@ -57,16 +91,16 @@ const principles = [
 
         <div style="text-align: center; margin-bottom: 40px;">
           <h3 style="font-size: 28px; color: #4E5D22; font-weight: 700; margin-bottom: 10px;">
-            Our Principles
+            {c.principlesTitle}
           </h3>
-          <p style="color: #666; font-size: 16px;">Here, tango is the vehicle, not the goal.</p>
+          <p style="color: #666; font-size: 16px;">{c.principlesLead}</p>
         </div>
 
         <div
           style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 20px; max-width: 800px; margin: 0 auto;"
         >
           {
-            principles.map(([bold, rest]) => (
+            c.principles.map(([bold, rest]) => (
               <div class="garden-value-item">
                 <span class="garden-check" aria-hidden="true">✓</span>
                 <strong>{bold}</strong>

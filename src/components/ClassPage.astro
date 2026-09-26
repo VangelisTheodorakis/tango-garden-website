@@ -9,6 +9,7 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { products } from '../data/products.js';
+import { absoluteUrl, formatPrice, localizePath } from '../i18n/index.js';
 
 interface ClassPageEntry {
   slug: string;
@@ -32,7 +33,8 @@ interface ClassPageEntry {
     }[];
   };
   cancellationNote: string | null;
-  faq: { q: string; a: string; raw?: boolean }[];
+  /** `key` is the English question, set on German items for analytics. */
+  faq: { q: string; a: string; raw?: boolean; key?: string }[];
   offerHandles: string[];
   registerUrl?: string;
   heroImage?: string;
@@ -53,9 +55,96 @@ interface ClassPageEntry {
 
 interface Props {
   data: ClassPageEntry;
+  locale?: 'en' | 'de';
 }
 
-const { data } = Astro.props;
+const { data, locale = 'en' } = Astro.props;
+
+const text = {
+  en: {
+    home: 'Home',
+    classes: 'Classes',
+    loading: 'Loading dates…',
+    languageNote: null,
+    register: 'Reserve your spot',
+    seePrices: 'See course prices\u00a0↓',
+    registerNote: 'No payment required to register. Pay in cash or via PayPal at your first class.',
+    paymentNote: 'All prices are paid in cash or via PayPal.',
+    whereIsIt: '📍 Where is it?',
+    whatToExpect: 'What to Expect',
+    photo: 'photo',
+    pricing: 'Pricing',
+    pricingGroup: 'Pricing group',
+    general: 'General',
+    reduced: 'Reduced',
+    tierHint: 'Reduced pricing for students and anyone aged 28 or under.',
+    option: 'Option',
+    price: 'Price',
+    perClass: 'Per class',
+    makeup: 'Free practica if you miss a class',
+    refund: 'Refund within 1 week†',
+    bestValue: 'Best value',
+    refundNote:
+      '† Refundable if the cancellation is made within 1 week of the pass purchase. After that, passes are non-refundable.',
+    teachers: 'Meet Your Teachers',
+    teacherRole: 'Lead Instructor',
+    vangelisBio:
+      'Built Tango Garden after discovering his love for community. He believes tradition means passing the fire forward, not worshipping the ashes.',
+    kristinaBio:
+      'Kristina focuses on helping students develop body awareness, confidence, and real connection, creating a space where people can grow both on and off the dance floor.',
+    included: "What's Included",
+    questions: 'Common Questions',
+    nextStep: 'Ready to take the next step?',
+    nextStepRegister: 'Register with the form below, or message us on WhatsApp with any questions first.',
+    nextStepDropIn: 'No need to reserve a spot, just come. Message us on WhatsApp if you have any questions.',
+    waMessage: (name: string) => `Hi! I have a question about ${name}.`,
+    waLabel: '💬 Chat on WhatsApp',
+  },
+  de: {
+    home: 'Startseite',
+    classes: 'Kurse',
+    loading: 'Termine werden geladen…',
+    // Classes are taught in English; say so near the top of every German page.
+    languageNote: 'Unterricht auf Englisch · Feedback auf Wunsch auch auf Deutsch, Griechisch oder Russisch',
+    register: 'Platz reservieren',
+    seePrices: 'Kurspreise ansehen\u00a0↓',
+    registerNote:
+      'Für die Anmeldung zahlst du nichts, bezahlt wird bar oder per PayPal in deiner ersten Stunde. Das Anmeldeformular ist auf Englisch.',
+    paymentNote: 'Alle Preise zahlst du bar oder per PayPal.',
+    whereIsIt: '📍 Wo ist das?',
+    whatToExpect: 'Was dich erwartet',
+    photo: 'Foto',
+    pricing: 'Preise',
+    pricingGroup: 'Preisgruppe',
+    general: 'Regulär',
+    reduced: 'Ermäßigt',
+    tierHint: 'Ermäßigt für Studierende und alle bis 28 Jahre.',
+    option: 'Option',
+    price: 'Preis',
+    perClass: 'Pro Stunde',
+    makeup: 'Kostenlose Practica, wenn du eine Stunde verpasst',
+    refund: 'Erstattung innerhalb 1 Woche†',
+    bestValue: 'Bester Preis',
+    refundNote:
+      '† Erstattung möglich, wenn du innerhalb von 1 Woche nach dem Kauf des Passes stornierst. Danach sind Pässe nicht erstattbar.',
+    teachers: 'Deine Lehrer:innen',
+    teacherRole: 'Lead Instructor',
+    vangelisBio:
+      'Hat Tango Garden gegründet, nachdem er seine Liebe zur Community entdeckt hat. Für ihn heißt Tradition, das Feuer weiterzugeben, nicht die Asche anzubeten.',
+    kristinaBio:
+      'Kristina hilft dir, Körperbewusstsein, Selbstvertrauen und echte Verbindung zu entwickeln, in einem Raum, in dem du auf und neben der Tanzfläche wachsen kannst.',
+    included: 'Was inklusive ist',
+    questions: 'Häufige Fragen',
+    nextStep: 'Bereit für den nächsten Schritt?',
+    nextStepRegister:
+      'Melde dich über das Formular an oder schreib uns vorher auf WhatsApp, wenn du Fragen hast.',
+    nextStepDropIn:
+      'Du musst keinen Platz reservieren, komm einfach vorbei. Schreib uns auf WhatsApp, wenn du Fragen hast.',
+    waMessage: (name: string) => `Hi! Ich habe eine Frage zu ${name}.`,
+    waLabel: '💬 Auf WhatsApp schreiben',
+  },
+}[locale];
+const euro = (n: number | null) => (n == null ? '—' : formatPrice(`€${n}`, locale));
 
 const productByHandle = (handle: string) => products.find((p) => p.handle === handle);
 
@@ -63,7 +152,7 @@ const productByHandle = (handle: string) => products.find((p) => p.handle === ha
 const priceLabel = (handle: string) => {
   const price = productByHandle(handle)?.price ?? '';
   const match = price.match(/€(\d+)/);
-  return match ? `€${match[1]}` : price;
+  return formatPrice(match ? `€${match[1]}` : price, locale);
 };
 
 const priceNum = (handle: string) => {
@@ -93,10 +182,11 @@ const refundFor = (row: ClassPageEntry['table']['rows'][number]) => {
   return { general, student };
 };
 
-const canonical = `https://tangogarden.de/pages/${data.slug}`;
+const canonical = absoluteUrl(localizePath(`/pages/${data.slug}`, locale));
 const hasStudent = data.table.rows.some((r) => r.student);
 const hasPerClass = data.table.rows.some((r) => r.perClass);
 const hasMakeup = data.table.rows.some((r) => r.makeupIncluded !== undefined);
+const hasPaidRow = data.table.rows.some((r) => productByHandle(r.general.handle)?.price !== 'Free');
 
 const offers = data.offerHandles
   .map((h) => productByHandle(h)?.schema?.offers)
@@ -155,8 +245,8 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://tangogarden.de/' },
-    { '@type': 'ListItem', position: 2, name: 'Classes', item: 'https://tangogarden.de/collections/all' },
+    { '@type': 'ListItem', position: 1, name: text.home, item: absoluteUrl(localizePath('/', locale)) },
+    { '@type': 'ListItem', position: 2, name: text.classes, item: absoluteUrl(localizePath('/collections/all', locale)) },
     { '@type': 'ListItem', position: 3, name: data.heading, item: canonical },
   ],
 };
@@ -164,9 +254,10 @@ const breadcrumbSchema = {
 const mapQuery = [loc.streetAddress, loc.postalCode, loc.addressLocality].filter(Boolean).join(', ');
 const mapUrl = mapQuery ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}` : null;
 
-const waMessage = `Hi! I have a question about ${data.heading}.`;
+// German headings are keyword phrases; the message names the class by its brand name.
+const waMessage = text.waMessage(locale === 'de' ? (data.eyebrow ?? data.heading) : data.heading);
 const waHref = `https://wa.me/491602368723?text=${encodeURIComponent(waMessage)}`;
-const waLabel = '💬 Chat on WhatsApp';
+const waLabel = text.waLabel;
 ---
 
 <BaseLayout title={`${data.metaTitle} | Tango Garden`} description={data.metaDescription} canonical={canonical}>
@@ -181,44 +272,45 @@ const waLabel = '💬 Chat on WhatsApp';
       {data.eyebrow && <div class="class-eyebrow">{data.eyebrow}</div>}
       <h1>{data.heading}</h1>
       <p class="class-intro">{data.intro}</p>
+      {text.languageNote && <p class="class-language-note">{text.languageNote}</p>}
       <div class="class-schedule" data-feed={data.feed}>
         <span class="class-schedule-emoji" aria-hidden="true">🗓️</span>
         <div>
           <span class="class-schedule-label">{data.feedLabel}</span>
-          <span class="class-schedule-date">Loading dates…</span>
+          <span class="class-schedule-date">{text.loading}</span>
         </div>
       </div>
       {data.registerUrl ? (
         <div class="class-btn-row">
-          <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">Reserve your spot</a>
-          <a class="btn-ghost" href="#pricing">See course prices&nbsp;↓</a>
+          <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">{text.register}</a>
+          <a class="btn-ghost" href="#pricing">{text.seePrices}</a>
         </div>
       ) : (
         <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
       )}
       {data.registerUrl && (
-        <p class="class-cta-note">No payment required to register. Pay in cash at your first class.</p>
+        <p class="class-cta-note">{text.registerNote}</p>
       )}
       {mapUrl && (
-        <a class="class-location-toggle" href={mapUrl} target="_blank" rel="noopener">📍 Where is it?</a>
+        <a class="class-location-toggle" href={mapUrl} target="_blank" rel="noopener">{text.whereIsIt}</a>
       )}
     </div>
   </section>
 
   <section class="class-section">
-    <h2>What to Expect</h2>
+    <h2>{text.whatToExpect}</h2>
     {data.whatToExpect.map((p) => <p>{p}</p>)}
   </section>
 
   {data.gallery && data.gallery.length > 0 && (
     <section class="class-section">
       {data.gallery[0] && (
-        <img class="class-gallery-wide" src={data.gallery[0]} alt={`${data.heading} photo 1`} loading="lazy" />
+        <img class="class-gallery-wide" src={data.gallery[0]} alt={`${data.heading} ${text.photo} 1`} loading="lazy" />
       )}
       {data.gallery.length > 1 && (
         <div class="class-gallery-pair">
           {data.gallery.slice(1).map((src, i) => (
-            <img src={src} alt={`${data.heading} photo ${i + 2}`} loading="lazy" />
+            <img src={src} alt={`${data.heading} ${text.photo} ${i + 2}`} loading="lazy" />
           ))}
         </div>
       )}
@@ -226,25 +318,25 @@ const waLabel = '💬 Chat on WhatsApp';
   )}
 
   <section class="class-section" id="pricing">
-    <h2>Pricing</h2>
+    <h2>{text.pricing}</h2>
     {hasStudent && (
-      <div class="class-tier-toggle" role="tablist" aria-label="Pricing group">
-        <button type="button" class="class-tier-btn is-active" data-tier="general" role="tab" aria-selected="true">General</button>
-        <button type="button" class="class-tier-btn" data-tier="student" role="tab" aria-selected="false">Reduced</button>
+      <div class="class-tier-toggle" role="tablist" aria-label={text.pricingGroup}>
+        <button type="button" class="class-tier-btn is-active" data-tier="general" role="tab" aria-selected="true">{text.general}</button>
+        <button type="button" class="class-tier-btn" data-tier="student" role="tab" aria-selected="false">{text.reduced}</button>
       </div>
     )}
     {hasStudent && (
-      <p class="class-tier-hint">Reduced pricing for students and anyone aged 28 or under.</p>
+      <p class="class-tier-hint">{text.tierHint}</p>
     )}
     <div class="class-table-wrap" data-tier="general">
       <table class="class-table">
         <thead>
           <tr>
-            <th scope="col">Option</th>
-            <th scope="col">Price</th>
-            {hasPerClass && <th scope="col">Per class</th>}
-            {hasMakeup && <th scope="col">Free practica if you miss a class</th>}
-            {hasPerClass && <th scope="col">Refund within 1 week†</th>}
+            <th scope="col">{text.option}</th>
+            <th scope="col">{text.price}</th>
+            {hasPerClass && <th scope="col">{text.perClass}</th>}
+            {hasMakeup && <th scope="col">{text.makeup}</th>}
+            {hasPerClass && <th scope="col">{text.refund}</th>}
           </tr>
         </thead>
         <tbody>
@@ -254,7 +346,7 @@ const waLabel = '💬 Chat on WhatsApp';
               <tr>
                 <th scope="row">
                   {row.label}
-                  {row.bestValue && <span class="class-table-tag">Best value</span>}
+                  {row.bestValue && <span class="class-table-tag">{text.bestValue}</span>}
                 </th>
                 {hasStudent ? (
                   <td>
@@ -266,22 +358,22 @@ const waLabel = '💬 Chat on WhatsApp';
                 )}
                 {hasPerClass && hasStudent && (
                   <td>
-                    <span class="tier-value tier-general">{row.perClass ? row.perClass.general : '—'}</span>
-                    <span class="tier-value tier-student">{row.perClass ? row.perClass.student : '—'}</span>
+                    <span class="tier-value tier-general">{row.perClass ? formatPrice(row.perClass.general, locale) : '—'}</span>
+                    <span class="tier-value tier-student">{row.perClass ? formatPrice(row.perClass.student, locale) : '—'}</span>
                   </td>
                 )}
                 {hasPerClass && !hasStudent && (
-                  <td>{row.perClass ? row.perClass.general : '—'}</td>
+                  <td>{row.perClass ? formatPrice(row.perClass.general, locale) : '—'}</td>
                 )}
                 {hasMakeup && <td>{row.makeupIncluded ? '✓' : '—'}</td>}
                 {hasPerClass && hasStudent && (
                   <td>
-                    <span class="tier-value tier-general">{refund ? `€${refund.general}` : '—'}</span>
-                    <span class="tier-value tier-student">{refund && refund.student != null ? `€${refund.student}` : '—'}</span>
+                    <span class="tier-value tier-general">{refund ? euro(refund.general) : '—'}</span>
+                    <span class="tier-value tier-student">{refund && refund.student != null ? euro(refund.student) : '—'}</span>
                   </td>
                 )}
                 {hasPerClass && !hasStudent && (
-                  <td>{refund ? `€${refund.general}` : '—'}</td>
+                  <td>{refund ? euro(refund.general) : '—'}</td>
                 )}
               </tr>
             );
@@ -289,31 +381,32 @@ const waLabel = '💬 Chat on WhatsApp';
         </tbody>
       </table>
     </div>
+    {hasPaidRow && <p class="class-note">{text.paymentNote}</p>}
     {hasPerClass && (
       <p class="class-note">
-        † Refundable if the cancellation is made within 1 week of the pass purchase. After that, passes are non-refundable.
+        {text.refundNote}
       </p>
     )}
   </section>
 
   {data.showTeachers && (
     <section class="class-section">
-      <h2>Meet Your Teachers</h2>
+      <h2>{text.teachers}</h2>
       <div class="class-teacher-cards">
         <div class="class-teacher-card">
           <img src="/images/vangelis.webp" alt="Vangelis Theodorakis" loading="lazy" />
           <div class="class-teacher-card-body">
             <h3>Vangelis Theodorakis</h3>
-            <p class="class-teacher-role">Lead Instructor</p>
-            <p>Built Tango Garden after discovering his love for community. He believes tradition means passing the fire forward, not worshipping the ashes.</p>
+            <p class="class-teacher-role">{text.teacherRole}</p>
+            <p>{text.vangelisBio}</p>
           </div>
         </div>
         <div class="class-teacher-card">
           <img src="/images/kristina.webp" alt="Kristina Yanushko" loading="lazy" />
           <div class="class-teacher-card-body">
             <h3>Kristina Yanushko</h3>
-            <p class="class-teacher-role">Lead Instructor</p>
-            <p>Kristina focuses on helping students develop body awareness, confidence, and real connection, creating a space where people can grow both on and off the dance floor.</p>
+            <p class="class-teacher-role">{text.teacherRole}</p>
+            <p>{text.kristinaBio}</p>
           </div>
         </div>
       </div>
@@ -322,7 +415,7 @@ const waLabel = '💬 Chat on WhatsApp';
 
   {data.whatsIncluded.length > 0 && (
     <section class="class-section">
-      <h2>What's Included</h2>
+      <h2>{text.included}</h2>
       <ul class="class-included">
         {data.whatsIncluded.map((i) => <li>{i}</li>)}
       </ul>
@@ -331,10 +424,10 @@ const waLabel = '💬 Chat on WhatsApp';
   )}
 
   <section class="class-section class-faq">
-    <h2>Common Questions</h2>
+    <h2>{text.questions}</h2>
     {data.faq.map((item) => (
       <div class="class-faq-item">
-        <button class="class-faq-question" aria-expanded="false">
+        <button class="class-faq-question" aria-expanded="false" data-faq-key={item.key}>
           {item.q}
         </button>
         <div class="class-faq-answer" hidden={true}>
@@ -349,18 +442,18 @@ const waLabel = '💬 Chat on WhatsApp';
   </section>
 
   <section class="class-cta">
-    <h2>Ready to take the next step?</h2>
-    {data.registerUrl && <p>Register with the form below, or message us on WhatsApp with any questions first.</p>}
-    {!data.registerUrl && <p>No need to reserve a spot, just come. Message us on WhatsApp if you have any questions.</p>}
+    <h2>{text.nextStep}</h2>
+    {data.registerUrl && <p>{text.nextStepRegister}</p>}
+    {!data.registerUrl && <p>{text.nextStepDropIn}</p>}
     {data.registerUrl ? (
       <div class="class-btn-row">
-        <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">Reserve your spot</a>
+        <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">{text.register}</a>
         <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
       </div>
     ) : (
       <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
     )}
-    {data.registerUrl && <p class="class-cta-note">No payment required to register. Pay in cash at your first class.</p>}
+    {data.registerUrl && <p class="class-cta-note">{text.registerNote}</p>}
   </section>
 </BaseLayout>
 
@@ -414,6 +507,13 @@ const waLabel = '💬 Chat on WhatsApp';
     color: var(--text-mid);
     max-width: 620px;
     margin: 0 auto 28px;
+  }
+  .class-language-note {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--green);
+    max-width: 620px;
+    margin: -16px auto 24px;
   }
   .class-schedule {
     display: flex;
@@ -768,6 +868,7 @@ const waLabel = '💬 Chat on WhatsApp';
 <script>
   import { cardContent } from '../lib/next-event.js';
 
+  const locale = document.documentElement.lang === 'de' ? 'de' : 'en';
   const box = document.querySelector('.class-schedule') as HTMLElement | null;
   const feedUrl = box?.dataset.feed;
   const dateEl = box?.querySelector('.class-schedule-date') as HTMLElement | null;
@@ -778,7 +879,7 @@ const waLabel = '💬 Chat on WhatsApp';
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (!data) return;
-        const { label, lines } = cardContent(data, new Date());
+        const { label, lines } = cardContent(data, new Date(), locale);
         if (labelEl && label) labelEl.textContent = label;
         dateEl.textContent = '';
         lines.forEach((line, i) => {
@@ -787,7 +888,7 @@ const waLabel = '💬 Chat on WhatsApp';
         });
       })
       .catch(() => {
-        if (dateEl) dateEl.textContent = 'New dates coming soon (TBA)';
+        if (dateEl) dateEl.textContent = cardContent(null, new Date(), locale).lines[0];
       });
   }
 
@@ -833,7 +934,10 @@ const waLabel = '💬 Chat on WhatsApp';
         btn.setAttribute('aria-expanded', 'true');
         panel.hidden = false;
         if (typeof window.gtag === 'function') {
-          window.gtag('event', 'faq_expand', { faq_question: btn.textContent?.trim() });
+          // German questions carry the English wording as data-faq-key, so
+          // both languages report under one faq_question value.
+          const question = btn.dataset.faqKey ?? btn.textContent?.trim();
+          window.gtag('event', 'faq_expand', { faq_question: question });
         }
       }
     });

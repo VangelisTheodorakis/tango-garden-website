@@ -128,3 +128,38 @@ describe('cardContent', () => {
     expect(out.lines).toEqual(['<img src=x onerror=alert(1)>']);
   });
 });
+
+describe('German locale', () => {
+  it('formats dates the German way', () => {
+    expect(formatDate('2026-07-29', 'de')).toBe('Mi., 29.07.2026');
+    expect(formatDate('2026-09-15', 'de')).toBe('Di., 15.09.2026');
+  });
+
+  it('keeps English as the default', () => {
+    expect(formatDate('2026-07-29')).toBe('Wed, 29 Jul 2026');
+  });
+
+  it('uses the *_de feed labels, falling back to English only for the label', () => {
+    const feed = {
+      label: 'Next Practica',
+      label_de: 'Nächste Practica',
+      events: [{ date: '2026-07-29', time: '19:30 – 22:00' }],
+    };
+    expect(cardContent(feed, at('2026-07-22'), 'de')).toEqual({
+      label: 'Nächste Practica',
+      lines: ['Mi., 29.07.2026', '19:30 – 22:00'],
+      isEmpty: false,
+    });
+    expect(cardContent({ label: 'Next Practica', events: [] }, at('2026-07-22'), 'de').label).toBe(
+      'Next Practica'
+    );
+  });
+
+  it('never shows an English empty message on a German page', () => {
+    const feed = { emptyMessage: 'New dates coming soon (TBA)', events: [] };
+    expect(cardContent(feed, at('2026-07-22'), 'de').lines).toEqual(['Neue Termine folgen bald']);
+    expect(
+      cardContent({ ...feed, emptyMessage_de: 'Bald neue Termine' }, at('2026-07-22'), 'de').lines
+    ).toEqual(['Bald neue Termine']);
+  });
+});

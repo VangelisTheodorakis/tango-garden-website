@@ -25,6 +25,20 @@ const PAGES = [
   '/products/enter-the-garden-general-admission',
   '/pages/impressum',
   '/404',
+  // German runs longer than English — the translations get the same checks.
+  '/de',
+  '/de/pages/the-garden',
+  '/de/pages/contact',
+  '/de/collections/all',
+  '/de/pages/enter-the-garden',
+  '/de/pages/beginner-course',
+  '/de/pages/garden-practica',
+  '/de/pages/tango-rhythm-trainer',
+  '/de/pages/code-of-care',
+  '/de/pages/privacy-policy',
+  '/de/pages/terms-of-service',
+  '/de/pages/refund-and-cancellation-policy',
+  '/de/pages/impressum',
 ];
 
 // Narrowest phone still worth supporting, through to a large desktop.

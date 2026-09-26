@@ -15,7 +15,7 @@ export const classPages = [
   {
     slug: 'enter-the-garden',
     title: 'Enter the Garden: Introductory Session',
-    metaTitle: 'Enter the Garden: Free Intro Tango Session in Cologne',
+    metaTitle: 'Free Tango Intro Class in Cologne (Köln)',
     metaDescription:
       'A free, open-air introduction to Argentine Tango at Rheinpark in Cologne. One hour, no partner needed, no experience required.',
     heading: 'Enter the Garden',
@@ -86,7 +86,7 @@ export const classPages = [
   {
     slug: 'beginner-course',
     title: 'The Sprouting Sessions: 12-Week Beginner Tango Course',
-    metaTitle: 'Beginner Tango Course Cologne: The Sprouting Sessions',
+    metaTitle: 'Beginner Tango Course in Cologne (Köln)',
     metaDescription:
       'A 12-week Argentine tango beginner course in Cologne. No partner needed, weekly classes, free makeup sessions. Everything you need to start dancing with us.',
     eyebrow: 'The Sprouting Sessions',
@@ -204,24 +204,26 @@ export const classPages = [
       'Drop-in Argentine Tango practica in Cologne. Open-level, no partner needed, 2.5-hour guided practice session every week.',
     heading: 'The Garden Practica',
     intro:
-      'A relaxed, guided practica for dancers with some tango experience, a space to apply what you know, try new roles, and get inspired, drop in whenever you like.',
+      'A relaxed, guided practica, open to everyone who has taken at least one tango class. A space to apply what you know, try new roles, and get inspired. Drop in whenever you like.',
     feed: '/assets/data/practicas.json',
     feedLabel: 'Next Practica',
     whatToExpect: [
-      '2.5 hours of open, guided practice time, not a lesson, a space to dance what you already know and pick up feedback along the way.',
+      'Every practica starts with a 10-minute warm-up, followed by a 30-minute guided practica with invited guests. After that, the floor is yours: dance what you already know and pick up feedback along the way.',
       'Open-level and open-role: come as a Leader, Follower, or Double-Role, whatever you feel like that week.',
+      'It’s a practica, not a milonga: no strict cabeceo rules, just one small ritual. Dance with at least one person you’ve never danced with before.',
     ],
     whatsIncluded: [
-      '2.5 hours of open, guided practice time',
+      'A 10-minute warm-up',
+      'A 30-minute guided practica with invited guests',
       'All levels and roles welcome, including Double-Role',
-      'A relaxed space to apply what you’re learning',
+      'Teachers and more experienced dancers on hand for your questions',
     ],
     heroImage: '/images/hero-dancers.webp',
     table: {
       caption: 'Price',
       rows: [
         {
-          label: '1-Practica Pass (door-only)',
+          label: '1-Practica Pass',
           general: { handle: 'the-garden-practica-1-practica-pass-general-admission' },
           student: {
             handle: 'the-garden-practica-1-practica-pass-door-only-student-and-under-28-admission',
@@ -235,11 +237,23 @@ export const classPages = [
     faq: [
       {
         q: 'Do I need any dance experience to start?',
-        a: 'The practica works best if you already know the basics, but if you’re completely new, we recommend starting with Enter the Garden or the Sprouting Sessions first.',
+        a: 'The practica is open to everyone who has taken at least one tango class. If you’re completely new, we recommend starting with Enter the Garden or the Sprouting Sessions first.',
       },
       {
         q: 'Do I need to bring a partner?',
         a: 'No. We rotate throughout the practica, so you can come solo and still dance with everyone.',
+      },
+      {
+        q: 'Is the practica a milonga?',
+        a: 'No. It’s a relaxed practice space, so there are no strict milonga codes like the cabeceo: you can simply ask someone to dance. Our one ritual: dance with at least one person you’ve never danced with before.',
+      },
+      {
+        q: 'How do we move on the floor?',
+        a: 'We dance counter-clockwise around the room, like in any ronda. If you stop to talk something through, take one step closer to the centre, so the ronda stays free for everyone else.',
+      },
+      {
+        q: 'What if I get stuck or have a question?',
+        a: 'Just ask. We’re always there for you, and you’re welcome to ask dancers who are a little further along, too.',
       },
       {
         q: 'What should I wear?',

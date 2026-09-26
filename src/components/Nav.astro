@@ -1,9 +1,28 @@
 ---
 import { navItems, social } from '../data/nav.js';
+import { getLocale, localizePath, switchPath } from '../i18n/index.js';
+import { navLabel, ui } from '../i18n/ui.js';
 import Icon from './Icons.astro';
 
+const locale = getLocale(Astro.url.pathname);
+const t = ui[locale];
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+// nav.js stays English; German pages get German labels and /de links.
+const items = navItems.map((item) => ({
+  href: localizePath(item.href, locale),
+  label: navLabel(locale, item.href, item.label),
+  children: item.children?.map((c) => ({
+    href: localizePath(c.href, locale),
+    label: navLabel(locale, c.href, c.label, true),
+  })),
+}));
 const isCurrent = (href: string) => path === href.replace(/\/$/, '');
+
+// Language switcher: always shows the *other* language.
+const other = locale === 'en' ? 'de' : 'en';
+const otherHref = switchPath(Astro.url.pathname, other);
+const otherUi = ui[other];
 ---
 
 <nav class="site-nav">
@@ -11,22 +30,32 @@ const isCurrent = (href: string) => path === href.replace(/\/$/, '');
     <!-- One lockup at every width, as the live storefront does: 36px icon plus
          the wordmark. The stacked logo that used to appear below 900px had no
          height cap and rendered 118px tall inside a 72px bar. -->
-    <a href="/" class="nav-logo" aria-label="Tango Garden Home">
+    <a href={localizePath('/', locale)} class="nav-logo" aria-label={t.homeAria}>
       <span class="nav-logo-desktop"
         ><img src="/assets/logo-icon.svg" alt="" width="36" height="36" loading="eager" /><span
           class="nav-logo-text">Tango Garden</span
         ></span
       >
     </a>
+    {/* Mobile switcher, in the bar so it's visible without opening the menu. */}
+    <a
+      href={otherHref}
+      class="nav-lang nav-lang--bar"
+      hreflang={other}
+      lang={other}
+      aria-label={otherUi.switchAria}>{otherUi.switchLabel}</a
+    >
     <button
       class="nav-toggle"
-      aria-label="Open menu"
+      aria-label={t.openMenu}
+      data-label-open={t.openMenu}
+      data-label-close={t.closeMenu}
       aria-expanded="false"
       aria-controls="nav-drawer"><span></span><span></span><span></span></button
     >
     <ul class="nav-links" role="list">
       {
-        navItems.map((item) =>
+        items.map((item) =>
           item.children ? (
             <li class="nav-item-has-dropdown">
               <a
@@ -83,16 +112,23 @@ const isCurrent = (href: string) => path === href.replace(/\/$/, '');
         class="nav-social-link"
         aria-label="Instagram"><Icon name="instagram" /></a
       >
+      <a
+        href={otherHref}
+        class="nav-lang"
+        hreflang={other}
+        lang={other}
+        aria-label={otherUi.switchAria}>{otherUi.switchLabel}</a
+      >
     </div>
   </div>
 
   <!-- `inert` keeps the off-canvas links out of the tab order while closed;
        aria-hidden alone left them focusable. -->
   <div class="nav-drawer" id="nav-drawer" aria-hidden="true" inert>
-    <button class="nav-drawer-close" aria-label="Close menu">&#x2715;</button>
+    <button class="nav-drawer-close" aria-label={t.closeMenu}>&#x2715;</button>
     <ul class="nav-drawer-links" role="list">
       {
-        navItems.map((item) => (
+        items.map((item) => (
           <li>
             {item.children ? (
               <Fragment>
@@ -108,7 +144,7 @@ const isCurrent = (href: string) => path === href.replace(/\/$/, '');
                     type="button"
                     class="nav-drawer-expand"
                     aria-expanded="false"
-                    aria-label={`Show ${item.label} submenu`}
+                    aria-label={t.showSubmenu(item.label)}
                   >
                     <span class="nav-drawer-expand-icon" aria-hidden="true">
                       ›
@@ -133,7 +169,7 @@ const isCurrent = (href: string) => path === href.replace(/\/$/, '');
       }
     </ul>
     <div class="nav-drawer-footer">
-      <p class="nav-drawer-connect">Connect with us</p>
+      <p class="nav-drawer-connect">{t.connectWithUs}</p>
       <div class="nav-drawer-social">
         <a href={social.facebook} target="_blank" rel="noopener" aria-label="Facebook"
           ><Icon name="facebook" size={24} /></a
@@ -159,7 +195,8 @@ const isCurrent = (href: string) => path === href.replace(/\/$/, '');
   if (toggle && drawer) {
     const setOpen = (open: boolean) => {
       toggle.setAttribute('aria-expanded', String(open));
-      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      const label = open ? toggle.dataset.labelClose : toggle.dataset.labelOpen;
+      if (label) toggle.setAttribute('aria-label', label);
       drawer.setAttribute('aria-hidden', String(!open));
       drawer.toggleAttribute('inert', !open);
       drawer.classList.toggle('is-open', open);
@@ -173,6 +210,7 @@ const isCurrent = (href: string) => path === href.replace(/\/$/, '');
       // The logo sits behind the overlay too. The toggle itself stays active so
       // it can still be used to close the drawer.
       document.querySelector('.nav-logo')?.toggleAttribute('inert', open);
+      document.querySelector('.nav-lang--bar')?.toggleAttribute('inert', open);
 
       // Move focus into the drawer, and hand it back to the toggle on close —
       // otherwise closing drops focus on <body> and the next Tab restarts from

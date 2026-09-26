@@ -1,13 +1,92 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+/**
+ * The rhythm trainer, shared by /pages/tango-rhythm-trainer and its German
+ * mirror. Words come from `text` below and rhythmExercises.de.js; the audio
+ * engine in the script is language-neutral.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
 import {
-  exercises,
+  exercises as exercisesEn,
   orchestraTempos,
-  glossary,
+  glossary as glossaryEn,
   SLOTS,
   slotStrength,
   slotLabel,
-} from '../../data/rhythmExercises.js';
+} from '../data/rhythmExercises.js';
+import { localizeExercises, localizeGlossary } from '../data/rhythmExercises.de.js';
+import { absoluteUrl, localizePath } from '../i18n/index.js';
+
+interface Props {
+  locale?: 'en' | 'de';
+}
+const { locale = 'en' } = Astro.props;
+const de = locale === 'de';
+const exercises = de ? localizeExercises(exercisesEn) : exercisesEn;
+const glossary = de ? localizeGlossary(glossaryEn) : glossaryEn;
+const url = absoluteUrl(localizePath('/pages/tango-rhythm-trainer', locale));
+
+const text = {
+  en: {
+    title: 'Tango Rhythm Trainer | Tango Garden',
+    description:
+      'A free, browser-based rhythm trainer for tango dancers: practise marcato, síncopa, contratiempo and tresillo, tap beats on and off, play at your tempo.',
+    schemaName: 'Tango Rhythm Trainer',
+    schemaDescription:
+      'An interactive, browser-based tool for practising the core rhythmic patterns of Golden Age tango: marcato, síncopa, contratiempo, tresillo and more.',
+    h1: 'Tango Rhythm Trainer',
+    intro:
+      'A free, browser-based tango rhythm trainer: practise marcato, síncopa, contratiempo, tresillo and more of the rhythmic vocabulary behind Golden Age tango. Two compases, counted <strong>1 to 8</strong> with an <strong>&amp;</strong> between each beat. Dark bars sound; tap any bar to switch it on or off. Tall bars are the strong beats, short bars the offbeats.',
+    start: 'Start',
+    reset: 'Reset to Marcato 2',
+    tempo: 'Tempo',
+    exercise: 'Exercise',
+    yourOwn: 'Your own',
+    pulse: 'Hear the pulse',
+    orchestras: 'Match a Golden Age orchestra:',
+    count: 'Count',
+    hint: 'Sound only starts when you press Start. Nothing plays before that.',
+    nextSteps: 'Take it further',
+    practiseTitle: 'Come practise with us',
+    practiseBody:
+      'You just drilled it. Now bring it to the floor: real music, real partners, no partner needed to join.',
+    practiseCta: 'See Practica times',
+    ideaTitle: 'Got an idea for an exercise?',
+    ideaBody:
+      "Feedback, corrections, or a pattern you'd like to see added: tell us on the contact page.",
+    ideaCta: 'Contact us',
+    glossary: 'Rhythm vocabulary',
+  },
+  de: {
+    title: 'Tango-Rhythmustrainer: Musikalität üben | Tango Garden',
+    description:
+      'Kostenloser Rhythmustrainer für Tango im Browser: Übe Marcato, Síncopa, Contratiempo und Tresillo, schalte Schläge an und aus und spiel in deinem Tempo.',
+    schemaName: 'Tango-Rhythmustrainer',
+    schemaDescription:
+      'Ein interaktives Tool im Browser, um die rhythmischen Grundmuster des Golden-Age-Tango zu üben: Marcato, Síncopa, Contratiempo, Tresillo und mehr.',
+    h1: 'Tango-Rhythmustrainer',
+    intro:
+      'Ein kostenloser Tango-Rhythmustrainer im Browser: Übe Marcato, Síncopa, Contratiempo, Tresillo und mehr aus dem rhythmischen Vokabular des Golden-Age-Tango. Zwei Compases, gezählt <strong>1 bis 8</strong> mit einem <strong>&amp;</strong> zwischen den Schlägen. Dunkle Balken klingen; tippe auf einen Balken, um ihn an- oder auszuschalten. Hohe Balken sind die starken Schläge, kurze die Offbeats.',
+    start: 'Start',
+    reset: 'Zurück zu Marcato 2',
+    tempo: 'Tempo',
+    exercise: 'Übung',
+    yourOwn: 'Eigenes Muster',
+    pulse: 'Puls hören',
+    orchestras: 'Tempo eines Golden-Age-Orchesters:',
+    count: 'Zählzeit',
+    hint: 'Der Sound startet erst, wenn du auf Start drückst. Vorher wird nichts abgespielt.',
+    nextSteps: 'Mach weiter',
+    practiseTitle: 'Üb mit uns',
+    practiseBody:
+      'Du hast es gerade geübt. Jetzt bring es auf die Tanzfläche: echte Musik, echte Menschen, und du brauchst keinen Partner, um mitzumachen.',
+    practiseCta: 'Practica-Termine ansehen',
+    ideaTitle: 'Du hast eine Idee für eine Übung?',
+    ideaBody:
+      'Feedback, Korrekturen oder ein Muster, das du gerne hier sehen würdest: Sag es uns auf der Kontaktseite.',
+    ideaCta: 'Kontakt',
+    glossary: 'Rhythmus-Vokabular',
+  },
+}[locale];
 
 const slots = Array.from({ length: SLOTS }, (_, i) => ({
   i,
@@ -17,62 +96,57 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
 ---
 
 <BaseLayout
-  title="Rythmical Base Trainer | Tango Garden"
-  description="A free, browser-based rhythm trainer for tango dancers: practise marcato, síncopa, contratiempo and tresillo, tap beats on and off, play at your tempo."
-  canonical="https://tangogarden.de/pages/rythmical-base-trainer"
+  title={text.title}
+  description={text.description}
+  canonical={url}
   schema="learningresource"
   learningResource={{
-    name: 'Rythmical Base Trainer',
-    description:
-      'An interactive, browser-based tool for practising the core rhythmic patterns of Golden Age tango: marcato, síncopa, contratiempo, tresillo and more.',
-    url: 'https://tangogarden.de/pages/rythmical-base-trainer',
+    name: text.schemaName,
+    description: text.schemaDescription,
+    url,
     teaches: glossary.map((g) => g.term),
+    inLanguage: locale,
   }}
 >
   <div class="rhythm-page">
-    <h1 class="rhythm-title">Rythmical Base Trainer</h1>
-    <p class="rhythm-intro">
-      A free, browser-based tango rhythm trainer: practise marcato, síncopa, contratiempo, tresillo
-      and more of the rhythmic vocabulary behind Golden Age tango. Two compases, counted
-      <strong>1 to 8</strong> with an <strong>&amp;</strong> between each beat. Dark bars sound; tap
-      any bar to switch it on or off. Tall bars are the strong beats, short bars the offbeats.
-    </p>
+    <h1 class="rhythm-title">{text.h1}</h1>
+    <p class="rhythm-intro" set:html={text.intro} />
 
     <div class="rhythm-controls">
       <button type="button" id="rhythm-play" class="rhythm-play" aria-pressed="false">
-        <span class="rhythm-play-label">Start</span>
+        <span class="rhythm-play-label">{text.start}</span>
       </button>
 
       <button type="button" id="rhythm-reset" class="rhythm-reset">
-        Reset to Marcato 2
+        {text.reset}
       </button>
 
       <div class="rhythm-tempo">
-        <label for="rhythm-bpm">Tempo</label>
+        <label for="rhythm-bpm">{text.tempo}</label>
         <input type="range" id="rhythm-bpm" min="60" max="140" step="1" value="100" />
         <output for="rhythm-bpm" id="rhythm-bpm-out">100 BPM</output>
       </div>
 
       <div class="rhythm-preset">
-        <label for="rhythm-exercise">Exercise</label>
+        <label for="rhythm-exercise">{text.exercise}</label>
         <select id="rhythm-exercise">
           {exercises.map((e) => (
             <option value={e.id} selected={e.id === 'marcato-2'}>
               {e.name}
             </option>
           ))}
-          <option value="custom" hidden>Your own</option>
+          <option value="custom" hidden>{text.yourOwn}</option>
         </select>
       </div>
 
       <label class="rhythm-pulse">
         <input type="checkbox" id="rhythm-pulse" />
-        <span>Hear the pulse</span>
+        <span>{text.pulse}</span>
       </label>
     </div>
 
     <div class="rhythm-orchestras">
-      <span class="rhythm-orchestras-label">Match a Golden Age orchestra:</span>
+      <span class="rhythm-orchestras-label">{text.orchestras}</span>
       <div class="rhythm-orchestra-list">
         {
           orchestraTempos.map((o) => (
@@ -97,7 +171,7 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
               data-strength={s.strength}
               aria-pressed="false"
             >
-              <span class="visually-hidden">Count {s.label}</span>
+              <span class="visually-hidden">{text.count} {s.label}</span>
             </button>
             <span class="rhythm-count" aria-hidden="true">{s.label}</span>
           </div>
@@ -105,34 +179,28 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
       }
     </div>
 
-    <p class="rhythm-hint">Sound only starts when you press Start. Nothing plays before that.</p>
+    <p class="rhythm-hint">{text.hint}</p>
 
     <audio id="rhythm-audio" playsinline preload="auto" class="visually-hidden"></audio>
 
     <section class="rhythm-next-steps" aria-labelledby="rhythm-next-steps-heading">
-      <h2 id="rhythm-next-steps-heading">Take it further</h2>
+      <h2 id="rhythm-next-steps-heading">{text.nextSteps}</h2>
       <div class="rhythm-next-steps-cards">
         <div class="rhythm-next-steps-card">
-          <p class="rhythm-next-steps-title">Come practise with us</p>
-          <p>
-            You just drilled it. Now bring it to the floor: real music, real partners, no
-            partner needed to join.
-          </p>
-          <a class="btn-register" href="/pages/garden-practica">See Practica times</a>
+          <p class="rhythm-next-steps-title">{text.practiseTitle}</p>
+          <p>{text.practiseBody}</p>
+          <a class="btn-register" href={localizePath('/pages/garden-practica', locale)}>{text.practiseCta}</a>
         </div>
         <div class="rhythm-next-steps-card">
-          <p class="rhythm-next-steps-title">Got an idea for an exercise?</p>
-          <p>
-            Feedback, corrections, or a pattern you'd like to see added: tell us on the contact
-            page.
-          </p>
-          <a class="btn-secondary" href="/pages/contact">Contact us</a>
+          <p class="rhythm-next-steps-title">{text.ideaTitle}</p>
+          <p>{text.ideaBody}</p>
+          <a class="btn-secondary" href={localizePath('/pages/contact', locale)}>{text.ideaCta}</a>
         </div>
       </div>
     </section>
 
     <section class="rhythm-glossary" aria-labelledby="rhythm-glossary-heading">
-      <h2 id="rhythm-glossary-heading">Rhythm vocabulary</h2>
+      <h2 id="rhythm-glossary-heading">{text.glossary}</h2>
       <dl>
         {
           glossary.map((g) => (
@@ -150,7 +218,14 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
   </div>
 
   <script>
-    import { exercises, SLOTS } from '../../data/rhythmExercises.js';
+    import { exercises as exercisesEn, SLOTS } from '../data/rhythmExercises.js';
+    import { localizeExercises } from '../data/rhythmExercises.de.js';
+
+    const de = document.documentElement.lang === 'de';
+    const exercises = de ? localizeExercises(exercisesEn) : exercisesEn;
+    const labels = de
+      ? { stop: 'Stopp', start: 'Start', ownName: 'Eigenes Muster', ownNote: 'Dein eigenes Muster.', artist: 'Tango Garden Rhythmustrainer' }
+      : { stop: 'Stop', start: 'Start', ownName: 'Your own pattern', ownNote: 'Your own pattern.', artist: 'Tango Garden Rhythm Trainer' };
 
     type Voice = 'beat' | 'pulse';
 
@@ -346,7 +421,7 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
         try {
           navigator.mediaSession.metadata = new MediaMetadata({
             title: currentName,
-            artist: 'Tango Garden Rhythm Trainer',
+            artist: labels.artist,
           });
           navigator.mediaSession.playbackState = playing ? 'playing' : 'paused';
         } catch {
@@ -383,7 +458,7 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
         }
         await refreshLoop();
         playBtn.setAttribute('aria-pressed', 'true');
-        playLabel.textContent = 'Stop';
+        playLabel.textContent = labels.stop;
         setMediaSession(true);
         raf = requestAnimationFrame(followPlayhead);
       }
@@ -394,7 +469,7 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
         if (lit >= 0) bars[lit].classList.remove('is-now');
         lit = -1;
         playBtn.setAttribute('aria-pressed', 'false');
-        playLabel.textContent = 'Start';
+        playLabel.textContent = labels.start;
         setMediaSession(false);
       }
 
@@ -421,8 +496,8 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
           paint();
           // The grid no longer matches the chosen exercise.
           select.value = 'custom';
-          currentName = 'Your own pattern';
-          noteEl.textContent = 'Your own pattern.';
+          currentName = labels.ownName;
+          noteEl.textContent = labels.ownNote;
           reloadIfPlaying();
         });
       });

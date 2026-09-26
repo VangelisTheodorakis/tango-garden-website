@@ -1,25 +1,31 @@
 ---
 import { social } from '../data/nav.js';
+import { getLocale, localizePath } from '../i18n/index.js';
+import { ui } from '../i18n/ui.js';
 import Icon from './Icons.astro';
 
+const locale = getLocale(Astro.url.pathname);
+const f = ui[locale].footer;
+const l = (href: string) => localizePath(href, locale);
+
 const connectLinks = [
-  { href: '/pages/the-garden', label: 'The Garden' },
-  { href: '/pages/contact', label: 'Contact' },
+  { href: l('/pages/the-garden'), label: f.theGarden },
+  { href: l('/pages/contact'), label: f.contact },
 ];
 
 const classLinks = [
-  { href: '/collections/all', label: 'Classes & Passes' },
-  { href: '/pages/enter-the-garden', label: 'Enter the Garden' },
-  { href: '/pages/beginner-course', label: 'Sprouting Sessions' },
-  { href: '/pages/garden-practica', label: 'Garden Practica' },
+  { href: l('/collections/all'), label: f.classesAndPasses },
+  { href: l('/pages/enter-the-garden'), label: 'Enter the Garden' },
+  { href: l('/pages/beginner-course'), label: 'Sprouting Sessions' },
+  { href: l('/pages/garden-practica'), label: 'Garden Practica' },
 ];
 
 const legalLinks = [
-  { href: '/pages/refund-and-cancellation-policy', label: 'Refund & Cancellation Policy' },
-  { href: '/pages/terms-of-service', label: 'Terms of Service' },
-  { href: '/pages/privacy-policy', label: 'Privacy Policy' },
-  { href: '/pages/code-of-care', label: 'Code of Care' },
-  { href: '/pages/impressum', label: 'Impressum' },
+  { href: l('/pages/refund-and-cancellation-policy'), label: f.refund },
+  { href: l('/pages/terms-of-service'), label: f.terms },
+  { href: l('/pages/privacy-policy'), label: f.privacy },
+  { href: l('/pages/code-of-care'), label: f.codeOfCare },
+  { href: l('/pages/impressum'), label: 'Impressum' },
 ];
 
 const year = new Date().getFullYear();
@@ -31,19 +37,19 @@ const year = new Date().getFullYear();
       <img src="/images/logo-stacked-light.svg" alt="Tango Garden" width="210" loading="lazy" />
     </div>
     <div class="footer-col">
-      <h2 class="footer-heading">Connect</h2>
+      <h2 class="footer-heading">{f.connect}</h2>
       <ul class="footer-links" role="list">
         {connectLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
       </ul>
     </div>
     <div class="footer-col">
-      <h2 class="footer-heading">Classes</h2>
+      <h2 class="footer-heading">{f.classes}</h2>
       <ul class="footer-links" role="list">
         {classLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
       </ul>
     </div>
     <div class="footer-col">
-      <h2 class="footer-heading">Legal</h2>
+      <h2 class="footer-heading">{f.legal}</h2>
       <ul class="footer-links" role="list">
         {legalLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
       </ul>
@@ -62,13 +68,19 @@ const year = new Date().getFullYear();
   </div>
   <div class="footer-bottom">
     <p>© {year} Tango Garden Cologne · Thürmchenswall 21, 50668 Köln</p>
-    <p>
-      All prices are final prices. No VAT charged according to §19 UStG.<br />
-      {/* lang marks the switch so screen readers do not read German with an English voice. */}
-      <span lang="de"
-        >Alle Preise sind Endpreise. Gemäß §19 UStG wird keine Umsatzsteuer berechnet.</span
-      >
-    </p>
-    <p class="footer-credit">Made with love ♥ and AI ✨</p>
+    {
+      locale === 'de' ? (
+        <p>Alle Preise sind Endpreise. Gemäß §19 UStG wird keine Umsatzsteuer berechnet.</p>
+      ) : (
+        <p>
+          All prices are final prices. No VAT charged according to §19 UStG.<br />
+          {/* lang marks the switch so screen readers do not read German with an English voice. */}
+          <span lang="de"
+            >Alle Preise sind Endpreise. Gemäß §19 UStG wird keine Umsatzsteuer berechnet.</span
+          >
+        </p>
+      )
+    }
+    <p class="footer-credit">{f.credit}</p>
   </div>
 </footer>

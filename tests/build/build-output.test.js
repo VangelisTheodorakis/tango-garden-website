@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { parseHTML } from 'linkedom';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { products } from '../../src/data/products.js';
+import { translatedPaths } from '../../src/i18n/index.js';
 
 // fileURLToPath, not URL.pathname — the repo path contains spaces.
 const DIST = fileURLToPath(new URL('../../dist/', import.meta.url));
@@ -53,7 +54,8 @@ describe('pages', () => {
     // rhythm trainer)
     // + 12 products (all hidden, kept for direct-URL + price/variant data)
     // + 2 collections + 404
-    expect(pages).toHaveLength(27);
+    // + a German mirror under /de for every page in src/i18n/index.js translatedPaths
+    expect(pages).toHaveLength(27 + translatedPaths.length);
   });
 
   it('gives every page a non-empty title', () => {
@@ -382,10 +384,12 @@ describe('third-party independence', () => {
     expect(external).toEqual([]);
   });
 
-  it('only frames Google Maps, and only on the contact page', () => {
+  // The auto-loading map is an explicit owner exception (English contact page
+  // 2026-08-08, extended to its German mirror 2026-09-26). Nowhere else.
+  it('only frames Google Maps, and only on the contact pages', () => {
     for (const p of pages) {
       for (const frame of p.document.querySelectorAll('iframe')) {
-        expect(p.route, 'unexpected iframe').toBe('/pages/contact/');
+        expect(['/pages/contact/', '/de/pages/contact/'], 'unexpected iframe').toContain(p.route);
         expect(frame.getAttribute('src')).toMatch(/^https:\/\/maps\.google\.com\//);
       }
     }
@@ -433,5 +437,85 @@ describe('deploy artefacts', () => {
 
   it('serves the domain it is built for', () => {
     expect(readFileSync(join(DIST, 'CNAME'), 'utf8').trim()).toBe('tangogarden.de');
+  });
+});
+
+describe('languages (EN default, DE under /de)', () => {
+  const isDe = (p) => p.route === '/de/' || p.route.startsWith('/de/');
+  const toEn = (route) => route.replace(/^\/de(?=\/)/, '') || '/';
+  const noindexed = (p) => p.document.querySelector('meta[name="robots"][content*="noindex"]');
+  const abs = (route) => (route === '/' ? `${SITE}/` : `${SITE}${route.replace(/\/$/, '')}`);
+  const alt = (p, lang) =>
+    p.document.querySelector(`link[rel="alternate"][hreflang="${lang}"]`)?.getAttribute('href');
+
+  it('builds a German page for every translated path, and only those', () => {
+    const dePages = pages.filter(isDe).map((p) => toEn(p.route).replace(/(.)\/$/, '$1'));
+    expect(dePages.sort()).toEqual([...translatedPaths].sort());
+  });
+
+  it('sets html[lang] from the URL', () => {
+    for (const p of contentPages()) {
+      const lang = p.document.documentElement.getAttribute('lang');
+      if (isDe(p)) expect(lang, p.route).toBe('de');
+      // The Impressum is the one English-URL page whose content is German.
+      else if (p.route !== '/pages/impressum/') expect(lang, p.route).toBe('en');
+    }
+  });
+
+  it('pairs every translated page with its twin via reciprocal hreflang', () => {
+    for (const enPath of translatedPaths) {
+      const enRoute = enPath === '/' ? '/' : `${enPath}/`;
+      const deRoute = enPath === '/' ? '/de/' : `/de${enPath}/`;
+      const en = pages.find((p) => p.route === enRoute);
+      const de = pages.find((p) => p.route === deRoute);
+      expect(en, enRoute).toBeTruthy();
+      expect(de, deRoute).toBeTruthy();
+      // Legal pages are translated but noindex in both languages: no hreflang.
+      expect(Boolean(noindexed(en)), `${enRoute} and ${deRoute} disagree on noindex`).toBe(
+        Boolean(noindexed(de))
+      );
+      if (noindexed(en)) continue;
+      for (const page of [en, de]) {
+        expect(alt(page, 'en'), page.route).toBe(abs(enRoute));
+        expect(alt(page, 'de'), page.route).toBe(abs(deRoute));
+        expect(alt(page, 'x-default'), page.route).toBe(abs(enRoute));
+      }
+      // Each version is its own canonical — never the other language.
+      expect(en.document.querySelector('link[rel="canonical"]').getAttribute('href')).toBe(abs(enRoute));
+      expect(de.document.querySelector('link[rel="canonical"]').getAttribute('href')).toBe(abs(deRoute));
+    }
+  });
+
+  it('puts no hreflang on untranslated or noindexed pages', () => {
+    for (const p of pages) {
+      const base = toEn(p.route).replace(/(.)\/$/, '$1');
+      if (translatedPaths.includes(base) && !noindexed(p)) continue;
+      expect(p.document.querySelector('link[rel="alternate"][hreflang]'), p.route).toBeNull();
+    }
+  });
+
+  it('links German pages to German pages wherever a translation exists', () => {
+    for (const p of pages.filter(isDe)) {
+      for (const a of p.document.querySelectorAll('a[href^="/"]')) {
+        const href = a.getAttribute('href').split('#')[0];
+        if (!href || href.startsWith('/de')) continue;
+        if (a.getAttribute('hreflang') === 'en') continue; // the language switcher
+        const base = href.replace(/(.)\/$/, '$1');
+        expect(translatedPaths.includes(base), `${p.route} links to English ${href}`).toBe(false);
+      }
+    }
+  });
+
+  it('offers a switcher to the other language on every page', () => {
+    for (const p of contentPages()) {
+      const target = isDe(p) ? 'en' : 'de';
+      expect(p.document.querySelector(`a.nav-lang[hreflang="${target}"]`), p.route).toBeTruthy();
+    }
+  });
+
+  it('keeps German titles unique and distinct from the English ones', () => {
+    const titles = pages.filter((p) => !noindexed(p)).map((p) => p.document.title);
+    const deTitles = pages.filter((p) => isDe(p) && !noindexed(p)).map((p) => p.document.title);
+    for (const t of deTitles) expect(titles.filter((x) => x === t), t).toHaveLength(1);
   });
 });

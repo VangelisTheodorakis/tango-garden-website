@@ -8,6 +8,10 @@
 /collections              /collections/all  301
 /collections/*            /collections/all  301
 
+# German mirror of the above. Only the bare path needs it; there is no splat,
+# so /de/collections/all itself is never matched and cannot loop.
+/de/collections           /de/collections/all  301
+
 # Shopify checkout paths. Safe to bounce home: the buy buttons now point at
 # tangogarden.myshopify.com, so nothing on this site relies on them.
 /cart                     /                 301
@@ -42,6 +46,10 @@
 
 /products/the-garden-practica-1-practica-pass-general-admission                                        /pages/garden-practica   301
 /products/the-garden-practica-1-practica-pass-door-only-student-and-under-28-admission                 /pages/garden-practica   301
+
+# The rhythm trainer launched under a misspelled slug; it was renamed before it
+# built up any search presence.
+/pages/rythmical-base-trainer                                                                          /pages/tango-rhythm-trainer  301
 
 # The remaining off-live products (Evey pass, Welcome pass) deliberately keep
 # their pages: reachable by direct URL, noindex + absent from the sitemap.

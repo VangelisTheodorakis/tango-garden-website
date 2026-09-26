@@ -1,13 +1,31 @@
 ---
 import { Image } from 'astro:assets';
 import heroImage from '../assets/hero-dancers.png';
+
+interface Props {
+  locale?: 'en' | 'de';
+}
+const { locale = 'en' } = Astro.props;
+
+const copy = {
+  en: {
+    alt: 'Argentine tango class in Cologne',
+    h1: 'Stop Scrolling. Start Connecting. Argentine Tango Classes in Cologne',
+    taglines: ['No partner needed.', 'No experience required.', 'Come as you are.'],
+  },
+  de: {
+    alt: 'Tango-Argentino-Kurs in Köln',
+    h1: 'Weniger scrollen. Mehr verbinden. Tango Argentino in Köln',
+    taglines: ['Kein Partner nötig.', 'Keine Vorkenntnisse.', 'Komm, wie du bist.'],
+  },
+}[locale];
 ---
 
 <section class="hero">
   <Image
     class="hero-bg"
     src={heroImage}
-    alt="Argentine tango class in Cologne"
+    alt={copy.alt}
     widths={[750, 1100, 1500, 1800]}
     sizes="100vw"
     format="webp"
@@ -18,12 +36,12 @@ import heroImage from '../assets/hero-dancers.png';
   <div class="hero-content">
     <div class="hero-box">
       <h1 class="hero-h1">
-        Stop Scrolling. Start Connecting. Argentine Tango Classes in Cologne
+        {copy.h1}
       </h1>
       <p class="hero-subtitle">
-        <strong>No partner needed.</strong>
-        <strong>No experience required.</strong>
-        <strong>Come as you are.</strong>
+        <strong>{copy.taglines[0]}</strong>
+        <strong>{copy.taglines[1]}</strong>
+        <strong>{copy.taglines[2]}</strong>
       </p>
     </div>
   </div>

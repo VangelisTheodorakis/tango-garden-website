@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { products } from '../../src/data/products.js';
 import { navItems, social } from '../../src/data/nav.js';
 import { classPages } from '../../src/data/classPages.js';
+import { classPagesDe, getClassPage } from '../../src/data/classPages.de.js';
 
 const feed = (name) =>
   JSON.parse(readFileSync(new URL(`../../public/assets/data/${name}.json`, import.meta.url), 'utf8'));
@@ -181,5 +182,34 @@ describe('event feeds', () => {
   it.each(FEEDS)('%s.json contains no duplicate dates', (name) => {
     const dates = feed(name).events.map((e) => e.date);
     expect(new Set(dates).size).toBe(dates.length);
+  });
+});
+
+describe('German class page copy', () => {
+  it('covers exactly the English class pages', () => {
+    expect(Object.keys(classPagesDe).sort()).toEqual(classPages.map((c) => c.slug).sort());
+  });
+
+  it.each(classPages.map((c) => c.slug))('%s: German structure matches English', (slug) => {
+    const en = getClassPage(slug, 'en');
+    const de = getClassPage(slug, 'de');
+    // One label per pricing row, prices/handles untouched.
+    expect(de.table.rows).toHaveLength(en.table.rows.length);
+    de.table.rows.forEach((row, i) => {
+      expect(row.label, `${slug} row ${i}`).toBeTruthy();
+      expect(row.general).toEqual(en.table.rows[i].general);
+      expect(row.student).toEqual(en.table.rows[i].student);
+    });
+    expect(de.registerUrl).toBe(en.registerUrl);
+    expect(de.feed).toBe(en.feed);
+    // Every German FAQ item reports under an existing English question.
+    const enQuestions = new Set(classPages.flatMap((c) => c.faq.map((f) => f.q)));
+    for (const item of de.faq) expect(enQuestions.has(item.key), item.q).toBe(true);
+  });
+
+  it.each(FEEDS)('%s.json carries German display text', (name) => {
+    const data = feed(name);
+    expect(typeof data.label_de).toBe('string');
+    expect(typeof data.emptyMessage_de).toBe('string');
   });
 });

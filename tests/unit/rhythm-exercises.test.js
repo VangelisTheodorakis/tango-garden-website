@@ -49,3 +49,23 @@ describe('rhythm glossary', () => {
     expect(new Set(glossary.map((g) => g.term)).size).toBe(glossary.length);
   });
 });
+
+describe('German trainer text', () => {
+  it('translates every exercise note and glossary definition', async () => {
+    const { exercisesDe, glossaryDe, localizeExercises, localizeGlossary } = await import(
+      '../../src/data/rhythmExercises.de.js'
+    );
+    const { exercises, glossary } = await import('../../src/data/rhythmExercises.js');
+    expect(Object.keys(exercisesDe).sort()).toEqual(exercises.map((e) => e.id).sort());
+    expect(Object.keys(glossaryDe).sort()).toEqual(glossary.map((g) => g.term).sort());
+
+    const de = localizeExercises(exercises);
+    // Patterns and ids never change with the language.
+    de.forEach((e, i) => {
+      expect(e.id).toBe(exercises[i].id);
+      expect(e.pattern).toBe(exercises[i].pattern);
+    });
+    expect(new Set(de.map((e) => e.name)).size).toBe(de.length);
+    expect(localizeGlossary(glossary).map((g) => g.term)).toEqual(glossary.map((g) => g.term));
+  });
+});

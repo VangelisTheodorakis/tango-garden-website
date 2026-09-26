@@ -1,6 +1,8 @@
 {
   "label": "Next Practica",
   "emptyMessage": "New dates coming soon (TBA)",
+  "label_de": "Nächste Practica",
+  "emptyMessage_de": "Neue Termine folgen bald",
   "events": [
     { "date": "2026-08-12", "time": "19:30 – 22:00" },
     { "date": "2026-08-19", "time": "19:30 – 22:00" },

@@ -1,12 +1,44 @@
 ---
-const features = [
-  ['No Partner Needed', 'We make sure that our classes are role balanced.'],
-  ['Welcome Circle', 'In every class we explore our expectations and goals.'],
-  ['Garden Ambassadors', "Someone will greet you, you'll never stand alone"],
-  ['Group meetups', 'Make real connections over food and common interests'],
-  ['Boundaries Respected', 'Always, no exceptions: your comfort is non-negotiable'],
-  ['Your Choice of Role', 'Lead, follow, or both: you decide, not your gender'],
-];
+import { localizePath } from '../i18n/index.js';
+
+interface Props {
+  locale?: 'en' | 'de';
+}
+const { locale = 'en' } = Astro.props;
+
+const copy = {
+  en: {
+    eyebrow: 'What Makes Us Different',
+    h2: 'Why People Choose This Garden',
+    lead: 'Not about perfection. About finding your people through tango.',
+    features: [
+      ['No Partner Needed', 'We make sure that our classes are role balanced.'],
+      ['Welcome Circle', 'In every class we explore our expectations and goals.'],
+      ['Garden Ambassadors', "Someone will greet you, you'll never stand alone"],
+      ['Group meetups', 'Make real connections over food and common interests'],
+      ['Boundaries Respected', 'Always, no exceptions: your comfort is non-negotiable'],
+      ['Your Choice of Role', 'Lead, follow, or both: you decide, not your gender'],
+    ],
+    moreTitle: 'Want to Know More?',
+    moreLink: 'Read about the stories, the people and experiences that shaped Tango Garden.',
+  },
+  de: {
+    eyebrow: 'Was uns ausmacht',
+    h2: 'Warum Menschen diesen Garten wählen',
+    lead: 'Es geht nicht um Perfektion. Es geht darum, durch Tango deine Leute zu finden.',
+    features: [
+      ['Kein Partner nötig', 'Wir achten darauf, dass die Rollen in unseren Kursen ausgeglichen sind.'],
+      ['Welcome Circle', 'In jeder Stunde sprechen wir über unsere Erwartungen und Ziele.'],
+      ['Garden Ambassadors', 'Jemand begrüßt dich, du stehst nie allein da.'],
+      ['Gemeinsame Treffen', 'Echte Verbindungen bei gutem Essen und gemeinsamen Interessen'],
+      ['Grenzen werden respektiert', 'Immer, ohne Ausnahme: dein Wohlbefinden ist nicht verhandelbar'],
+      ['Deine Rolle, deine Wahl', 'Führen, folgen oder beides: du entscheidest, nicht dein Geschlecht'],
+    ],
+    moreTitle: 'Du willst mehr wissen?',
+    moreLink: 'Lies die Geschichten und lerne die Menschen und Erfahrungen kennen, die Tango Garden geprägt haben.',
+  },
+};
+const c = copy[locale];
 ---
 
 <section id="why-choose-garden" style="background: white; padding: 60px 20px;">
@@ -15,21 +47,21 @@ const features = [
       <div
         style="font-size: 14px; text-transform: uppercase; letter-spacing: 2px; color: #4E5D22; font-weight: 600; margin-bottom: 20px;"
       >
-        What Makes Us Different
+        {c.eyebrow}
       </div>
       <h2
         style="font-size: 42px; font-weight: 700; color: #4E5D22; margin-bottom: 30px; line-height: 1.2;"
       >
-        Why People Choose This Garden
+        {c.h2}
       </h2>
       <p style="font-size: 20px; color: #666; max-width: 700px; margin: 0 auto; line-height: 1.6;">
-        Not about perfection. About finding your people through tango.
+        {c.lead}
       </p>
     </div>
 
     <div class="features-grid">
       {
-        features.map(([title, body]) => (
+        c.features.map(([title, body]) => (
           <div class="feature-item">
             <div class="feature-check" aria-hidden="true">✓</div>
             <div>
@@ -44,10 +76,10 @@ const features = [
     </div>
 
     <div class="bottom-cta-container">
-      <h3 style="font-size: 28px; margin-bottom: 20px; font-weight: 700;">Want to Know More?</h3>
-      <a href="/pages/the-garden" class="pathway-style-button">
+      <h3 style="font-size: 28px; margin-bottom: 20px; font-weight: 700;">{c.moreTitle}</h3>
+      <a href={localizePath('/pages/the-garden', locale)} class="pathway-style-button">
         <p style="font-size: 18px; line-height: 1.7; margin: 20px 20px;">
-          Read about the stories, the people and experiences that shaped Tango Garden.
+          {c.moreLink}
         </p>
       </a>
     </div>

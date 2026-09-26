@@ -1,6 +1,8 @@
 {
   "label": "Next introductory class",
   "emptyMessage": "New dates coming soon (TBA)",
+  "label_de": "Nächste Probestunde",
+  "emptyMessage_de": "Neue Termine folgen bald",
   "events": [
     { "date": "2026-08-01", "time": "19:00 – 20:00" },
     { "date": "2026-08-08", "time": "19:00 – 20:00" },

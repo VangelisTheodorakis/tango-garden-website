@@ -4,8 +4,13 @@
  * Lives in its own module so the selection rules can be unit tested without a
  * browser — the cards themselves just render whatever this returns.
  *
+ * Feeds are shared with the ICS endpoint and the registration email worker, so
+ * German display text rides along as optional `*_de` keys rather than
+ * replacing the English ones.
+ *
  * @typedef {{ date: string, time?: string }} GardenEvent
- * @typedef {{ label?: string, prefix?: string, emptyMessage?: string, events?: GardenEvent[] }} EventFeed
+ * @typedef {{ label?: string, prefix?: string, emptyMessage?: string, label_de?: string, prefix_de?: string, emptyMessage_de?: string, events?: GardenEvent[] }} EventFeed
+ * @typedef {'en' | 'de'} Locale
  */
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -13,6 +18,9 @@ const MONTHS = [
   'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ];
+const DAYS_DE = ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'];
+
+const EMPTY = { en: 'New dates coming soon (TBA)', de: 'Neue Termine folgen bald' };
 
 /**
  * Parses an ISO `YYYY-MM-DD` date at local midnight.
@@ -33,15 +41,21 @@ export function parseDate(iso) {
 }
 
 /**
- * Formats a date the way the cards display it, e.g. "Wed, 29 Jul 2026".
+ * Formats a date the way the cards display it: "Wed, 29 Jul 2026" in English,
+ * "Mi., 29.07.2026" in German.
  *
  * @param {string} iso
+ * @param {Locale} [locale]
  * @returns {string}
  */
-export function formatDate(iso) {
+export function formatDate(iso, locale = 'en') {
   const d = parseDate(iso);
   if (!d) return iso;
   const day = String(d.getDate()).padStart(2, '0');
+  if (locale === 'de') {
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    return `${DAYS_DE[d.getDay()]}, ${day}.${month}.${d.getFullYear()}`;
+  }
   return `${DAYS[d.getDay()]}, ${day} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 }
 
@@ -72,21 +86,21 @@ export function nextEvent(feed, today) {
  *
  * @param {EventFeed | null | undefined} feed
  * @param {Date} today
+ * @param {Locale} [locale]
  * @returns {{ label: string | null, lines: string[], isEmpty: boolean }}
  */
-export function cardContent(feed, today) {
-  const label = feed?.label ?? null;
+export function cardContent(feed, today, locale = 'en') {
+  const de = locale === 'de';
+  const label = (de ? feed?.label_de : undefined) ?? feed?.label ?? null;
   const next = nextEvent(feed, today);
 
   if (!next) {
-    return {
-      label,
-      lines: [feed?.emptyMessage ?? 'New dates coming soon (TBA)'],
-      isEmpty: true,
-    };
+    const message = (de ? feed?.emptyMessage_de : feed?.emptyMessage) ?? EMPTY[locale];
+    return { label, lines: [message], isEmpty: true };
   }
 
-  const lines = [(feed?.prefix ?? '') + formatDate(next.date)];
+  const prefix = (de ? feed?.prefix_de : undefined) ?? feed?.prefix ?? '';
+  const lines = [prefix + formatDate(next.date, locale)];
   if (next.time) lines.push(next.time);
 
   return { label, lines, isEmpty: false };

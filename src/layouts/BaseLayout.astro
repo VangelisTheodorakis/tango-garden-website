@@ -4,12 +4,18 @@ import StructuredData from '../components/StructuredData.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import { gaMeasurementId } from '../data/site.js';
+import { basePath, getLocale } from '../i18n/index.js';
+import { ui } from '../i18n/ui.js';
 import '../styles/global.css';
 
 interface Props {
   title: string;
   description: string;
-  /** BCP-47 tag for the page's own language — the German legal pages set 'de'. */
+  /**
+   * BCP-47 tag for the page's own language. Defaults to the locale of the URL
+   * (/de/... is German); the Impressum overrides it because its content is
+   * German while its URL, and so its nav and footer, are English.
+   */
   lang?: 'en' | 'de';
   canonical?: string;
   ogType?: 'website' | 'article' | 'product';
@@ -27,13 +33,15 @@ interface Props {
     description: string;
     url: string;
     teaches: string[];
+    inLanguage?: 'en' | 'de';
   };
 }
 
+const locale = getLocale(Astro.url.pathname);
 const {
   title,
   description,
-  lang = 'en',
+  lang = locale,
   canonical,
   ogType = 'website',
   noindex = false,
@@ -42,8 +50,11 @@ const {
   learningResource,
 } = Astro.props;
 
-/** GA4 content_group, so reports can compare the three pathway pages as one group. */
-const pathname = Astro.url.pathname;
+/**
+ * GA4 content_group, so reports can compare the three pathway pages as one
+ * group. Matched on the English path so both languages land in the same group.
+ */
+const pathname = basePath(Astro.url.pathname);
 const contentGroup = pathname.startsWith('/pages/enter-the-garden')
   ? 'Enter the Garden'
   : pathname.startsWith('/pages/beginner-course')
@@ -71,6 +82,7 @@ const contentGroup = pathname.startsWith('/pages/enter-the-garden')
       canonical={canonical}
       ogType={ogType}
       noindex={noindex}
+      locale={locale}
     />
     <StructuredData type={schema} product={product} learningResource={learningResource} />
     {gaMeasurementId && (
@@ -83,7 +95,7 @@ const contentGroup = pathname.startsWith('/pages/enter-the-garden')
     <slot name="head" />
   </head>
   <body>
-    <a href="#main-content" class="skip-link">Skip to content</a>
+    <a href="#main-content" class="skip-link">{ui[locale].skipLink}</a>
     <Nav />
     <main id="main-content" tabindex="-1">
       <slot />

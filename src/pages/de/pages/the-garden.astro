@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import '../../../styles/the-garden.css';
+---
+
+<BaseLayout
+  title="Über Tango Garden: Tango-Community in Köln"
+  description="Wer wir sind und wie wir Tango unterrichten: herzlich, ohne Leistungsdruck, für alle Rollen. Finde heraus, ob Tango Garden in Köln zu dir passt."
+  canonical="https://tangogarden.de/de/pages/the-garden"
+>
+  <Fragment set:html={`
+<!-- Hero -->
+<section class="garden-hero">
+  <div class="garden-hero-overlay"></div>
+  <div class="garden-hero-content">
+    <h1>Das ist dein Garten</h1>
+    <div class="garden-scroll-hint">
+      <p>Entdecke unsere Geschichte</p>
+      <span class="garden-scroll-arrow">↓</span>
+    </div>
+  </div>
+</section>
+
+<!-- Story -->
+<section class="garden-story" id="our-story">
+  <div class="garden-story-inner">
+    <div class="garden-story-text">
+      <div class="garden-story-eyebrow">Wie alles begann</div>
+      <p>Hi! Ich bin Vangelis und komme aus Kreta, Griechenland, wo der Sommer immer meine liebste Jahreszeit war. Jeden Abend füllte sich unser kleiner Garten mit dem Duft von Nachtjasmin. Viel war es nicht, ein paar Stühle, ein Plastiktisch, aber es war ein Ort, an dem Menschen zusammenkamen. Meine Onkel schauten unangekündigt vorbei; Freunde, Nachbarn, Fremde setzten sich dazu, aßen, lachten, stritten und teilten Geschichten und Stille.</p>
+      <p>Dieser Garten war meine erste Lektion in Verbundenheit: ein einfacher, lebendiger Ort, der Menschen näher zusammenbrachte und uns half, vom Lärm des Lebens durchzuatmen.</p>
+      <p>Jeden Abend kamen Menschen zusammen. Nicht, weil sie eingeladen waren. Nicht, weil ein Event stattfand. Sondern weil es den Garten <em>gab</em>, einen gemeinsamen Ort, an dem Dasein bedeutete, dazuzugehören.</p>
+      <p>Sie teilten Essen und erzählten Geschichten. Sie stritten über Politik und brachten den Kindern alte Lieder bei. Die Gespräche waren immer laut. Und an Festtagen tanzte immer irgendjemand.</p>
+      <p>Was mich beeindruckt hat, war nicht das Tanzen selbst. Sondern wie <strong>natürlich</strong> es sich anfühlte. Niemand hat performt. Niemand war „gut“ oder „schlecht“. Bewegung war einfach eine weitere Sprache, um sich zu verbinden.</p>
+      <p>Jahre später, mit 21, bin ich auf den Tango Argentino gestoßen. Er wurde mein neuer Garten. Durch Tango bin ich emotional, mental und spirituell gewachsen. Und ich habe gesehen, wie auch andere sich verändert haben:</p>
+      <div class="garden-pullquote">wie sie lernten zu vertrauen, zuzuhören, sich zu umarmen und sich selbst zu begegnen.</div>
+      <p>Tango hat mir gezeigt, dass Wachstum und Verbindung nie etwas sind, das man allein erlebt: Sie passieren zwischen uns.</p>
+      <p>Als mich das Leben nach München führte, habe ich angefangen, dieses Gefühl neu zu erschaffen. Mein Wohnzimmer wurde wieder zu einem kleinen Garten, voller Pflanzen, Musik, Freunde, Lachen und Bewegung.</p>
+      <p>Diesmal teilten wir an einem Holztisch Essen, Geschichten und Tango. Langsam wuchs eine Community, nicht nur aus Tänzer:innen, sondern aus Menschen, die füreinander da waren.</p>
+      <p>Tango Garden ist aus dieser Reise entstanden: ein Ort, um auf und neben der Tanzfläche zu wachsen. Ein Raum, um dich tief zu verbinden, gut für dich und andere zu sorgen und die Freude am Hier und Jetzt wiederzuentdecken. Wie jeder Garten braucht er Zeit, Pflege und Wärme, aber was dann blüht, vergisst man nie.</p>
+      <div class="garden-pullquote">❝Wir tanzen nicht nur, um uns zu bewegen, sondern um dazuzugehören.❞</div>
+      <p>Um diesen seltenen Ort zu finden, an dem wir gemeinsam atmen, fühlen und wachsen können.</p>
+      <p>Ich freue mich, dass du hier bist, und kann es kaum erwarten, dich im echten Leben kennenzulernen!</p>
+      <p class="garden-sign-off">Umarmung, Vangelis</p>
+    </div>
+
+    <div class="garden-story-images">
+      <img src="/images/south.webp" alt="Kreta, Sommer 2020: Abendessen nach einem Tango-Wochenende" loading="lazy">
+      <p class="garden-photo-caption">Kreta, Sommer 2020: das letzte Abendessen nach einem langen Tango-Wochenende voller herzlicher Umarmungen.</p>
+      <img src="/images/miloga-de-archanes.webp" alt="Milonga de Archanes, Kreta, Winter 2018" loading="lazy">
+      <p class="garden-photo-caption">Kreta, Winter 2018: Tanzen zu griechischen Tangos mit traditionellen Instrumenten.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Team banner -->
+<section class="garden-team-banner" id="our-gardeners">
+  <div>
+    <h2>Unsere Gärtner:innen</h2>
+    <p>Wir sind keine Performer. Wir sind keine Tango-Puristen.<br>Wir sind Menschen, für die Verbindung mehr zählt als Perfektion.</p>
+  </div>
+</section>
+
+<!-- Team grid -->
+<section class="garden-team-grid-section">
+  <h2>Lerne das Team kennen</h2>
+  <p class="garden-team-intro">Jede Person hier hat eine Geschichte. Jede Person bringt etwas Einzigartiges in den Garten.</p>
+
+  <div class="garden-team-cards">
+    <div class="garden-team-card">
+      <span class="garden-team-badge">Mitgründer</span>
+      <img src="/images/vangelis.webp" alt="Vangelis Theodorakis" loading="lazy">
+      <div class="garden-team-card-body">
+        <h3>Vangelis Theodorakis</h3>
+        <p class="garden-team-role">Lead Instructor</p>
+        <p>Hat Tango Garden gegründet, nachdem er seine Liebe zu Communities entdeckt hat. Für ihn heißt Tradition, das Feuer weiterzugeben, nicht die Asche anzubeten.</p>
+      </div>
+    </div>
+    <div class="garden-team-card">
+      <span class="garden-team-badge">Mitgründerin</span>
+      <img src="/images/kristina.webp" alt="Kristina Yanushko" loading="lazy">
+      <div class="garden-team-card-body">
+        <h3>Kristina Yanushko</h3>
+        <p class="garden-team-role">Lead Instructor</p>
+        <p>Kristina hilft dir, Körperbewusstsein, Selbstvertrauen und echte Verbindung zu entwickeln, in einem Raum, in dem du auf und neben der Tanzfläche wachsen kannst.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="garden-join">
+    <h3>Du willst Teil des Teams werden?</h3>
+    <p>Wir suchen immer Menschen, die unsere Werte teilen und den Garten mit wachsen lassen wollen. Wenn du schon eine Weile tanzt und Lust hast zu unterrichten, lass uns reden.</p>
+    <a href="https://wa.me/491602368723?text=Hi!%20Ich%20h%C3%A4tte%20Interesse%2C%20Teil%20des%20Tango-Garden-Teams%20zu%20werden." class="btn-primary">Werde Teil des Teams</a>
+  </div>
+</section>
+
+<!-- Reassurance -->
+<section class="garden-reassurance">
+  <div class="garden-reassurance-inner">
+    <h2>Wenn du unsicher bist, bist du genau richtig hier</h2>
+    <p class="garden-reassurance-lead">Fast alle, die in den Garten kommen, starten mit denselben Gedanken:</p>
+    <ul class="garden-reassurance-list">
+      <li>„Ich habe kein Rhythmusgefühl.“</li>
+      <li>„Ich kenne dort niemanden.“</li>
+      <li>„Ich bin kein Tänzer / keine Tänzerin.“</li>
+      <li>„Was, wenn es sich komisch anfühlt?“</li>
+    </ul>
+    <p class="garden-reassurance-close">Das ist kein Problem.<br>Das ist der Anfang.</p>
+  </div>
+</section>
+
+<!-- Is this for you -->
+<section class="garden-fit" id="is-this-for-you">
+  <div class="garden-fit-inner">
+    <div class="garden-fit-header">
+      <div class="garden-story-eyebrow">Ist das was für dich?</div>
+      <h2>Dieser Ort ist für dich, wenn</h2>
+    </div>
+    <ul class="garden-fit-list">
+      <li>du Berufseinsteiger:in, Student:in oder kreativ unterwegs bist und echte menschliche Verbindung vermisst</li>
+      <li>du dich auf Englisch wohlfühlst oder einen Ort suchst, an dem Sprache keine Hürde ist</li>
+      <li>du neugierig aufs Tanzen bist, aber noch neugieriger auf Menschen</li>
+      <li>du andere kennenlernen willst, ohne Smalltalk, Apps oder Leistungsdruck</li>
+      <li>du glaubst, dass man Verbindung lernen und üben kann</li>
+    </ul>
+    <div class="garden-fit-note">
+      <p>Bei uns wird vor allem Englisch gesprochen. Individuelles Feedback bekommst du auf Wunsch aber auch auf Deutsch, Griechisch oder Russisch. Und vor allem teilen wir eine tiefere Sprache: Berührung, Präsenz und Aufmerksamkeit.</p>
+      <p class="garden-fit-note-italic">Wenn du ein Drop-in-Workout ohne Community suchst, ist das hier vielleicht nichts für dich. Und das ist okay.</p>
+    </div>
+    <div class="garden-fit-cta">
+      <a href="/de/pages/beginner-course" class="btn-primary">Zum Anfängerkurs</a>
+      <a href="https://wa.me/491602368723?text=Hi!%20Ich%20habe%20eine%20Frage%2C%20bevor%20ich%20mitmache..." class="btn-ghost">💬 Auf WhatsApp schreiben</a>
+    </div>
+  </div>
+</section>
+`} />
+</BaseLayout>

@@ -1,6 +1,12 @@
 ---
 import { products } from '../data/products.js';
 import { classPages } from '../data/classPages.js';
+import { formatPrice, localizePath } from '../i18n/index.js';
+
+interface Props {
+  locale?: 'en' | 'de';
+}
+const { locale = 'en' } = Astro.props;
 
 // Landing grid for /collections/all. Each class used to expand into a wall of
 // per-SKU cards (general admission, student/under-28, 1-class, 4-class...);
@@ -10,8 +16,9 @@ import { classPages } from '../data/classPages.js';
 const priceOf = (handle: string) => {
   const price = products.find((p) => p.handle === handle)?.price ?? '';
   const match = price.match(/€(\d+)/);
-  return match ? `€${match[1]}` : price;
+  return formatPrice(match ? `€${match[1]}` : price, locale);
 };
+const fmt = (label: string | undefined) => formatPrice(label ?? '', locale);
 
 const rowFor = (slug: string, label: string) =>
   classPages.find((c) => c.slug === slug)!.table.rows.find((r) => r.label === label)!;
@@ -19,36 +26,99 @@ const rowFor = (slug: string, label: string) =>
 const fullCourseRow = rowFor('beginner-course', 'Full Course (12 classes)');
 const beginnerCourseRegisterUrl = classPages.find((c) => c.slug === 'beginner-course')?.registerUrl;
 
-const groups = [
+const text = {
+  en: {
+    title: 'Classes & Passes',
+    subtitle: 'Every way into the Garden, with current prices. Not sure which fits? Just ask us.',
+    bestFor: 'Best for:',
+    register: 'Register Now',
+    details: 'View details & prices →',
+    why: 'Young people are the future of tango. We keep a reduced rate so the next generation can always find their way onto the floor.',
+    note: '* Reduced rate for students and anyone 28 and under.',
+    helpTitle: 'Not sure where to start?',
+    helpBody: 'Tell us where you are and we will point you to the right pass.',
+    whatsapp: '💬 Chat on WhatsApp',
+    whatsappHref:
+      "https://wa.me/491602368723?text=Hi!%20I'm%20not%20sure%20which%20option%20is%20right%20for%20me...",
+    groups: [
+      {
+        title: 'Enter the Garden',
+        blurb: 'One-time, free introductory session for anyone who wants to try without commitment.',
+        bestFor: 'anyone curious about tango, zero experience needed.',
+      },
+      {
+        title: 'The Sprouting Sessions',
+        blurb: 'A 12-week beginner course: one class, four classes, or the full course.',
+        bestFor: 'complete beginners ready to commit to learning tango.',
+        price: `from ${fullCourseRow.perClass?.general} or ${fullCourseRow.perClass?.student}*/class`,
+      },
+      {
+        title: 'The Garden Practica',
+        blurb: 'Open-level guided practice sessions. Drop in whenever you like.',
+        bestFor: 'anyone with at least one tango class who wants to practice.',
+      },
+    ],
+  },
+  de: {
+    title: 'Kurse & Pässe',
+    subtitle: 'Alle Wege in den Garten, mit aktuellen Preisen. Nicht sicher, was passt? Frag uns einfach.',
+    bestFor: 'Ideal für:',
+    register: 'Jetzt anmelden',
+    details: 'Details & Preise ansehen →',
+    why: 'Junge Menschen sind die Zukunft des Tango. Deshalb gibt es einen ermäßigten Preis, damit die nächste Generation immer ihren Weg auf die Tanzfläche findet.',
+    note: '* Ermäßigt für Studierende und alle bis 28 Jahre.',
+    helpTitle: 'Nicht sicher, wo du anfangen sollst?',
+    helpBody: 'Erzähl uns, wo du gerade stehst, und wir zeigen dir den passenden Pass.',
+    whatsapp: '💬 Auf WhatsApp schreiben',
+    whatsappHref:
+      'https://wa.me/491602368723?text=Hi!%20Ich%20bin%20mir%20nicht%20sicher%2C%20welches%20Angebot%20zu%20mir%20passt...',
+    groups: [
+      {
+        title: 'Enter the Garden',
+        blurb: 'Einmalige, kostenlose Probestunde für alle, die ganz unverbindlich reinschnuppern möchten.',
+        bestFor: 'alle, die neugierig auf Tango sind, ganz ohne Erfahrung.',
+      },
+      {
+        title: 'The Sprouting Sessions',
+        blurb: 'Ein 12-wöchiger Anfängerkurs: eine Stunde, vier Stunden oder der ganze Kurs.',
+        bestFor: 'absolute Anfänger:innen, die Tango wirklich lernen wollen.',
+        price: `ab ${fmt(fullCourseRow.perClass?.general)} oder ${fmt(fullCourseRow.perClass?.student)}* pro Stunde`,
+      },
+      {
+        title: 'The Garden Practica',
+        blurb: 'Geführte Übungsabende für alle Level. Komm vorbei, wann immer du magst.',
+        bestFor: 'alle mit mindestens einer Tango-Stunde, die üben möchten.',
+      },
+    ],
+  },
+}[locale];
+
+const [etg, sprouting, practica] = text.groups;
+type Group = { title: string; blurb: string; bestFor: string; price: string; href: string; registerUrl?: string };
+const groups: Group[] = [
   {
-    title: 'Enter the Garden',
-    blurb: 'One-time, free introductory session for anyone who wants to try without commitment.',
-    bestFor: 'anyone curious about tango, zero experience needed.',
+    ...etg,
     price: priceOf('enter-the-garden-general-admission'),
-    href: '/pages/enter-the-garden',
+    href: localizePath('/pages/enter-the-garden', locale),
   },
   {
-    title: 'The Sprouting Sessions',
-    blurb: 'A 12-week beginner course: one class, four classes, or the full course.',
-    bestFor: 'complete beginners ready to commit to learning tango.',
-    price: `from ${fullCourseRow.perClass?.general} or ${fullCourseRow.perClass?.student}*/class`,
-    href: '/pages/beginner-course',
+    ...sprouting,
+    price: sprouting.price!,
+    href: localizePath('/pages/beginner-course', locale),
     registerUrl: beginnerCourseRegisterUrl,
   },
   {
-    title: 'The Garden Practica',
-    blurb: 'Open-level guided practice sessions. Drop in whenever you like.',
-    bestFor: 'dancers with some experience who want to practice.',
-    price: `${priceOf('the-garden-practica-1-practica-pass-general-admission')} or ${priceOf('the-garden-practica-1-practica-pass-door-only-student-and-under-28-admission')}*`,
-    href: '/pages/garden-practica',
+    ...practica,
+    price: `${priceOf('the-garden-practica-1-practica-pass-general-admission')} ${locale === 'de' ? 'oder' : 'or'} ${priceOf('the-garden-practica-1-practica-pass-door-only-student-and-under-28-admission')}*`,
+    href: localizePath('/pages/garden-practica', locale),
   },
 ];
 ---
 
 <section class="page-hero">
-  <h1 class="section-title">Classes &amp; Passes</h1>
+  <h1 class="section-title">{text.title}</h1>
   <p class="section-subtitle">
-    Every way into the Garden, with current prices. Not sure which fits? Just ask us.
+    {text.subtitle}
   </p>
 </section>
 
@@ -60,20 +130,20 @@ const groups = [
           <div class="collection-card">
             <span class="collection-card-title">{group.title}</span>
             <span class="collection-card-blurb">{group.blurb}</span>
-            <span class="collection-card-best-for"><strong>Best for:</strong> {group.bestFor}</span>
+            <span class="collection-card-best-for"><strong>{text.bestFor}</strong> {group.bestFor}</span>
             <span class="collection-card-price">{group.price}</span>
             <div class="collection-card-actions">
               {group.registerUrl ? (
                 <a class="collection-card-register" href={group.registerUrl} target="_blank" rel="noopener">
-                  Register Now
+                  {text.register}
                 </a>
               ) : (
                 // Invisible same-size placeholder so cards without a register
                 // button still reserve its row, keeping the green CTA on the
                 // same horizontal line across all three cards.
-                <span class="collection-card-register is-spacer" aria-hidden="true">Register Now</span>
+                <span class="collection-card-register is-spacer" aria-hidden="true">{text.register}</span>
               )}
-              <a class="collection-card-cta" href={group.href}>View details &amp; prices →</a>
+              <a class="collection-card-cta" href={group.href}>{text.details}</a>
             </div>
           </div>
         </li>
@@ -82,21 +152,20 @@ const groups = [
   </ul>
 
   <p class="collection-why">
-    Young people are the future of tango. We keep a reduced rate so the next generation
-    can always find their way onto the floor.
+    {text.why}
   </p>
   <p class="collection-note">
-    * Reduced rate for students and anyone 28 and under.
+    {text.note}
   </p>
 
   <div class="collection-help">
-    <h2>Not sure where to start?</h2>
-    <p>Tell us where you are and we will point you to the right pass.</p>
+    <h2>{text.helpTitle}</h2>
+    <p>{text.helpBody}</p>
     <a
       class="btn-whatsapp"
-      href="https://wa.me/491602368723?text=Hi!%20I'm%20not%20sure%20which%20option%20is%20right%20for%20me..."
+      href={text.whatsappHref}
       target="_blank"
-      rel="noopener">💬 Chat on WhatsApp</a
+      rel="noopener">{text.whatsapp}</a
     >
   </div>
 </div>

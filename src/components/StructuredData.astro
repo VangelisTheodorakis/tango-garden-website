@@ -18,6 +18,8 @@ interface LearningResourceInfo {
   description: string;
   url: string;
   teaches: string[];
+  /** Language of the tool's interface. Defaults to English. */
+  inLanguage?: 'en' | 'de';
 }
 
 interface Props {
@@ -86,7 +88,7 @@ const learningResourceSchema = learningResource && {
   name: learningResource.name,
   description: learningResource.description,
   url: learningResource.url,
-  inLanguage: 'en',
+  inLanguage: learningResource.inLanguage ?? 'en',
   isAccessibleForFree: true,
   learningResourceType: 'Interactive Resource',
   teaches: learningResource.teaches,

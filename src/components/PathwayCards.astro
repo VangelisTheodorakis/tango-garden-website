@@ -6,65 +6,137 @@
  * /assets/data/ — see the script at the bottom. The markup below carries the
  * last-known text as a fallback so the card is never blank if the fetch fails.
  */
-const cards = [
-  {
-    key: 'etg',
-    number: '1',
-    icon: '🌱',
-    title: 'Enter the Garden',
-    description: 'Free introductory class for anyone who wants to try tango.',
-    features: [
-      'One-time 1-hour class',
-      'Connect with new people',
-      'Outdoors at Rheinpark',
+import { localizePath } from '../i18n/index.js';
+
+interface Props {
+  locale?: 'en' | 'de';
+}
+const { locale = 'en' } = Astro.props;
+const l = (href: string) => localizePath(href, locale);
+
+const text = {
+  en: {
+    eyebrow: 'How to Start',
+    h2: 'Three Ways to Enter the Garden',
+    lead: 'Choose what feels right for where you are.',
+    why: 'Young people are the future of tango. We keep a reduced rate so the next generation can always find their way onto the floor.',
+    reduced: '* Reduced price for students and anyone aged 28 or under.',
+    helpTitle: 'Still wandering?',
+    helpBody:
+      "Every dancer starts somewhere different. If you're not sure where you fit, we're happy to guide you personally.",
+    seeAll: 'See all details',
+    whatsapp: 'Chat on WhatsApp',
+    whatsappHref:
+      "https://wa.me/491602368723?text=Hi!%20I'm%20not%20sure%20which%20option%20is%20right%20for%20me...",
+    cards: [
+      {
+        title: 'Enter the Garden',
+        description: 'Free introductory class for anyone who wants to try tango.',
+        features: ['One-time 1-hour class', 'Connect with new people', 'Outdoors at Rheinpark'],
+        dateLabel: 'Next introductory class',
+        dateFallback: 'New dates coming soon (TBA)',
+        price: 'Free of charge',
+        cta: 'Free tango class in Cologne →',
+      },
+      {
+        title: 'Regular Classes',
+        description: 'A 12-week Argentine tango beginner course.',
+        features: [
+          '12 weekly 1.5-hour sessions',
+          'Community events & rituals',
+          'Make up missed classes for free',
+        ],
+        dateLabel: 'Next Beginner Course · Group Closes 01/10',
+        dateFallback: 'No upcoming dates scheduled (TBA)',
+        price: 'from €13 or €10*/class',
+        cta: 'See beginner tango course →',
+      },
+      {
+        title: 'Garden Practica',
+        description: 'A relaxed, guided practica for anyone who has taken at least one tango class.',
+        features: [
+          'Weekly 2.5-hour guided sessions',
+          'Open-level and double-role',
+          'Community-focused atmosphere',
+        ],
+        dateLabel: 'Next Practica',
+        dateFallback: 'Wed, 22/07/2026<br>19:30 – 22:00',
+        price: '€10 or €8*',
+        cta: 'See tango practica details →',
+      },
     ],
-    dateLabel: 'Next introductory class',
-    dateFallback: 'New dates coming soon (TBA)',
-    price: 'Free of charge',
-    cta: { label: 'Free tango class in Cologne →', href: '/pages/enter-the-garden' },
-    featured: false,
   },
-  {
-    key: 'rc',
-    number: '2',
-    icon: '🌿',
-    title: 'Regular Classes',
-    description: 'A 12-week Argentine tango beginner course.',
-    features: [
-      '12 weekly 1.5-hour sessions',
-      'Community events & rituals',
-      'Make up missed classes for free',
+  de: {
+    eyebrow: 'So startest du',
+    h2: 'Drei Wege in den Garten',
+    lead: 'Wähl, was sich für dich gerade richtig anfühlt.',
+    why: 'Junge Menschen sind die Zukunft des Tango. Deshalb gibt es einen ermäßigten Preis, damit die nächste Generation immer ihren Weg auf die Tanzfläche findet.',
+    reduced: '* Ermäßigt für Studierende und alle bis 28 Jahre.',
+    helpTitle: 'Noch unentschlossen?',
+    helpBody:
+      'Alle fangen woanders an. Wenn du nicht sicher bist, was zu dir passt, helfen wir dir gerne persönlich weiter.',
+    seeAll: 'Alle Details ansehen',
+    whatsapp: 'Auf WhatsApp schreiben',
+    whatsappHref:
+      'https://wa.me/491602368723?text=Hi!%20Ich%20bin%20mir%20nicht%20sicher%2C%20welches%20Angebot%20zu%20mir%20passt...',
+    cards: [
+      {
+        title: 'Enter the Garden',
+        description: 'Kostenlose Probestunde für alle, die Tango ausprobieren möchten.',
+        features: ['Eine einmalige Stunde', 'Neue Leute kennenlernen', 'Draußen im Rheinpark'],
+        dateLabel: 'Nächste Probestunde',
+        dateFallback: 'Neue Termine folgen bald',
+        price: 'Kostenlos',
+        cta: 'Kostenlose Probestunde →',
+      },
+      {
+        title: 'Anfängerkurs',
+        description: 'Ein 12-wöchiger Tango-Argentino-Kurs für Anfänger:innen.',
+        features: [
+          '12 wöchentliche Stunden à 1,5 h',
+          'Community-Events & Rituale',
+          'Verpasste Stunden kostenlos nachholen',
+        ],
+        dateLabel: 'Nächster Anfängerkurs · Gruppe schließt am 01.10.',
+        dateFallback: 'Aktuell keine Termine geplant',
+        // "\n" marks a line break in the rendered price.
+        price: 'ab 13 € oder 10 €*\npro Stunde',
+        cta: 'Zum Tango-Anfängerkurs →',
+      },
+      {
+        title: 'Garden Practica',
+        description: 'Eine entspannte, geführte Practica für alle, die schon mindestens eine Tango-Stunde hatten.',
+        features: [
+          'Jede Woche 2,5 Stunden, angeleitet',
+          'Alle Level, auch Double-Role',
+          'Community im Mittelpunkt',
+        ],
+        dateLabel: 'Nächste Practica',
+        dateFallback: 'Neue Termine folgen bald',
+        price: '10 € oder 8 €*',
+        cta: 'Zur Tango-Practica →',
+      },
     ],
-    dateLabel: 'Next Beginner Course · Group Closes 01/10',
-    dateFallback: 'No upcoming dates scheduled (TBA)',
-    price: 'from €13 or €10*/class',
-    cta: {
-      label: 'See beginner tango course details →',
-      href: '/pages/beginner-course',
-    },
-    featured: true,
   },
-  {
-    key: 'prac',
-    number: '3',
-    icon: '🌳',
-    title: 'Garden Practica',
-    description: 'A relaxed, guided practica for dancers with some tango experience.',
-    features: [
-      'Weekly 2.5-hour guided sessions',
-      'Open-level and double-role',
-      'Community-focused atmosphere',
-    ],
-    dateLabel: 'Next Practica',
-    dateFallback: 'Wed, 22/07/2026<br>19:30 – 22:00',
-    price: '€10 or €8*',
-    cta: {
-      label: 'See tango practica details →',
-      href: '/pages/garden-practica',
-    },
-    featured: false,
-  },
+}[locale];
+
+/** Per-card structure; the words come from `text` above. */
+const shape = [
+  { key: 'etg', number: '1', icon: '🌱', href: '/pages/enter-the-garden', featured: false },
+  { key: 'rc', number: '2', icon: '🌿', href: '/pages/beginner-course', featured: true },
+  { key: 'prac', number: '3', icon: '🌳', href: '/pages/garden-practica', featured: false },
 ];
+
+const cards = shape.map((c, i) => {
+  const t = text.cards[i];
+  return {
+    ...c,
+    ...t,
+    cta: { label: t.cta, href: l(c.href) },
+    priceNote: undefined as string | undefined,
+    secondaryCta: undefined as { label: string; href: string } | undefined,
+  };
+});
 ---
 
 <section id="three-ways-to-enter" style="background: white; padding: 70px 20px;">
@@ -73,15 +145,15 @@ const cards = [
       <div
         style="font-size: 14px; text-transform: uppercase; letter-spacing: 2px; color: #4E5D22; font-weight: 600; margin-bottom: 20px;"
       >
-        How to Start
+        {text.eyebrow}
       </div>
       <h2
         style="font-size: 42px; font-weight: 700; color: #4E5D22; margin-bottom: 25px; line-height: 1.2;"
       >
-        Three Ways to Enter the Garden
+        {text.h2}
       </h2>
       <p style="font-size: 20px; color: #666; max-width: 700px; margin: 0 auto; line-height: 1.6;">
-        Choose what feels right for where you are.
+        {text.lead}
       </p>
     </div>
 
@@ -112,7 +184,14 @@ const cards = [
             </div>
             <div class="card-foot">
               <div class="card-price-wrap">
-                <p class="card-price">{card.price}</p>
+                <p class="card-price">
+                  {card.price.split('\n').map((line, i) => (
+                    <>
+                      {i > 0 && <br />}
+                      {line}
+                    </>
+                  ))}
+                </p>
                 {card.priceNote && <p class="card-price-note">{card.priceNote}</p>}
               </div>
               <a class="card-btn" href={card.cta.href}>
@@ -131,11 +210,10 @@ const cards = [
 
     <div style="text-align: center;">
       <p class="pathways-why">
-        Young people are the future of tango. We keep a reduced rate so the next
-        generation can always find their way onto the floor.
+        {text.why}
       </p>
       <p style="margin: 0;">
-        <span>* Reduced price for students and anyone aged 28 or under.</span>
+        <span>{text.reduced}</span>
       </p>
     </div>
 
@@ -143,30 +221,29 @@ const cards = [
       style="text-align: center; margin-top: 40px; padding: 50px 30px; background: #F9F7F2; border: 1px solid rgba(45,80,22,0.1); border-radius: 20px;"
     >
       <h4 style="font-size: 22px; color: #4E5D22; margin-bottom: 12px; font-weight: 700;">
-        Still wandering?
+        {text.helpTitle}
       </h4>
       <p
         style="font-size: 16px; line-height: 1.6; color: #666; max-width: 500px; margin: 0 auto 30px;"
       >
-        Every dancer starts somewhere different. If you're not sure where you fit, we're happy to
-        guide you personally.
+        {text.helpBody}
       </p>
       <div
         style="display: flex; gap: 15px; justify-content: center; align-items: center; flex-direction: row; flex-wrap: wrap;"
       >
         <a
-          href="/collections/all"
+          href={l('/collections/all')}
           class="safety-btn-info"
           style="display: inline-flex; align-items: center; padding: 12px 24px; color: #4E5D22; font-weight: 600; text-decoration: none; font-size: 15px; border-radius: 30px; background: rgba(45,80,22,0.05); border: 1px solid rgba(45,80,22,0.1); transition: all 0.2s ease;"
         >
-          <span style="margin-right: 8px;">📋</span> See all details
+          <span style="margin-right: 8px;">📋</span> {text.seeAll}
         </a>
         <a
-          href="https://wa.me/491602368723?text=Hi!%20I'm%20not%20sure%20which%20option%20is%20right%20for%20me..."
+          href={text.whatsappHref}
           class="safety-btn-primary"
           style="display: inline-flex; align-items: center; padding: 12px 24px; background: #4E5D22; color: white; font-weight: 600; text-decoration: none; font-size: 15px; border-radius: 30px; box-shadow: 0 4px 12px rgba(45,80,22,0.2); transition: all 0.3s ease; border: 1px solid transparent;"
         >
-          <span style="margin-right: 8px;">💬</span> Chat on WhatsApp
+          <span style="margin-right: 8px;">💬</span> {text.whatsapp}
         </a>
       </div>
     </div>
@@ -361,6 +438,9 @@ const cards = [
     font-size: 16px;
     border: 2px solid #4e5d22;
     transition: all 0.3s ease;
+    /* When a label wraps (the cards are narrow between ~900 and 1200px),
+       split it evenly instead of leaving one word on the second line. */
+    text-wrap: balance;
   }
   .featured .card-btn {
     padding: 15px 20px;
@@ -386,6 +466,8 @@ const cards = [
   // in src/lib/next-event.js so they can be unit tested; this just renders.
   import { cardContent } from '../lib/next-event.js';
 
+  const locale = document.documentElement.lang === 'de' ? 'de' : 'en';
+
   const feeds = [
     { url: '/assets/data/enter-the-garden.json', key: 'etg' },
     { url: '/assets/data/regular-classes.json', key: 'rc' },
@@ -401,7 +483,7 @@ const cards = [
         const dateEl = document.getElementById(`${feed.key}-date`);
         if (!dateEl) return;
 
-        const { label, lines } = cardContent(data, new Date());
+        const { label, lines } = cardContent(data, new Date(), locale);
 
         if (labelEl && label) labelEl.textContent = label;
 

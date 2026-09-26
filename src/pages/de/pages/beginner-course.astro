@@ -1,0 +1,8 @@
+---
+import ClassPage from '../../../components/ClassPage.astro';
+import { getClassPage } from '../../../data/classPages.de.js';
+
+const data = getClassPage('beginner-course', 'de');
+---
+
+<ClassPage data={data} locale="de" />

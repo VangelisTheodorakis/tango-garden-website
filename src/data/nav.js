@@ -26,9 +26,9 @@ export const navItems = [
     ],
   },
   {
-    href: '/pages/rythmical-base-trainer',
+    href: '/pages/tango-rhythm-trainer',
     label: 'Training Material',
-    children: [{ href: '/pages/rythmical-base-trainer', label: 'Rythmical Base Trainer' }],
+    children: [{ href: '/pages/tango-rhythm-trainer', label: 'Tango Rhythm Trainer' }],
   },
   { href: '/pages/contact', label: 'Connect with us' },
 ];

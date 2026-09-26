@@ -1,6 +1,8 @@
 {
   "label": "Next Beginner Course · Group Closes 01/10",
   "emptyMessage": "No upcoming dates scheduled (TBA)",
+  "label_de": "Nächster Anfängerkurs · Gruppe schließt am 01.10.",
+  "emptyMessage_de": "Aktuell keine Termine geplant",
   "prefix": "",
   "events": [
     { "date": "2026-09-10", "time": "19:30 – 21:00" },
