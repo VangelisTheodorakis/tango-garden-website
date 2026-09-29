@@ -1,7 +1,9 @@
 # Registration email: go-live checklist
 
-Code is done and tested. These are the manual wiring steps left for the owner.
-Full detail: [registration-setup.md](registration-setup.md).
+**Status: live** (checked 2026-09-26). The form is published and the Apps Script
+sends confirmation emails (owner confirmed). The form opens and can be filled in
+without a Google sign-in. The items below were the original manual steps, kept
+for reference. Full detail: [registration-setup.md](registration-setup.md).
 
 ## Prerequisite: push the privacy-policy update (done)
 - [x] `src/pages/pages/privacy-policy.astro`'s new "8. WhatsApp Community"
@@ -21,11 +23,9 @@ Full detail: [registration-setup.md](registration-setup.md).
 ## Build the Google Form
 Full copy: [registration-form-spec.md](registration-form-spec.md).
 - [x] Add a **Name** question
-- [ ] **Fix pending:** switch off **Settings > Collect email addresses:
-      Verified** and add a plain **Email** question (Response validation >
-      Email) instead. Verified requires a Google sign-in to respond at all,
-      excluding anyone without a Google account; this contradicts the
-      low-friction goal and needs to change on the live form.
+- [x] Switch off **Settings > Collect email addresses: Verified**, which required a
+      Google sign-in to respond at all. Done: the public form opens without a
+      sign-in (checked 2026-09-26).
 - [x] Add a required **confirmation consent** checkbox (transactional email only)
 - [x] Add a required **Role** question (Leading / Following / Not sure yet)
 - [x] Add an optional **Reduced rate (student / under 28)** checkbox
@@ -35,31 +35,28 @@ Full copy: [registration-form-spec.md](registration-form-spec.md).
 - [x] Confirmed all checkboxes load unticked in preview
 - [ ] Meta/Instagram ads retargeting consent is deferred, not part of this
       form; see the spec doc for what's needed when that's revisited
-- [ ] Still **not published** ("Not Published" in the form editor). Publish
-      once the privacy-policy update below is live, not before.
+- [x] Form published (live and taking registrations by September 2026)
 
 ## Wire the Apps Script
-- [ ] Form **⋮ > Script editor**; paste `apps-script/Code.gs`
-- [ ] Script properties: `WORKER_URL` and `SHARED_SECRET` (same secret as the Worker)
-- [ ] Add trigger: `onFormSubmit`, source **From form**, type **On form submit**
-- [ ] Authorize the Gmail-send + external-fetch scopes when prompted
+- [x] Form **⋮ > Script editor**; paste `apps-script/Code.gs`
+- [x] Script properties: `WORKER_URL` and `SHARED_SECRET` (same secret as the Worker)
+- [x] Add trigger: `onFormSubmit`, source **From form**, type **On form submit**
+- [x] Authorize the Gmail-send + external-fetch scopes when prompted
 
 ## Sending identity
-- [ ] Confirm `bookings@tangogarden.de` is a verified **Send mail as** alias on the
-      account that owns the script (else change `from` in `Code.gs`)
+- [x] `bookings@tangogarden.de` works as the **Send mail as** alias on the account
+      that owns the script (confirmation emails are going out)
 
 ## Test end to end
-- [ ] Submit the form with your own email
-- [ ] Confirm: name in greeting, calendar buttons present, `.ics` attached,
-      Maps links in "Where to find us" + footer
-- [ ] After switching off Verified email collection, confirm the form can be
-      opened and submitted in a private/incognito window with no Google
-      account signed in at all, proving non-Google-account respondents
-      aren't blocked
-- [ ] If nothing arrives, check the Apps Script **Executions** log
+- [x] Confirmation emails arrive for real registrations
+- [x] The form opens with no Google account signed in (checked 2026-09-26)
+- If a confirmation ever doesn't arrive, check the Apps Script **Executions** log.
 
-## After go-live
-- [ ] Schedule changes: edit `public/assets/data/regular-classes.json` and `git push`
-      (updates cards, hosted `.ics`, and future emails together)
-- [ ] Redeploy the Worker only when the template/course metadata changes
-      (`src/lib/email.js`, `src/data/courses.js`)
+## After go-live (standing instructions)
+- Schedule changes: edit `public/assets/data/regular-classes.json` and `git push`
+  (updates cards, hosted `.ics`, and future emails together). If you change the
+  English `label` there, update `label_de` too (the German site reads it).
+- Redeploy the Worker only when the template/course metadata changes
+  (`src/lib/email.js`, `src/data/courses.js`).
+- The site links the form's `forms.gle` short URL. The GA4 Key Event
+  `register_click` matches `forms.gle`, so keep that link format.
