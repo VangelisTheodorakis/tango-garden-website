@@ -19,7 +19,7 @@ export const classPagesDe = {
   'enter-the-garden': {
     metaTitle: 'Kostenlose Tango-Probestunde in Köln',
     metaDescription:
-      'Tango Argentino kostenlos ausprobieren: eine Stunde open air im Rheinpark Köln. Ohne Partner, ohne Vorkenntnisse, ohne Druck.',
+      'Tango Argentino kostenlos ausprobieren: Eine Stunde open air im Rheinpark Köln. Ohne Partner, ohne Vorkenntnisse, ohne Druck.',
     eyebrow: 'Enter the Garden',
     heading: 'Kostenlose Tango-Probestunde im Rheinpark',
     intro:
@@ -27,7 +27,7 @@ export const classPagesDe = {
     feedLabel: 'Nächste Probestunde',
     whatToExpect: [
       'Eine angeleitete Stunde rund um Verbindung, Gewichtsverlagerung und die Umarmung. Keine Performance, sondern ein Gespräch zwischen zwei Menschen.',
-      'Wir wechseln während der Stunde die Partner, sodass alle mit allen tanzen. Komm allein oder zu zweit.',
+      'Wir wechseln während der Stunde die Partner:innen, sodass alle mit allen tanzen. Komm allein oder zu zweit.',
     ],
     whatsIncluded: [
       'Eine Stunde, angeleitet, draußen im Rheinpark',
@@ -39,12 +39,12 @@ export const classPagesDe = {
       {
         key: 'Do I need any dance experience to start?',
         q: 'Brauche ich Tanzerfahrung?',
-        a: 'Überhaupt nicht. Jede Session ist für absolute Anfänger:innen gemacht. Wir fangen bei null an: wie du stehst, wie du präsent bist, wie du über Berührung zuhörst.',
+        a: 'Überhaupt nicht. Jede Session ist für absolute Anfänger:innen gemacht. Wir fangen bei null an: Wie du stehst, wie du präsent bist, wie du über Berührung zuhörst.',
       },
       {
         key: 'Do I need to bring a partner?',
-        q: 'Muss ich einen Partner mitbringen?',
-        a: 'Nein. Die meisten kommen allein. Wir wechseln während der Session die Partner, sodass du mit verschiedenen Leuten tanzt.',
+        q: 'Muss ich eine:n Partner:in mitbringen?',
+        a: 'Nein. Die meisten kommen allein. Wir wechseln während der Session die Partner:innen, sodass du mit verschiedenen Leuten tanzt.',
       },
       {
         key: 'What should I wear?',
@@ -69,14 +69,14 @@ export const classPagesDe = {
     metaDescription:
       'Tango lernen in Köln: 12-wöchiger Anfängerkurs, ohne Partner und ohne Vorkenntnisse. Nahe Ebertplatz. Unterricht auf Englisch, Feedback auch auf Deutsch.',
     eyebrow: 'The Sprouting Sessions',
-    heading: 'Tango lernen: dein Anfängerkurs in Köln',
+    heading: 'Tango lernen: Dein Anfängerkurs in Köln',
     intro:
-      'Ein sanfter, strukturierter Einstieg über 12 Wochen, für alle, die noch nie Tango getanzt haben.',
+      'Ein sanfter, strukturierter Einstieg über 12 Wochen. Für alle, die noch nie Tango getanzt haben.',
     feedLabel: 'Nächster Anfängerkurs · Gruppe schließt am 01.10.',
     whatToExpect: [
       'Ein sanftes wöchentliches Ritual, egal ob du den besten Preis pro Stunde willst oder erst einmal flexibel reinschnuppern möchtest.',
       'Jede 1,5-stündige Stunde baut auf der letzten auf: Verbindung, Gewichtsverlagerung, die Umarmung und Musikalität. Mit viel Spaß vermittelt, sodass Selbstvertrauen und Schwung mitwachsen.',
-      'Kein Partner nötig. Wir wechseln im Kurs die Partner, und du entscheidest, welche Rolle du lernen möchtest: Leader, Follower oder Double-Role.',
+      'Kein Partner nötig. Wir wechseln im Kurs die Partner:innen, und du entscheidest, welche Rolle du lernen möchtest: Leader, Follower oder Double-Role.',
     ],
     whatsIncluded: [],
     table: {
@@ -87,12 +87,12 @@ export const classPagesDe = {
       {
         key: 'Do I need any dance experience to start?',
         q: 'Brauche ich Tanzerfahrung?',
-        a: 'Überhaupt nicht. Jede Stunde ist für absolute Anfänger:innen gemacht. Wir fangen bei null an: wie du stehst, wie du präsent bist, wie du über Berührung zuhörst.',
+        a: 'Überhaupt nicht. Jede Stunde ist für absolute Anfänger:innen gemacht. Wir fangen bei null an: Wie du stehst, wie du präsent bist, wie du über Berührung zuhörst.',
       },
       {
         key: 'Do I need to bring a partner?',
-        q: 'Muss ich einen Partner mitbringen?',
-        a: 'Nein. Die meisten kommen allein. Wir wechseln in der Stunde die Partner, sodass du mit verschiedenen Leuten tanzt.',
+        q: 'Muss ich eine:n Partner:in mitbringen?',
+        a: 'Nein. Die meisten kommen allein. Wir wechseln in der Stunde die Partner:innen, sodass du mit verschiedenen Leuten tanzt.',
       },
       {
         key: 'What should I wear?',
@@ -123,9 +123,9 @@ export const classPagesDe = {
     },
   },
   'garden-practica': {
-    metaTitle: 'Tango-Practica in Köln: jeden Mittwoch',
+    metaTitle: 'Tango-Practica in Köln: Jeden Mittwoch',
     metaDescription:
-      'Geführte Tango-Practica in Köln: jeden Mittwoch 2,5 Stunden tanzen, üben und Feedback bekommen. Offen für alle Rollen, ohne Partner, nahe Ebertplatz.',
+      'Geführte Tango-Practica in Köln: Jeden Mittwoch 2,5 Stunden tanzen, üben und Feedback bekommen. Offen für alle Rollen, ohne Partner, nahe Ebertplatz.',
     eyebrow: 'The Garden Practica',
     heading: 'Deine Tango-Practica in Köln',
     intro:
@@ -134,7 +134,7 @@ export const classPagesDe = {
     whatToExpect: [
       'Jede Practica beginnt mit 10 Minuten Warm-up, danach folgt eine 30-minütige geführte Practica mit eingeladenen Gästen. Anschließend gehört die Tanzfläche dir: Tanz, was du schon kannst, und nimm nebenbei Feedback mit.',
       'Offen für alle Level und Rollen: Komm als Leader, Follower oder Double-Role, ganz wie du diese Woche Lust hast.',
-      'Eine Practica, keine Milonga: keine strengen Cabeceo-Regeln, dafür ein kleines Ritual. Tanz mit mindestens einer Person, mit der du noch nie getanzt hast.',
+      'Eine Practica, keine Milonga: Keine strengen Cabeceo-Regeln, dafür ein kleines Ritual. Tanz mit mindestens einer Person, mit der du noch nie getanzt hast.',
     ],
     whatsIncluded: [
       '10 Minuten Warm-up',
@@ -151,8 +151,8 @@ export const classPagesDe = {
       },
       {
         key: 'Do I need to bring a partner?',
-        q: 'Muss ich einen Partner mitbringen?',
-        a: 'Nein. Wir wechseln während der Practica die Partner, du kannst also allein kommen und trotzdem mit allen tanzen.',
+        q: 'Muss ich eine:n Partner:in mitbringen?',
+        a: 'Nein. Wir wechseln während der Practica die Partner:innen, du kannst also allein kommen und trotzdem mit allen tanzen.',
       },
       {
         key: 'Is the practica a milonga?',
