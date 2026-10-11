@@ -81,32 +81,22 @@ export const glossaryDe = {
 /** @type {Record<string, { name?: string, note: string }>} */
 export const exercisesValsDe = {
   'vals-1': {
-    note: 'Ein Schritt pro Compás, auf dem starken Schlag. Der lange, gleitende Schritt, auf dem der Großteil des Tanzes aufbaut.',
-  },
-  'vals-3': {
-    note: 'Jeder Schlag: der starke Schlag und beide schwachen. Dreimal so viele Schritte wie Vals in 1, dieselbe Musik.',
+    name: 'Nur die 1',
+    note: 'Der Grundrhythmus: ein Schritt pro Compás, auf dem betonten ersten Schlag, mit einer Pause über Schlag 2 und 3.',
   },
   'vals-1-2': {
-    name: 'Schläge 1 und 2',
-    note: 'Der starke Schlag, dann ein schneller Schritt auf dem ersten schwachen Schlag. Durch Schlag 3 halten.',
+    note: 'Schritt auf 1 und 2, Pause auf 3, dann nur die 1 des nächsten Compás. Passt dort, wo die Musik einen Ton auf Schlag 2 setzt.',
   },
-  'vals-1-3': {
-    name: 'Schläge 1 und 3',
-    note: 'Der starke Schlag, eine Pause über Schlag 2, dann ein Schritt auf dem zweiten schwachen Schlag.',
+  'vals-3-1': {
+    note: 'Schritt auf 1, Pause auf 2, Schritt auf 3, dann die 1 des nächsten Compás. Der Schritt auf der 3 führt in den nächsten starken Schlag.',
   },
-  'vals-weak': {
-    name: 'Schwache Schläge',
-    note: 'Nur die Schläge 2 und 3, der starke Schlag bleibt still. Schalte den Puls ein, um zu spüren, wo die 1 liegt.',
+  'vals-1-2-3': {
+    note: 'Alle drei Schläge. Auf der Tanzfläche selten: Halte die Schritte klein und heb es dir für einen Lauf auf, zu dem die Musik einlädt.',
   },
-  'vals-sincopa': {
-    name: 'Síncopa auf die 1',
-    note: 'Den nächsten starken Schlag vorwegnehmen: auf das „&“ der 3 treten, dann auf der 1 landen.',
+  'vals-duplet': {
+    name: 'Duole',
+    note: 'Zwei gleichmäßige Schritte über die drei Schläge: auf der 1 und auf dem „&“ der 2. Eine knifflige, selten getanzte Möglichkeit, wenn die Musik Duolen spielt.',
   },
-  'vals-hemiola': {
-    name: 'Zwei über drei',
-    note: 'Die sechs Schläge von zwei Compases in Zweiergruppen statt in Dreiergruppen ordnen: Schritte auf den Schlägen 1, 3 und 5 der sechs. Der Taktstrich scheint zu wandern.',
-  },
-  'vals-all-eighths': { name: 'Alle Achtel', note: 'Jede Unterteilung, Schläge und „&“ gleichermaßen.' },
   blank: { name: 'Leer', note: 'Ein leeres Raster. Tippe auf die Balken, um dein eigenes Muster zu bauen.' },
 };
 
@@ -114,22 +104,22 @@ export const exercisesValsDe = {
 export const glossaryValsDe = {
   Compás: {
     definition:
-      'Der Dreierschlag-Takt des Vals: ein starker Schlag und zwei schwache. Dieses Raster ist zwei Compases lang.',
+      'Der Takt. Vals steht im 3/4-Takt: drei Schläge, gezählt 1-2-3, der erste betont. Dieses Raster ist zwei Compases lang.',
   },
-  'Vals en uno / en tres': {
+  'Base rhythm': {
+    spanish: 'Grundrhythmus',
     definition:
-      'Auf wie vielen der drei Schläge du gehst. En uno markiert nur den starken Schlag, en tres alle drei.',
+      'Nur auf Schlag 1 jedes Compás gehen und über 2 und 3 pausieren. Einen ganzen Vals so zu tanzen ist immer musikalisch.',
   },
-  Contratiempo: {
-    spanish: 'Schwache Schläge',
-    definition: 'Auf den schwachen Schlägen (2 und 3) gehen und den starken Schlag still lassen.',
-  },
-  Síncopa: {
-    definition: 'Eine Synkope: einen Schlag vorwegnehmen, indem du früh landest, auf dem „&“ direkt davor.',
-  },
-  Hemiola: {
+  'Double time': {
+    spanish: '1-2 und 3-1',
     definition:
-      'Zwei gegen drei: die sechs Schläge von zwei Compases in Zweiergruppen statt in Dreiergruppen, sodass die Akzente über den Taktstrich wandern.',
+      'Ein zusätzlicher Schritt innerhalb des Compás, entweder auf Schlag 2 oder auf Schlag 3. Schulen benennen die beiden unterschiedlich, frag also nach, welche gemeint ist.',
+  },
+  Duplet: {
+    spanish: 'Duole',
+    definition:
+      'Zwei gleichmäßige Töne in der Zeit von drei Schlägen. Im Vals fällt der zweite auf das „&“ der 2, zwischen Schlag 2 und 3.',
   },
 };
 
