@@ -13,8 +13,7 @@ export const noindexRoutes = [
   '/pages/privacy-policy/',
   '/pages/terms-of-service/',
   '/pages/refund-and-cancellation-policy/',
-  // Draft: remove this line and the `noindex` on both vals route files to publish.
-  '/pages/tango-vals-rhythm-trainer/',
-  // Draft, same as above.
-  '/pages/milonga-rhythm-trainer/',
+  // Drafts under /test: noindex and behind the trainer's password gate.
+  '/test/tango-vals-rhythm-trainer/',
+  '/test/milonga-rhythm-trainer/',
 ];

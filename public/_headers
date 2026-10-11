@@ -15,6 +15,13 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; style-src-elem 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com; font-src 'self'; media-src 'self' blob:; object-src 'none'; frame-src https://www.google.com https://maps.google.com; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests
 
+# Unpublished test pages: also tell crawlers at the HTTP level.
+/test/*
+  X-Robots-Tag: noindex
+
+/de/test/*
+  X-Robots-Tag: noindex
+
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
 

@@ -919,6 +919,40 @@ html[lang="de"] .legal-page { hyphens: auto; overflow-wrap: break-word; }
 .rhythm-title { font-size: clamp(1.75rem, 5vw, 2.5rem); color: var(--green); margin-bottom: 0.75rem; }
 .rhythm-intro { color: var(--text-mid); margin-bottom: 2rem; }
 
+/* Test pages: only the title and the password form show until unlocked. */
+.rhythm-page[data-locked] > :not(.rhythm-title):not(.rhythm-gate) { display: none; }
+.rhythm-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  max-width: 26rem;
+  padding: 1.5rem;
+  background: var(--cream-light);
+  border-radius: var(--radius);
+}
+.rhythm-gate label { font-size: 0.9375rem; color: var(--text-mid); }
+.rhythm-gate input {
+  width: 100%;
+  font: inherit;
+  font-size: 1rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.rhythm-gate-submit {
+  font: inherit;
+  font-weight: 600;
+  min-height: 44px;
+  padding: 0.6rem 1.5rem;
+  color: #fff;
+  background: var(--green-btn);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.rhythm-gate-error { font-size: 0.875rem; color: #a4342a; }
+
 .rhythm-controls {
   display: flex;
   flex-wrap: wrap;

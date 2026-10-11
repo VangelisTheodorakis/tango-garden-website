@@ -33,8 +33,10 @@ interface Props {
   mode?: 'tango' | 'vals' | 'milonga';
   /** Keeps a draft page out of search results (and, via noindex.js, the sitemap). */
   noindex?: boolean;
+  /** Hides everything but the title behind the test password (see the gate script below). */
+  gate?: boolean;
 }
-const { locale = 'en', mode = 'tango', noindex = false } = Astro.props;
+const { locale = 'en', mode = 'tango', noindex = false, gate = false } = Astro.props;
 const de = locale === 'de';
 const vals = mode === 'vals';
 
@@ -71,7 +73,7 @@ const config = {
     orchestras: noOrchestras,
     tempo: valsData.tempo,
     defaultId: valsData.DEFAULT_EXERCISE,
-    path: '/pages/tango-vals-rhythm-trainer',
+    path: '/test/tango-vals-rhythm-trainer',
   },
   milonga: {
     exercises: milongaData.exercises,
@@ -86,7 +88,7 @@ const config = {
     orchestras: noOrchestras,
     tempo: milongaData.tempo,
     defaultId: milongaData.DEFAULT_EXERCISE,
-    path: '/pages/milonga-rhythm-trainer',
+    path: '/test/milonga-rhythm-trainer',
   },
 }[mode];
 
@@ -217,6 +219,19 @@ const milongaText = {
 
 const text = { tango: tangoText, vals: { ...tangoText, ...valsText }, milonga: { ...tangoText, ...milongaText } }[mode];
 
+const gateText = {
+  en: {
+    label: 'This is a test page. Enter the password to continue.',
+    submit: 'Unlock',
+    error: 'Wrong password.',
+  },
+  de: {
+    label: 'Dies ist eine Testseite. Gib das Passwort ein, um fortzufahren.',
+    submit: 'Entsperren',
+    error: 'Falsches Passwort.',
+  },
+}[locale];
+
 const slots = Array.from({ length: config.slots }, (_, i) => ({
   i,
   strength: config.strength(i),
@@ -242,8 +257,20 @@ const formatTempo = (bpm: number) =>
     inLanguage: locale,
   }}
 >
-  <div class="rhythm-page">
+  <div class="rhythm-page" data-locked={gate ? '' : undefined}>
     <h1 class="rhythm-title">{text.h1}</h1>
+    {
+      gate && (
+        <form id="rhythm-gate" class="rhythm-gate">
+          <label for="rhythm-gate-password">{gateText.label}</label>
+          <input type="password" id="rhythm-gate-password" autocomplete="off" required />
+          <button type="submit" class="rhythm-gate-submit">{gateText.submit}</button>
+          <p id="rhythm-gate-error" class="rhythm-gate-error" hidden>
+            {gateText.error}
+          </p>
+        </form>
+      )
+    }
     <p class="rhythm-intro" set:html={text.intro} />
 
     <div class="rhythm-controls">
@@ -365,6 +392,45 @@ const formatTempo = (bpm: number) =>
       </dl>
     </section>
   </div>
+
+  <script>
+    // --- password gate (test pages only) ------------------------------------
+    // A soft speed bump, not access control: the page is static, so the trainer
+    // behind the gate ships in the HTML either way. It keeps an unlisted,
+    // noindexed test URL from being used by people who stumble on it.
+    {
+      const PASSWORD_HASH = '2f43db619b95820604a1b51247e7ce614575944b37309ba512c31fc37a63adb2';
+      const STORAGE_KEY = 'rhythmTrainerTestAuth';
+
+      const page = document.querySelector('.rhythm-page[data-locked]');
+      const form = document.querySelector<HTMLFormElement>('#rhythm-gate');
+      const input = document.querySelector<HTMLInputElement>('#rhythm-gate-password');
+      const error = document.getElementById('rhythm-gate-error');
+
+      const unlock = () => {
+        page?.removeAttribute('data-locked');
+        form?.remove();
+      };
+
+      if (page && form && input) {
+        if (localStorage.getItem(STORAGE_KEY) === PASSWORD_HASH) unlock();
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input.value));
+          const hash = [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
+          if (hash === PASSWORD_HASH) {
+            localStorage.setItem(STORAGE_KEY, hash);
+            unlock();
+          } else {
+            error?.removeAttribute('hidden');
+            input.value = '';
+            input.focus();
+          }
+        });
+      }
+    }
+  </script>
 
   <script>
     import { exercises as tangoExercises, SLOTS as TANGO_SLOTS } from '../data/rhythmExercises.js';

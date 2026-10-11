@@ -34,10 +34,10 @@ const PAGES = [
   '/de/pages/beginner-course',
   '/de/pages/garden-practica',
   '/de/pages/tango-rhythm-trainer',
-  '/pages/tango-vals-rhythm-trainer',
-  '/de/pages/tango-vals-rhythm-trainer',
-  '/pages/milonga-rhythm-trainer',
-  '/de/pages/milonga-rhythm-trainer',
+  '/test/tango-vals-rhythm-trainer',
+  '/de/test/tango-vals-rhythm-trainer',
+  '/test/milonga-rhythm-trainer',
+  '/de/test/milonga-rhythm-trainer',
   '/de/pages/code-of-care',
   '/de/pages/privacy-policy',
   '/de/pages/terms-of-service',
@@ -50,6 +50,15 @@ const WIDTHS = [320, 375, 414, 768, 1280, 1920];
 
 for (const path of PAGES) {
   test(`${path} never scrolls sideways`, async ({ page }) => {
+    // The /test trainers sit behind a password form; measure the trainer itself.
+    if (path.includes('/test/')) {
+      await page.addInitScript(() =>
+        localStorage.setItem(
+          'rhythmTrainerTestAuth',
+          '2f43db619b95820604a1b51247e7ce614575944b37309ba512c31fc37a63adb2'
+        )
+      );
+    }
     for (const width of WIDTHS) {
       await page.setViewportSize({ width, height: 900 });
       await page.goto(path);
