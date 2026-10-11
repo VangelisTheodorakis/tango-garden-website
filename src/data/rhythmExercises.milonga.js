@@ -52,8 +52,8 @@ export const exercises = [
     // [Y] milonga lisa: "steps only on the downbeat of each measure".
     id: 'milonga-downbeat',
     name: 'Downbeat only',
-    spanish: 'Lisa (one reading)',
-    note: 'One step per compás, on beat 1. One of the two things teachers mean by milonga lisa.',
+    spanish: 'Lisa',
+    note: 'One step per compás, on beat 1.',
     pattern: 'x.......x.......',
   },
   {
@@ -61,7 +61,7 @@ export const exercises = [
     id: 'milonga-both-beats',
     name: 'Both beats',
     spanish: 'A tiempo',
-    note: 'A step on beat 1 and on beat 2. The other, more common reading of milonga lisa.',
+    note: 'A step on beat 1 and on beat 2.',
     pattern: 'x...x...x...x...',
   },
   {
@@ -84,7 +84,7 @@ export const exercises = [
     // [Y] rock traspié: weight shifts on 1 (quick), + (quick), 2 (slow).
     id: 'milonga-traspie-qqs',
     name: 'Traspié A: quick-quick-slow',
-    note: 'Steps on 1, y and 2, then wait. One teacher’s definition of traspié.',
+    note: 'Steps on 1, y and 2, then wait.',
     pattern: 'x.x.x...x.x.x...',
   },
   {
@@ -92,7 +92,7 @@ export const exercises = [
     // bar counted in four.
     id: 'milonga-traspie-two-for-one',
     name: 'Traspié B: two for one',
-    note: 'Every second count splits into two quick, equal steps. A second definition of traspié.',
+    note: 'Every second count splits into two quick, equal steps.',
     pattern: 'x.xxx.xxx.xxx.xx',
   },
   {
@@ -100,7 +100,7 @@ export const exercises = [
     // 5", and calls it "a syncopated displacement", not double time.
     id: 'milonga-traspie-syncopated',
     name: 'Traspié C: 1-4-5',
-    note: 'The first half of the habanera on its own: 1, the late short note, then beat 2. A third definition, as a syncopation rather than a doubling.',
+    note: 'The first half of the habanera on its own: 1, the late short note, then beat 2. A syncopation rather than a doubling.',
     pattern: 'x..xx...x..xx...',
   },
   {
@@ -108,7 +108,7 @@ export const exercises = [
     // accompaniment figure; no dance source gives it as a step pattern.
     id: 'milonga-332',
     name: '3-3-2',
-    note: 'Three, three and two sixteenths. It is how the guitar often accompanies a milonga; no source gives it as a way of stepping.',
+    note: 'Three, three and two sixteenths, the way the guitar often accompanies a milonga.',
     pattern: 'x..x..x.x..x..x.',
   },
   {
@@ -155,7 +155,7 @@ export const glossary = [
     term: 'Milonga lisa',
     spanish: 'A tiempo',
     definition:
-      'Smooth milonga: stepping on the beat without doubling. Some teachers mean beat 1 only, others both beats.',
+      'Smooth milonga: stepping on the beat without doubling, on beat 1 only or on both beats.',
   },
   {
     term: 'Contratiempo',
@@ -170,6 +170,6 @@ export const glossary = [
   {
     term: 'Traspié',
     definition:
-      'Quick extra steps inside the beat. Teachers define it differently: quick-quick-slow, two steps for one, or a syncopated shift. Ask which one is meant.',
+      'Quick extra steps inside the beat: quick-quick-slow, two steps for one, or a syncopated shift.',
   },
 ];

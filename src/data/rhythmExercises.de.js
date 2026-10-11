@@ -114,7 +114,7 @@ export const glossaryValsDe = {
   'Double time': {
     spanish: '1-2 und 3-1',
     definition:
-      'Ein zusätzlicher Schritt innerhalb des Compás, entweder auf Schlag 2 oder auf Schlag 3. Schulen benennen die beiden unterschiedlich, frag also nach, welche gemeint ist.',
+      'Ein zusätzlicher Schritt innerhalb des Compás, entweder auf Schlag 2 oder auf Schlag 3.',
   },
   Duplet: {
     spanish: 'Duole',
@@ -130,11 +130,11 @@ export const glossaryValsDe = {
 export const exercisesMilongaDe = {
   'milonga-downbeat': {
     name: 'Nur die 1',
-    note: 'Ein Schritt pro Compás, auf Schlag 1. Eine der beiden Bedeutungen von Milonga lisa.',
+    note: 'Ein Schritt pro Compás, auf Schlag 1.',
   },
   'milonga-both-beats': {
     name: 'Beide Schläge',
-    note: 'Ein Schritt auf Schlag 1 und auf Schlag 2. Die andere, häufigere Bedeutung von Milonga lisa.',
+    note: 'Ein Schritt auf Schlag 1 und auf Schlag 2.',
   },
   'milonga-double': {
     name: 'Doppelter Schlag',
@@ -145,17 +145,17 @@ export const exercisesMilongaDe = {
   },
   'milonga-traspie-qqs': {
     name: 'Traspié A: schnell-schnell-langsam',
-    note: 'Schritte auf 1, y und 2, dann warten. Eine der Definitionen von Traspié.',
+    note: 'Schritte auf 1, y und 2, dann warten.',
   },
   'milonga-traspie-two-for-one': {
     name: 'Traspié B: zwei für einen',
-    note: 'Jede zweite Zählzeit teilt sich in zwei schnelle, gleich lange Schritte. Eine zweite Definition von Traspié.',
+    note: 'Jede zweite Zählzeit teilt sich in zwei schnelle, gleich lange Schritte.',
   },
   'milonga-traspie-syncopated': {
-    note: 'Die erste Hälfte der Habanera für sich: die 1, der späte kurze Ton, dann Schlag 2. Eine dritte Definition, als Synkope statt als Verdopplung.',
+    note: 'Die erste Hälfte der Habanera für sich: die 1, der späte kurze Ton, dann Schlag 2. Eine Synkope statt einer Verdopplung.',
   },
   'milonga-332': {
-    note: 'Drei, drei und zwei Sechzehntel. So begleitet die Gitarre oft eine Milonga; keine Quelle nennt es als Schrittmuster.',
+    note: 'Drei, drei und zwei Sechzehntel, so wie die Gitarre oft eine Milonga begleitet.',
   },
   blank: { name: 'Leer', note: 'Ein leeres Raster. Tippe auf die Balken, um dein eigenes Muster zu bauen.' },
 };
@@ -168,7 +168,7 @@ export const glossaryMilongaDe = {
   },
   'Milonga lisa': {
     definition:
-      'Glatte Milonga: auf dem Schlag gehen, ohne zu verdoppeln. Manche meinen damit nur Schlag 1, andere beide Schläge.',
+      'Glatte Milonga: auf dem Schlag gehen, ohne zu verdoppeln, nur auf Schlag 1 oder auf beiden Schlägen.',
   },
   Contratiempo: {
     spanish: 'Doppelter Schlag',
@@ -180,7 +180,7 @@ export const glossaryMilongaDe = {
   },
   Traspié: {
     definition:
-      'Schnelle zusätzliche Schritte innerhalb des Schlags. Die Definitionen unterscheiden sich: schnell-schnell-langsam, zwei Schritte für einen oder eine synkopierte Gewichtsverlagerung. Frag nach, was gemeint ist.',
+      'Schnelle zusätzliche Schritte innerhalb des Schlags: schnell-schnell-langsam, zwei Schritte für einen oder eine synkopierte Gewichtsverlagerung.',
   },
 };
 

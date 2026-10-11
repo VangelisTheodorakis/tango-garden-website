@@ -130,7 +130,7 @@ export const glossary = [
     term: 'Double time',
     spanish: '1-2 and 3-1',
     definition:
-      'Adding one extra step inside the compás, either on beat 2 or on beat 3. Schools name the two differently, so check which one a teacher means.',
+      'Adding one extra step inside the compás, either on beat 2 or on beat 3.',
   },
   {
     term: 'Duplet',
