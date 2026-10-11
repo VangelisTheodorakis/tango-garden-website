@@ -50,12 +50,12 @@ const contentPages = () => pages.filter((p) => p.route !== '/404');
 
 describe('pages', () => {
   it('builds every expected route', () => {
-    // 1 home + 12 content/legal (incl. the 3 consolidated class pages and the
-    // two rhythm trainers: tango and tango vals)
+    // 1 home + 13 content/legal (incl. the 3 consolidated class pages and the
+    // three rhythm trainers: tango, tango vals and milonga)
     // + 12 products (all hidden, kept for direct-URL + price/variant data)
     // + 2 collections + 404
     // + a German mirror under /de for every page in src/i18n/index.js translatedPaths
-    expect(pages).toHaveLength(28 + translatedPaths.length);
+    expect(pages).toHaveLength(29 + translatedPaths.length);
   });
 
   it('gives every page a non-empty title', () => {

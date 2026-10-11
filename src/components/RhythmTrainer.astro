@@ -1,9 +1,11 @@
 ---
 /**
  * The rhythm trainer, shared by /pages/tango-rhythm-trainer, its German
- * mirror and the tango vals variant (`mode="vals"`, 3/4). Words come from
- * `text` below and rhythmExercises.de.js; the audio engine in the script is
- * language- and meter-neutral: the catalogue decides how many slots there are.
+ * mirror, the tango vals variant (`mode="vals"`, 3/4) and the milonga variant
+ * (`mode="milonga"`, 2/4 in sixteenths). Words come from `text` below and
+ * rhythmExercises.de.js; the audio engine in the script is language- and
+ * meter-neutral: the catalogue decides how many slots there are and how many
+ * of them make a beat.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import {
@@ -15,17 +17,20 @@ import {
   slotLabel,
 } from '../data/rhythmExercises.js';
 import * as valsData from '../data/rhythmExercises.vals.js';
+import * as milongaData from '../data/rhythmExercises.milonga.js';
 import {
   localizeExercises,
   localizeGlossary,
   exercisesValsDe,
   glossaryValsDe,
+  exercisesMilongaDe,
+  glossaryMilongaDe,
 } from '../data/rhythmExercises.de.js';
 import { absoluteUrl, localizePath } from '../i18n/index.js';
 
 interface Props {
   locale?: 'en' | 'de';
-  mode?: 'tango' | 'vals';
+  mode?: 'tango' | 'vals' | 'milonga';
   /** Keeps a draft page out of search results (and, via noindex.js, the sitemap). */
   noindex?: boolean;
 }
@@ -33,37 +38,57 @@ const { locale = 'en', mode = 'tango', noindex = false } = Astro.props;
 const de = locale === 'de';
 const vals = mode === 'vals';
 
-// What differs between the two trainers besides words: the catalogue, the
-// number of slots and beats, the tempo slider, and the reset target.
-const config = vals
-  ? {
-      exercises: valsData.exercises,
-      glossary: valsData.glossary,
-      exercisesDe: exercisesValsDe,
-      glossaryDe: glossaryValsDe,
-      slots: valsData.SLOTS,
-      beats: 3,
-      strength: valsData.slotStrength,
-      label: valsData.slotLabel,
-      orchestras: [] as { name: string; bpm: number }[],
-      tempo: valsData.tempo,
-      defaultId: valsData.DEFAULT_EXERCISE,
-      path: '/pages/tango-vals-rhythm-trainer',
-    }
-  : {
-      exercises: exercisesEn,
-      glossary: glossaryEn,
-      exercisesDe: undefined,
-      glossaryDe: undefined,
-      slots: SLOTS,
-      beats: 4,
-      strength: slotStrength,
-      label: slotLabel,
-      orchestras: orchestraTempos,
-      tempo: { min: 60, max: 140, value: 100 },
-      defaultId: 'marcato-2',
-      path: '/pages/tango-rhythm-trainer',
-    };
+// What differs between the trainers besides words: the catalogue, the number
+// of slots and beats, how many slots make a beat, the tempo slider, and the
+// reset target.
+const noOrchestras: { name: string; bpm: number }[] = [];
+const config = {
+  tango: {
+    exercises: exercisesEn,
+    glossary: glossaryEn,
+    exercisesDe: undefined,
+    glossaryDe: undefined,
+    slots: SLOTS,
+    beats: 4,
+    slotsPerBeat: 2,
+    strength: slotStrength,
+    label: slotLabel,
+    orchestras: orchestraTempos,
+    tempo: { min: 60, max: 140, value: 100 },
+    defaultId: 'marcato-2',
+    path: '/pages/tango-rhythm-trainer',
+  },
+  vals: {
+    exercises: valsData.exercises,
+    glossary: valsData.glossary,
+    exercisesDe: exercisesValsDe,
+    glossaryDe: glossaryValsDe,
+    slots: valsData.SLOTS,
+    beats: 3,
+    slotsPerBeat: 2,
+    strength: valsData.slotStrength,
+    label: valsData.slotLabel,
+    orchestras: noOrchestras,
+    tempo: valsData.tempo,
+    defaultId: valsData.DEFAULT_EXERCISE,
+    path: '/pages/tango-vals-rhythm-trainer',
+  },
+  milonga: {
+    exercises: milongaData.exercises,
+    glossary: milongaData.glossary,
+    exercisesDe: exercisesMilongaDe,
+    glossaryDe: glossaryMilongaDe,
+    slots: milongaData.SLOTS,
+    beats: 2,
+    slotsPerBeat: milongaData.SLOTS_PER_BEAT,
+    strength: milongaData.slotStrength,
+    label: milongaData.slotLabel,
+    orchestras: noOrchestras,
+    tempo: milongaData.tempo,
+    defaultId: milongaData.DEFAULT_EXERCISE,
+    path: '/pages/milonga-rhythm-trainer',
+  },
+}[mode];
 
 const exercises = de ? localizeExercises(config.exercises, config.exercisesDe) : config.exercises;
 const glossary = de ? localizeGlossary(config.glossary, config.glossaryDe) : config.glossary;
@@ -163,7 +188,34 @@ const valsText = {
   },
 }[locale];
 
-const text = vals ? { ...tangoText, ...valsText } : tangoText;
+const milongaText = {
+  en: {
+    title: 'Milonga Rhythm Trainer | Tango Garden',
+    description:
+      'A free, browser-based rhythm trainer for milonga: practise dancing a tiempo, the double beat, the habanera and traspié, at your own tempo.',
+    schemaName: 'Milonga Rhythm Trainer',
+    schemaDescription:
+      'An interactive, browser-based tool for practising the rhythms of milonga: stepping a tiempo, the double beat, the habanera pattern and the variants of traspié.',
+    h1: 'Milonga Rhythm Trainer',
+    intro:
+      'A free, browser-based rhythm trainer for milonga: practise dancing a tiempo, the double beat, the habanera and traspié. Two compases of two beats, counted <strong>1 y 2 y</strong>, with a dot for the sixteenths in between. Dark bars sound; tap any bar to switch it on or off. The tall bar is beat 1, the medium bar beat 2, short bars everything between.',
+    reset: 'Reset to both beats',
+  },
+  de: {
+    title: 'Milonga-Rhythmustrainer: Musikalität üben | Tango Garden',
+    description:
+      'Kostenloser Rhythmustrainer für Milonga im Browser: Übe a tiempo, den doppelten Schlag, die Habanera und Traspié, in deinem Tempo.',
+    schemaName: 'Milonga-Rhythmustrainer',
+    schemaDescription:
+      'Ein interaktives Tool im Browser, um die Rhythmen der Milonga zu üben: a tiempo gehen, den doppelten Schlag, das Habanera-Muster und die Varianten des Traspié.',
+    h1: 'Milonga-Rhythmustrainer',
+    intro:
+      'Ein kostenloser Rhythmustrainer für Milonga im Browser: Übe a tiempo, den doppelten Schlag, die Habanera und Traspié. Zwei Compases mit je zwei Schlägen, gezählt <strong>1 y 2 y</strong>, mit einem Punkt für die Sechzehntel dazwischen. Dunkle Balken klingen; tippe auf einen Balken, um ihn an- oder auszuschalten. Der hohe Balken ist Schlag 1, der mittlere Schlag 2, kurze Balken alles dazwischen.',
+    reset: 'Zurück zu „Beide Schläge“',
+  },
+}[locale];
+
+const text = { tango: tangoText, vals: { ...tangoText, ...valsText }, milonga: { ...tangoText, ...milongaText } }[mode];
 
 const slots = Array.from({ length: config.slots }, (_, i) => ({
   i,
@@ -251,7 +303,13 @@ const formatTempo = (bpm: number) =>
 
     <p class="rhythm-note" id="rhythm-note"></p>
 
-    <div class="rhythm-grid" id="rhythm-grid" data-mode={mode} data-beats={config.beats}>
+    <div
+      class="rhythm-grid"
+      id="rhythm-grid"
+      data-mode={mode}
+      data-beats={config.beats}
+      data-slots-per-beat={config.slotsPerBeat}
+    >
       {
         slots.map((s) => (
           <div class="rhythm-slot">
@@ -315,7 +373,16 @@ const formatTempo = (bpm: number) =>
       SLOTS as VALS_SLOTS,
       DEFAULT_EXERCISE as VALS_DEFAULT,
     } from '../data/rhythmExercises.vals.js';
-    import { localizeExercises, exercisesValsDe } from '../data/rhythmExercises.de.js';
+    import {
+      exercises as milongaExercises,
+      SLOTS as MILONGA_SLOTS,
+      DEFAULT_EXERCISE as MILONGA_DEFAULT,
+    } from '../data/rhythmExercises.milonga.js';
+    import {
+      localizeExercises,
+      exercisesValsDe,
+      exercisesMilongaDe,
+    } from '../data/rhythmExercises.de.js';
 
     const de = document.documentElement.lang === 'de';
     const labels = de
@@ -327,16 +394,19 @@ const formatTempo = (bpm: number) =>
     const grid = document.getElementById('rhythm-grid');
     // The page tells us which catalogue it was rendered for (see RhythmTrainer
     // frontmatter); the engine below is otherwise identical for both.
-    const vals = grid?.dataset.mode === 'vals';
-    const SLOTS = vals ? VALS_SLOTS : TANGO_SLOTS;
-    const DEFAULT_ID = vals ? VALS_DEFAULT : 'marcato-2';
-    const exercises = vals
-      ? de
-        ? localizeExercises(valsExercises, exercisesValsDe)
-        : valsExercises
-      : de
-        ? localizeExercises(tangoExercises)
-        : tangoExercises;
+    const mode = grid?.dataset.mode ?? 'tango';
+    const vals = mode === 'vals';
+    const catalogue =
+      mode === 'vals'
+        ? { list: valsExercises, de: exercisesValsDe, slots: VALS_SLOTS, defaultId: VALS_DEFAULT }
+        : mode === 'milonga'
+          ? { list: milongaExercises, de: exercisesMilongaDe, slots: MILONGA_SLOTS, defaultId: MILONGA_DEFAULT }
+          : { list: tangoExercises, de: undefined, slots: TANGO_SLOTS, defaultId: 'marcato-2' };
+    const SLOTS = catalogue.slots;
+    const DEFAULT_ID = catalogue.defaultId;
+    /** Slots in one beat: 2 where a slot is an eighth, 4 where it is a sixteenth (milonga). */
+    const SLOTS_PER_BEAT = Number(grid?.dataset.slotsPerBeat ?? 2);
+    const exercises = de ? localizeExercises(catalogue.list, catalogue.de) : catalogue.list;
     if (grid) {
       const playBtn = document.querySelector<HTMLButtonElement>('#rhythm-play')!;
       const playLabel = playBtn.querySelector<HTMLSpanElement>('.rhythm-play-label')!;
@@ -384,8 +454,8 @@ const formatTempo = (bpm: number) =>
         pulse: { freq: 520, gain: 0.1 },
       };
 
-      /** One eighth note in seconds. */
-      const slotSeconds = () => 60 / Number(bpmInput.value) / 2;
+      /** One slot in seconds: a beat divided by however many slots it holds. */
+      const slotSeconds = () => 60 / Number(bpmInput.value) / SLOTS_PER_BEAT;
 
       function click(ctx: BaseAudioContext, kind: Voice, time: number) {
         const { freq, gain } = VOICE[kind];
@@ -507,7 +577,7 @@ const formatTempo = (bpm: number) =>
         for (let i = 0; i < SLOTS; i++) {
           const t = i * slotSeconds();
           if (active[i]) click(offline, 'beat', t);
-          else if (pulseInput.checked && i % 2 === 0) click(offline, 'pulse', t);
+          else if (pulseInput.checked && i % SLOTS_PER_BEAT === 0) click(offline, 'pulse', t);
         }
         const rendered = await offline.startRendering();
         const repeats = Math.max(1, Math.ceil(RENDER_SECONDS / ideal));

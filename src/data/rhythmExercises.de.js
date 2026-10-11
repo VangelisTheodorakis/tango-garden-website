@@ -123,6 +123,67 @@ export const glossaryValsDe = {
   },
 };
 
+// --- Milonga trainer (rhythmExercises.milonga.js) ---------------------------
+// Draft wording, pending a native-speaker pass like the rest.
+
+/** @type {Record<string, { name?: string, note: string }>} */
+export const exercisesMilongaDe = {
+  'milonga-downbeat': {
+    name: 'Nur die 1',
+    note: 'Ein Schritt pro Compás, auf Schlag 1. Eine der beiden Bedeutungen von Milonga lisa.',
+  },
+  'milonga-both-beats': {
+    name: 'Beide Schläge',
+    note: 'Ein Schritt auf Schlag 1 und auf Schlag 2. Die andere, häufigere Bedeutung von Milonga lisa.',
+  },
+  'milonga-double': {
+    name: 'Doppelter Schlag',
+    note: 'Jeder halbe Schlag: 1, y, 2, y. Doppelt so viele Schritte wie a tiempo.',
+  },
+  'milonga-habanera': {
+    note: 'Der Rhythmus unter der Musik selbst: ein langer Ton, ein kurzer, dann zwei gleichmäßige. In Sechzehnteln die Zählzeiten 1, 4, 5 und 7 von 8.',
+  },
+  'milonga-traspie-qqs': {
+    name: 'Traspié A: schnell-schnell-langsam',
+    note: 'Schritte auf 1, y und 2, dann warten. Eine der Definitionen von Traspié.',
+  },
+  'milonga-traspie-two-for-one': {
+    name: 'Traspié B: zwei für einen',
+    note: 'Jede zweite Zählzeit teilt sich in zwei schnelle, gleich lange Schritte. Eine zweite Definition von Traspié.',
+  },
+  'milonga-traspie-syncopated': {
+    note: 'Die erste Hälfte der Habanera für sich: die 1, der späte kurze Ton, dann Schlag 2. Eine dritte Definition, als Synkope statt als Verdopplung.',
+  },
+  'milonga-332': {
+    note: 'Drei, drei und zwei Sechzehntel. So begleitet die Gitarre oft eine Milonga; keine Quelle nennt es als Schrittmuster.',
+  },
+  blank: { name: 'Leer', note: 'Ein leeres Raster. Tippe auf die Balken, um dein eigenes Muster zu bauen.' },
+};
+
+/** @type {Record<string, { spanish?: string | null, definition: string }>} */
+export const glossaryMilongaDe = {
+  Compás: {
+    definition:
+      'Der Takt. Milonga steht im 2/4-Takt: zwei Schläge, der erste stärker. Dieses Raster ist zwei Compases lang, mit vier Feldern pro Schlag.',
+  },
+  'Milonga lisa': {
+    definition:
+      'Glatte Milonga: auf dem Schlag gehen, ohne zu verdoppeln. Manche meinen damit nur Schlag 1, andere beide Schläge.',
+  },
+  Contratiempo: {
+    spanish: 'Doppelter Schlag',
+    definition: 'Auch auf den halben Schlägen gehen: 1, y, 2, y.',
+  },
+  Habanera: {
+    definition:
+      'Der punktierte Rhythmus unter der Milonga: zwei betonte Schläge mit einem kurzen Ton direkt vor dem zweiten.',
+  },
+  Traspié: {
+    definition:
+      'Schnelle zusätzliche Schritte innerhalb des Schlags. Die Definitionen unterscheiden sich: schnell-schnell-langsam, zwei Schritte für einen oder eine synkopierte Gewichtsverlagerung. Frag nach, was gemeint ist.',
+  },
+};
+
 /**
  * @template {{ id: string, name: string, note: string }} T
  * @param {T[]} list

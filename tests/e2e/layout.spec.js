@@ -36,6 +36,8 @@ const PAGES = [
   '/de/pages/tango-rhythm-trainer',
   '/pages/tango-vals-rhythm-trainer',
   '/de/pages/tango-vals-rhythm-trainer',
+  '/pages/milonga-rhythm-trainer',
+  '/de/pages/milonga-rhythm-trainer',
   '/de/pages/code-of-care',
   '/de/pages/privacy-policy',
   '/de/pages/terms-of-service',

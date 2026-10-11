@@ -15,4 +15,6 @@ export const noindexRoutes = [
   '/pages/refund-and-cancellation-policy/',
   // Draft: remove this line and the `noindex` on both vals route files to publish.
   '/pages/tango-vals-rhythm-trainer/',
+  // Draft, same as above.
+  '/pages/milonga-rhythm-trainer/',
 ];
