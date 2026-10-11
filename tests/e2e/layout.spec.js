@@ -34,6 +34,8 @@ const PAGES = [
   '/de/pages/beginner-course',
   '/de/pages/garden-practica',
   '/de/pages/tango-rhythm-trainer',
+  '/pages/tango-vals-rhythm-trainer',
+  '/de/pages/tango-vals-rhythm-trainer',
   '/de/pages/code-of-care',
   '/de/pages/privacy-policy',
   '/de/pages/terms-of-service',

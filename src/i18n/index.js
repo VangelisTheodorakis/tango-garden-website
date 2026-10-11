@@ -24,6 +24,7 @@ export const translatedPaths = [
   '/pages/privacy-policy',
   '/pages/refund-and-cancellation-policy',
   '/pages/tango-rhythm-trainer',
+  '/pages/tango-vals-rhythm-trainer',
   '/pages/terms-of-service',
   '/pages/the-garden',
 ];

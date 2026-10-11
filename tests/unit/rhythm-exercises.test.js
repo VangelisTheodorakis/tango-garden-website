@@ -50,6 +50,67 @@ describe('rhythm glossary', () => {
   });
 });
 
+describe('vals exercises', () => {
+  it('gives every exercise a pattern of exactly SLOTS on/off characters', async () => {
+    const { exercises, SLOTS } = await import('../../src/data/rhythmExercises.vals.js');
+    expect(SLOTS).toBe(12);
+    for (const e of exercises) {
+      expect(e.pattern, e.id).toHaveLength(SLOTS);
+      expect(e.pattern, e.id).toMatch(/^[x.]+$/);
+    }
+  });
+
+  it('has unique ids and names, and the default exercise exists', async () => {
+    const { exercises, DEFAULT_EXERCISE } = await import('../../src/data/rhythmExercises.vals.js');
+    expect(new Set(exercises.map((e) => e.id)).size).toBe(exercises.length);
+    expect(new Set(exercises.map((e) => e.name)).size).toBe(exercises.length);
+    expect(exercises.some((e) => e.id === DEFAULT_EXERCISE)).toBe(true);
+  });
+
+  it('puts the strong beat on the 1 of each compás and counts 1 & 2 & 3 & twice', async () => {
+    const { slotStrength, slotLabel, SLOTS } = await import(
+      '../../src/data/rhythmExercises.vals.js'
+    );
+    expect([0, 6].map(slotStrength)).toEqual(['strong', 'strong']);
+    expect([2, 4, 8, 10].every((i) => slotStrength(i) === 'medium')).toBe(true);
+    expect([1, 3, 5, 7, 9, 11].every((i) => slotStrength(i) === 'weak')).toBe(true);
+    expect(Array.from({ length: SLOTS }, (_, i) => slotLabel(i)).join(' ')).toBe(
+      '1 & 2 & 3 & 1 & 2 & 3 &'
+    );
+  });
+
+  it('keeps the tempo slider range sane around its default', async () => {
+    const { tempo } = await import('../../src/data/rhythmExercises.vals.js');
+    expect(tempo.min).toBeLessThan(tempo.value);
+    expect(tempo.value).toBeLessThan(tempo.max);
+  });
+
+  it('has a non-empty definition for every glossary term', async () => {
+    const { glossary } = await import('../../src/data/rhythmExercises.vals.js');
+    expect(new Set(glossary.map((g) => g.term)).size).toBe(glossary.length);
+    for (const g of glossary) expect(g.definition.trim(), g.term).not.toBe('');
+  });
+
+  it('translates every exercise note and glossary definition into German', async () => {
+    const { exercises, glossary } = await import('../../src/data/rhythmExercises.vals.js');
+    const { exercisesValsDe, glossaryValsDe, localizeExercises, localizeGlossary } = await import(
+      '../../src/data/rhythmExercises.de.js'
+    );
+    expect(Object.keys(exercisesValsDe).sort()).toEqual(exercises.map((e) => e.id).sort());
+    expect(Object.keys(glossaryValsDe).sort()).toEqual(glossary.map((g) => g.term).sort());
+
+    const de = localizeExercises(exercises, exercisesValsDe);
+    de.forEach((e, i) => {
+      expect(e.id).toBe(exercises[i].id);
+      expect(e.pattern).toBe(exercises[i].pattern);
+    });
+    expect(new Set(de.map((e) => e.name)).size).toBe(de.length);
+    expect(localizeGlossary(glossary, glossaryValsDe).map((g) => g.term)).toEqual(
+      glossary.map((g) => g.term)
+    );
+  });
+});
+
 describe('German trainer text', () => {
   it('translates every exercise note and glossary definition', async () => {
     const { exercisesDe, glossaryDe, localizeExercises, localizeGlossary } = await import(

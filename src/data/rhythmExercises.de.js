@@ -74,22 +74,83 @@ export const glossaryDe = {
   '4-1': { definition: 'Eine Brückenfigur, die auf Schlag 4 eines Compás und auf Schlag 1 des nächsten landet.' },
 };
 
+// --- Tango vals trainer (rhythmExercises.vals.js) ---------------------------
+// Draft wording: like the other German trainer text, it still needs a pass
+// from a native speaker.
+
+/** @type {Record<string, { name?: string, note: string }>} */
+export const exercisesValsDe = {
+  'vals-1': {
+    note: 'Ein Schritt pro Compás, auf dem starken Schlag. Der lange, gleitende Schritt, auf dem der Großteil des Tanzes aufbaut.',
+  },
+  'vals-3': {
+    note: 'Jeder Schlag: der starke Schlag und beide schwachen. Dreimal so viele Schritte wie Vals in 1, dieselbe Musik.',
+  },
+  'vals-1-2': {
+    name: 'Schläge 1 und 2',
+    note: 'Der starke Schlag, dann ein schneller Schritt auf dem ersten schwachen Schlag. Durch Schlag 3 halten.',
+  },
+  'vals-1-3': {
+    name: 'Schläge 1 und 3',
+    note: 'Der starke Schlag, eine Pause über Schlag 2, dann ein Schritt auf dem zweiten schwachen Schlag.',
+  },
+  'vals-weak': {
+    name: 'Schwache Schläge',
+    note: 'Nur die Schläge 2 und 3, der starke Schlag bleibt still. Schalte den Puls ein, um zu spüren, wo die 1 liegt.',
+  },
+  'vals-sincopa': {
+    name: 'Síncopa auf die 1',
+    note: 'Den nächsten starken Schlag vorwegnehmen: auf das „&“ der 3 treten, dann auf der 1 landen.',
+  },
+  'vals-hemiola': {
+    name: 'Zwei über drei',
+    note: 'Die sechs Schläge von zwei Compases in Zweiergruppen statt in Dreiergruppen ordnen: Schritte auf den Schlägen 1, 3 und 5 der sechs. Der Taktstrich scheint zu wandern.',
+  },
+  'vals-all-eighths': { name: 'Alle Achtel', note: 'Jede Unterteilung, Schläge und „&“ gleichermaßen.' },
+  blank: { name: 'Leer', note: 'Ein leeres Raster. Tippe auf die Balken, um dein eigenes Muster zu bauen.' },
+};
+
+/** @type {Record<string, { spanish?: string | null, definition: string }>} */
+export const glossaryValsDe = {
+  Compás: {
+    definition:
+      'Der Dreierschlag-Takt des Vals: ein starker Schlag und zwei schwache. Dieses Raster ist zwei Compases lang.',
+  },
+  'Vals en uno / en tres': {
+    definition:
+      'Auf wie vielen der drei Schläge du gehst. En uno markiert nur den starken Schlag, en tres alle drei.',
+  },
+  Contratiempo: {
+    spanish: 'Schwache Schläge',
+    definition: 'Auf den schwachen Schlägen (2 und 3) gehen und den starken Schlag still lassen.',
+  },
+  Síncopa: {
+    definition: 'Eine Synkope: einen Schlag vorwegnehmen, indem du früh landest, auf dem „&“ direkt davor.',
+  },
+  Hemiola: {
+    definition:
+      'Zwei gegen drei: die sechs Schläge von zwei Compases in Zweiergruppen statt in Dreiergruppen, sodass die Akzente über den Taktstrich wandern.',
+  },
+};
+
 /**
  * @template {{ id: string, name: string, note: string }} T
  * @param {T[]} list
+ * @param {Record<string, { name?: string, note: string }>} [map] German text by exercise id
  * @returns {T[]}
  */
-export const localizeExercises = (list) =>
-  list.map((e) => ({ ...e, name: exercisesDe[e.id]?.name ?? e.name, note: exercisesDe[e.id]?.note ?? e.note }));
+export const localizeExercises = (list, map = exercisesDe) =>
+  list.map((e) => ({ ...e, name: map[e.id]?.name ?? e.name, note: map[e.id]?.note ?? e.note }));
 
 /**
  * @template {{ term: string, spanish?: string, definition: string }} T
  * @param {T[]} list
+ * @param {Record<string, { spanish?: string | null, definition: string }>} [map] German text by term
  * @returns {T[]}
  */
-export const localizeGlossary = (list) =>
+export const localizeGlossary = (list, map = glossaryDe) =>
   list.map((g) => {
-    const de = glossaryDe[g.term];
+    const de = map[g.term];
     if (!de) return g;
     return {
       ...g,

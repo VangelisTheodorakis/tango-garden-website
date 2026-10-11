@@ -13,4 +13,6 @@ export const noindexRoutes = [
   '/pages/privacy-policy/',
   '/pages/terms-of-service/',
   '/pages/refund-and-cancellation-policy/',
+  // Draft: remove this line and the `noindex` on both vals route files to publish.
+  '/pages/tango-vals-rhythm-trainer/',
 ];

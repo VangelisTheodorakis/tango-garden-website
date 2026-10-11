@@ -1,8 +1,9 @@
 ---
 /**
- * The rhythm trainer, shared by /pages/tango-rhythm-trainer and its German
- * mirror. Words come from `text` below and rhythmExercises.de.js; the audio
- * engine in the script is language-neutral.
+ * The rhythm trainer, shared by /pages/tango-rhythm-trainer, its German
+ * mirror and the tango vals variant (`mode="vals"`, 3/4). Words come from
+ * `text` below and rhythmExercises.de.js; the audio engine in the script is
+ * language- and meter-neutral: the catalogue decides how many slots there are.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import {
@@ -13,19 +14,62 @@ import {
   slotStrength,
   slotLabel,
 } from '../data/rhythmExercises.js';
-import { localizeExercises, localizeGlossary } from '../data/rhythmExercises.de.js';
+import * as valsData from '../data/rhythmExercises.vals.js';
+import {
+  localizeExercises,
+  localizeGlossary,
+  exercisesValsDe,
+  glossaryValsDe,
+} from '../data/rhythmExercises.de.js';
 import { absoluteUrl, localizePath } from '../i18n/index.js';
 
 interface Props {
   locale?: 'en' | 'de';
+  mode?: 'tango' | 'vals';
+  /** Keeps a draft page out of search results (and, via noindex.js, the sitemap). */
+  noindex?: boolean;
 }
-const { locale = 'en' } = Astro.props;
+const { locale = 'en', mode = 'tango', noindex = false } = Astro.props;
 const de = locale === 'de';
-const exercises = de ? localizeExercises(exercisesEn) : exercisesEn;
-const glossary = de ? localizeGlossary(glossaryEn) : glossaryEn;
-const url = absoluteUrl(localizePath('/pages/tango-rhythm-trainer', locale));
+const vals = mode === 'vals';
 
-const text = {
+// What differs between the two trainers besides words: the catalogue, the
+// number of slots and beats, the tempo slider, and the reset target.
+const config = vals
+  ? {
+      exercises: valsData.exercises,
+      glossary: valsData.glossary,
+      exercisesDe: exercisesValsDe,
+      glossaryDe: glossaryValsDe,
+      slots: valsData.SLOTS,
+      beats: 3,
+      strength: valsData.slotStrength,
+      label: valsData.slotLabel,
+      orchestras: [] as { name: string; bpm: number }[],
+      tempo: valsData.tempo,
+      defaultId: valsData.DEFAULT_EXERCISE,
+      path: '/pages/tango-vals-rhythm-trainer',
+    }
+  : {
+      exercises: exercisesEn,
+      glossary: glossaryEn,
+      exercisesDe: undefined,
+      glossaryDe: undefined,
+      slots: SLOTS,
+      beats: 4,
+      strength: slotStrength,
+      label: slotLabel,
+      orchestras: orchestraTempos,
+      tempo: { min: 60, max: 140, value: 100 },
+      defaultId: 'marcato-2',
+      path: '/pages/tango-rhythm-trainer',
+    };
+
+const exercises = de ? localizeExercises(config.exercises, config.exercisesDe) : config.exercises;
+const glossary = de ? localizeGlossary(config.glossary, config.glossaryDe) : config.glossary;
+const url = absoluteUrl(localizePath(config.path, locale));
+
+const tangoText = {
   en: {
     title: 'Tango Rhythm Trainer | Tango Garden',
     description:
@@ -88,17 +132,55 @@ const text = {
   },
 }[locale];
 
-const slots = Array.from({ length: SLOTS }, (_, i) => ({
+// Only the words that change for vals; everything else (buttons, hint, the
+// "take it further" cards, the glossary heading) is shared with the tango page.
+const valsText = {
+  en: {
+    title: 'Tango Vals Rhythm Trainer | Tango Garden',
+    description:
+      'A free, browser-based rhythm trainer for tango vals: practise vals en uno, en tres, síncopa and hemiola, tap beats on and off, play at your tempo.',
+    schemaName: 'Tango Vals Rhythm Trainer',
+    schemaDescription:
+      'An interactive, browser-based tool for practising the core rhythmic patterns of tango vals: stepping on the strong beat, on every beat, against the beat and across the bar line.',
+    h1: 'Tango Vals Rhythm Trainer',
+    intro:
+      'A free, browser-based rhythm trainer for tango vals: practise stepping on the strong beat, on every beat, against the beat and across the bar line. Two compases of three beats, counted <strong>1 2 3</strong> with an <strong>&amp;</strong> between each beat. Dark bars sound; tap any bar to switch it on or off. The tall bar is the strong beat, medium bars the weak beats, short bars the offbeats.',
+    reset: 'Reset to Vals in 1',
+    bars: 'compases/min',
+  },
+  de: {
+    title: 'Tango-Vals-Rhythmustrainer: Musikalität üben | Tango Garden',
+    description:
+      'Kostenloser Rhythmustrainer für Tango Vals im Browser: Übe Vals en uno, en tres, Síncopa und Hemiola, schalte Schläge an und aus, spiel in deinem Tempo.',
+    schemaName: 'Tango-Vals-Rhythmustrainer',
+    schemaDescription:
+      'Ein interaktives Tool im Browser, um die rhythmischen Grundmuster des Tango Vals zu üben: auf dem starken Schlag gehen, auf jedem Schlag, gegen den Schlag und über den Taktstrich hinweg.',
+    h1: 'Tango-Vals-Rhythmustrainer',
+    intro:
+      'Ein kostenloser Rhythmustrainer für Tango Vals im Browser: Übe, auf dem starken Schlag zu gehen, auf jedem Schlag, gegen den Schlag und über den Taktstrich hinweg. Zwei Compases mit je drei Schlägen, gezählt <strong>1 2 3</strong> mit einem <strong>&amp;</strong> zwischen den Schlägen. Dunkle Balken klingen; tippe auf einen Balken, um ihn an- oder auszuschalten. Der hohe Balken ist der starke Schlag, mittlere Balken die schwachen, kurze die Offbeats.',
+    reset: 'Zurück zu Vals in 1',
+    bars: 'Compases/Min.',
+  },
+}[locale];
+
+const text = vals ? { ...tangoText, ...valsText } : tangoText;
+
+const slots = Array.from({ length: config.slots }, (_, i) => ({
   i,
-  strength: slotStrength(i),
-  label: slotLabel(i),
+  strength: config.strength(i),
+  label: config.label(i),
 }));
+
+/** The readout next to the slider. Vals also shows compases per minute, the unit teachers quote. */
+const formatTempo = (bpm: number) =>
+  vals ? `${bpm} BPM · ${Math.round(bpm / 3)} ${valsText.bars}` : `${bpm} BPM`;
 ---
 
 <BaseLayout
   title={text.title}
   description={text.description}
   canonical={url}
+  noindex={noindex}
   schema="learningresource"
   learningResource={{
     name: text.schemaName,
@@ -121,17 +203,24 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
         {text.reset}
       </button>
 
-      <div class="rhythm-tempo">
+      <div class="rhythm-tempo" data-wrap={vals ? '' : undefined}>
         <label for="rhythm-bpm">{text.tempo}</label>
-        <input type="range" id="rhythm-bpm" min="60" max="140" step="1" value="100" />
-        <output for="rhythm-bpm" id="rhythm-bpm-out">100 BPM</output>
+        <input
+          type="range"
+          id="rhythm-bpm"
+          min={config.tempo.min}
+          max={config.tempo.max}
+          step="1"
+          value={config.tempo.value}
+        />
+        <output for="rhythm-bpm" id="rhythm-bpm-out">{formatTempo(config.tempo.value)}</output>
       </div>
 
       <div class="rhythm-preset">
         <label for="rhythm-exercise">{text.exercise}</label>
         <select id="rhythm-exercise">
           {exercises.map((e) => (
-            <option value={e.id} selected={e.id === 'marcato-2'}>
+            <option value={e.id} selected={e.id === config.defaultId}>
               {e.name}
             </option>
           ))}
@@ -145,22 +234,24 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
       </label>
     </div>
 
-    <div class="rhythm-orchestras">
-      <span class="rhythm-orchestras-label">{text.orchestras}</span>
-      <div class="rhythm-orchestra-list">
-        {
-          orchestraTempos.map((o) => (
-            <button type="button" class="rhythm-orchestra-btn" data-bpm={o.bpm}>
-              {o.name} <span>{o.bpm} BPM</span>
-            </button>
-          ))
-        }
-      </div>
-    </div>
+    {
+      config.orchestras.length > 0 && (
+        <div class="rhythm-orchestras">
+          <span class="rhythm-orchestras-label">{text.orchestras}</span>
+          <div class="rhythm-orchestra-list">
+            {config.orchestras.map((o) => (
+              <button type="button" class="rhythm-orchestra-btn" data-bpm={o.bpm}>
+                {o.name} <span>{o.bpm} BPM</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )
+    }
 
     <p class="rhythm-note" id="rhythm-note"></p>
 
-    <div class="rhythm-grid" id="rhythm-grid">
+    <div class="rhythm-grid" id="rhythm-grid" data-mode={mode} data-beats={config.beats}>
       {
         slots.map((s) => (
           <div class="rhythm-slot">
@@ -218,18 +309,34 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
   </div>
 
   <script>
-    import { exercises as exercisesEn, SLOTS } from '../data/rhythmExercises.js';
-    import { localizeExercises } from '../data/rhythmExercises.de.js';
+    import { exercises as tangoExercises, SLOTS as TANGO_SLOTS } from '../data/rhythmExercises.js';
+    import {
+      exercises as valsExercises,
+      SLOTS as VALS_SLOTS,
+      DEFAULT_EXERCISE as VALS_DEFAULT,
+    } from '../data/rhythmExercises.vals.js';
+    import { localizeExercises, exercisesValsDe } from '../data/rhythmExercises.de.js';
 
     const de = document.documentElement.lang === 'de';
-    const exercises = de ? localizeExercises(exercisesEn) : exercisesEn;
     const labels = de
-      ? { stop: 'Stopp', start: 'Start', ownName: 'Eigenes Muster', ownNote: 'Dein eigenes Muster.', artist: 'Tango Garden Rhythmustrainer' }
-      : { stop: 'Stop', start: 'Start', ownName: 'Your own pattern', ownNote: 'Your own pattern.', artist: 'Tango Garden Rhythm Trainer' };
+      ? { stop: 'Stopp', start: 'Start', ownName: 'Eigenes Muster', ownNote: 'Dein eigenes Muster.', artist: 'Tango Garden Rhythmustrainer', bars: 'Compases/Min.' }
+      : { stop: 'Stop', start: 'Start', ownName: 'Your own pattern', ownNote: 'Your own pattern.', artist: 'Tango Garden Rhythm Trainer', bars: 'compases/min' };
 
     type Voice = 'beat' | 'pulse';
 
     const grid = document.getElementById('rhythm-grid');
+    // The page tells us which catalogue it was rendered for (see RhythmTrainer
+    // frontmatter); the engine below is otherwise identical for both.
+    const vals = grid?.dataset.mode === 'vals';
+    const SLOTS = vals ? VALS_SLOTS : TANGO_SLOTS;
+    const DEFAULT_ID = vals ? VALS_DEFAULT : 'marcato-2';
+    const exercises = vals
+      ? de
+        ? localizeExercises(valsExercises, exercisesValsDe)
+        : valsExercises
+      : de
+        ? localizeExercises(tangoExercises)
+        : tangoExercises;
     if (grid) {
       const playBtn = document.querySelector<HTMLButtonElement>('#rhythm-play')!;
       const playLabel = playBtn.querySelector<HTMLSpanElement>('.rhythm-play-label')!;
@@ -244,7 +351,7 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
 
       /** Which slots sound. Index 0–15. */
       const active: boolean[] = new Array(SLOTS).fill(false);
-      let currentName = 'Marcato in 2';
+      let currentName = DEFAULT_ID;
 
       // --- pattern <-> UI ---------------------------------------------------
 
@@ -508,13 +615,17 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
       });
 
       resetBtn.addEventListener('click', () => {
-        select.value = 'marcato-2';
-        load('marcato-2');
+        select.value = DEFAULT_ID;
+        load(DEFAULT_ID);
         reloadIfPlaying();
       });
 
       bpmInput.addEventListener('input', () => {
-        bpmOut.textContent = `${bpmInput.value} BPM`;
+        const bpm = Number(bpmInput.value);
+        // Vals is quoted in compases per minute as often as in BPM, so show both.
+        bpmOut.textContent = vals
+          ? `${bpm} BPM · ${Math.round(bpm / 3)} ${labels.bars}`
+          : `${bpm} BPM`;
       });
       // 'change' (fires on release), not 'input' (fires on every drag tick) —
       // re-rendering the loop on every pixel of a drag would be wasted work.
@@ -530,8 +641,8 @@ const slots = Array.from({ length: SLOTS }, (_, i) => ({
         });
       });
 
-      select.value = 'marcato-2';
-      load('marcato-2');
+      select.value = DEFAULT_ID;
+      load(DEFAULT_ID);
     }
   </script>
 </BaseLayout>

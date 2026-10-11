@@ -951,6 +951,10 @@ html[lang="de"] .legal-page { hyphens: auto; overflow-wrap: break-word; }
   cursor: pointer;
 }
 .rhythm-tempo, .rhythm-preset { display: flex; align-items: center; gap: 0.5rem; }
+/* The vals readout also shows compases per minute, which at 320px (and longer
+   still in German) doesn't fit beside the slider on one line, so there the row
+   wraps. The tango readout is short and keeps shrinking the slider instead. */
+.rhythm-tempo[data-wrap] { flex-wrap: wrap; }
 .rhythm-controls label { font-size: 0.875rem; color: var(--text-light); }
 .rhythm-tempo input[type="range"] { width: 8rem; accent-color: var(--green); }
 .rhythm-tempo output { font-size: 0.875rem; font-variant-numeric: tabular-nums; min-width: 5rem; }
@@ -1000,6 +1004,14 @@ html[lang="de"] .legal-page { hyphens: auto; overflow-wrap: break-word; }
   margin-bottom: 2rem;
 }
 .rhythm-slot { display: flex; flex-direction: column; justify-content: flex-end; gap: 0.5rem; }
+/* The vals trainer is 3/4: a compás is 6 slots, not 8, so a phone shows one
+   compás per row of 6 and a wide screen both compases in a row of 12, with a
+   small gap where the bar line falls. */
+.rhythm-grid[data-mode="vals"] { grid-template-columns: repeat(6, 1fr); }
+@media (min-width: 640px) {
+  .rhythm-grid[data-mode="vals"] { grid-template-columns: repeat(12, 1fr); }
+  .rhythm-grid[data-mode="vals"] .rhythm-slot:nth-child(7) { margin-left: 0.75rem; }
+}
 .rhythm-bar {
   /* Bars share a baseline and rise to three heights, as in the printed layout. */
   width: 100%;
