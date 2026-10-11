@@ -955,6 +955,11 @@ html[lang="de"] .legal-page { hyphens: auto; overflow-wrap: break-word; }
    still in German) doesn't fit beside the slider on one line, so there the row
    wraps. The tango readout is short and keeps shrinking the slider instead. */
 .rhythm-tempo[data-wrap] { flex-wrap: wrap; }
+/* Long exercise names (the milonga traspié variants, longer again in German)
+   would otherwise size the dropdown past a 320px screen. These only bite when
+   it doesn't fit; a dropdown that fits is unchanged. */
+.rhythm-preset { max-width: 100%; }
+.rhythm-preset select { min-width: 0; }
 .rhythm-controls label { font-size: 0.875rem; color: var(--text-light); }
 .rhythm-tempo input[type="range"] { width: 8rem; accent-color: var(--green); }
 .rhythm-tempo output { font-size: 0.875rem; font-variant-numeric: tabular-nums; min-width: 5rem; }
