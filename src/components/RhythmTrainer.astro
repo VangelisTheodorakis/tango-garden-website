@@ -402,13 +402,19 @@ const formatTempo = (bpm: number) =>
         osc.stop(time + 0.08);
       }
 
-      /** Encode a rendered buffer as a 16-bit PCM WAV Blob (self-hosted, no library). */
-      function encodeWav(buffer: AudioBuffer): Blob {
+      /**
+       * Encode a rendered buffer as a 16-bit PCM WAV Blob (self-hosted, no
+       * library), with the audio repeated `repeats` times back to back. The
+       * repeats are a straight copy of the first, which is far cheaper than
+       * asking Web Audio to render the same clicks again.
+       */
+      function encodeWav(buffer: AudioBuffer, repeats = 1): Blob {
         const channels = buffer.numberOfChannels;
         const rate = buffer.sampleRate;
         const frames = buffer.length;
         const blockAlign = channels * 2;
-        const dataSize = frames * blockAlign;
+        const onceSize = frames * blockAlign;
+        const dataSize = onceSize * repeats;
         const view = new DataView(new ArrayBuffer(44 + dataSize));
 
         const writeString = (offset: number, s: string) => {
@@ -437,6 +443,12 @@ const formatTempo = (bpm: number) =>
             view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
             offset += 2;
           }
+        }
+        // Tile the first iteration across the rest of the data chunk.
+        if (repeats > 1) {
+          const bytes = new Uint8Array(view.buffer);
+          const first = bytes.subarray(44, 44 + onceSize);
+          for (let r = 1; r < repeats; r++) bytes.set(first, 44 + r * onceSize);
         }
         return new Blob([view], { type: 'audio/wav' });
       }
@@ -472,18 +484,35 @@ const formatTempo = (bpm: number) =>
         return URL.createObjectURL(new Blob([view], { type: 'audio/wav' }));
       }
 
-      /** Render the current pattern and tempo as exactly one loop iteration. */
+      /**
+       * How much audio to render before the file wraps. A native `loop` is not
+       * guaranteed gapless: on phones (Safari especially) the decoder restarts
+       * at the loop point and the beat after it arrives late, which is very
+       * audible on a pattern where every beat sounds. So one file holds many
+       * whole repetitions of the pattern and the seam only happens once per
+       * this many seconds, not once per compás.
+       */
+      const RENDER_SECONDS = 30;
+
+      /**
+       * Render the current pattern and tempo once, then tile it to fill
+       * RENDER_SECONDS in whole iterations. `seconds` is the length of ONE
+       * iteration, which is what the playhead wraps on.
+       */
       async function renderLoop(): Promise<{ url: string; seconds: number }> {
-        const seconds = SLOTS * slotSeconds();
+        const ideal = SLOTS * slotSeconds();
         const rate = 44100;
-        const offline = new OfflineAudioContext(1, Math.ceil(rate * seconds), rate);
+        const frames = Math.ceil(rate * ideal);
+        const offline = new OfflineAudioContext(1, frames, rate);
         for (let i = 0; i < SLOTS; i++) {
           const t = i * slotSeconds();
           if (active[i]) click(offline, 'beat', t);
           else if (pulseInput.checked && i % 2 === 0) click(offline, 'pulse', t);
         }
         const rendered = await offline.startRendering();
-        return { url: URL.createObjectURL(encodeWav(rendered)), seconds };
+        const repeats = Math.max(1, Math.ceil(RENDER_SECONDS / ideal));
+        // The file's real period is a whole number of samples, so wrap on that.
+        return { url: URL.createObjectURL(encodeWav(rendered, repeats)), seconds: frames / rate };
       }
 
       let loopSeconds = SLOTS * slotSeconds();
