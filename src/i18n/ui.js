@@ -63,6 +63,8 @@ export const navLabelsDe = {
   '/pages/beginner-course': 'Sprouting Sessions',
   '/pages/garden-practica': 'Garden Practica',
   '/pages/tango-rhythm-trainer': 'Trainingsmaterial',
+  '/pages/tango-vals-rhythm-trainer': 'Vals-Rhythmustrainer',
+  '/pages/milonga-rhythm-trainer': 'Milonga-Rhythmustrainer',
   '/pages/contact': 'Kontakt',
 };
 

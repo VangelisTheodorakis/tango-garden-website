@@ -53,7 +53,7 @@ describe('rhythm glossary', () => {
 describe('vals exercises', () => {
   it('gives every exercise a pattern of exactly SLOTS on/off characters', async () => {
     const { exercises, SLOTS } = await import('../../src/data/rhythmExercises.vals.js');
-    expect(SLOTS).toBe(12);
+    expect(SLOTS).toBe(6);
     for (const e of exercises) {
       expect(e.pattern, e.id).toHaveLength(SLOTS);
       expect(e.pattern, e.id).toMatch(/^[x.]+$/);
@@ -67,16 +67,13 @@ describe('vals exercises', () => {
     expect(exercises.some((e) => e.id === DEFAULT_EXERCISE)).toBe(true);
   });
 
-  it('puts the strong beat on the 1 of each compás and counts 1 & 2 & 3 & twice', async () => {
+  it('puts the strong beat on the 1 of each compás and counts 1 2 3 twice', async () => {
     const { slotStrength, slotLabel, SLOTS } = await import(
       '../../src/data/rhythmExercises.vals.js'
     );
-    expect([0, 6].map(slotStrength)).toEqual(['strong', 'strong']);
-    expect([2, 4, 8, 10].every((i) => slotStrength(i) === 'medium')).toBe(true);
-    expect([1, 3, 5, 7, 9, 11].every((i) => slotStrength(i) === 'weak')).toBe(true);
-    expect(Array.from({ length: SLOTS }, (_, i) => slotLabel(i)).join(' ')).toBe(
-      '1 & 2 & 3 & 1 & 2 & 3 &'
-    );
+    expect([0, 3].map(slotStrength)).toEqual(['strong', 'strong']);
+    expect([1, 2, 4, 5].every((i) => slotStrength(i) === 'medium')).toBe(true);
+    expect(Array.from({ length: SLOTS }, (_, i) => slotLabel(i)).join(' ')).toBe('1 2 3 1 2 3');
   });
 
   it('keeps the tempo slider range sane around its default', async () => {

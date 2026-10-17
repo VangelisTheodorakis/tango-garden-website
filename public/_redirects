@@ -51,6 +51,12 @@
 # built up any search presence.
 /pages/rythmical-base-trainer                                                                          /pages/tango-rhythm-trainer  301
 
+# The vals and milonga trainers were tested at /test/... before going public.
+/test/tango-vals-rhythm-trainer                                                                        /pages/tango-vals-rhythm-trainer  301
+/test/milonga-rhythm-trainer                                                                           /pages/milonga-rhythm-trainer  301
+/de/test/tango-vals-rhythm-trainer                                                                     /de/pages/tango-vals-rhythm-trainer  301
+/de/test/milonga-rhythm-trainer                                                                        /de/pages/milonga-rhythm-trainer  301
+
 # The remaining off-live products (Evey pass, Welcome pass) deliberately keep
 # their pages: reachable by direct URL, noindex + absent from the sitemap.
 # No redirect here.

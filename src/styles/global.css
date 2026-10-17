@@ -919,40 +919,6 @@ html[lang="de"] .legal-page { hyphens: auto; overflow-wrap: break-word; }
 .rhythm-title { font-size: clamp(1.75rem, 5vw, 2.5rem); color: var(--green); margin-bottom: 0.75rem; }
 .rhythm-intro { color: var(--text-mid); margin-bottom: 2rem; }
 
-/* Test pages: only the title and the password form show until unlocked. */
-.rhythm-page[data-locked] > :not(.rhythm-title):not(.rhythm-gate) { display: none; }
-.rhythm-gate {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.75rem;
-  max-width: 26rem;
-  padding: 1.5rem;
-  background: var(--cream-light);
-  border-radius: var(--radius);
-}
-.rhythm-gate label { font-size: 0.9375rem; color: var(--text-mid); }
-.rhythm-gate input {
-  width: 100%;
-  font: inherit;
-  font-size: 1rem;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-.rhythm-gate-submit {
-  font: inherit;
-  font-weight: 600;
-  min-height: 44px;
-  padding: 0.6rem 1.5rem;
-  color: #fff;
-  background: var(--green-btn);
-  border: none;
-  border-radius: 999px;
-  cursor: pointer;
-}
-.rhythm-gate-error { font-size: 0.875rem; color: #a4342a; }
-
 .rhythm-controls {
   display: flex;
   flex-wrap: wrap;
@@ -1043,14 +1009,10 @@ html[lang="de"] .legal-page { hyphens: auto; overflow-wrap: break-word; }
   margin-bottom: 2rem;
 }
 .rhythm-slot { display: flex; flex-direction: column; justify-content: flex-end; gap: 0.5rem; }
-/* The vals trainer is 3/4: a compás is 6 slots, not 8, so a phone shows one
-   compás per row of 6 and a wide screen both compases in a row of 12, with a
-   small gap where the bar line falls. */
-.rhythm-grid[data-mode="vals"] { grid-template-columns: repeat(6, 1fr); }
-@media (min-width: 640px) {
-  .rhythm-grid[data-mode="vals"] { grid-template-columns: repeat(12, 1fr); }
-  .rhythm-grid[data-mode="vals"] .rhythm-slot:nth-child(7) { margin-left: 0.75rem; }
-}
+/* The vals trainer is 3/4 with one bar per beat: both compases fit in one row
+   of 6 at every width, with a small gap where the bar line falls. */
+.rhythm-grid[data-mode="vals"] { grid-template-columns: repeat(3, 1fr) 0.25rem repeat(3, 1fr); }
+.rhythm-grid[data-mode="vals"] .rhythm-slot:nth-child(4) { grid-column-start: 5; }
 .rhythm-bar {
   /* Bars share a baseline and rise to three heights, as in the printed layout. */
   width: 100%;

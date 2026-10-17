@@ -161,18 +161,6 @@ describe('indexing', () => {
     expect(contradictions).toEqual([]);
   });
 
-  it('keeps the /test pages noindexed and behind the password form', () => {
-    const testPages = pages.filter((p) => /^(\/de)?\/test\//.test(p.route));
-    expect(testPages).toHaveLength(4);
-    for (const p of testPages) {
-      expect(p.document.querySelector('meta[name="robots"][content*="noindex"]'), p.route).not.toBeNull();
-      expect(p.document.querySelector('.rhythm-page[data-locked] #rhythm-gate'), p.route).not.toBeNull();
-    }
-    // The public trainer never shows the form.
-    const live = pages.find((p) => p.route === '/pages/tango-rhythm-trainer/');
-    expect(live.document.querySelector('[data-locked], #rhythm-gate')).toBeNull();
-  });
-
   it('does not ship the removed German legal placeholder pages', () => {
     // agb / datenschutz / widerruf were empty stubs that duplicated and
     // contradicted the English legal pages; they were deleted.

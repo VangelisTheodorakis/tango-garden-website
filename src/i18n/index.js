@@ -21,13 +21,13 @@ export const translatedPaths = [
   '/pages/enter-the-garden',
   '/pages/garden-practica',
   '/pages/impressum',
+  '/pages/milonga-rhythm-trainer',
   '/pages/privacy-policy',
   '/pages/refund-and-cancellation-policy',
   '/pages/tango-rhythm-trainer',
+  '/pages/tango-vals-rhythm-trainer',
   '/pages/terms-of-service',
   '/pages/the-garden',
-  '/test/milonga-rhythm-trainer',
-  '/test/tango-vals-rhythm-trainer',
 ];
 
 const trimSlash = (/** @type {string} */ p) => p.replace(/(.)\/$/, '$1');

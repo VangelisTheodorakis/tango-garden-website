@@ -93,10 +93,6 @@ export const exercisesValsDe = {
   'vals-1-2-3': {
     note: 'Alle drei Schläge. Auf der Tanzfläche selten: Halte die Schritte klein und heb es dir für einen Lauf auf, zu dem die Musik einlädt.',
   },
-  'vals-duplet': {
-    name: 'Duole',
-    note: 'Zwei gleichmäßige Schritte über die drei Schläge: auf der 1 und auf dem „&“ der 2. Eine knifflige, selten getanzte Möglichkeit, wenn die Musik Duolen spielt.',
-  },
   blank: { name: 'Leer', note: 'Ein leeres Raster. Tippe auf die Balken, um dein eigenes Muster zu bauen.' },
 };
 
@@ -115,11 +111,6 @@ export const glossaryValsDe = {
     spanish: '1-2 und 3-1',
     definition:
       'Ein zusätzlicher Schritt innerhalb des Compás, entweder auf Schlag 2 oder auf Schlag 3.',
-  },
-  Duplet: {
-    spanish: 'Duole',
-    definition:
-      'Zwei gleichmäßige Töne in der Zeit von drei Schlägen. Im Vals fällt der zweite auf das „&“ der 2, zwischen Schlag 2 und 3.',
   },
 };
 

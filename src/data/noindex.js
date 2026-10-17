@@ -13,7 +13,4 @@ export const noindexRoutes = [
   '/pages/privacy-policy/',
   '/pages/terms-of-service/',
   '/pages/refund-and-cancellation-policy/',
-  // Drafts under /test: noindex and behind the trainer's password gate.
-  '/test/tango-vals-rhythm-trainer/',
-  '/test/milonga-rhythm-trainer/',
 ];

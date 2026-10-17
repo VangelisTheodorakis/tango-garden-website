@@ -28,7 +28,11 @@ export const navItems = [
   {
     href: '/pages/tango-rhythm-trainer',
     label: 'Training Material',
-    children: [{ href: '/pages/tango-rhythm-trainer', label: 'Tango Rhythm Trainer' }],
+    children: [
+      { href: '/pages/tango-rhythm-trainer', label: 'Tango Rhythm Trainer' },
+      { href: '/pages/tango-vals-rhythm-trainer', label: 'Vals Rhythm Trainer' },
+      { href: '/pages/milonga-rhythm-trainer', label: 'Milonga Rhythm Trainer' },
+    ],
   },
   { href: '/pages/contact', label: 'Connect with us' },
 ];
