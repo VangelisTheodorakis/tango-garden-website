@@ -45,15 +45,16 @@ export const tempo = { min: 120, max: 240, value: 200 };
  * Derived from the speed band tangosparks.com tags on every studio recording
  * in its discologies (tangosparks.com/preface; vals bands: Very Slow up to
  * 184, Slow 185-200, Fast 201-214, Very Fast 215+): the median recording's
- * band, interpolated within it. Valses counted: D'Arienzo 83, Troilo 20,
- * Di Sarli 20. Di Sarli's median falls in the open-ended Very Slow band, so
- * his figure is set just under it. Caló (31 valses) comes out the same as
- * Troilo and Pugliese (9) too few to count, so they are left out.
+ * band, interpolated within it. The big four only, as in the tango trainer.
+ * Valses counted: D'Arienzo 83, Troilo 20, Di Sarli 20, Pugliese 9 (few, so
+ * the roughest figure). Di Sarli's median falls in the open-ended Very Slow
+ * band, so his figure is set just under it.
  * @type {{ name: string, bpm: number }[]}
  */
 export const orchestraTempos = [
   { name: 'Di Sarli', bpm: 180 },
   { name: 'Troilo', bpm: 198 },
+  { name: 'Pugliese', bpm: 203 },
   { name: "D'Arienzo", bpm: 206 },
 ];
 
