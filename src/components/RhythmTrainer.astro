@@ -41,7 +41,6 @@ const vals = mode === 'vals';
 // What differs between the trainers besides words: the catalogue, the number
 // of slots and beats, how many slots make a beat, the tempo slider, and the
 // reset target.
-const noOrchestras: { name: string; bpm: number }[] = [];
 const config = {
   tango: {
     exercises: exercisesEn,
@@ -68,7 +67,7 @@ const config = {
     slotsPerBeat: 1,
     strength: valsData.slotStrength,
     label: valsData.slotLabel,
-    orchestras: noOrchestras,
+    orchestras: valsData.orchestraTempos,
     tempo: valsData.tempo,
     defaultId: valsData.DEFAULT_EXERCISE,
     path: '/pages/tango-vals-rhythm-trainer',
@@ -83,7 +82,7 @@ const config = {
     slotsPerBeat: milongaData.SLOTS_PER_BEAT,
     strength: milongaData.slotStrength,
     label: milongaData.slotLabel,
-    orchestras: noOrchestras,
+    orchestras: milongaData.orchestraTempos,
     tempo: milongaData.tempo,
     defaultId: milongaData.DEFAULT_EXERCISE,
     path: '/pages/milonga-rhythm-trainer',

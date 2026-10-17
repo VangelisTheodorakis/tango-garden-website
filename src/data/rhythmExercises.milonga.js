@@ -44,6 +44,28 @@ export const DEFAULT_EXERCISE = 'milonga-both-beats';
 export const tempo = { min: 60, max: 125, value: 100 };
 
 /**
+ * Typical milonga tempo per orchestra, in the slider's units (walking beats
+ * per minute).
+ *   Canaro: the median of the nine milongas Tango Voice measured
+ *     (tangovoice.wordpress.com/category/tango/milonga/): 77, 80-86 and
+ *     105-110, i.e. a slow and a fast group; the median is 86.
+ *   The others: the speed band tangosparks.com tags on every studio
+ *     recording in its discologies (tangosparks.com/preface; milonga bands:
+ *     Very Slow up to 90, Slow 91-100, Fast 101-109, Very Fast 110+), taking
+ *     the median recording's band and interpolating within it. Milongas
+ *     counted: Di Sarli 15, Troilo 44, D'Arienzo 91. D'Arienzo's median falls
+ *     in the open-ended Very Fast band (60 of his 91), so his figure is set
+ *     just above its floor.
+ * @type {{ name: string, bpm: number }[]}
+ */
+export const orchestraTempos = [
+  { name: 'Canaro', bpm: 86 },
+  { name: 'Di Sarli', bpm: 103 },
+  { name: 'Troilo', bpm: 107 },
+  { name: "D'Arienzo", bpm: 112 },
+];
+
+/**
  * @typedef {{ id: string, name: string, spanish?: string, note: string, pattern: string }} Exercise
  * @type {Exercise[]}
  */

@@ -157,6 +157,20 @@ describe('milonga exercises', () => {
   });
 });
 
+describe('orchestra tempo buttons', () => {
+  it('keeps every vals and milonga orchestra inside its slider range', async () => {
+    for (const path of ['../../src/data/rhythmExercises.vals.js', '../../src/data/rhythmExercises.milonga.js']) {
+      const { orchestraTempos, tempo } = await import(path);
+      expect(orchestraTempos.length, path).toBeGreaterThan(0);
+      expect(new Set(orchestraTempos.map((o) => o.name)).size).toBe(orchestraTempos.length);
+      for (const o of orchestraTempos) {
+        expect(o.bpm, o.name).toBeGreaterThanOrEqual(tempo.min);
+        expect(o.bpm, o.name).toBeLessThanOrEqual(tempo.max);
+      }
+    }
+  });
+});
+
 describe('German trainer text', () => {
   it('translates every exercise note and glossary definition', async () => {
     const { exercisesDe, glossaryDe, localizeExercises, localizeGlossary } = await import(
