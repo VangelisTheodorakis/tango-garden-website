@@ -289,13 +289,13 @@ export const classPages = [
   },
   {
     slug: 'private-classes',
-    title: 'Private Tango Classes with Vangelis and Kristina',
+    title: 'Private Tango Classes with Vangelis or Kristina',
     metaTitle: 'Private Tango Classes in Cologne (Köln)',
     metaDescription:
-      'Private Argentine tango classes in Cologne with Vangelis and Kristina: €60 per hour for one person or €80 for a couple, at your place, ours, or a studio.',
+      'Private Argentine tango classes in Cologne with Vangelis or Kristina: €60 per hour for one person or €80 for a couple, at your place, ours, or a studio.',
     heading: 'Private Tango Classes',
     intro:
-      'Argentine tango one-to-one with Vangelis and Kristina, on your own or as a couple, built around what you want to work on.',
+      'Argentine tango one-to-one with Vangelis or Kristina, on your own or as a couple, built around what you want to work on.',
     whatToExpect: [
       'A class that follows you: your first steps, the embrace, musicality, or the one thing that keeps escaping you on the dance floor. We adapt to your level and your pace.',
       'Come on your own or as a couple. Every level is welcome, from complete beginners to experienced dancers.',
@@ -324,8 +324,12 @@ export const classPages = [
         a: 'Everyone, from complete beginners who want a head start to experienced dancers working on something specific. We shape each class around your level and goals.',
       },
       {
+        q: 'Who teaches the class?',
+        a: 'Either Vangelis or Kristina: one teacher per class. If you have a preference, tell us when you message us.',
+      },
+      {
         q: 'Do I need to bring a partner?',
-        a: 'No. Come on your own and dance with us, or bring a partner and book as a couple.',
+        a: 'No. Come on your own and dance with your teacher, or bring a partner and book as a couple.',
       },
       {
         q: 'How much does a private class cost?',
@@ -348,7 +352,7 @@ export const classPages = [
     courseSchema: {
       name: 'Private Argentine Tango Classes Cologne',
       description:
-        'Private Argentine tango classes in Cologne with Vangelis and Kristina, for one person or a couple, at all levels.',
+        'Private Argentine tango classes in Cologne with Vangelis or Kristina, for one person or a couple, at all levels.',
       location: {
         name: 'Cologne',
         addressLocality: 'Köln',
