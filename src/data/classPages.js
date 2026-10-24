@@ -304,7 +304,7 @@ export const classPages = [
     whatsIncluded: [
       'A 60-minute class shaped around your goals and level',
       'On your own or as a couple',
-      'At your place or ours at no extra cost, or in a rented studio',
+      'At your place or ours at no extra cost, or in a rented studio (you pay the rent)',
     ],
     showTeachers: true,
     table: {
@@ -315,7 +315,7 @@ export const classPages = [
       ],
     },
     priceNote:
-      'Prices are per hour (60 minutes). At your place or ours there is no additional fee. If the class takes place in a rented studio, the studio rent is added.',
+      'Prices are per hour (60 minutes). At your place or ours there is no additional fee. If the class takes place in a rented studio, you pay the studio rent on top.',
     cancellationNote: null,
     nextStep: 'Message us on WhatsApp with what you would like to work on and a few times that suit you.',
     faq: [
@@ -333,7 +333,7 @@ export const classPages = [
       },
       {
         q: 'How much does a private class cost?',
-        a: 'A class is one hour (60 minutes): €60 for one person, or €80 for a couple. At your place or ours there is no additional fee; in a rented studio, the studio rent is added.',
+        a: 'A class is one hour (60 minutes): €60 for one person, or €80 for a couple. At your place or ours there is no additional fee; in a rented studio, you pay the studio rent on top.',
       },
       {
         q: 'Where do the classes take place?',
