@@ -17,7 +17,8 @@ const text = {
     open: 'Open the trainer →',
     helpTitle: 'Take it to the dance floor',
     helpBody: 'The trainers help you hear the music. Dancing it happens in class and at the Garden Practica.',
-    helpCta: 'See classes',
+    classesCta: 'See classes',
+    practicaCta: 'Garden Practica',
     cards: [
       {
         title: 'Tango Rhythm Trainer',
@@ -45,7 +46,8 @@ const text = {
     open: 'Zum Trainer →',
     helpTitle: 'Ab auf die Tanzfläche',
     helpBody: 'Die Trainer helfen dir, die Musik zu hören. Getanzt wird im Kurs und bei der Garden Practica.',
-    helpCta: 'Zu den Kursen',
+    classesCta: 'Zu den Kursen',
+    practicaCta: 'Zur Garden Practica',
     cards: [
       {
         title: 'Tango-Rhythmustrainer',
@@ -96,7 +98,10 @@ const text = {
   <div class="collection-help">
     <h2>{text.helpTitle}</h2>
     <p>{text.helpBody}</p>
-    <a class="btn-primary" href={localizePath('/collections/all', locale)}>{text.helpCta}</a>
+    <div class="collection-help-actions">
+      <a class="btn-secondary" href={localizePath('/collections/all', locale)}>{text.classesCta}</a>
+      <a class="btn-register" href={localizePath('/pages/garden-practica', locale)}>{text.practicaCta}</a>
+    </div>
   </div>
 </div>
 
@@ -198,5 +203,19 @@ const text = {
   .collection-help p {
     color: var(--text-light);
     margin-bottom: 1.5rem;
+  }
+  .collection-help-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+  }
+  /* Same size for both, so the green and the orange button sit level. */
+  .collection-help-actions a {
+    padding: 12px 24px;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    box-shadow: none;
   }
 </style>
