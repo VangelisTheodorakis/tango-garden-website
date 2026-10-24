@@ -203,11 +203,11 @@ export const classPagesDe = {
     whatsIncluded: [
       '60 Minuten, abgestimmt auf deine Ziele und dein Level',
       'Allein oder als Paar',
-      'Bei dir oder bei uns ohne Aufpreis, oder in einem gemieteten Studio (die Miete zahlst du)',
+      'Bei dir oder bei uns ohne Aufpreis, oder in einem gemieteten Studio (Studiomiete nicht inbegriffen)',
     ],
     table: { caption: 'Preis', rowLabels: ['Eine Person', 'Paar'] },
     priceNote:
-      'Die Preise gelten pro Stunde (60 Minuten). Bei dir oder bei uns fallen keine zusätzlichen Kosten an. Findet die Stunde in einem gemieteten Studio statt, zahlst du die Studiomiete zusätzlich.',
+      'Die Preise gelten pro Stunde (60 Minuten). Bei dir oder bei uns fallen keine zusätzlichen Kosten an. Bei Stunden in einem gemieteten Studio ist die Studiomiete nicht im Preis enthalten.',
     nextStep: 'Schreib uns auf WhatsApp, woran du arbeiten möchtest und welche Zeiten dir passen.',
     faq: [
       {
@@ -228,7 +228,7 @@ export const classPagesDe = {
       {
         key: 'How much does a private class cost?',
         q: 'Was kostet eine Privatstunde?',
-        a: 'Eine Stunde dauert 60 Minuten: 60 € für eine Person oder 80 € für ein Paar. Bei dir oder bei uns fallen keine zusätzlichen Kosten an; in einem gemieteten Studio zahlst du die Studiomiete zusätzlich.',
+        a: 'Eine Stunde dauert 60 Minuten: 60 € für eine Person oder 80 € für ein Paar. Bei dir oder bei uns fallen keine zusätzlichen Kosten an; bei Stunden in einem gemieteten Studio ist die Studiomiete nicht enthalten.',
       },
       {
         key: 'Where do the classes take place?',
