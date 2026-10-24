@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TrainingMaterial from '../../components/TrainingMaterial.astro';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://tangogarden.de/' },
+    { '@type': 'ListItem', position: 2, name: 'Training Material', item: 'https://tangogarden.de/pages/training-material' },
+  ],
+};
+---
+
+<BaseLayout
+  title="Training Material: Free Tango Rhythm Trainers | Tango Garden"
+  description="Free browser-based rhythm trainers for tango, vals and milonga from Tango Garden Cologne. Practise the beat at your own tempo between classes."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <TrainingMaterial />
+</BaseLayout>

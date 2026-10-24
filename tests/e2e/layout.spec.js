@@ -24,6 +24,7 @@ const PAGES = [
   '/products/the-sprouting-sessions-beginner-level-full-course-pass-general-admission',
   '/products/enter-the-garden-general-admission',
   '/pages/impressum',
+  '/pages/training-material',
   '/404',
   // German runs longer than English — the translations get the same checks.
   '/de',
@@ -34,6 +35,7 @@ const PAGES = [
   '/de/pages/beginner-course',
   '/de/pages/garden-practica',
   '/de/pages/tango-rhythm-trainer',
+  '/de/pages/training-material',
   '/pages/tango-vals-rhythm-trainer',
   '/de/pages/tango-vals-rhythm-trainer',
   '/pages/milonga-rhythm-trainer',

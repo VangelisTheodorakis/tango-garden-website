@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import TrainingMaterial from '../../../components/TrainingMaterial.astro';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Startseite', item: 'https://tangogarden.de/de' },
+    { '@type': 'ListItem', position: 2, name: 'Trainingsmaterial', item: 'https://tangogarden.de/de/pages/training-material' },
+  ],
+};
+---
+
+<BaseLayout
+  title="Trainingsmaterial: Kostenlose Tango-Rhythmustrainer | Tango Garden"
+  description="Kostenlose Rhythmustrainer für Tango, Vals und Milonga im Browser, von Tango Garden in Köln. Übe den Takt zwischen den Stunden in deinem Tempo."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <TrainingMaterial locale="de" />
+</BaseLayout>

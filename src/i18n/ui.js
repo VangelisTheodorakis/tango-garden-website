@@ -62,16 +62,15 @@ export const navLabelsDe = {
   '/pages/enter-the-garden': 'Enter the Garden',
   '/pages/beginner-course': 'Sprouting Sessions',
   '/pages/garden-practica': 'Garden Practica',
-  '/pages/tango-rhythm-trainer': 'Trainingsmaterial',
+  '/pages/training-material': 'Trainingsmaterial',
+  '/pages/tango-rhythm-trainer': 'Tango-Rhythmustrainer',
   '/pages/tango-vals-rhythm-trainer': 'Vals-Rhythmustrainer',
   '/pages/milonga-rhythm-trainer': 'Milonga-Rhythmustrainer',
   '/pages/contact': 'Kontakt',
 };
 
 /** Child-link overrides where one href appears with two labels (parent vs. child). */
-export const navChildLabelsDe = {
-  '/pages/tango-rhythm-trainer': 'Tango-Rhythmustrainer',
-};
+export const navChildLabelsDe = {};
 
 /**
  * @param {'en' | 'de'} locale

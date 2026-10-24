@@ -1,0 +1,202 @@
+---
+import { localizePath } from '../i18n/index.js';
+
+interface Props {
+  locale?: 'en' | 'de';
+}
+const { locale = 'en' } = Astro.props;
+
+// Landing page for /pages/training-material: one card per trainer, laid out
+// like the /collections/all cards (ProductGrid.astro), whose styles are
+// scoped there and so repeated below.
+
+const text = {
+  en: {
+    title: 'Training Material',
+    subtitle: 'Free practice tools for between classes. Pick a rhythm, press Start and dance along at home.',
+    open: 'Open the trainer →',
+    helpTitle: 'Take it to the dance floor',
+    helpBody: 'The trainers help you hear the music. Dancing it happens in class and at the Garden Practica.',
+    helpCta: 'See classes',
+    cards: [
+      {
+        title: 'Tango Rhythm Trainer',
+        meter: '4/4',
+        blurb: 'Marcato, síncopa, contratiempo and more of the rhythmic vocabulary behind Golden Age tango.',
+        href: '/pages/tango-rhythm-trainer',
+      },
+      {
+        title: 'Vals Rhythm Trainer',
+        meter: '3/4',
+        blurb: 'The base rhythm on beat 1, the 1-2 and 3-1 doubles, and all three beats of the vals.',
+        href: '/pages/tango-vals-rhythm-trainer',
+      },
+      {
+        title: 'Milonga Rhythm Trainer',
+        meter: '2/4',
+        blurb: 'Dancing a tiempo, the double beat, the habanera and traspié.',
+        href: '/pages/milonga-rhythm-trainer',
+      },
+    ],
+  },
+  de: {
+    title: 'Trainingsmaterial',
+    subtitle: 'Kostenlose Übungstools für zwischen den Stunden. Wähl einen Rhythmus, drück auf Start und tanz zu Hause mit.',
+    open: 'Zum Trainer →',
+    helpTitle: 'Ab auf die Tanzfläche',
+    helpBody: 'Die Trainer helfen dir, die Musik zu hören. Getanzt wird im Kurs und bei der Garden Practica.',
+    helpCta: 'Zu den Kursen',
+    cards: [
+      {
+        title: 'Tango-Rhythmustrainer',
+        meter: '4/4',
+        blurb: 'Marcato, Síncopa, Contratiempo und mehr aus dem rhythmischen Vokabular des Golden-Age-Tango.',
+        href: '/pages/tango-rhythm-trainer',
+      },
+      {
+        title: 'Vals-Rhythmustrainer',
+        meter: '3/4',
+        blurb: 'Der Grundrhythmus auf der 1, die Verdopplungen 1-2 und 3-1 und alle drei Schläge des Vals.',
+        href: '/pages/tango-vals-rhythm-trainer',
+      },
+      {
+        title: 'Milonga-Rhythmustrainer',
+        meter: '2/4',
+        blurb: 'A tiempo, der doppelte Schlag, die Habanera und Traspié.',
+        href: '/pages/milonga-rhythm-trainer',
+      },
+    ],
+  },
+}[locale];
+---
+
+<section class="page-hero">
+  <h1 class="section-title">{text.title}</h1>
+  <p class="section-subtitle">{text.subtitle}</p>
+</section>
+
+<div class="collection">
+  <ul class="collection-list" role="list">
+    {
+      text.cards.map((card) => (
+        <li>
+          <div class="collection-card">
+            <span class="collection-card-title">{card.title}</span>
+            <span class="collection-card-meter">{card.meter}</span>
+            <span class="collection-card-blurb">{card.blurb}</span>
+            <div class="collection-card-actions">
+              <a class="collection-card-cta" href={localizePath(card.href, locale)}>{text.open}</a>
+            </div>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="collection-help">
+    <h2>{text.helpTitle}</h2>
+    <p>{text.helpBody}</p>
+    <a class="btn-primary" href={localizePath('/collections/all', locale)}>{text.helpCta}</a>
+  </div>
+</div>
+
+<style>
+  .page-hero {
+    background: var(--cream);
+    padding: 60px 20px 50px;
+    text-align: center;
+  }
+  .collection {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 20px;
+  }
+  .collection-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 750px) {
+    .collection-list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .collection-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--cream-light);
+    border: 1px solid rgba(78, 93, 34, 0.12);
+    border-radius: 14px;
+    padding: 24px 22px;
+    color: var(--text);
+    height: 100%;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .collection-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(45, 80, 22, 0.15);
+    border-color: var(--green);
+  }
+  .collection-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--green);
+  }
+  .collection-card-meter {
+    font-weight: 700;
+    color: var(--green);
+  }
+  .collection-card-blurb {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-light);
+    flex-grow: 1;
+  }
+  .collection-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .collection-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--green);
+    background: var(--green);
+    color: #efecec;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .collection-card-cta:hover {
+    background: var(--green-btn);
+    border-color: var(--green-btn);
+    transform: translateY(-1px);
+  }
+  .collection-help {
+    margin-top: 40px;
+    padding: 50px 30px;
+    background: var(--cream-light);
+    border: 1px solid rgba(45, 80, 22, 0.1);
+    border-radius: 20px;
+    text-align: center;
+  }
+  .collection-help h2 {
+    font-size: 1.4rem;
+    color: var(--green);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .collection-help p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+  }
+</style>

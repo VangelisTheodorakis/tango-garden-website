@@ -28,6 +28,7 @@ export const translatedPaths = [
   '/pages/tango-vals-rhythm-trainer',
   '/pages/terms-of-service',
   '/pages/the-garden',
+  '/pages/training-material',
 ];
 
 const trimSlash = (/** @type {string} */ p) => p.replace(/(.)\/$/, '$1');
