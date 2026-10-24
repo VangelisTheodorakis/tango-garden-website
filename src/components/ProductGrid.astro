@@ -11,7 +11,7 @@ const { locale = 'en' } = Astro.props;
 // Landing grid for /pages/classes. Each class used to expand into a wall of
 // per-SKU cards (general admission, student/under-28, 1-class, 4-class...);
 // now each class is one consolidated page (src/data/classPages.js) with its
-// own pricing/perks table, so this is just 3 cards pointing at those pages.
+// own pricing/perks table, so this is just one card per class page.
 
 const priceOf = (handle: string) => {
   const price = products.find((p) => p.handle === handle)?.price ?? '';
@@ -24,6 +24,8 @@ const rowFor = (slug: string, label: string) =>
   classPages.find((c) => c.slug === slug)!.table.rows.find((r) => r.label === label)!;
 
 const fullCourseRow = rowFor('beginner-course', 'Full Course (12 classes)');
+// Private classes carry plain prices (not Shopify products), read from the same table.
+const privatePrice = (label: string) => fmt((rowFor('private-classes', label).general as { price: string }).price);
 const beginnerCourseRegisterUrl = classPages.find((c) => c.slug === 'beginner-course')?.registerUrl;
 
 const text = {
@@ -57,6 +59,12 @@ const text = {
         blurb: 'Open-level guided practice sessions. Drop in whenever you like.',
         bestFor: 'anyone with at least one tango class who wants to practice.',
       },
+      {
+        title: 'Private Classes',
+        blurb: 'One-to-one with Vangelis or Kristina, on your own or as a couple, at your place, ours or a studio.',
+        bestFor: 'anyone who wants a class built around their own goals and pace.',
+        price: `${privatePrice('One person')}/hour, or ${privatePrice('Couple')} for a couple`,
+      },
     ],
   },
   de: {
@@ -89,11 +97,17 @@ const text = {
         blurb: 'Geführte Übungsabende für alle Level. Komm vorbei, wann immer du magst.',
         bestFor: 'Alle mit mindestens einer Tango-Stunde, die üben möchten.',
       },
+      {
+        title: 'Privatunterricht',
+        blurb: 'Ganz persönlich mit Vangelis oder Kristina, allein oder als Paar, bei dir, bei uns oder im Studio.',
+        bestFor: 'Alle, die eine Stunde ganz nach ihren eigenen Zielen und ihrem Tempo möchten.',
+        price: `${privatePrice('One person')} pro Stunde oder ${privatePrice('Couple')} für ein Paar`,
+      },
     ],
   },
 }[locale];
 
-const [etg, sprouting, practica] = text.groups;
+const [etg, sprouting, practica, privateClasses] = text.groups;
 type Group = { title: string; blurb: string; bestFor: string; price: string; href: string; registerUrl?: string };
 const groups: Group[] = [
   {
@@ -111,6 +125,11 @@ const groups: Group[] = [
     ...practica,
     price: `${priceOf('the-garden-practica-1-practica-pass-general-admission')} ${locale === 'de' ? 'oder' : 'or'} ${priceOf('the-garden-practica-1-practica-pass-door-only-student-and-under-28-admission')}*`,
     href: localizePath('/pages/garden-practica', locale),
+  },
+  {
+    ...privateClasses,
+    price: privateClasses.price!,
+    href: localizePath('/pages/private-classes', locale),
   },
 ];
 ---
@@ -186,9 +205,10 @@ const groups: Group[] = [
     grid-template-columns: 1fr;
     gap: 16px;
   }
+  /* Four cards: two by two, so none is left alone on a row. */
   @media (min-width: 750px) {
     .collection-list {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
   }
   .collection-card {
