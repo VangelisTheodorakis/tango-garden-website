@@ -100,8 +100,8 @@ islands.** Start by reading `astro.config.mjs`, `src/pages/index.astro`, and `sr
   **external** files, so `astro.config.mjs` sets `build.inlineStylesheets: 'never'` and
   `vite.build.assetsInlineLimit: 0` — don't re-enable inlining.
 - **SEO/infra files**: `public/_headers` (CSP, HSTS, security headers), `public/_redirects`
-  (Shopify-path redirects — the exact-match `/collections/all → 200` must stay first to avoid a
-  redirect loop), `public/robots.txt`, sitemap via `@astrojs/sitemap` filtered by `noindex.js` +
+  (Shopify-path redirects — old `/collections/*` URLs 301 to the classes overview at
+  `/pages/classes`), `public/robots.txt`, sitemap via `@astrojs/sitemap` filtered by `noindex.js` +
   hidden products. `wrangler.jsonc` configures the Cloudflare Worker (assets-only,
   `drop-trailing-slash`, `404-page`).
 

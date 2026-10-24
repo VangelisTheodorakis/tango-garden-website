@@ -17,7 +17,7 @@ export const navItems = [
     ],
   },
   {
-    href: '/collections/all',
+    href: '/pages/classes',
     label: 'Classes',
     children: [
       { href: '/pages/enter-the-garden', label: 'Enter the Garden' },

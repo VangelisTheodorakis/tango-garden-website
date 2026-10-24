@@ -14,8 +14,8 @@ export const SITE = 'https://tangogarden.de';
  */
 export const translatedPaths = [
   '/',
-  '/collections/all',
   '/pages/beginner-course',
+  '/pages/classes',
   '/pages/code-of-care',
   '/pages/contact',
   '/pages/enter-the-garden',

@@ -50,13 +50,13 @@ const contentPages = () => pages.filter((p) => p.route !== '/404');
 
 describe('pages', () => {
   it('builds every expected route', () => {
-    // 1 home + 14 content/legal (incl. the 3 consolidated class pages, the
+    // 1 home + 15 content/legal (incl. the classes overview, the 3 consolidated class pages, the
     // three rhythm trainers: tango, tango vals and milonga, and the training
     // material page that lists them)
     // + 12 products (all hidden, kept for direct-URL + price/variant data)
-    // + 2 collections + 404
+    // + 404
     // + a German mirror under /de for every page in src/i18n/index.js translatedPaths
-    expect(pages).toHaveLength(30 + translatedPaths.length);
+    expect(pages).toHaveLength(29 + translatedPaths.length);
   });
 
   it('gives every page a non-empty title', () => {
@@ -70,9 +70,6 @@ describe('pages', () => {
     for (const p of contentPages()) {
       if (p.document.querySelector('meta[name="robots"]')) continue;
       const title = p.document.querySelector('title').textContent.trim();
-      // /collections and /collections/all intentionally share one, and say so
-      // with a canonical.
-      if (p.route.startsWith('/collections')) continue;
       expect(seen.has(title) ? `${seen.get(title)} + ${p.file}` : title, 'duplicate title').toBe(
         title
       );
@@ -176,7 +173,6 @@ describe('indexing', () => {
 
     for (const p of contentPages()) {
       if (p.document.querySelector('meta[name="robots"]')) continue;
-      if (p.route === '/collections/') continue; // canonicalised to /collections/all
       // The sitemap must list the same string the page declares as canonical,
       // or the two disagree about which URL is the real one.
       const canonical = p.document.querySelector('link[rel="canonical"]').getAttribute('href');

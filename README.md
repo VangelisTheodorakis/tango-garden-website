@@ -42,8 +42,7 @@ src/
                                 ClassPage (shared template for the 3 class pages)
   pages/
     index.astro                home
-    collections/                classes & passes listing
-    pages/                     content + legal pages, incl. the-garden, contact,
+    pages/                     content + legal pages, incl. classes (overview), the-garden, contact,
                                 enter-the-garden, beginner-course, garden-practica
     products/[handle].astro    legacy per-SKU pages (hidden, kept for direct-URL +
                                 price/variant data — see src/data/products.js)

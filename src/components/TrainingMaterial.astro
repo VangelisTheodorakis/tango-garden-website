@@ -7,7 +7,7 @@ interface Props {
 const { locale = 'en' } = Astro.props;
 
 // Landing page for /pages/training-material: one card per trainer, laid out
-// like the /collections/all cards (ProductGrid.astro), whose styles are
+// like the /pages/classes cards (ProductGrid.astro), whose styles are
 // scoped there and so repeated below.
 
 const text = {
@@ -99,7 +99,7 @@ const text = {
     <h2>{text.helpTitle}</h2>
     <p>{text.helpBody}</p>
     <div class="collection-help-actions">
-      <a class="btn-secondary" href={localizePath('/collections/all', locale)}>{text.classesCta}</a>
+      <a class="btn-secondary" href={localizePath('/pages/classes', locale)}>{text.classesCta}</a>
       <a class="btn-register" href={localizePath('/pages/garden-practica', locale)}>{text.practicaCta}</a>
     </div>
   </div>

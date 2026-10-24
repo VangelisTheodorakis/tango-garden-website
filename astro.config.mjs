@@ -9,12 +9,10 @@ import { noindexRoutes } from './src/data/noindex.js';
 //
 //  - products not live on tangogarden.de
 //  - the legal pages (see src/data/noindex.js)
-//  - /collections, which canonicalises to /collections/all
 const hiddenPaths = [
   ...products.filter((p) => p.hidden).map((p) => `/products/${p.handle}/`),
   // Legal pages are noindex in both languages.
   ...noindexRoutes.flatMap((route) => [route, `/de${route}`]),
-  '/collections/',
 ].map((path) => `https://tangogarden.de${path}`);
 
 export default defineConfig({

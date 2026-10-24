@@ -58,7 +58,7 @@ export const navLabelsDe = {
   '/pages/the-garden#our-story': 'Unsere Geschichte',
   '/pages/the-garden#our-gardeners': 'Unser Team',
   '/pages/the-garden#is-this-for-you': 'Ist das was für mich?',
-  '/collections/all': 'Kurse',
+  '/pages/classes': 'Kurse',
   '/pages/enter-the-garden': 'Enter the Garden',
   '/pages/beginner-course': 'Sprouting Sessions',
   '/pages/garden-practica': 'Garden Practica',

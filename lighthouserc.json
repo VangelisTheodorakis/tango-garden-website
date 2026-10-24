@@ -4,7 +4,7 @@
       "staticDistDir": "./dist",
       "url": [
         "http://localhost/index.html",
-        "http://localhost/collections/all/index.html",
+        "http://localhost/pages/classes/index.html",
         "http://localhost/pages/the-garden/index.html",
         "http://localhost/pages/beginner-course/index.html"
       ],

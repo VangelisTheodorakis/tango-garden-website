@@ -1,16 +1,12 @@
 # Shopify paths that have no equivalent on the static site.
 # Product and page URLs are unchanged, so they need no redirect.
 
-# The exact-match 200 must come first: Cloudflare Pages applies redirects before
-# static assets, so a bare /collections/* splat would redirect /collections/all
-# to itself forever — taking out the page the whole nav points at.
-/collections/all          /collections/all  200
-/collections              /collections/all  301
-/collections/*            /collections/all  301
-
-# German mirror of the above. Only the bare path needs it; there is no splat,
-# so /de/collections/all itself is never matched and cannot loop.
-/de/collections           /de/collections/all  301
+# The classes overview lived at Shopify's /collections/all until it moved to
+# /pages/classes; every old collections URL, in both languages, lands there.
+/collections              /pages/classes  301
+/collections/*            /pages/classes  301
+/de/collections           /de/pages/classes  301
+/de/collections/*         /de/pages/classes  301
 
 # Shopify checkout paths. Safe to bounce home: the buy buttons now point at
 # tangogarden.myshopify.com, so nothing on this site relies on them.
@@ -28,7 +24,7 @@
 
 # Start Here was consolidated into The Garden (its "Is This For You" content
 # now lives at /pages/the-garden#is-this-for-you; the pathway cards it hosted
-# are on the homepage and /collections/all).
+# are on the homepage and /pages/classes).
 /pages/start-here        /pages/the-garden  301
 
 # The three classes each moved from N separate per-SKU product pages to one
