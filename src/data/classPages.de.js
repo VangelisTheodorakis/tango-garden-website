@@ -198,16 +198,16 @@ export const classPagesDe = {
     whatToExpect: [
       'Eine Stunde, die sich nach dir richtet: deine ersten Schritte, die Umarmung, Musikalität oder das eine Detail, das dir auf der Tanzfläche immer wieder entwischt. Wir passen uns deinem Level und deinem Tempo an.',
       'Komm allein oder als Paar. Alle Level sind willkommen, von absoluten Anfänger:innen bis zu erfahrenen Tänzer:innen.',
-      'Wir treffen uns da, wo es für dich passt: bei dir, bei uns oder in einem gemieteten Studio in Köln.',
+      'Wir treffen uns da, wo es für dich passt: bei dir, bei uns oder in einem Studio in Köln, das wir für dich buchen.',
     ],
     whatsIncluded: [
       '60 Minuten, abgestimmt auf deine Ziele und dein Level',
       'Allein oder als Paar',
-      'Bei dir oder bei uns ohne Aufpreis, oder in einem gemieteten Studio (Studiomiete nicht inbegriffen)',
+      'Bei dir oder bei uns ohne Aufpreis, oder in einem Studio, das wir für dich buchen (zzgl. Studiomiete)',
     ],
     table: { caption: 'Preis', rowLabels: ['Eine Person', 'Paar'] },
     priceNote:
-      'Die Preise gelten pro Stunde (60 Minuten). Bei dir oder bei uns fallen keine zusätzlichen Kosten an. Bei Stunden in einem gemieteten Studio ist die Studiomiete nicht im Preis enthalten.',
+      'Die Preise gelten pro Stunde (60 Minuten). Bei dir oder bei uns kommt nichts dazu. Lieber in einem Studio? Wir buchen eins für dich, und die Studiomiete kommt zum Stundenpreis dazu.',
     nextStep: 'Schreib uns auf WhatsApp, woran du arbeiten möchtest und welche Zeiten dir passen.',
     faq: [
       {
@@ -228,12 +228,12 @@ export const classPagesDe = {
       {
         key: 'How much does a private class cost?',
         q: 'Was kostet eine Privatstunde?',
-        a: 'Eine Stunde dauert 60 Minuten: 60 € für eine Person oder 80 € für ein Paar. Bei dir oder bei uns fallen keine zusätzlichen Kosten an; bei Stunden in einem gemieteten Studio ist die Studiomiete nicht enthalten.',
+        a: 'Eine Stunde dauert 60 Minuten: 60 € für eine Person oder 80 € für ein Paar. Bei dir oder bei uns fallen keine zusätzlichen Kosten an. Wenn du lieber in einem Studio tanzen möchtest, buchen wir eins für dich, und die Studiomiete kommt zum Stundenpreis dazu.',
       },
       {
         key: 'Where do the classes take place?',
         q: 'Wo findet der Unterricht statt?',
-        a: 'Da, wo es für dich am besten passt: bei dir, bei uns oder in einem gemieteten Studio in Köln.',
+        a: 'Da, wo es für dich am besten passt: bei dir, bei uns oder in einem Studio in Köln, das wir für dich buchen.',
       },
       {
         key: 'Is the class taught in English?',

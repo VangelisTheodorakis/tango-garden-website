@@ -299,12 +299,12 @@ export const classPages = [
     whatToExpect: [
       'A class that follows you: your first steps, the embrace, musicality, or the one thing that keeps escaping you on the dance floor. We adapt to your level and your pace.',
       'Come on your own or as a couple. Every level is welcome, from complete beginners to experienced dancers.',
-      'We meet where suits you: at your place, at ours, or in a rented studio in Cologne.',
+      'We meet where suits you: at your place, at ours, or in a studio in Cologne that we book for you.',
     ],
     whatsIncluded: [
       'A 60-minute class shaped around your goals and level',
       'On your own or as a couple',
-      'At your place or ours at no extra cost, or in a rented studio (studio rent not included)',
+      'At your place or ours at no extra cost, or in a studio we book for you (studio rent added)',
     ],
     showTeachers: true,
     table: {
@@ -315,7 +315,7 @@ export const classPages = [
       ],
     },
     priceNote:
-      'Prices are per hour (60 minutes). At your place or ours there is no additional fee. For classes in a rented studio, the studio rent is not included in the price.',
+      'Prices are per hour (60 minutes). At your place or ours there is nothing extra to pay. Prefer a studio? We book one for you, and the studio rent is added to the class price.',
     cancellationNote: null,
     nextStep: 'Message us on WhatsApp with what you would like to work on and a few times that suit you.',
     faq: [
@@ -333,11 +333,11 @@ export const classPages = [
       },
       {
         q: 'How much does a private class cost?',
-        a: 'A class is one hour (60 minutes): €60 for one person, or €80 for a couple. At your place or ours there is no additional fee; for classes in a rented studio, the studio rent is not included.',
+        a: 'A class is one hour (60 minutes): €60 for one person, or €80 for a couple. At your place or ours there is no additional fee. If you prefer a studio, we book one for you and add the studio rent to the class price.',
       },
       {
         q: 'Where do the classes take place?',
-        a: 'Wherever suits you best: at your place, at ours, or in a rented studio in Cologne.',
+        a: 'Wherever suits you best: at your place, at ours, or in a studio in Cologne that we book for you.',
       },
       {
         q: 'Is the class taught in English?',
