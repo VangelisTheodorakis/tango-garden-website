@@ -1,8 +1,8 @@
 ---
 /**
- * Renders one of the three consolidated class pages (Enter the Garden, the
- * Beginner Course, the Garden Practica) from a `classPages.js` entry. One
- * component, three thin page files — see src/pages/pages/*.astro — so the
+ * Renders one of the class pages (Enter the Garden, the Beginner Course, the
+ * Garden Practica, Private Classes) from a `classPages.js` entry. One
+ * component, thin page files — see src/pages/pages/*.astro — so the
  * markup for "what to expect / pricing table / FAQ" exists exactly once
  * instead of being hand-duplicated per class the way the old per-SKU product
  * pages were.
@@ -13,6 +13,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { products } from '../data/products.js';
 import { absoluteUrl, formatPrice, localizePath } from '../i18n/index.js';
 
+/** A Shopify-mirrored product, or a plain price for offers that are not sold online. */
+type PriceRef = { handle: string } | { price: string };
+
 interface ClassPageEntry {
   slug: string;
   metaTitle: string;
@@ -20,21 +23,26 @@ interface ClassPageEntry {
   eyebrow?: string;
   heading: string;
   intro: string;
-  feed: string;
-  feedLabel: string;
+  /** Date feed for the "next class" box; pages without fixed dates leave it out. */
+  feed?: string;
+  feedLabel?: string;
   whatToExpect: string[];
   whatsIncluded: string[];
   table: {
     rows: {
       label: string;
-      general: { handle: string };
-      student: { handle: string } | null;
+      general: PriceRef;
+      student: PriceRef | null;
       perClass: { general: string; student: string } | null;
       bestValue: boolean;
       makeupIncluded?: boolean;
     }[];
   };
   cancellationNote: string | null;
+  /** Extra line under the pricing table. */
+  priceNote?: string;
+  /** Closing-section text; defaults to the register / drop-in wording. */
+  nextStep?: string;
   /** `key` is the English question, set on German items for analytics. */
   faq: { q: string; a: string; raw?: boolean; key?: string }[];
   offerHandles: string[];
@@ -46,7 +54,8 @@ interface ClassPageEntry {
   courseSchema: {
     name: string;
     description: string;
-    duration: string;
+    /** Weekly class length; leave out for classes without a fixed schedule. */
+    duration?: string;
     location: {
       name: string;
       streetAddress?: string;
@@ -156,16 +165,17 @@ const text = {
 const euro = (n: number | null) => (n == null ? '—' : formatPrice(`€${n}`, locale));
 
 const productByHandle = (handle: string) => products.find((p) => p.handle === handle);
+const priceOf = (ref: PriceRef) => ('price' in ref ? ref.price : (productByHandle(ref.handle)?.price ?? ''));
 
 /** "€18,00 EUR" -> "€18". Falls back to the raw string (e.g. "Free"). */
-const priceLabel = (handle: string) => {
-  const price = productByHandle(handle)?.price ?? '';
+const priceLabel = (ref: PriceRef) => {
+  const price = priceOf(ref);
   const match = price.match(/€(\d+)/);
   return formatPrice(match ? `€${match[1]}` : price, locale);
 };
 
-const priceNum = (handle: string) => {
-  const price = productByHandle(handle)?.price ?? '';
+const priceNum = (ref: PriceRef) => {
+  const price = priceOf(ref);
   const match = price.match(/€(\d+)/);
   return match ? Number(match[1]) : null;
 };
@@ -178,13 +188,13 @@ const perClassNum = (label: string) => {
 /** Pass price minus the cost of one class — the amount refunded on a within-1-week cancellation. */
 const refundFor = (row: ClassPageEntry['table']['rows'][number]) => {
   if (!row.perClass) return null;
-  const generalTotal = priceNum(row.general.handle);
+  const generalTotal = priceNum(row.general);
   const generalPerClass = perClassNum(row.perClass.general);
   const general = generalTotal != null && generalPerClass != null ? generalTotal - generalPerClass : null;
 
   let student: number | null = null;
   if (row.student && row.perClass.student) {
-    const studentTotal = priceNum(row.student.handle);
+    const studentTotal = priceNum(row.student);
     const studentPerClass = perClassNum(row.perClass.student);
     student = studentTotal != null && studentPerClass != null ? studentTotal - studentPerClass : null;
   }
@@ -195,7 +205,7 @@ const canonical = absoluteUrl(localizePath(`/pages/${data.slug}`, locale));
 const hasStudent = data.table.rows.some((r) => r.student);
 const hasPerClass = data.table.rows.some((r) => r.perClass);
 const hasMakeup = data.table.rows.some((r) => r.makeupIncluded !== undefined);
-const hasPaidRow = data.table.rows.some((r) => productByHandle(r.general.handle)?.price !== 'Free');
+const hasPaidRow = data.table.rows.some((r) => priceOf(r.general) !== 'Free');
 
 const offers = data.offerHandles
   .map((h) => productByHandle(h)?.schema?.offers)
@@ -226,13 +236,15 @@ const courseSchema = {
         addressCountry: 'DE',
       },
     },
-    courseSchedule: {
-      '@type': 'Schedule',
-      duration: data.courseSchema.duration,
-      repeatFrequency: 'Weekly',
-    },
+    ...(data.courseSchema.duration && {
+      courseSchedule: {
+        '@type': 'Schedule',
+        duration: data.courseSchema.duration,
+        repeatFrequency: 'Weekly',
+      },
+    }),
   },
-  offers,
+  ...(offers.length > 0 && { offers }),
   '@id': `${canonical}#course`,
   url: canonical,
 };
@@ -260,8 +272,9 @@ const breadcrumbSchema = {
   ],
 };
 
+// No street address (e.g. private classes, held wherever suits) means no map link.
 const mapQuery = [loc.streetAddress, loc.postalCode, loc.addressLocality].filter(Boolean).join(', ');
-const mapUrl = mapQuery ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}` : null;
+const mapUrl = loc.streetAddress ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}` : null;
 
 // German headings are keyword phrases; the message names the class by its brand name.
 const waMessage = text.waMessage(locale === 'de' ? (data.eyebrow ?? data.heading) : data.heading);
@@ -294,13 +307,15 @@ const waLabel = text.waLabel;
       <h1>{data.heading}</h1>
       <p class="class-intro">{data.intro}</p>
       {text.languageNote && <p class="class-language-note">{text.languageNote}</p>}
-      <div class="class-schedule" data-feed={data.feed}>
-        <span class="class-schedule-emoji" aria-hidden="true">🗓️</span>
-        <div>
-          <span class="class-schedule-label">{data.feedLabel}</span>
-          <span class="class-schedule-date">{text.loading}</span>
+      {data.feed && (
+        <div class="class-schedule" data-feed={data.feed}>
+          <span class="class-schedule-emoji" aria-hidden="true">🗓️</span>
+          <div>
+            <span class="class-schedule-label">{data.feedLabel}</span>
+            <span class="class-schedule-date">{text.loading}</span>
+          </div>
         </div>
-      </div>
+      )}
       {data.registerUrl ? (
         <div class="class-btn-row">
           <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">{text.register}</a>
@@ -371,11 +386,11 @@ const waLabel = text.waLabel;
                 </th>
                 {hasStudent ? (
                   <td>
-                    <span class="tier-value tier-general">{priceLabel(row.general.handle)}</span>
-                    <span class="tier-value tier-student">{row.student ? priceLabel(row.student.handle) : '—'}</span>
+                    <span class="tier-value tier-general">{priceLabel(row.general)}</span>
+                    <span class="tier-value tier-student">{row.student ? priceLabel(row.student) : '—'}</span>
                   </td>
                 ) : (
-                  <td>{priceLabel(row.general.handle)}</td>
+                  <td>{priceLabel(row.general)}</td>
                 )}
                 {hasPerClass && hasStudent && (
                   <td>
@@ -402,6 +417,7 @@ const waLabel = text.waLabel;
         </tbody>
       </table>
     </div>
+    {data.priceNote && <p class="class-note">{data.priceNote}</p>}
     {hasPaidRow && <p class="class-note">{text.paymentNote}</p>}
     {hasPerClass && (
       <p class="class-note">
@@ -464,8 +480,7 @@ const waLabel = text.waLabel;
 
   <section class="class-cta">
     <h2>{text.nextStep}</h2>
-    {data.registerUrl && <p>{text.nextStepRegister}</p>}
-    {!data.registerUrl && <p>{text.nextStepDropIn}</p>}
+    <p>{data.nextStep ?? (data.registerUrl ? text.nextStepRegister : text.nextStepDropIn)}</p>
     {data.registerUrl ? (
       <div class="class-btn-row">
         <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">{text.register}</a>

@@ -23,6 +23,7 @@ export const translatedPaths = [
   '/pages/impressum',
   '/pages/milonga-rhythm-trainer',
   '/pages/privacy-policy',
+  '/pages/private-classes',
   '/pages/refund-and-cancellation-policy',
   '/pages/tango-rhythm-trainer',
   '/pages/tango-vals-rhythm-trainer',

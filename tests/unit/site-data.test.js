@@ -120,9 +120,14 @@ describe('classPages data', () => {
     for (const slug of slugs) expect(slug).toMatch(/^[a-z0-9-]+$/);
   });
 
-  it('references product handles that exist', () => {
+  it('references product handles that exist, or gives a plain price', () => {
     for (const page of classPages) {
       for (const row of page.table.rows) {
+        if ('price' in row.general) {
+          // Private classes are arranged directly, not sold through Shopify.
+          expect(row.general.price, row.label).toMatch(/^€\d+$/);
+          continue;
+        }
         expect(products.some((p) => p.handle === row.general.handle), row.label).toBe(true);
         if (row.student) {
           expect(products.some((p) => p.handle === row.student.handle), row.label).toBe(true);
@@ -133,9 +138,9 @@ describe('classPages data', () => {
 
   it('lists every table handle in offerHandles, so the Course schema stays complete', () => {
     for (const page of classPages) {
-      const tableHandles = page.table.rows.flatMap((r) =>
-        r.student ? [r.general.handle, r.student.handle] : [r.general.handle]
-      );
+      const tableHandles = page.table.rows
+        .filter((r) => 'handle' in r.general)
+        .flatMap((r) => (r.student ? [r.general.handle, r.student.handle] : [r.general.handle]));
       for (const handle of tableHandles) {
         expect(page.offerHandles, `${page.slug}: ${handle}`).toContain(handle);
       }

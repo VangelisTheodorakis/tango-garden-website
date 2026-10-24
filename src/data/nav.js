@@ -23,6 +23,7 @@ export const navItems = [
       { href: '/pages/enter-the-garden', label: 'Enter the Garden' },
       { href: '/pages/beginner-course', label: 'Sprouting Sessions' },
       { href: '/pages/garden-practica', label: 'Garden Practica' },
+      { href: '/pages/private-classes', label: 'Private Classes' },
     ],
   },
   {

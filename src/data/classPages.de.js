@@ -1,5 +1,5 @@
 /**
- * German copy for the three class pages.
+ * German copy for the class pages.
  *
  * Only words live here. Prices, handles, feeds, images, the register URL and
  * the table structure stay in classPages.js / products.js and are shared, so
@@ -187,6 +187,66 @@ export const classPagesDe = {
         'Offene Tango-Argentino-Practica in Köln für alle Level. Kein Partner nötig.',
     },
   },
+  'private-classes': {
+    metaTitle: 'Tango-Privatunterricht in Köln',
+    metaDescription:
+      'Privatstunden in Tango Argentino in Köln mit Vangelis und Kristina: 60 € pro Person oder 80 € pro Paar, bei dir, bei uns oder im Studio.',
+    eyebrow: 'Private Classes',
+    heading: 'Tango-Privatunterricht in Köln',
+    intro:
+      'Tango Argentino ganz persönlich mit Vangelis und Kristina, allein oder als Paar, abgestimmt auf das, woran du arbeiten möchtest.',
+    whatToExpect: [
+      'Eine Stunde, die sich nach dir richtet: deine ersten Schritte, die Umarmung, Musikalität oder das eine Detail, das dir auf der Tanzfläche immer wieder entwischt. Wir passen uns deinem Level und deinem Tempo an.',
+      'Komm allein oder als Paar. Alle Level sind willkommen, von absoluten Anfänger:innen bis zu erfahrenen Tänzer:innen.',
+      'Wir treffen uns da, wo es für dich passt: bei dir, bei uns oder in einem gemieteten Studio in Köln.',
+    ],
+    whatsIncluded: [
+      'Eine Stunde, abgestimmt auf deine Ziele und dein Level',
+      'Allein oder als Paar',
+      'Bei dir oder bei uns ohne Aufpreis, oder in einem gemieteten Studio',
+    ],
+    table: { caption: 'Preis', rowLabels: ['Eine Person', 'Paar'] },
+    priceNote:
+      'Bei dir oder bei uns fallen keine zusätzlichen Kosten an. Findet die Stunde in einem gemieteten Studio statt, kommt die Studiomiete dazu.',
+    nextStep: 'Schreib uns auf WhatsApp, woran du arbeiten möchtest und welche Zeiten dir passen.',
+    faq: [
+      {
+        key: 'Who are private classes for?',
+        q: 'Für wen ist Privatunterricht?',
+        a: 'Für alle, von absoluten Anfänger:innen, die schneller reinkommen möchten, bis zu erfahrenen Tänzer:innen, die an etwas Bestimmtem arbeiten. Wir gestalten jede Stunde nach deinem Level und deinen Zielen.',
+      },
+      {
+        key: 'Do I need to bring a partner?',
+        q: 'Muss ich eine:n Partner:in mitbringen?',
+        a: 'Nein. Komm allein und tanz mit uns, oder bring eine:n Partner:in mit und bucht als Paar.',
+      },
+      {
+        key: 'How much does a private class cost?',
+        q: 'Was kostet eine Privatstunde?',
+        a: '60 € für eine Person oder 80 € für ein Paar. Bei dir oder bei uns fallen keine zusätzlichen Kosten an; in einem gemieteten Studio kommt die Studiomiete dazu.',
+      },
+      {
+        key: 'Where do the classes take place?',
+        q: 'Wo findet der Unterricht statt?',
+        a: 'Da, wo es für dich am besten passt: bei dir, bei uns oder in einem gemieteten Studio in Köln.',
+      },
+      {
+        key: 'Is the class taught in English?',
+        q: 'Wird auf Englisch unterrichtet?',
+        a: 'Ja. Auf Wunsch unterrichten wir auch auf Deutsch, Russisch und Griechisch.',
+      },
+      {
+        key: 'How do I book?',
+        q: 'Wie buche ich?',
+        a: 'Schreib uns auf WhatsApp, woran du arbeiten möchtest und welche Zeiten dir passen, dann finden wir gemeinsam einen Termin.',
+      },
+    ],
+    courseSchema: {
+      name: 'Tango-Privatunterricht in Köln',
+      description:
+        'Privatstunden in Tango Argentino in Köln mit Vangelis und Kristina, für eine Person oder ein Paar, für alle Level.',
+    },
+  },
 };
 
 /**
@@ -216,6 +276,8 @@ export function getClassPage(slug, locale = 'en') {
       caption: de.table.caption,
       rows: en.table.rows.map((row, i) => ({ ...row, label: de.table.rowLabels[i] })),
     },
+    ...(de.priceNote && { priceNote: de.priceNote }),
+    ...(de.nextStep && { nextStep: de.nextStep }),
     faq: de.faq,
     courseSchema: { ...en.courseSchema, ...de.courseSchema },
   };

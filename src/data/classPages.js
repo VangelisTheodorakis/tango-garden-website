@@ -1,6 +1,6 @@
 /**
- * Content + pricing structure for the three consolidated class pages
- * (`/pages/enter-the-garden`, `/pages/beginner-course`, `/pages/garden-practica`).
+ * Content + pricing structure for the class pages (`/pages/enter-the-garden`,
+ * `/pages/beginner-course`, `/pages/garden-practica`, `/pages/private-classes`).
  *
  * These replace the old one-page-per-SKU product pages (general admission,
  * student/under-28, 1-class, 4-class, full-course...) with one page per class,
@@ -8,7 +8,9 @@
  *
  * Prices are never re-typed here — every table row references a handle in
  * `products.js`, the single source of truth for Shopify-mirrored prices, and
- * `ClassPage.astro` reads the price from there at build time. This file only
+ * `ClassPage.astro` reads the price from there at build time. The one
+ * exception is private classes: they are arranged directly, not sold through
+ * Shopify, so their rows carry a plain `price` instead of a handle. This file only
  * owns page copy, structure, and which handles belong together.
  *
  * `heroImage` is a file name in `src/assets/` (not a /public URL), so
@@ -281,6 +283,74 @@ export const classPages = [
         name: 'Yoga Drop Studio',
         streetAddress: 'Thürmchenswall 21',
         postalCode: '50668',
+        addressLocality: 'Köln',
+      },
+    },
+  },
+  {
+    slug: 'private-classes',
+    title: 'Private Tango Classes with Vangelis and Kristina',
+    metaTitle: 'Private Tango Classes in Cologne (Köln)',
+    metaDescription:
+      'Private Argentine tango classes in Cologne with Vangelis and Kristina: €60 per person or €80 per couple, at your place, ours, or a studio.',
+    heading: 'Private Tango Classes',
+    intro:
+      'Argentine tango one-to-one with Vangelis and Kristina, on your own or as a couple, built around what you want to work on.',
+    whatToExpect: [
+      'A class that follows you: your first steps, the embrace, musicality, or the one thing that keeps escaping you on the dance floor. We adapt to your level and your pace.',
+      'Come on your own or as a couple. Every level is welcome, from complete beginners to experienced dancers.',
+      'We meet where suits you: at your place, at ours, or in a rented studio in Cologne.',
+    ],
+    whatsIncluded: [
+      'A class shaped around your goals and level',
+      'On your own or as a couple',
+      'At your place or ours at no extra cost, or in a rented studio',
+    ],
+    showTeachers: true,
+    table: {
+      caption: 'Price',
+      rows: [
+        { label: 'One person', general: { price: '€60' }, student: null, perClass: null, bestValue: false },
+        { label: 'Couple', general: { price: '€80' }, student: null, perClass: null, bestValue: false },
+      ],
+    },
+    priceNote:
+      'At your place or ours there is no additional fee. If the class takes place in a rented studio, the studio rent is added.',
+    cancellationNote: null,
+    nextStep: 'Message us on WhatsApp with what you would like to work on and a few times that suit you.',
+    faq: [
+      {
+        q: 'Who are private classes for?',
+        a: 'Everyone, from complete beginners who want a head start to experienced dancers working on something specific. We shape each class around your level and goals.',
+      },
+      {
+        q: 'Do I need to bring a partner?',
+        a: 'No. Come on your own and dance with us, or bring a partner and book as a couple.',
+      },
+      {
+        q: 'How much does a private class cost?',
+        a: '€60 for one person, or €80 for a couple. At your place or ours there is no additional fee; in a rented studio, the studio rent is added.',
+      },
+      {
+        q: 'Where do the classes take place?',
+        a: 'Wherever suits you best: at your place, at ours, or in a rented studio in Cologne.',
+      },
+      {
+        q: 'Is the class taught in English?',
+        a: 'Yes. Under request, we can also teach in German, Russian and Greek.',
+      },
+      {
+        q: 'How do I book?',
+        a: 'Message us on WhatsApp with what you would like to work on and a few times that suit you, and we will find a slot together.',
+      },
+    ],
+    offerHandles: [],
+    courseSchema: {
+      name: 'Private Argentine Tango Classes Cologne',
+      description:
+        'Private Argentine tango classes in Cologne with Vangelis and Kristina, for one person or a couple, at all levels.',
+      location: {
+        name: 'Cologne',
         addressLocality: 'Köln',
       },
     },
