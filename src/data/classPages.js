@@ -292,7 +292,7 @@ export const classPages = [
     title: 'Private Tango Classes with Vangelis and Kristina',
     metaTitle: 'Private Tango Classes in Cologne (Köln)',
     metaDescription:
-      'Private Argentine tango classes in Cologne with Vangelis and Kristina: €60 per person or €80 per couple, at your place, ours, or a studio.',
+      'Private Argentine tango classes in Cologne with Vangelis and Kristina: €60 per hour for one person or €80 for a couple, at your place, ours, or a studio.',
     heading: 'Private Tango Classes',
     intro:
       'Argentine tango one-to-one with Vangelis and Kristina, on your own or as a couple, built around what you want to work on.',
@@ -302,7 +302,7 @@ export const classPages = [
       'We meet where suits you: at your place, at ours, or in a rented studio in Cologne.',
     ],
     whatsIncluded: [
-      'A class shaped around your goals and level',
+      'A 60-minute class shaped around your goals and level',
       'On your own or as a couple',
       'At your place or ours at no extra cost, or in a rented studio',
     ],
@@ -315,7 +315,7 @@ export const classPages = [
       ],
     },
     priceNote:
-      'At your place or ours there is no additional fee. If the class takes place in a rented studio, the studio rent is added.',
+      'Prices are per hour (60 minutes). At your place or ours there is no additional fee. If the class takes place in a rented studio, the studio rent is added.',
     cancellationNote: null,
     nextStep: 'Message us on WhatsApp with what you would like to work on and a few times that suit you.',
     faq: [
@@ -329,7 +329,7 @@ export const classPages = [
       },
       {
         q: 'How much does a private class cost?',
-        a: '€60 for one person, or €80 for a couple. At your place or ours there is no additional fee; in a rented studio, the studio rent is added.',
+        a: 'A class is one hour (60 minutes): €60 for one person, or €80 for a couple. At your place or ours there is no additional fee; in a rented studio, the studio rent is added.',
       },
       {
         q: 'Where do the classes take place?',

@@ -190,7 +190,7 @@ export const classPagesDe = {
   'private-classes': {
     metaTitle: 'Tango-Privatunterricht in Köln',
     metaDescription:
-      'Privatstunden in Tango Argentino in Köln mit Vangelis und Kristina: 60 € pro Person oder 80 € pro Paar, bei dir, bei uns oder im Studio.',
+      'Privatstunden in Tango Argentino in Köln mit Vangelis und Kristina: 60 € pro Stunde für eine Person oder 80 € für ein Paar, bei dir, bei uns oder im Studio.',
     eyebrow: 'Private Classes',
     heading: 'Tango-Privatunterricht in Köln',
     intro:
@@ -201,13 +201,13 @@ export const classPagesDe = {
       'Wir treffen uns da, wo es für dich passt: bei dir, bei uns oder in einem gemieteten Studio in Köln.',
     ],
     whatsIncluded: [
-      'Eine Stunde, abgestimmt auf deine Ziele und dein Level',
+      '60 Minuten, abgestimmt auf deine Ziele und dein Level',
       'Allein oder als Paar',
       'Bei dir oder bei uns ohne Aufpreis, oder in einem gemieteten Studio',
     ],
     table: { caption: 'Preis', rowLabels: ['Eine Person', 'Paar'] },
     priceNote:
-      'Bei dir oder bei uns fallen keine zusätzlichen Kosten an. Findet die Stunde in einem gemieteten Studio statt, kommt die Studiomiete dazu.',
+      'Die Preise gelten pro Stunde (60 Minuten). Bei dir oder bei uns fallen keine zusätzlichen Kosten an. Findet die Stunde in einem gemieteten Studio statt, kommt die Studiomiete dazu.',
     nextStep: 'Schreib uns auf WhatsApp, woran du arbeiten möchtest und welche Zeiten dir passen.',
     faq: [
       {
@@ -223,7 +223,7 @@ export const classPagesDe = {
       {
         key: 'How much does a private class cost?',
         q: 'Was kostet eine Privatstunde?',
-        a: '60 € für eine Person oder 80 € für ein Paar. Bei dir oder bei uns fallen keine zusätzlichen Kosten an; in einem gemieteten Studio kommt die Studiomiete dazu.',
+        a: 'Eine Stunde dauert 60 Minuten: 60 € für eine Person oder 80 € für ein Paar. Bei dir oder bei uns fallen keine zusätzlichen Kosten an; in einem gemieteten Studio kommt die Studiomiete dazu.',
       },
       {
         key: 'Where do the classes take place?',
