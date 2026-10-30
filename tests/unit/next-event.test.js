@@ -111,6 +111,12 @@ describe('cardContent', () => {
     expect(cardContent(feed, at('2026-11-13')).lines).toEqual(['Thu, 07 Jan 2027', '19:15 – 20:30']);
   });
 
+  it('can leave the year out for the homepage cards', () => {
+    const feed = { events: [{ date: '2026-11-11', time: '19:30 – 21:30' }] };
+    expect(cardContent(feed, at('2026-10-30'), 'en', { showYear: false }).lines).toEqual(['Wed 11 Nov', '19:30 – 21:30']);
+    expect(cardContent(feed, at('2026-10-30'), 'de', { showYear: false }).lines[0]).toBe('Mi. 11.11.');
+  });
+
   it('omits the second line when an event has no time', () => {
     const out = cardContent({ events: [{ date: '2026-09-15' }] }, at('2026-07-22'));
     expect(out.lines).toEqual(['Tue, 15 Sep 2026']);

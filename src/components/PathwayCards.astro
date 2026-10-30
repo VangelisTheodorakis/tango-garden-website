@@ -563,7 +563,7 @@ const cards = shape.map((c, i) => {
         const dateEl = document.getElementById(`${feed.key}-date`);
         if (!dateEl) return;
 
-        const { label, lines, newLine } = cardContent(data, new Date(), locale);
+        const { label, lines, newLine } = cardContent(data, new Date(), locale, { showYear: false });
 
         if (labelEl && label) labelEl.textContent = label;
 

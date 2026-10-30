@@ -108,9 +108,10 @@ export function nextEvent(feed, today) {
  * @param {EventFeed | null | undefined} feed
  * @param {Date} today
  * @param {Locale} [locale]
+ * @param {{ showYear?: boolean }} [options] `showYear: false` drops the year (the homepage cards)
  * @returns {{ label: string | null, lines: string[], isEmpty: boolean, newLine: number | null }}
  */
-export function cardContent(feed, today, locale = 'en') {
+export function cardContent(feed, today, locale = 'en', { showYear = true } = {}) {
   const de = locale === 'de';
   const label = (de ? feed?.label_de : undefined) ?? feed?.label ?? null;
   const next = nextEvent(feed, today);
@@ -139,7 +140,7 @@ export function cardContent(feed, today, locale = 'en') {
   }
 
   const prefix = (de ? feed?.prefix_de : undefined) ?? feed?.prefix ?? '';
-  const lines = [prefix + formatDate(next.date, locale)];
+  const lines = [prefix + (showYear ? formatDate(next.date, locale) : formatShort(next.date, locale))];
   if (next.time) lines.push(next.time);
 
   return { label, lines, isEmpty: false, newLine: null };
