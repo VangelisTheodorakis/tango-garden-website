@@ -383,14 +383,14 @@ const cards = shape.map((c, i) => {
   .date-value :global(.date-line) {
     display: block;
   }
-  /* With a running course shown next to the new one, each line carries its own
-     emoji in the gutter (calendar, then star), so both sit exactly on their line
-     and in the same column. The side emoji is hidden but keeps its width. */
-  .card-date:has(.date-line--new) .card-date-emoji {
+  /* The emoji sit in a gutter column, each on the line it belongs to: the
+     calendar on the first date line, the star on the new-course line. The side
+     emoji element only keeps the column's width. */
+  .card-date-emoji {
     visibility: hidden;
   }
-  .card-date:has(.date-line--new) .date-value :global(.date-line)::before {
-    content: '🗓️';
+  .date-value::before,
+  .date-value :global(.date-line--new)::before {
     position: absolute;
     left: -28px;
     width: 20px;
@@ -398,7 +398,10 @@ const cards = shape.map((c, i) => {
     font-size: 16px;
     line-height: inherit;
   }
-  .card-date:has(.date-line--new) .date-value :global(.date-line--new)::before {
+  .date-value::before {
+    content: '🗓️';
+  }
+  .date-value :global(.date-line--new)::before {
     content: '⭐';
   }
   .featured .date-value {

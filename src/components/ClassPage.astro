@@ -586,20 +586,24 @@ const waLabel = text.waLabel;
   .class-schedule-date :global(.date-line) {
     display: block;
   }
-  /* Running course next to the new one: each line carries its own emoji in the
-     gutter (calendar, then star); the side emoji is hidden but keeps its width. */
-  .class-schedule:has(.date-line--new) .class-schedule-emoji {
+  /* Emoji in a gutter column, each on its own line: the calendar on the first
+     date line, the star on the new-course line. The side emoji element only
+     keeps the column's width. */
+  .class-schedule-emoji {
     visibility: hidden;
   }
-  .class-schedule:has(.date-line--new) .class-schedule-date :global(.date-line)::before {
-    content: '🗓️';
+  .class-schedule-date::before,
+  .class-schedule-date :global(.date-line--new)::before {
     position: absolute;
     left: -32px;
     width: 22px;
     text-align: center;
     line-height: inherit;
   }
-  .class-schedule:has(.date-line--new) .class-schedule-date :global(.date-line--new)::before {
+  .class-schedule-date::before {
+    content: '🗓️';
+  }
+  .class-schedule-date :global(.date-line--new)::before {
     content: '⭐';
   }
   .class-hero--photo .class-schedule {
