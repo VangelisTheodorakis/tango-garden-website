@@ -380,6 +380,39 @@ const cards = shape.map((c, i) => {
     color: white;
   }
 
+  /* Side by side, the date box and the price/button block get fixed minimum
+     heights and the feature list absorbs the slack, so the separator lines sit
+     at the same height on every card whatever the text above them does. */
+  @media (min-width: 968px) {
+    .card-features {
+      flex-grow: 1;
+    }
+    .card-date {
+      min-height: 112px;
+    }
+    .pathway-card .card-foot {
+      flex: 0 0 170px;
+    }
+  }
+
+  /* Just past the three-column switch the cards are only ~290px wide: tighter
+     side padding and a slightly smaller date text keep each course on one line. */
+  @media (min-width: 968px) and (max-width: 1180px) {
+    .pathway-card {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .date-value {
+      font-size: 13px;
+    }
+    .card-date {
+      min-height: 140px;
+    }
+    .pathway-card .card-foot {
+      flex-basis: 200px;
+    }
+  }
+
   .card-foot {
     border-top: 2px solid rgba(45, 80, 22, 0.1);
     /* Guarantees breathing room below the separator even on the card whose
