@@ -9,6 +9,8 @@
  *   1. Project Settings > Script Properties:
  *        WORKER_URL     = https://tango-garden-registration.<subdomain>.workers.dev
  *        SHARED_SECRET  = (the same value set with `wrangler secret put SHARED_SECRET`)
+ *        COURSE_SLUG    = growth-sessions  (improvers form only; leave it out on
+ *                         the beginner form, which defaults to regular-classes)
  *   2. Triggers (clock icon) > Add Trigger:
  *        function: onFormSubmit, event source: From form, type: On form submit.
  *   3. bookings@tangogarden.de must be a verified "Send mail as" alias on the
@@ -19,6 +21,7 @@ function onFormSubmit(e) {
   var props = PropertiesService.getScriptProperties();
   var WORKER_URL = props.getProperty('WORKER_URL');
   var SHARED_SECRET = props.getProperty('SHARED_SECRET');
+  var COURSE_SLUG = props.getProperty('COURSE_SLUG') || 'regular-classes';
 
   var answers = extractAnswers_(e);
   if (!answers.email) {
@@ -30,7 +33,7 @@ function onFormSubmit(e) {
     method: 'post',
     contentType: 'application/json',
     headers: { 'x-tg-secret': SHARED_SECRET },
-    payload: JSON.stringify({ name: answers.name, courseSlug: answers.courseSlug }),
+    payload: JSON.stringify({ name: answers.name, courseSlug: COURSE_SLUG }),
     muteHttpExceptions: true,
   });
 
@@ -101,8 +104,7 @@ function extractAnswers_(e) {
     }
   }
 
-  // One course today. Add a form question and map it here when there are more.
-  return { name: name, email: email, courseSlug: 'regular-classes' };
+  return { name: name, email: email };
 }
 
 function plainTextFallback_() {

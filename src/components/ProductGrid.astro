@@ -166,12 +166,13 @@ const [etgCard, sproutingCard, growthCard, practicaCard, privateCard]: Group[] =
   },
 ];
 
-// Three sections by intent; each is a row of cards (a single card sits centred).
-const sections = [
-  { key: 'curious', cards: [etgCard] },
-  { key: 'determined', cards: [sproutingCard, growthCard, privateCard] },
-  { key: 'everyone', cards: [practicaCard] },
-].map((section) => ({ ...section, ...text.sections[section.key as keyof typeof text.sections] }));
+// Three sections by intent. The determined ones fill the first row; the curious
+// and everyone share the second.
+const section = (key: keyof typeof text.sections, cards: Group[]) => ({ key, cards, ...text.sections[key] });
+const rows = [
+  [section('determined', [sproutingCard, growthCard, privateCard])],
+  [section('curious', [etgCard]), section('everyone', [practicaCard])],
+];
 ---
 
 <section class="page-hero">
@@ -184,38 +185,42 @@ const sections = [
 
 <div class="collection">
   {
-    sections.map((section) => (
-      <section class="collection-section">
-        <h2 class="collection-section-title">{section.title}</h2>
-        <p class="collection-section-lead">{section.lead}</p>
-        <ul class:list={['collection-list', { 'is-single': section.cards.length === 1 }]} role="list">
-        {
-            section.cards.map((group) => (
-            <li>
-              <div class="collection-card">
-                <span class="collection-card-title">{group.title}</span>
-                <span class="collection-card-blurb">{group.blurb}</span>
-                <span class="collection-card-best-for"><strong>{text.bestFor}</strong> {group.bestFor}</span>
-                <span class="collection-card-price">{group.price}</span>
-                <div class="collection-card-actions">
-                  {group.registerUrl ? (
-                    <a class="collection-card-register" href={group.registerUrl} target="_blank" rel="noopener">
-                      {text.register}
-                    </a>
-                  ) : (
-                    // Invisible same-size placeholder so cards without a register
-                    // button still reserve its row, keeping the green CTA on the
-                    // same horizontal line across all three cards.
-                    <span class="collection-card-register is-spacer" aria-hidden="true">{text.register}</span>
-                  )}
-                  <a class="collection-card-cta" href={group.href}>{text.details}</a>
+    rows.map((row) => (
+      <div class:list={['collection-row', { 'is-pair': row.length > 1 }]}>
+        {row.map((section) => (
+        <section class="collection-section">
+          <h2 class="collection-section-title">{section.title}</h2>
+          <p class="collection-section-lead">{section.lead}</p>
+          <ul class:list={['collection-list', { 'is-single': section.cards.length === 1 }]} role="list">
+          {
+              section.cards.map((group) => (
+              <li>
+                <div class="collection-card">
+                  <span class="collection-card-title">{group.title}</span>
+                  <span class="collection-card-blurb">{group.blurb}</span>
+                  <span class="collection-card-best-for"><strong>{text.bestFor}</strong> {group.bestFor}</span>
+                  <span class="collection-card-price">{group.price}</span>
+                  <div class="collection-card-actions">
+                    {group.registerUrl ? (
+                      <a class="collection-card-register" href={group.registerUrl} target="_blank" rel="noopener">
+                        {text.register}
+                      </a>
+                    ) : (
+                      // Invisible same-size placeholder so cards without a register
+                      // button still reserve its row, keeping the green CTA on the
+                      // same horizontal line across all three cards.
+                      <span class="collection-card-register is-spacer" aria-hidden="true">{text.register}</span>
+                    )}
+                    <a class="collection-card-cta" href={group.href}>{text.details}</a>
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))
-        }
-        </ul>
-      </section>
+              </li>
+            ))
+          }
+          </ul>
+        </section>
+        ))}
+      </div>
     ))
   }
 
@@ -249,8 +254,24 @@ const sections = [
     margin: 0 auto;
     padding: 60px 20px;
   }
-  .collection-section + .collection-section {
+  .collection-row + .collection-row {
     margin-top: 48px;
+  }
+  .collection-row.is-pair {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  @media (min-width: 750px) {
+    /* Two sections side by side, each as wide as one card of the row above. */
+    .collection-row.is-pair {
+      grid-template-columns: repeat(2, calc((100% - 48px) / 3));
+      justify-content: center;
+      gap: 24px;
+    }
+    .collection-row.is-pair .collection-list.is-single {
+      grid-template-columns: 1fr;
+    }
   }
   .collection-section-title {
     font-size: 1.5rem;

@@ -83,6 +83,9 @@ In the form: **⋮ menu > Script editor** (or **Extensions > Apps Script**).
 - **Project Settings > Script properties**, add:
   - `WORKER_URL` = the Worker URL from step 1
   - `SHARED_SECRET` = the same value from step 1
+  - `COURSE_SLUG` = `growth-sessions` on the improvers form only. Leave it out
+    on the beginner form (it defaults to `regular-classes`). Every form runs the
+    same `Code.gs`; this property is the only difference.
 - **Triggers** (clock icon) > **Add trigger**:
   - function `onFormSubmit`, event source **From form**, type **On form submit**.
 - Authorize when prompted (Gmail send + external fetch scopes).
