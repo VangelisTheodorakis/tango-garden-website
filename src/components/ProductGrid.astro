@@ -245,7 +245,7 @@ const sections = [
     text-align: center;
   }
   .collection {
-    max-width: 900px;
+    max-width: 1140px;
     margin: 0 auto;
     padding: 60px 20px;
   }
@@ -266,7 +266,7 @@ const sections = [
   .collection-list {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 24px;
   }
   /* Three columns, the width of the widest section; a section with one card
      shows it centred at the same card width. */
@@ -275,7 +275,7 @@ const sections = [
       grid-template-columns: repeat(3, 1fr);
     }
     .collection-list.is-single {
-      grid-template-columns: calc((100% - 32px) / 3);
+      grid-template-columns: calc((100% - 48px) / 3);
       justify-content: center;
     }
   }
@@ -286,7 +286,7 @@ const sections = [
     background: var(--cream-light);
     border: 1px solid rgba(78, 93, 34, 0.12);
     border-radius: 14px;
-    padding: 24px 22px;
+    padding: 28px 26px;
     color: var(--text);
     height: 100%;
     transition:
