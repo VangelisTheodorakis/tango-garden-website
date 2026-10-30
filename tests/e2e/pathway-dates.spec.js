@@ -27,7 +27,7 @@ test('shows the soonest upcoming date and skips past ones', async ({ page }) => 
   );
 
   await page.goto('/');
-  await expect(page.locator('#prac-date')).toContainText('Wed, 29 Jul 2026');
+  await expect(page.locator('#prac-date')).toContainText('Wed 29 Jul');
   await expect(page.locator('#prac-date')).toContainText('19:30 – 22:00');
 });
 
@@ -36,7 +36,7 @@ test('includes an event happening today', async ({ page }) => {
   await stubFeeds(page, feed([{ date: '2026-07-29', time: '19:30 – 22:00' }]));
 
   await page.goto('/');
-  await expect(page.locator('#prac-date')).toContainText('Wed, 29 Jul 2026');
+  await expect(page.locator('#prac-date')).toContainText('Wed 29 Jul');
 });
 
 test('falls back to the coming-soon message once everything is past', async ({ page }) => {
@@ -59,7 +59,7 @@ test('applies the feed prefix and label', async ({ page }) => {
 
   await page.goto('/');
   await expect(page.locator('#rc-label')).toHaveText('Next Class');
-  await expect(page.locator('#rc-date')).toContainText('Starts Tue, 15 Sep 2026');
+  await expect(page.locator('#rc-date')).toContainText('Starts Tue 15 Sep');
 });
 
 test('keeps the static fallback text when the feed is unreachable', async ({ page }) => {
