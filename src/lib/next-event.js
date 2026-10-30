@@ -61,6 +61,26 @@ export function formatDate(iso, locale = 'en') {
 }
 
 /**
+ * A compact date without the year ("Thu 05 Nov", "Do. 05.11."), for the two-line
+ * running-course display where every character counts on a narrow card.
+ *
+ * @param {string} iso
+ * @param {Locale} [locale]
+ * @returns {string}
+ */
+function formatShort(iso, locale = 'en') {
+  const d = parseDate(iso);
+  if (!d) return iso;
+  const day = String(d.getDate()).padStart(2, '0');
+  if (locale === 'de') return `${DAYS_DE[d.getDay()]} ${day}.${String(d.getMonth() + 1).padStart(2, '0')}.`;
+  return `${DAYS[d.getDay()]} ${day} ${MONTHS[d.getMonth()]}`;
+}
+
+/** "Thu 05 Nov, 19:30 – 21:00" (or just the date when there is no time). */
+const shortLine = (prefix, event, locale) =>
+  prefix + formatShort(event.date, locale) + (event.time ? `, ${event.time}` : '');
+
+/**
  * The soonest event on or after `today`. Events in the past are skipped, and
  * the list does not have to be sorted.
  *
@@ -102,12 +122,12 @@ export function cardContent(feed, today, locale = 'en') {
   if (running) {
     const cur = feed.current;
     const runPrefix = (de ? cur.prefix_de : undefined) ?? cur.prefix ?? '';
-    const lines = [runPrefix + formatDate(running.date, locale)];
-    if (running.time) lines.push(running.time);
+    // One line per course: four lines pushed the featured homepage card out of
+    // line with its neighbours.
+    const lines = [shortLine(runPrefix, running, locale)];
     if (next) {
       const newPrefix = (de ? cur.nextPrefix_de : undefined) ?? cur.nextPrefix ?? '';
-      lines.push(newPrefix + formatDate(next.date, locale));
-      if (next.time) lines.push(next.time);
+      lines.push(shortLine(newPrefix, next, locale));
     }
     return { label, lines, isEmpty: false };
   }

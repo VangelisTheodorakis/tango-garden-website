@@ -1,5 +1,5 @@
 {
-  "label": "Next Beginner Course · Group closes 28/01",
+  "label": "Next Beginner Course · Closes 28/01",
   "emptyMessage": "No upcoming dates scheduled (TBA)",
   "label_de": "Nächster Anfängerkurs · Gruppe schließt am 28.01.",
   "emptyMessage_de": "Aktuell keine Termine geplant",
@@ -19,10 +19,10 @@
     { "date": "2027-03-25", "time": "19:15 – 20:30" }
   ],
   "current": {
-    "prefix": "Current course: ",
-    "prefix_de": "Laufender Kurs: ",
-    "nextPrefix": "New course: ",
-    "nextPrefix_de": "Neuer Kurs: ",
+    "prefix": "Now: ",
+    "prefix_de": "Jetzt: ",
+    "nextPrefix": "New: ",
+    "nextPrefix_de": "Neu: ",
     "events": [
       { "date": "2026-09-10", "time": "19:30 – 21:00" },
       { "date": "2026-09-17", "time": "19:30 – 21:00" },
