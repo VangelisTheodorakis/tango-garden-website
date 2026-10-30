@@ -98,7 +98,7 @@ export const classPages = [
     heading: 'Start Dancing Argentine Tango',
     intro: 'A gentle, structured 12-week beginning for people who have never danced tango before.',
     feed: '/assets/data/regular-classes.json',
-    feedLabel: 'Next Beginner Course',
+    feedLabel: 'Next Beginner Course · Group closes 28/01',
     whatToExpect: [
       "A gentle weekly ritual, whether you're here for the best value per class or the flexibility to try it first.",
       "Each 75-minute class builds on the last: connection, weight shifts, the embrace, and musicality, taught in a fun and engaging way that builds confidence and momentum.",
@@ -213,7 +213,7 @@ export const classPages = [
     intro:
       'The next step after the Sprouting Sessions: 12 weeks to turn your basics into confident, musical dancing at the milonga.',
     feed: '/assets/data/growth-sessions.json',
-    feedLabel: 'Next Improvers Course',
+    feedLabel: 'Next Improvers Course · Group closes 28/01',
     whatToExpect: [
       'For dancers who already know the basics: change of weight, walking in parallel and cross system, ochos, giro, sandwichito, parada and pasada, calesita, plus the basic social rules and navigation of a milonga.',
       'Each 75-minute class builds on the last. We deepen connection, musicality and navigation on the dance floor, taught in a fun and engaging way.',

@@ -1,7 +1,7 @@
 {
-  "label": "Next Beginner Course",
+  "label": "Next Beginner Course · Group closes 28/01",
   "emptyMessage": "No upcoming dates scheduled (TBA)",
-  "label_de": "Nächster Anfängerkurs",
+  "label_de": "Nächster Anfängerkurs · Gruppe schließt am 28.01.",
   "emptyMessage_de": "Aktuell keine Termine geplant",
   "prefix": "",
   "events": [
@@ -17,5 +17,25 @@
     { "date": "2027-03-11", "time": "19:15 – 20:30" },
     { "date": "2027-03-18", "time": "19:15 – 20:30" },
     { "date": "2027-03-25", "time": "19:15 – 20:30" }
-  ]
+  ],
+  "current": {
+    "prefix": "Current course: ",
+    "prefix_de": "Laufender Kurs: ",
+    "nextPrefix": "New course: ",
+    "nextPrefix_de": "Neuer Kurs: ",
+    "events": [
+      { "date": "2026-09-10", "time": "19:30 – 21:00" },
+      { "date": "2026-09-17", "time": "19:30 – 21:00" },
+      { "date": "2026-09-24", "time": "19:30 – 21:00" },
+      { "date": "2026-10-01", "time": "19:30 – 21:00" },
+      { "date": "2026-10-08", "time": "19:30 – 21:00" },
+      { "date": "2026-10-15", "time": "19:30 – 21:00" },
+      { "date": "2026-10-22", "time": "19:30 – 21:00" },
+      { "date": "2026-10-29", "time": "19:30 – 21:00" },
+      { "date": "2026-11-05", "time": "19:30 – 21:00" },
+      { "date": "2026-11-12", "time": "19:30 – 21:00" },
+      { "date": "2026-11-19", "time": "19:30 – 21:00" },
+      { "date": "2026-11-26", "time": "19:30 – 21:00" }
+    ]
+  }
 }

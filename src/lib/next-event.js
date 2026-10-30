@@ -9,7 +9,8 @@
  * replacing the English ones.
  *
  * @typedef {{ date: string, time?: string }} GardenEvent
- * @typedef {{ label?: string, prefix?: string, emptyMessage?: string, label_de?: string, prefix_de?: string, emptyMessage_de?: string, events?: GardenEvent[] }} EventFeed
+ * @typedef {{ prefix?: string, prefix_de?: string, nextPrefix?: string, nextPrefix_de?: string, events?: GardenEvent[] }} RunningCourse
+ * @typedef {{ label?: string, prefix?: string, emptyMessage?: string, label_de?: string, prefix_de?: string, emptyMessage_de?: string, events?: GardenEvent[], current?: RunningCourse }} EventFeed
  * @typedef {'en' | 'de'} Locale
  */
 
@@ -93,6 +94,23 @@ export function cardContent(feed, today, locale = 'en') {
   const de = locale === 'de';
   const label = (de ? feed?.label_de : undefined) ?? feed?.label ?? null;
   const next = nextEvent(feed, today);
+
+  // A course that is still running next to the one taking registrations: its
+  // next class is shown first, then the new course. `current` is display only;
+  // the calendar and the email keep reading `events`, the new course alone.
+  const running = feed?.current ? nextEvent(feed.current, today) : null;
+  if (running) {
+    const cur = feed.current;
+    const runPrefix = (de ? cur.prefix_de : undefined) ?? cur.prefix ?? '';
+    const lines = [runPrefix + formatDate(running.date, locale)];
+    if (running.time) lines.push(running.time);
+    if (next) {
+      const newPrefix = (de ? cur.nextPrefix_de : undefined) ?? cur.nextPrefix ?? '';
+      lines.push(newPrefix + formatDate(next.date, locale));
+      if (next.time) lines.push(next.time);
+    }
+    return { label, lines, isEmpty: false };
+  }
 
   if (!next) {
     const message = (de ? feed?.emptyMessage_de : feed?.emptyMessage) ?? EMPTY[locale];

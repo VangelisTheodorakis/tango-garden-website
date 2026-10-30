@@ -72,7 +72,7 @@ export const classPagesDe = {
     heading: 'Tango lernen: Dein Anfängerkurs in Köln',
     intro:
       'Ein sanfter, strukturierter Einstieg über 12 Wochen. Für alle, die noch nie Tango getanzt haben.',
-    feedLabel: 'Nächster Anfängerkurs',
+    feedLabel: 'Nächster Anfängerkurs · Gruppe schließt am 28.01.',
     whatToExpect: [
       'Ein sanftes wöchentliches Ritual, egal ob du den besten Preis pro Stunde willst oder erst einmal flexibel reinschnuppern möchtest.',
       'Jede 75-minütige Stunde baut auf der letzten auf: Verbindung, Gewichtsverlagerung, die Umarmung und Musikalität. Mit viel Spaß vermittelt, sodass Selbstvertrauen und Schwung mitwachsen.',
@@ -130,7 +130,7 @@ export const classPagesDe = {
     heading: 'Tango weiterentwickeln: Dein Kurs nach dem Einstieg',
     intro:
       'Der nächste Schritt nach den Sprouting Sessions: 12 Wochen, in denen deine Grundlagen zu sicherem, musikalischem Tanzen im Salon wachsen.',
-    feedLabel: 'Nächster Kurs für Fortgeschrittene',
+    feedLabel: 'Nächster Kurs für Fortgeschrittene · Gruppe schließt am 28.01.',
     whatToExpect: [
       'Für alle, die die Grundlagen schon kennen: Gewichtsverlagerung, Gehen im Parallel- und Kreuzsystem, Ochos, Giro, Sandwichito, Parada und Pasada, Calesita sowie die wichtigsten Regeln und die Orientierung auf einer Milonga.',
       'Jede Stunde dauert 75 Minuten und baut auf der letzten auf. Wir vertiefen Verbindung, Musikalität und Navigation auf der Tanzfläche, mit viel Spaß vermittelt.',
