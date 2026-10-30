@@ -422,6 +422,15 @@ describe('calendar feed', () => {
     expect(ics).toContain('TZID:Europe/Berlin');
     expect(ics).toContain('DTSTART;TZID=Europe/Berlin:20270107T191500');
   });
+
+  it('ships the Growth Sessions .ics at its own slot', () => {
+    const path = join(DIST, 'calendar', 'growth-sessions.ics');
+    expect(existsSync(path), 'calendar/growth-sessions.ics missing').toBe(true);
+    const ics = readFileSync(path, 'utf8');
+    expect(ics.match(/BEGIN:VEVENT/g) ?? []).toHaveLength(1);
+    expect(ics).toContain('DTSTART;TZID=Europe/Berlin:20270107T204500');
+    expect(ics).not.toContain('EXDATE');
+  });
 });
 
 describe('deploy artefacts', () => {

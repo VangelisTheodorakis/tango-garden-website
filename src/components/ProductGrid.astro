@@ -34,7 +34,13 @@ const growthRegisterUrl = classPages.find((c) => c.slug === 'growth-sessions')?.
 const text = {
   en: {
     title: 'Classes & Passes',
-    subtitle: 'Every way into the Garden, with current prices. Not sure which fits? Just ask us.',
+    subtitle: 'Every way into the Garden, with current prices.',
+    subtitleAsk: 'Not sure which fits? Just ask us.',
+    sections: {
+      curious: { title: 'For the curious', lead: 'Want to feel what tango is like? No commitment.' },
+      determined: { title: 'For the determined', lead: 'Ready to learn and grow, in a group or one-to-one.' },
+      everyone: { title: 'For everyone', lead: 'Come and practise together, whenever you like.' },
+    },
     bestFor: 'Best for:',
     register: 'Register Now',
     details: 'View details & prices →',
@@ -78,7 +84,13 @@ const text = {
   },
   de: {
     title: 'Kurse & Pässe',
-    subtitle: 'Alle Wege in den Garten, mit aktuellen Preisen. Nicht sicher, was passt? Frag uns einfach.',
+    subtitle: 'Alle Wege in den Garten, mit aktuellen Preisen.',
+    subtitleAsk: 'Nicht sicher, was passt? Frag uns einfach.',
+    sections: {
+      curious: { title: 'Für die Neugierigen', lead: 'Du willst spüren, wie sich Tango anfühlt? Ganz ohne Verpflichtung.' },
+      determined: { title: 'Für die Entschlossenen', lead: 'Du willst lernen und wachsen, in der Gruppe oder ganz persönlich.' },
+      everyone: { title: 'Für alle', lead: 'Komm zum gemeinsamen Üben vorbei, wann immer du magst.' },
+    },
     bestFor: 'Ideal für:',
     register: 'Jetzt anmelden',
     details: 'Details & Preise ansehen →',
@@ -124,7 +136,7 @@ const text = {
 
 const [etg, sprouting, growth, practica, privateClasses] = text.groups;
 type Group = { title: string; blurb: string; bestFor: string; price: string; href: string; registerUrl?: string };
-const groups: Group[] = [
+const [etgCard, sproutingCard, growthCard, practicaCard, privateCard]: Group[] = [
   {
     ...etg,
     price: priceOf('enter-the-garden-general-admission'),
@@ -153,43 +165,59 @@ const groups: Group[] = [
     href: localizePath('/pages/private-classes', locale),
   },
 ];
+
+// Three sections by intent; each is a row of cards (a single card sits centred).
+const sections = [
+  { key: 'curious', cards: [etgCard] },
+  { key: 'determined', cards: [sproutingCard, growthCard, privateCard] },
+  { key: 'everyone', cards: [practicaCard] },
+].map((section) => ({ ...section, ...text.sections[section.key as keyof typeof text.sections] }));
 ---
 
 <section class="page-hero">
   <h1 class="section-title">{text.title}</h1>
   <p class="section-subtitle">
-    {text.subtitle}
+    {text.subtitle}<br />
+    {text.subtitleAsk}
   </p>
 </section>
 
 <div class="collection">
-  <ul class="collection-list" role="list">
-    {
-      groups.map((group) => (
-        <li>
-          <div class="collection-card">
-            <span class="collection-card-title">{group.title}</span>
-            <span class="collection-card-blurb">{group.blurb}</span>
-            <span class="collection-card-best-for"><strong>{text.bestFor}</strong> {group.bestFor}</span>
-            <span class="collection-card-price">{group.price}</span>
-            <div class="collection-card-actions">
-              {group.registerUrl ? (
-                <a class="collection-card-register" href={group.registerUrl} target="_blank" rel="noopener">
-                  {text.register}
-                </a>
-              ) : (
-                // Invisible same-size placeholder so cards without a register
-                // button still reserve its row, keeping the green CTA on the
-                // same horizontal line across all three cards.
-                <span class="collection-card-register is-spacer" aria-hidden="true">{text.register}</span>
-              )}
-              <a class="collection-card-cta" href={group.href}>{text.details}</a>
-            </div>
-          </div>
-        </li>
-      ))
-    }
-  </ul>
+  {
+    sections.map((section) => (
+      <section class="collection-section">
+        <h2 class="collection-section-title">{section.title}</h2>
+        <p class="collection-section-lead">{section.lead}</p>
+        <ul class:list={['collection-list', { 'is-single': section.cards.length === 1 }]} role="list">
+        {
+            section.cards.map((group) => (
+            <li>
+              <div class="collection-card">
+                <span class="collection-card-title">{group.title}</span>
+                <span class="collection-card-blurb">{group.blurb}</span>
+                <span class="collection-card-best-for"><strong>{text.bestFor}</strong> {group.bestFor}</span>
+                <span class="collection-card-price">{group.price}</span>
+                <div class="collection-card-actions">
+                  {group.registerUrl ? (
+                    <a class="collection-card-register" href={group.registerUrl} target="_blank" rel="noopener">
+                      {text.register}
+                    </a>
+                  ) : (
+                    // Invisible same-size placeholder so cards without a register
+                    // button still reserve its row, keeping the green CTA on the
+                    // same horizontal line across all three cards.
+                    <span class="collection-card-register is-spacer" aria-hidden="true">{text.register}</span>
+                  )}
+                  <a class="collection-card-cta" href={group.href}>{text.details}</a>
+                </div>
+              </div>
+            </li>
+          ))
+        }
+        </ul>
+      </section>
+    ))
+  }
 
   <p class="collection-why">
     {text.why}
@@ -221,20 +249,34 @@ const groups: Group[] = [
     margin: 0 auto;
     padding: 60px 20px;
   }
+  .collection-section + .collection-section {
+    margin-top: 48px;
+  }
+  .collection-section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--green);
+    text-align: center;
+  }
+  .collection-section-lead {
+    margin: 4px 0 20px;
+    text-align: center;
+    color: var(--text-light);
+  }
   .collection-list {
     display: grid;
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  /* Two by two; with an odd number of cards the last one sits centred on its own row. */
+  /* Three columns, the width of the widest section; a section with one card
+     shows it centred at the same card width. */
   @media (min-width: 750px) {
     .collection-list {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
-    .collection-list > li:last-child:nth-child(odd) {
-      grid-column: 1 / -1;
-      justify-self: center;
-      width: calc(50% - 8px);
+    .collection-list.is-single {
+      grid-template-columns: calc((100% - 32px) / 3);
+      justify-content: center;
     }
   }
   .collection-card {

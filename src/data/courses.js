@@ -38,7 +38,21 @@ export const regularClasses = {
   feed: '/assets/data/regular-classes.json',
 };
 
+/** @type {Course} */
+export const growthSessions = {
+  slug: 'growth-sessions',
+  title: 'The Growth Sessions (Improvers Level)',
+  description:
+    'Weekly improvers Argentine Tango course at Tango Garden Cologne, for dancers who know the basics. No partner needed.',
+  location: regularClasses.location,
+  venue: regularClasses.venue,
+  mapsUrl: regularClasses.mapsUrl,
+  timezone: 'Europe/Berlin',
+  feed: '/assets/data/growth-sessions.json',
+};
+
 /** Registry keyed by slug, so a sender can resolve a course by its slug. */
 export const courses = {
   [regularClasses.slug]: regularClasses,
+  [growthSessions.slug]: growthSessions,
 };

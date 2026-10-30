@@ -19,10 +19,12 @@
 import { confirmationEmail } from '../../src/lib/email.js';
 import { courses } from '../../src/data/courses.js';
 import regularClassesFeed from '../../public/assets/data/regular-classes.json';
+import growthSessionsFeed from '../../public/assets/data/growth-sessions.json';
 
-// Course slug -> its schedule feed. One course today; add feeds as courses grow.
+// Course slug -> its schedule feed.
 const FEEDS = {
   'regular-classes': regularClassesFeed,
+  'growth-sessions': growthSessionsFeed,
 };
 
 const DEFAULT_COURSE = 'regular-classes';

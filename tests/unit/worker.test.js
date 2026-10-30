@@ -27,6 +27,15 @@ describe('registration-email worker', () => {
     expect(data.attachments[0].content).toContain('BEGIN:VCALENDAR');
   });
 
+  it('renders the confirmation email for the Growth Sessions', async () => {
+    const res = await post({ name: 'Mia', courseSlug: 'growth-sessions' });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.subject).toContain('The Growth Sessions');
+    expect(data.html).toContain('/calendar/growth-sessions.ics');
+    expect(data.attachments[0].content).toContain('BEGIN:VCALENDAR');
+  });
+
   it('defaults to the regular-classes course when no slug is given', async () => {
     const res = await post({ name: 'Sam' });
     expect(res.status).toBe(200);
