@@ -932,6 +932,15 @@ const waLabel = text.waLabel;
 
   // Location disclosure, `hidden` as the source of truth so the map link
   // stays out of the tab order until the visitor asks to see it.
+  // Count clicks on the register buttons (the form lives on docs.google.com, so
+  // this is the only place the website's contribution can be measured).
+  document.querySelectorAll<HTMLAnchorElement>('.btn-register').forEach((link) => {
+    link.addEventListener('click', () => {
+      const course = location.pathname.replace(/^\/de(?=\/)/, '').replace(/^\/pages\//, '').replace(/\/$/, '');
+      if (typeof window.gtag === 'function') window.gtag('event', 'register_click', { course });
+    });
+  });
+
   // Pricing tier toggle: swaps which of the general/student values show in
   // the table without re-rendering it.
   const tierWrap = document.querySelector('.class-table-wrap') as HTMLElement | null;

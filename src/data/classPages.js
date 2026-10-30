@@ -220,9 +220,12 @@ export const classPages = [
       'With the Full Course and the 4-Class Pass you also get free access to all beginner classes.',
     ],
     whatsIncluded: [],
-    // No registerUrl yet: the page falls back to the WhatsApp button until the
-    // Growth Sessions Google Form exists. Prices below intentionally equal the
-    // Sprouting Sessions prices; they are plain values so no Shopify product is needed.
+    // The utm_ tags mark visits that came from this site. Google Forms itself
+    // does not record them; the register_click GA4 event (ClassPage.astro) is
+    // what counts the clicks. Prices below intentionally equal the Sprouting
+    // Sessions prices; they are plain values so no Shopify product is needed.
+    registerUrl:
+      'https://docs.google.com/forms/d/e/1FAIpQLSfKxH4ndLnCj5Y-c73Ty-ubZOEFU_fNehXq2Uwj6-WJkHu4gg/viewform?utm_source=tangogarden.de&utm_medium=website&utm_campaign=growth-sessions',
     perkColumn: 'Free access to all beginner classes',
     heroImage: 'hero-dancers.png',
     gallery: [
