@@ -8,7 +8,7 @@ import { classPagesDe, getClassPage } from '../../src/data/classPages.de.js';
 const feed = (name) =>
   JSON.parse(readFileSync(new URL(`../../public/assets/data/${name}.json`, import.meta.url), 'utf8'));
 
-const FEEDS = ['enter-the-garden', 'regular-classes', 'practicas'];
+const FEEDS = ['enter-the-garden', 'regular-classes', 'growth-sessions', 'practicas'];
 
 describe('products data', () => {
   it('has every product', () => {

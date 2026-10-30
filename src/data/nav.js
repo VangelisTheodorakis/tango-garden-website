@@ -22,6 +22,7 @@ export const navItems = [
     children: [
       { href: '/pages/enter-the-garden', label: 'Enter the Garden' },
       { href: '/pages/beginner-course', label: 'Sprouting Sessions' },
+      { href: '/pages/growth-sessions', label: 'Growth Sessions' },
       { href: '/pages/garden-practica', label: 'Garden Practica' },
       { href: '/pages/private-classes', label: 'Private Classes' },
     ],

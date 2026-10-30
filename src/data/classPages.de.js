@@ -122,10 +122,70 @@ export const classPagesDe = {
         'Kompletter 12-wöchiger Tango-Argentino-Anfängerkurs in Köln. Von null bis zum sicheren Tanzen. Kein Partner und keine Erfahrung nötig.',
     },
   },
-  'garden-practica': {
-    metaTitle: 'Tango-Practica in Köln: Jeden Mittwoch',
+  'growth-sessions': {
+    metaTitle: 'Tango-Kurs für Fortgeschrittene in Köln (12 Wochen)',
     metaDescription:
-      'Geführte Tango-Practica in Köln: Jeden Mittwoch 2,5 Stunden tanzen, üben und Feedback bekommen. Offen für alle Rollen, ohne Partner, nahe Ebertplatz.',
+      'Tango weiterentwickeln in Köln: 12-wöchiger Kurs für alle mit Tango-Grundlagen, jeden Donnerstag. Nahe Ebertplatz. Unterricht auf Englisch.',
+    eyebrow: 'The Growth Sessions',
+    heading: 'Tango weiterentwickeln: Dein Kurs nach dem Einstieg',
+    intro:
+      'Der nächste Schritt nach den Sprouting Sessions: 12 Wochen, in denen deine Grundlagen zu sicherem, musikalischem Tanzen im Salon wachsen.',
+    feedLabel: 'Nächster Kurs für Fortgeschrittene',
+    whatToExpect: [
+      'Für alle, die die Grundlagen schon kennen: Gewichtsverlagerung, Gehen im Parallel- und Kreuzsystem, Ochos, Giro, Sandwichito, Parada und Pasada, Calesita sowie die wichtigsten Regeln und die Orientierung auf einer Milonga.',
+      'Jede Stunde dauert 75 Minuten und baut auf der letzten auf. Wir vertiefen Verbindung, Musikalität und Navigation auf der Tanzfläche, mit viel Spaß vermittelt.',
+      'Kein Partner nötig. Wir wechseln im Kurs die Partner:innen, und du entscheidest, welche Rolle du vertiefen möchtest: Leader, Follower oder Double-Role.',
+      'Mit dem Ganzen Kurs und dem 4er-Pass kannst du außerdem kostenlos alle Anfängerstunden besuchen.',
+    ],
+    whatsIncluded: [],
+    perkColumn: 'Kostenloser Zugang zu allen Anfängerstunden',
+    table: {
+      caption: 'Pässe',
+      rowLabels: ['Ganzer Kurs (12 Stunden)', '4er-Pass', 'Einzelstunde'],
+    },
+    faq: [
+      {
+        key: 'Am I ready for the Growth Sessions?',
+        q: 'Bin ich bereit für die Growth Sessions?',
+        a: 'Wenn du Gewichtsverlagerung, Gehen im Parallel- und Kreuzsystem, Ochos, Giro, Sandwichito, Parada und Pasada sowie Calesita kennst und weißt, wie man sich auf einer Milonga bewegt, bist du richtig. Unsicher? Schreib uns auf WhatsApp, dann finden wir gemeinsam das passende Level.',
+      },
+      {
+        key: 'How do the free beginner classes work?',
+        q: 'Wie funktioniert der kostenlose Zugang zu den Anfängerstunden?',
+        a: 'Mit dem Ganzen Kurs und dem 4er-Pass der Growth Sessions kannst du alle Stunden der Sprouting Sessions kostenlos besuchen, zum Beispiel zum Auffrischen der Grundlagen oder um Anfänger:innen zu begleiten. Die Einzelstunde enthält diesen Zugang nicht.',
+      },
+      {
+        key: 'Do I need to bring a partner?',
+        q: 'Muss ich eine:n Partner:in mitbringen?',
+        a: 'Nein. Die meisten kommen allein. Wir wechseln in der Stunde die Partner:innen, sodass du mit verschiedenen Leuten tanzt.',
+      },
+      {
+        key: 'What should I wear?',
+        q: 'Was soll ich anziehen?',
+        a: 'Bequeme Kleidung, in der du dich gut bewegen kannst. Als Schuhe eignen sich saubere, gemütliche Socken oder ein zweites Paar Hallenschuhe. Vermeide dicke Gummisohlen, sie haften am Boden und machen Drehungen schwer.',
+      },
+      {
+        key: 'Is the class taught in English?',
+        q: 'Ist der Unterricht auf Englisch?',
+        a: 'Ja, unterrichtet wird auf Englisch. Individuelles Feedback bekommst du auf Wunsch auch auf Deutsch, Griechisch oder Russisch.',
+      },
+      {
+        key: 'Where exactly are you located in Cologne?',
+        q: 'Wo genau seid ihr in Köln?',
+        a: EBERTPLATZ_LINK,
+        raw: true,
+      },
+    ],
+    courseSchema: {
+      name: 'The Growth Sessions: Tango-Argentino-Kurs für Fortgeschrittene in Köln',
+      description:
+        'Zwölfwöchiger Tango-Argentino-Kurs für Fortgeschrittene in Köln, jeden Donnerstag. Für alle, die die Grundlagen schon kennen.',
+    },
+  },
+  'garden-practica': {
+    metaTitle: 'Tango-Practica in Köln: Zweimal im Monat',
+    metaDescription:
+      'Geführte Tango-Practica in Köln: 2 Stunden tanzen, üben und Feedback bekommen, am 2. und 4. Mittwoch im Monat. Offen für alle Rollen, ohne Partner, nahe Ebertplatz.',
     eyebrow: 'The Garden Practica',
     heading: 'Deine Tango-Practica in Köln',
     intro:
@@ -283,6 +343,7 @@ export function getClassPage(slug, locale = 'en') {
     },
     ...(de.priceNote && { priceNote: de.priceNote }),
     ...(de.nextStep && { nextStep: de.nextStep }),
+    ...(de.perkColumn && { perkColumn: de.perkColumn }),
     faq: de.faq,
     courseSchema: { ...en.courseSchema, ...de.courseSchema },
   };

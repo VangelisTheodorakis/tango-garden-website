@@ -202,11 +202,112 @@ export const classPages = [
     },
   },
   {
+    slug: 'growth-sessions',
+    title: 'The Growth Sessions: 12-Week Improvers Tango Course',
+    metaTitle: 'Improvers Tango Course in Cologne (Köln)',
+    metaDescription:
+      'A 12-week Argentine tango course in Cologne for dancers who know the basics, every Thursday. No partner needed. Multi-class passes include free beginner classes.',
+    eyebrow: 'The Growth Sessions',
+    heading: 'Grow Your Argentine Tango',
+    intro:
+      'The next step after the Sprouting Sessions: 12 weeks to turn your basics into confident, musical dancing at the milonga.',
+    feed: '/assets/data/growth-sessions.json',
+    feedLabel: 'Next Improvers Course',
+    whatToExpect: [
+      'For dancers who already know the basics: change of weight, walking in parallel and cross system, ochos, giro, sandwichito, parada and pasada, calesita, plus the basic social rules and navigation of a milonga.',
+      'Each 75-minute class builds on the last. We deepen connection, musicality and navigation on the dance floor, taught in a fun and engaging way.',
+      "No partner needed. We rotate partners throughout the course, and you choose which role you'd like to deepen: Leader, Follower, or Double-Role.",
+      'With the Full Course and the 4-Class Pass you also get free access to all beginner classes.',
+    ],
+    whatsIncluded: [],
+    // No registerUrl yet: the page falls back to the WhatsApp button until the
+    // Growth Sessions Google Form exists. Prices below intentionally equal the
+    // Sprouting Sessions prices; they are plain values so no Shopify product is needed.
+    perkColumn: 'Free access to all beginner classes',
+    heroImage: 'hero-dancers.png',
+    gallery: [
+      '/images/beginner-course-2.webp',
+      '/images/beginner-course-1.webp',
+      '/images/beginner-course-3.webp',
+    ],
+    showTeachers: true,
+    table: {
+      caption: 'Passes',
+      rows: [
+        {
+          label: 'Full Course (12 classes)',
+          general: { price: '€160' },
+          student: { price: '€120' },
+          perClass: { general: '€13', student: '€10' },
+          bestValue: true,
+          makeupIncluded: true,
+        },
+        {
+          label: '4-Class Pass',
+          general: { price: '€60' },
+          student: { price: '€45' },
+          perClass: { general: '€15', student: '€11' },
+          bestValue: false,
+          makeupIncluded: true,
+        },
+        {
+          label: '1-Class Pass',
+          general: { price: '€18' },
+          student: { price: '€15' },
+          perClass: null,
+          bestValue: false,
+          makeupIncluded: false,
+        },
+      ],
+    },
+    cancellationNote: null,
+    faq: [
+      {
+        q: 'Am I ready for the Growth Sessions?',
+        a: 'If you know change of weight, walking in parallel and cross system, ochos, giro, sandwichito, parada and pasada, calesita and the basic social rules of a milonga, you are in the right place. Not sure? Message us on WhatsApp and we will find the right level together.',
+      },
+      {
+        q: 'How do the free beginner classes work?',
+        a: 'With the Full Course and the 4-Class Pass you can attend every Sprouting Sessions class for free, for example to refresh your basics or to support newcomers. The 1-Class Pass does not include this.',
+      },
+      {
+        q: 'Do I need to bring a partner?',
+        a: 'No. Most people come alone. We rotate partners during class so everyone gets to dance with different people.',
+      },
+      {
+        q: 'What should I wear?',
+        a: 'Comfortable clothes you can move in. For shoes, a clean pair of cozy socks or a second pair of indoor shoes works well. Avoid thick rubber soles, they grip the floor and make turning difficult.',
+      },
+      {
+        q: 'Is the class taught in English?',
+        a: 'Yes. All teaching is in English. Under request, we can also offer German, Russian and Greek.',
+      },
+      {
+        q: 'Where exactly are you located in Cologne?',
+        a: '<a href="https://www.google.com/maps/search/?api=1&query=Th%C3%BCrmchenswall+21%2C+50668+K%C3%B6ln" target="_blank" rel="noopener">Thürmchenswall 21, 50668 Köln</a> (Yoga Drop Studio), a 3-minute walk from Ebertplatz.',
+        raw: true,
+      },
+    ],
+    offerHandles: [],
+    courseSchema: {
+      name: 'The Growth Sessions: Improvers Argentine Tango Course Cologne',
+      description:
+        'Twelve-week Argentine tango course in Cologne for dancers who know the basics, every Thursday. No partner needed.',
+      duration: 'PT1H15M',
+      location: {
+        name: 'Yoga Drop Studio',
+        streetAddress: 'Thürmchenswall 21',
+        postalCode: '50668',
+        addressLocality: 'Köln',
+      },
+    },
+  },
+  {
     slug: 'garden-practica',
-    title: 'The Garden Practica: Weekly Open Practice',
+    title: 'The Garden Practica: Open Practice Twice a Month',
     metaTitle: 'Tango Practica Cologne: The Garden Practica',
     metaDescription:
-      'Drop-in Argentine Tango practica in Cologne. Open-level, no partner needed, 2.5-hour guided practice session every week.',
+      'Drop-in Argentine Tango practica in Cologne. Open-level, no partner needed, 2-hour guided practice session on the 2nd and 4th Wednesday of the month.',
     heading: 'The Garden Practica',
     intro:
       'A relaxed, guided practica, open to everyone who has taken at least one tango class. A space to apply what you know, try new roles, and get inspired. Drop in whenever you like.',

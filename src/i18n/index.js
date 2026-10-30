@@ -20,6 +20,7 @@ export const translatedPaths = [
   '/pages/contact',
   '/pages/enter-the-garden',
   '/pages/garden-practica',
+  '/pages/growth-sessions',
   '/pages/impressum',
   '/pages/milonga-rhythm-trainer',
   '/pages/privacy-policy',

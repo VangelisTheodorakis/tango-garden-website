@@ -59,6 +59,8 @@ const contentGroup = pathname.startsWith('/pages/enter-the-garden')
   ? 'Enter the Garden'
   : pathname.startsWith('/pages/beginner-course')
     ? 'Beginner Course'
+    : pathname.startsWith('/pages/growth-sessions')
+      ? 'Growth Sessions'
     : pathname.startsWith('/pages/garden-practica')
       ? 'Garden Practica'
       : null;

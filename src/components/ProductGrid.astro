@@ -27,6 +27,9 @@ const fullCourseRow = rowFor('beginner-course', 'Full Course (12 classes)');
 // Private classes carry plain prices (not Shopify products), read from the same table.
 const privatePrice = (label: string) => fmt((rowFor('private-classes', label).general as { price: string }).price);
 const beginnerCourseRegisterUrl = classPages.find((c) => c.slug === 'beginner-course')?.registerUrl;
+// Same price ladder as the Sprouting Sessions, read from the Growth Sessions table.
+const growthRow = rowFor('growth-sessions', 'Full Course (12 classes)');
+const growthRegisterUrl = classPages.find((c) => c.slug === 'growth-sessions')?.registerUrl;
 
 const text = {
   en: {
@@ -53,6 +56,12 @@ const text = {
         blurb: 'A 12-week beginner course: one class, four classes, or the full course.',
         bestFor: 'complete beginners ready to commit to learning tango.',
         price: `from ${fullCourseRow.perClass?.general} or ${fullCourseRow.perClass?.student}*/class`,
+      },
+      {
+        title: 'The Growth Sessions',
+        blurb: 'A 12-week course for improvers, every Thursday. Free access to all beginner classes with a multi-class pass.',
+        bestFor: 'dancers who know the basics and want to grow on the dance floor.',
+        price: `from ${growthRow.perClass?.general} or ${growthRow.perClass?.student}*/class`,
       },
       {
         title: 'The Garden Practica',
@@ -93,6 +102,12 @@ const text = {
         price: `ab ${fmt(fullCourseRow.perClass?.general)} oder ${fmt(fullCourseRow.perClass?.student)}* pro Stunde`,
       },
       {
+        title: 'The Growth Sessions',
+        blurb: 'Ein 12-wöchiger Kurs für Fortgeschrittene, jeden Donnerstag. Mit einem Mehrfach-Pass kostenlos in allen Anfängerstunden.',
+        bestFor: 'Alle mit Tango-Grundlagen, die sich auf der Tanzfläche weiterentwickeln möchten.',
+        price: `ab ${fmt(growthRow.perClass?.general)} oder ${fmt(growthRow.perClass?.student)}* pro Stunde`,
+      },
+      {
         title: 'The Garden Practica',
         blurb: 'Geführte Übungsabende für alle Level. Komm vorbei, wann immer du magst.',
         bestFor: 'Alle mit mindestens einer Tango-Stunde, die üben möchten.',
@@ -107,7 +122,7 @@ const text = {
   },
 }[locale];
 
-const [etg, sprouting, practica, privateClasses] = text.groups;
+const [etg, sprouting, growth, practica, privateClasses] = text.groups;
 type Group = { title: string; blurb: string; bestFor: string; price: string; href: string; registerUrl?: string };
 const groups: Group[] = [
   {
@@ -120,6 +135,12 @@ const groups: Group[] = [
     price: sprouting.price!,
     href: localizePath('/pages/beginner-course', locale),
     registerUrl: beginnerCourseRegisterUrl,
+  },
+  {
+    ...growth,
+    price: growth.price!,
+    href: localizePath('/pages/growth-sessions', locale),
+    registerUrl: growthRegisterUrl,
   },
   {
     ...practica,
@@ -205,10 +226,15 @@ const groups: Group[] = [
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  /* Four cards: two by two, so none is left alone on a row. */
+  /* Two by two; with an odd number of cards the last one sits centred on its own row. */
   @media (min-width: 750px) {
     .collection-list {
       grid-template-columns: repeat(2, 1fr);
+    }
+    .collection-list > li:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+      justify-self: center;
+      width: calc(50% - 8px);
     }
   }
   .collection-card {

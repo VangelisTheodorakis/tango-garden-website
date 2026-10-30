@@ -43,6 +43,8 @@ interface ClassPageEntry {
   priceNote?: string;
   /** Closing-section text; defaults to the register / drop-in wording. */
   nextStep?: string;
+  /** Header of the ✓/— perk column; defaults to the "free practica if you miss a class" wording. */
+  perkColumn?: string;
   /** `key` is the English question, set on German items for analytics. */
   faq: { q: string; a: string; raw?: boolean; key?: string }[];
   offerHandles: string[];
@@ -371,7 +373,7 @@ const waLabel = text.waLabel;
             <th scope="col">{text.option}</th>
             <th scope="col">{text.price}</th>
             {hasPerClass && <th scope="col">{text.perClass}</th>}
-            {hasMakeup && <th scope="col">{text.makeup}</th>}
+            {hasMakeup && <th scope="col">{data.perkColumn ?? text.makeup}</th>}
             {hasPerClass && <th scope="col">{text.refund}</th>}
           </tr>
         </thead>

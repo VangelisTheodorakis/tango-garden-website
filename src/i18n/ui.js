@@ -63,6 +63,7 @@ export const navLabelsDe = {
   '/pages/classes': 'Kurse',
   '/pages/enter-the-garden': 'Enter the Garden',
   '/pages/beginner-course': 'Sprouting Sessions',
+  '/pages/growth-sessions': 'Growth Sessions',
   '/pages/garden-practica': 'Garden Practica',
   '/pages/private-classes': 'Privatunterricht',
   '/pages/training-material': 'Trainingsmaterial',
