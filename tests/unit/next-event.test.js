@@ -100,13 +100,14 @@ describe('cardContent', () => {
 
   it('shows a still-running course next to the new one, then only the new one', () => {
     const feed = {
-      current: { prefix: 'Now: ', nextPrefix: '⭐ New: ', events: [{ date: '2026-11-12', time: '19:30 – 21:00' }] },
+      current: { prefix: 'Now: ', nextPrefix: 'New: ', events: [{ date: '2026-11-12', time: '19:30 – 21:00' }] },
       events: [{ date: '2027-01-07', time: '19:15 – 20:30' }],
     };
     expect(cardContent(feed, at('2026-10-30')).lines).toEqual([
       'Now: Thu 12 Nov, 19:30 – 21:00',
-      '⭐ New: Thu 07 Jan, 19:15 – 20:30',
+      'New: Thu 07 Jan, 19:15 – 20:30',
     ]);
+    expect(cardContent(feed, at('2026-10-30')).newLine).toBe(1);
     expect(cardContent(feed, at('2026-11-13')).lines).toEqual(['Thu, 07 Jan 2027', '19:15 – 20:30']);
   });
 
@@ -161,6 +162,7 @@ describe('German locale', () => {
       label: 'Nächste Practica',
       lines: ['Mi., 29.07.2026', '19:30 – 22:00'],
       isEmpty: false,
+      newLine: null,
     });
     expect(cardContent({ label: 'Next Practica', events: [] }, at('2026-07-22'), 'de').label).toBe(
       'Next Practica'

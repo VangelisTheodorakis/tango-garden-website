@@ -108,7 +108,7 @@ export function nextEvent(feed, today) {
  * @param {EventFeed | null | undefined} feed
  * @param {Date} today
  * @param {Locale} [locale]
- * @returns {{ label: string | null, lines: string[], isEmpty: boolean }}
+ * @returns {{ label: string | null, lines: string[], isEmpty: boolean, newLine: number | null }}
  */
 export function cardContent(feed, today, locale = 'en') {
   const de = locale === 'de';
@@ -129,17 +129,18 @@ export function cardContent(feed, today, locale = 'en') {
       const newPrefix = (de ? cur.nextPrefix_de : undefined) ?? cur.nextPrefix ?? '';
       lines.push(shortLine(newPrefix, next, locale));
     }
-    return { label, lines, isEmpty: false };
+    // `newLine` is the line that announces the new course, so the page can mark it.
+    return { label, lines, isEmpty: false, newLine: next ? 1 : null };
   }
 
   if (!next) {
     const message = (de ? feed?.emptyMessage_de : feed?.emptyMessage) ?? EMPTY[locale];
-    return { label, lines: [message], isEmpty: true };
+    return { label, lines: [message], isEmpty: true, newLine: null };
   }
 
   const prefix = (de ? feed?.prefix_de : undefined) ?? feed?.prefix ?? '';
   const lines = [prefix + formatDate(next.date, locale)];
   if (next.time) lines.push(next.time);
 
-  return { label, lines, isEmpty: false };
+  return { label, lines, isEmpty: false, newLine: null };
 }

@@ -21,8 +21,8 @@
   "current": {
     "prefix": "Now: ",
     "prefix_de": "Jetzt: ",
-    "nextPrefix": "⭐ New: ",
-    "nextPrefix_de": "⭐ Neu: ",
+    "nextPrefix": "New: ",
+    "nextPrefix_de": "Neu: ",
     "events": [
       { "date": "2026-09-10", "time": "19:30 – 21:00" },
       { "date": "2026-09-17", "time": "19:30 – 21:00" },

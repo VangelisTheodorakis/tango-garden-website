@@ -572,11 +572,35 @@ const waLabel = text.waLabel;
     color: var(--green);
     font-weight: 700;
   }
+  .class-schedule-emoji {
+    width: 22px;
+    text-align: center;
+  }
   .class-schedule-date {
     display: block;
+    position: relative;
     font-size: 15px;
     font-weight: 600;
     color: var(--green);
+  }
+  .class-schedule-date :global(.date-line) {
+    display: block;
+  }
+  /* Running course next to the new one: each line carries its own emoji in the
+     gutter (calendar, then star); the side emoji is hidden but keeps its width. */
+  .class-schedule:has(.date-line--new) .class-schedule-emoji {
+    visibility: hidden;
+  }
+  .class-schedule:has(.date-line--new) .class-schedule-date :global(.date-line)::before {
+    content: '🗓️';
+    position: absolute;
+    left: -32px;
+    width: 22px;
+    text-align: center;
+    line-height: inherit;
+  }
+  .class-schedule:has(.date-line--new) .class-schedule-date :global(.date-line--new)::before {
+    content: '⭐';
   }
   .class-hero--photo .class-schedule {
     background: var(--green);
@@ -917,12 +941,15 @@ const waLabel = text.waLabel;
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (!data) return;
-        const { label, lines } = cardContent(data, new Date(), locale);
+        const { label, lines, newLine } = cardContent(data, new Date(), locale);
         if (labelEl && label) labelEl.textContent = label;
         dateEl.textContent = '';
+        // One block per line; the new-course line gets a star in the emoji column.
         lines.forEach((line, i) => {
-          if (i > 0) dateEl.appendChild(document.createElement('br'));
-          dateEl.appendChild(document.createTextNode(line));
+          const row = document.createElement('span');
+          row.className = i === newLine ? 'date-line date-line--new' : 'date-line';
+          row.textContent = line;
+          dateEl.appendChild(row);
         });
       })
       .catch(() => {
