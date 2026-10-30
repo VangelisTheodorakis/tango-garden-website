@@ -72,10 +72,10 @@ export const classPagesDe = {
     heading: 'Tango lernen: Dein Anfängerkurs in Köln',
     intro:
       'Ein sanfter, strukturierter Einstieg über 12 Wochen. Für alle, die noch nie Tango getanzt haben.',
-    feedLabel: 'Nächster Anfängerkurs · Gruppe schließt am 01.10.',
+    feedLabel: 'Nächster Anfängerkurs',
     whatToExpect: [
       'Ein sanftes wöchentliches Ritual, egal ob du den besten Preis pro Stunde willst oder erst einmal flexibel reinschnuppern möchtest.',
-      'Jede 1,5-stündige Stunde baut auf der letzten auf: Verbindung, Gewichtsverlagerung, die Umarmung und Musikalität. Mit viel Spaß vermittelt, sodass Selbstvertrauen und Schwung mitwachsen.',
+      'Jede 75-minütige Stunde baut auf der letzten auf: Verbindung, Gewichtsverlagerung, die Umarmung und Musikalität. Mit viel Spaß vermittelt, sodass Selbstvertrauen und Schwung mitwachsen.',
       'Kein Partner nötig. Wir wechseln im Kurs die Partner:innen, und du entscheidest, welche Rolle du lernen möchtest: Leader, Follower oder Double-Role.',
     ],
     whatsIncluded: [],

@@ -98,14 +98,15 @@ export const classPages = [
     heading: 'Start Dancing Argentine Tango',
     intro: 'A gentle, structured 12-week beginning for people who have never danced tango before.',
     feed: '/assets/data/regular-classes.json',
-    feedLabel: 'Next Beginner Course · Group closes 01/10',
+    feedLabel: 'Next Beginner Course',
     whatToExpect: [
       "A gentle weekly ritual, whether you're here for the best value per class or the flexibility to try it first.",
-      "Each 1.5-hour class builds on the last: connection, weight shifts, the embrace, and musicality, taught in a fun and engaging way that builds confidence and momentum.",
+      "Each 75-minute class builds on the last: connection, weight shifts, the embrace, and musicality, taught in a fun and engaging way that builds confidence and momentum.",
       "No partner needed. We rotate partners throughout the course, and you choose which role you'd like to learn: Leader, Follower, or Double-Role.",
     ],
     whatsIncluded: [],
-    registerUrl: 'https://forms.gle/mAqzDEYasFyCrdoz8',
+    registerUrl:
+      'https://docs.google.com/forms/d/e/1FAIpQLSfKxH4ndLnCj5Y-c73Ty-ubZOEFU_fNehXq2Uwj6-WJkHu4gg/viewform?utm_source=tangogarden.de&utm_medium=website&utm_campaign=sprouting-sessions-winter',
     heroImage: 'hero-dancers.png',
     gallery: [
       '/images/beginner-course-2.webp',
@@ -225,7 +226,7 @@ export const classPages = [
     // what counts the clicks. Prices below intentionally equal the Sprouting
     // Sessions prices; they are plain values so no Shopify product is needed.
     registerUrl:
-      'https://docs.google.com/forms/d/e/1FAIpQLSfKxH4ndLnCj5Y-c73Ty-ubZOEFU_fNehXq2Uwj6-WJkHu4gg/viewform?utm_source=tangogarden.de&utm_medium=website&utm_campaign=growth-sessions',
+      'https://docs.google.com/forms/d/e/1FAIpQLSeg8Mn2gDfP0JUQ_-n_Zldr4n8JQ2CrAr9e9zL1o8VfBl41aA/viewform?utm_source=tangogarden.de&utm_medium=website&utm_campaign=growth-sessions-winter',
     perkColumn: 'Free access to all beginner classes',
     heroImage: 'hero-dancers.png',
     gallery: [

@@ -420,7 +420,7 @@ describe('calendar feed', () => {
   it('anchors the series to Europe/Berlin so DST does not shift it', () => {
     const ics = readFileSync(icsPath, 'utf8');
     expect(ics).toContain('TZID:Europe/Berlin');
-    expect(ics).toContain('DTSTART;TZID=Europe/Berlin:20260910T193000');
+    expect(ics).toContain('DTSTART;TZID=Europe/Berlin:20270107T191500');
   });
 });
 
