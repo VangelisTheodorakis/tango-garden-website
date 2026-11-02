@@ -86,6 +86,7 @@ In the form: **⋮ menu > Script editor** (or **Extensions > Apps Script**).
   - `COURSE_SLUG` = `growth-sessions` on the improvers form only. Leave it out
     on the beginner form (it defaults to `regular-classes`). Every form runs the
     same `Code.gs`; this property is the only difference.
+  - `GA_MEASUREMENT_ID` and `GA_API_SECRET` (optional, both forms): see step 6.
 - **Triggers** (clock icon) > **Add trigger**:
   - function `onFormSubmit`, event source **From form**, type **On form submit**.
 - Authorize when prompted (Gmail send + external fetch scopes).
@@ -108,6 +109,28 @@ Submit the form with your own email. You should receive the confirmation, and:
 If nothing arrives, open the Apps Script **Executions** log for the error (most
 often: `WORKER_URL`/`SHARED_SECRET` mismatch, or the `from` alias is not
 verified).
+
+## 6. Count submissions in GA4 (optional)
+
+Each submission can send a `registration_submit` event to GA4, with one
+parameter, `course` (`beginner-course` or `growth-sessions`, the page slugs, the
+same values the website's `register_click` event sends). No name, email or
+phone is sent. Together with page views and the website's `register_click`
+event, this gives per-course counts: visited the page → clicked register →
+submitted the form. The steps are counted separately, not per person (the form
+cannot see the visitor's GA cookie).
+
+1. GA4 > **Admin > Data streams** > the web stream > **Measurement Protocol API
+   secrets > Create**. Copy the secret.
+2. In **both** forms' Script properties add `GA_MEASUREMENT_ID` (the site's
+   `G-…` ID, `gaMeasurementId` in `src/data/site.js`) and `GA_API_SECRET`.
+3. Submit a test. The event shows under **Reports > Realtime** within a minute.
+   Then **Admin > Events**: mark `registration_submit` as a key event, and under
+   **Admin > Custom definitions** add an event-scoped dimension for `course` so
+   reports can split by course.
+
+Without these two properties the script skips this step. A GA4 error is logged
+and never blocks the confirmation email.
 
 ## When the schedule changes
 

@@ -11,6 +11,8 @@
  *        SHARED_SECRET  = (the same value set with `wrangler secret put SHARED_SECRET`)
  *        COURSE_SLUG    = growth-sessions  (improvers form only; leave it out on
  *                         the beginner form, which defaults to regular-classes)
+ *        GA_MEASUREMENT_ID = G-...  (optional, with GA_API_SECRET: counts each
+ *        GA_API_SECRET     = ...     submission in GA4 as `registration_submit`)
  *   2. Triggers (clock icon) > Add Trigger:
  *        function: onFormSubmit, event source: From form, type: On form submit.
  *   3. bookings@tangogarden.de must be a verified "Send mail as" alias on the
@@ -22,6 +24,9 @@ function onFormSubmit(e) {
   var WORKER_URL = props.getProperty('WORKER_URL');
   var SHARED_SECRET = props.getProperty('SHARED_SECRET');
   var COURSE_SLUG = props.getProperty('COURSE_SLUG') || 'regular-classes';
+
+  // Every submission counts, even one the email step below cannot handle.
+  trackSubmission_(props, COURSE_SLUG);
 
   var answers = extractAnswers_(e);
   if (!answers.email) {
@@ -105,6 +110,46 @@ function extractAnswers_(e) {
   }
 
   return { name: name, email: email };
+}
+
+/**
+ * Sends a `registration_submit` event to GA4 (Measurement Protocol), carrying
+ * only the course slug: no name, email or phone. Each submission gets a fresh
+ * random client_id, so it is counted but not linked to a website visitor.
+ * Skipped when the GA properties are not set; a failure is logged and never
+ * stops the confirmation email.
+ */
+function trackSubmission_(props, courseSlug) {
+  var measurementId = props.getProperty('GA_MEASUREMENT_ID');
+  var apiSecret = props.getProperty('GA_API_SECRET');
+  if (!measurementId || !apiSecret) return;
+  // GA4 names a course by its page slug, the same value the website's
+  // register_click event sends, so both steps of one course match.
+  var course = { 'regular-classes': 'beginner-course' }[courseSlug] || courseSlug;
+  try {
+    var url = 'https://www.google-analytics.com/mp/collect'
+      + '?measurement_id=' + encodeURIComponent(measurementId)
+      + '&api_secret=' + encodeURIComponent(apiSecret);
+    var now = Date.now();
+    var res = UrlFetchApp.fetch(url, {
+      method: 'post',
+      contentType: 'application/json',
+      payload: JSON.stringify({
+        client_id: Math.floor(Math.random() * 2147483647) + '.' + Math.floor(now / 1000),
+        events: [{
+          name: 'registration_submit',
+          // session_id + engagement_time_msec make the event show in Realtime.
+          params: { course: course, session_id: String(now), engagement_time_msec: 1 },
+        }],
+      }),
+      muteHttpExceptions: true,
+    });
+    if (res.getResponseCode() >= 300) {
+      console.warn('GA4 event not accepted: ' + res.getResponseCode());
+    }
+  } catch (err) {
+    console.warn('GA4 event failed: ' + err);
+  }
 }
 
 function plainTextFallback_() {
