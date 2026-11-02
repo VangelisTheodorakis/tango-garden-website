@@ -44,6 +44,7 @@ const text = {
     bestFor: 'Best for:',
     register: 'Register Now',
     details: 'View details & prices →',
+    detailsFree: 'View details →',
     why: 'Young people are the future of tango. We keep a reduced rate so the next generation can always find their way onto the floor.',
     note: '* Reduced rate for students and anyone 28 and under.',
     helpTitle: 'Not sure where to start?',
@@ -55,6 +56,7 @@ const text = {
       {
         title: 'Enter the Garden',
         blurb: 'One-time, free introductory session for anyone who wants to try without commitment.',
+        price: 'Free of charge',
         bestFor: 'anyone curious about tango, zero experience needed.',
       },
       {
@@ -94,6 +96,7 @@ const text = {
     bestFor: 'Ideal für:',
     register: 'Jetzt anmelden',
     details: 'Details & Preise ansehen →',
+    detailsFree: 'Details ansehen →',
     why: 'Junge Menschen sind die Zukunft des Tango. Deshalb gibt es einen ermäßigten Preis, damit die nächste Generation immer ihren Weg auf die Tanzfläche findet.',
     note: '* Ermäßigt für Studierende und alle bis 28 Jahre.',
     helpTitle: 'Nicht sicher, wo du anfangen sollst?',
@@ -105,6 +108,7 @@ const text = {
       {
         title: 'Enter the Garden',
         blurb: 'Einmalige, kostenlose Probestunde für alle, die ganz unverbindlich reinschnuppern möchten.',
+        price: 'Kostenlos',
         bestFor: 'Alle, die neugierig auf Tango sind, ganz ohne Erfahrung.',
       },
       {
@@ -135,11 +139,13 @@ const text = {
 }[locale];
 
 const [etg, sprouting, growth, practica, privateClasses] = text.groups;
-type Group = { title: string; blurb: string; bestFor: string; price: string; href: string; registerUrl?: string };
+type Group = { title: string; blurb: string; bestFor: string; price: string; href: string; registerUrl?: string; details?: string };
 const [etgCard, sproutingCard, growthCard, practicaCard, privateCard]: Group[] = [
   {
     ...etg,
-    price: priceOf('enter-the-garden-general-admission'),
+    price: etg.price!,
+    // Free, so there are no prices to view.
+    details: text.detailsFree,
     href: localizePath('/pages/enter-the-garden', locale),
   },
   {
@@ -184,6 +190,7 @@ const rows = [
 </section>
 
 <div class="collection">
+  <div class="collection-grid">
   {
     rows.map((row) => (
       <div class:list={['collection-row', { 'is-pair': row.length > 1 }]}>
@@ -205,13 +212,13 @@ const rows = [
                       <a class="collection-card-register" href={group.registerUrl} target="_blank" rel="noopener">
                         {text.register}
                       </a>
-                    ) : (
-                      // Invisible same-size placeholder so cards without a register
-                      // button still reserve its row, keeping the green CTA on the
-                      // same horizontal line across all three cards.
+                    ) : section.cards.some((c) => c.registerUrl) ? (
+                      // Invisible same-size placeholder, only in a section where
+                      // another card has a register button, so the green CTA stays
+                      // on the same line across that section's cards.
                       <span class="collection-card-register is-spacer" aria-hidden="true">{text.register}</span>
-                    )}
-                    <a class="collection-card-cta" href={group.href}>{text.details}</a>
+                    ) : null}
+                    <a class="collection-card-cta" href={group.href}>{group.details ?? text.details}</a>
                   </div>
                 </div>
               </li>
@@ -223,6 +230,7 @@ const rows = [
       </div>
     ))
   }
+  </div>
 
   <p class="collection-why">
     {text.why}
@@ -262,16 +270,46 @@ const rows = [
     grid-template-columns: 1fr;
     gap: 48px;
   }
+  /* Side by side, all five cards sit on one six-column grid: the top three span
+     two columns each, the bottom pair spans columns 2-3 and 4-5. Both card rows
+     are 1fr, so they take the height of the tallest card and every card is the
+     same size. The row, section and list wrappers step aside (display:
+     contents) so their children become grid items. */
   @media (min-width: 750px) {
-    /* Two sections side by side, each as wide as one card of the row above. */
-    .collection-row.is-pair {
-      grid-template-columns: repeat(2, calc((100% - 48px) / 3));
-      justify-content: center;
-      gap: 24px;
+    .collection-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-template-rows: auto auto 1fr auto auto 1fr;
+      column-gap: 24px;
     }
-    .collection-row.is-pair .collection-list.is-single {
-      grid-template-columns: 1fr;
+    .collection-grid .collection-row,
+    .collection-grid .collection-section,
+    .collection-grid .collection-list {
+      display: contents;
     }
+    .collection-row:first-child .collection-section-title,
+    .collection-row:first-child .collection-section-lead {
+      grid-column: 1 / -1;
+    }
+    .collection-row:first-child .collection-section-title { grid-row: 1; }
+    .collection-row:first-child .collection-section-lead { grid-row: 2; }
+    .collection-row:first-child .collection-list > li { grid-row: 3; grid-column: span 2; }
+    .collection-row.is-pair .collection-section-title {
+      grid-row: 4;
+      margin-top: 48px;
+    }
+    .collection-row.is-pair .collection-section-lead {
+      grid-row: 5;
+      /* Use half the gap on each side, so a short line like "Want to feel what
+         tango is like? No commitment." fits on one line. */
+      margin-left: -12px;
+      margin-right: -12px;
+    }
+    .collection-row.is-pair .collection-list > li { grid-row: 6; }
+    .collection-row.is-pair .collection-section:first-child > * { grid-column: 2 / 4; }
+    .collection-row.is-pair .collection-section:last-child > *,
+    .collection-row.is-pair .collection-section:last-child .collection-list > li { grid-column: 4 / 6; }
+    .collection-row.is-pair .collection-section:first-child .collection-list > li { grid-column: 2 / 4; }
   }
   .collection-section-title {
     font-size: 1.5rem;
@@ -288,17 +326,6 @@ const rows = [
     display: grid;
     grid-template-columns: 1fr;
     gap: 24px;
-  }
-  /* Three columns, the width of the widest section; a section with one card
-     shows it centred at the same card width. */
-  @media (min-width: 750px) {
-    .collection-list {
-      grid-template-columns: repeat(3, 1fr);
-    }
-    .collection-list.is-single {
-      grid-template-columns: calc((100% - 48px) / 3);
-      justify-content: center;
-    }
   }
   .collection-card {
     display: flex;

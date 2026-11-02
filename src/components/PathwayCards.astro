@@ -57,12 +57,12 @@ const text = {
         title: 'Garden Practica',
         description: 'A relaxed, guided practica for anyone who has taken at least one tango class.',
         features: [
-          '2-hour guided sessions, 2nd and 4th Wednesday',
+          '2-hour guided sessions, 2nd and 4th Wednesday of each month',
           'Open-level and double-role',
           'Community-focused atmosphere',
         ],
         dateLabel: 'Next Practica',
-        dateFallback: 'Wed, 22/07/2026<br>19:30 – 22:00',
+        dateFallback: 'Wed, 22/07/2026, 19:30 – 22:00',
         price: '€10 or €8*',
         cta: 'See tango practica details →',
       },
@@ -111,7 +111,7 @@ const text = {
         title: 'Garden Practica',
         description: 'Eine entspannte, geführte Practica für alle, die schon mindestens eine Tango-Stunde hatten.',
         features: [
-          '2 Stunden, angeleitet, am 2. und 4. Mittwoch',
+          '2 Stunden, angeleitet, am 2. und 4. Mittwoch im Monat',
           'Alle Level, auch Double-Role',
           'Community im Mittelpunkt',
         ],
@@ -418,14 +418,15 @@ const cards = shape.map((c, i) => {
     .card-date {
       min-height: 112px;
     }
+    /* Room for the green card's price on two lines (the German one wraps). */
     .pathway-card .card-foot {
-      flex: 0 0 170px;
+      flex: 0 0 185px;
     }
   }
 
   /* Just past the three-column switch the cards are only ~290px wide: tighter
      side padding and a slightly smaller date text keep each course on one line. */
-  @media (min-width: 968px) and (max-width: 1180px) {
+  @media (min-width: 968px) and (max-width: 1240px) {
     .pathway-card {
       padding-left: 20px;
       padding-right: 20px;
@@ -436,8 +437,17 @@ const cards = shape.map((c, i) => {
     .card-date {
       min-height: 140px;
     }
+    /* Fits the green card's price when it wraps to two lines here. */
     .pathway-card .card-foot {
-      flex-basis: 200px;
+      flex-basis: 210px;
+    }
+    /* The labels wrap at different widths here; a two-line minimum height keeps
+       all three buttons the same size. */
+    .pathway-card .card-btn {
+      min-height: 85px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 
@@ -469,8 +479,6 @@ const cards = shape.map((c, i) => {
   }
   .featured .card-price {
     color: white;
-    margin-bottom: 10px;
-    line-height: 1.1;
   }
   /* Value framing: the big number is the hook, this muted line names the total
      so the per-class figure can never read as a hidden "€13 → €160" trap. */
@@ -522,11 +530,15 @@ const cards = shape.map((c, i) => {
        split it evenly instead of leaving one word on the second line. */
     text-wrap: balance;
   }
+  /* Same border width (transparent) and no extra bottom margin, so the green
+     card's button lines up with its neighbours. */
   .featured .card-btn {
     padding: 15px 20px;
-    border: none;
+    border-color: transparent;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px;
+  }
+  .card-btn + .card-btn-secondary {
+    margin-top: 20px;
   }
   .card-btn-secondary {
     background: transparent;
@@ -551,7 +563,7 @@ const cards = shape.map((c, i) => {
   const feeds = [
     { url: '/assets/data/enter-the-garden.json', key: 'etg' },
     { url: '/assets/data/regular-classes.json', key: 'rc' },
-    { url: '/assets/data/practicas.json', key: 'prac' },
+    { url: '/assets/data/practicas.json', key: 'prac', oneLine: true },
   ];
 
   for (const feed of feeds) {
@@ -563,7 +575,10 @@ const cards = shape.map((c, i) => {
         const dateEl = document.getElementById(`${feed.key}-date`);
         if (!dateEl) return;
 
-        const { label, lines, newLine } = cardContent(data, new Date(), locale, { showYear: false });
+        const { label, lines, newLine } = cardContent(data, new Date(), locale, {
+          showYear: false,
+          oneLine: feed.oneLine,
+        });
 
         if (labelEl && label) labelEl.textContent = label;
 

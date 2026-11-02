@@ -26,6 +26,8 @@ interface ClassPageEntry {
   /** Date feed for the "next class" box; pages without fixed dates leave it out. */
   feed?: string;
   feedLabel?: string;
+  /** Next date without the year and with the time on the same line. */
+  feedOneLine?: boolean;
   whatToExpect: string[];
   whatsIncluded: string[];
   table: {
@@ -45,6 +47,8 @@ interface ClassPageEntry {
   nextStep?: string;
   /** Header of the ✓/— perk column; defaults to the "free practica if you miss a class" wording. */
   perkColumn?: string;
+  /** WhatsApp message; defaults to "Hi! I have a question about <heading>." */
+  waMessage?: string;
   /** `key` is the English question, set on German items for analytics. */
   faq: { q: string; a: string; raw?: boolean; key?: string }[];
   offerHandles: string[];
@@ -279,7 +283,11 @@ const mapQuery = [loc.streetAddress, loc.postalCode, loc.addressLocality].filter
 const mapUrl = loc.streetAddress ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}` : null;
 
 // German headings are keyword phrases; the message names the class by its brand name.
-const waMessage = text.waMessage(locale === 'de' ? (data.eyebrow ?? data.heading) : data.heading);
+// A page can set its own message (`waMessage` in classPages.js / classPages.de.js).
+const waMessage =
+  data.waMessage
+    ? data.waMessage
+    : text.waMessage(locale === 'de' ? (data.eyebrow ?? data.heading) : data.heading);
 const waHref = `https://wa.me/491602368723?text=${encodeURIComponent(waMessage)}`;
 const waLabel = text.waLabel;
 ---
@@ -310,7 +318,7 @@ const waLabel = text.waLabel;
       <p class="class-intro">{data.intro}</p>
       {text.languageNote && <p class="class-language-note">{text.languageNote}</p>}
       {data.feed && (
-        <div class="class-schedule" data-feed={data.feed}>
+        <div class="class-schedule" data-feed={data.feed} data-one-line={data.feedOneLine ? '' : undefined}>
           <span class="class-schedule-emoji" aria-hidden="true">🗓️</span>
           <div>
             <span class="class-schedule-label">{data.feedLabel}</span>
@@ -945,7 +953,8 @@ const waLabel = text.waLabel;
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (!data) return;
-        const { label, lines, newLine } = cardContent(data, new Date(), locale);
+        const oneLine = box?.dataset.oneLine !== undefined;
+        const { label, lines, newLine } = cardContent(data, new Date(), locale, { showYear: !oneLine, oneLine });
         if (labelEl && label) labelEl.textContent = label;
         dateEl.textContent = '';
         // One block per line; the new-course line gets a star in the emoji column.

@@ -69,6 +69,7 @@ export const classPagesDe = {
     metaDescription:
       'Tango lernen in Köln: 12-wöchiger Anfängerkurs, ohne Partner und ohne Vorkenntnisse. Nahe Ebertplatz. Unterricht auf Englisch, Feedback auch auf Deutsch.',
     eyebrow: 'The Sprouting Sessions',
+    waMessage: 'Hi! Ich habe eine Frage zum Tango-Anfängerkurs bei Tango Garden!',
     heading: 'Tango lernen: Dein Anfängerkurs in Köln',
     intro:
       'Ein sanfter, strukturierter Einstieg über 12 Wochen. Für alle, die noch nie Tango getanzt haben.',
@@ -100,6 +101,11 @@ export const classPagesDe = {
         a: 'Bequeme Kleidung, in der du dich gut bewegen kannst. Als Schuhe eignen sich saubere, gemütliche Socken oder ein zweites Paar Hallenschuhe. Vermeide dicke Gummisohlen, sie haften am Boden und machen Drehungen schwer.',
       },
       {
+        key: 'When should I arrive?',
+        q: 'Wann sollte ich da sein?',
+        a: 'Halte dich an unsere „Erste 10 Minuten“-Regel: Komm 10 Minuten früher, damit du dich in Ruhe umziehen und ankommen kannst.',
+      },
+      {
         key: 'Is the class taught in English?',
         q: 'Ist der Unterricht auf Englisch?',
         a: 'Ja, unterrichtet wird auf Englisch. Individuelles Feedback bekommst du auf Wunsch auch auf Deutsch, Griechisch oder Russisch.',
@@ -127,6 +133,7 @@ export const classPagesDe = {
     metaDescription:
       'Tango weiterentwickeln in Köln: 12-wöchiger Kurs für alle mit Tango-Grundlagen, jeden Donnerstag. Nahe Ebertplatz. Unterricht auf Englisch.',
     eyebrow: 'The Growth Sessions',
+    waMessage: 'Hi! Ich habe eine Frage zum Tango-Kurs für Fortgeschrittene bei Tango Garden!',
     heading: 'Tango weiterentwickeln: Dein Kurs nach dem Einstieg',
     intro:
       'Der nächste Schritt nach den Sprouting Sessions: 12 Wochen, in denen deine Grundlagen zu sicherem, musikalischem Tanzen im Salon wachsen.',
@@ -163,6 +170,11 @@ export const classPagesDe = {
         key: 'What should I wear?',
         q: 'Was soll ich anziehen?',
         a: 'Bequeme Kleidung, in der du dich gut bewegen kannst. Als Schuhe eignen sich saubere, gemütliche Socken oder ein zweites Paar Hallenschuhe. Vermeide dicke Gummisohlen, sie haften am Boden und machen Drehungen schwer.',
+      },
+      {
+        key: 'When should I arrive?',
+        q: 'Wann sollte ich da sein?',
+        a: 'Halte dich an unsere „Erste 10 Minuten“-Regel: Komm 10 Minuten früher, damit du dich in Ruhe umziehen und ankommen kannst.',
       },
       {
         key: 'Is the class taught in English?',
@@ -344,6 +356,8 @@ export function getClassPage(slug, locale = 'en') {
     ...(de.priceNote && { priceNote: de.priceNote }),
     ...(de.nextStep && { nextStep: de.nextStep }),
     ...(de.perkColumn && { perkColumn: de.perkColumn }),
+    // Never the English message on a German page; without one, the page builds its own.
+    waMessage: 'waMessage' in de ? de.waMessage : undefined,
     faq: de.faq,
     courseSchema: { ...en.courseSchema, ...de.courseSchema },
   };

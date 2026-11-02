@@ -107,6 +107,7 @@ export const classPages = [
     whatsIncluded: [],
     registerUrl:
       'https://docs.google.com/forms/d/e/1FAIpQLSfKxH4ndLnCj5Y-c73Ty-ubZOEFU_fNehXq2Uwj6-WJkHu4gg/viewform?utm_source=tangogarden.de&utm_medium=website&utm_campaign=sprouting-sessions-winter',
+    waMessage: "Hi! I have a question about the Beginners' Tango Course at Tango Garden!",
     heroImage: 'hero-dancers.png',
     gallery: [
       '/images/beginner-course-2.webp',
@@ -168,6 +169,10 @@ export const classPages = [
         a: 'Comfortable clothes you can move in. For shoes, a clean pair of cozy socks or a second pair of indoor shoes works well. Avoid thick rubber soles, they grip the floor and make turning difficult.',
       },
       {
+        q: 'When should I arrive?',
+        a: 'Follow our "First 10 Minutes" rule: arrive 10 minutes early to change and settle in without the rush.',
+      },
+      {
         q: 'Is the class taught in English?',
         a: 'Yes. All teaching is in English. Under request, we can also offer German, Russian and Greek.',
       },
@@ -193,7 +198,7 @@ export const classPages = [
       name: 'The Sprouting Sessions: Beginner Argentine Tango Course Cologne',
       description:
         'Complete 12-week beginner Argentine tango course in Cologne. From zero to dancing with confidence. No partner or experience needed.',
-      duration: 'PT1H30M',
+      duration: 'PT1H15M',
       location: {
         name: 'Yoga Drop Studio',
         streetAddress: 'Thürmchenswall 21',
@@ -213,6 +218,7 @@ export const classPages = [
     intro:
       'The next step after the Sprouting Sessions: 12 weeks to turn your basics into confident, musical dancing at the milonga.',
     feed: '/assets/data/growth-sessions.json',
+    feedOneLine: true,
     feedLabel: 'Next Improvers Course · Closes 28/01',
     whatToExpect: [
       'For dancers who already know the basics: change of weight, walking in parallel and cross system, ochos, giro, sandwichito, parada and pasada, calesita, plus the basic social rules and navigation of a milonga.',
@@ -227,6 +233,7 @@ export const classPages = [
     // Sessions prices; they are plain values so no Shopify product is needed.
     registerUrl:
       'https://docs.google.com/forms/d/e/1FAIpQLSeg8Mn2gDfP0JUQ_-n_Zldr4n8JQ2CrAr9e9zL1o8VfBl41aA/viewform?utm_source=tangogarden.de&utm_medium=website&utm_campaign=growth-sessions-winter',
+    waMessage: "Hi! I have a question about the Improvers' Tango Course at Tango Garden!",
     perkColumn: 'Free access to all beginner classes',
     heroImage: 'hero-dancers.png',
     gallery: [
@@ -283,6 +290,10 @@ export const classPages = [
         a: 'Comfortable clothes you can move in. For shoes, a clean pair of cozy socks or a second pair of indoor shoes works well. Avoid thick rubber soles, they grip the floor and make turning difficult.',
       },
       {
+        q: 'When should I arrive?',
+        a: 'Follow our "First 10 Minutes" rule: arrive 10 minutes early to change and settle in without the rush.',
+      },
+      {
         q: 'Is the class taught in English?',
         a: 'Yes. All teaching is in English. Under request, we can also offer German, Russian and Greek.',
       },
@@ -316,6 +327,7 @@ export const classPages = [
     intro:
       'A relaxed, guided practica, open to everyone who has taken at least one tango class. A space to apply what you know, try new roles, and get inspired. Drop in whenever you like.',
     feed: '/assets/data/practicas.json',
+    feedOneLine: true,
     feedLabel: 'Next Practica',
     whatToExpect: [
       'Every practica starts with a 10-minute warm-up, followed by a 30-minute guided practica with invited guests. After that, the floor is yours: dance what you already know and pick up feedback along the way.',
@@ -383,7 +395,7 @@ export const classPages = [
       name: 'Drop-In Practice: Tango Practica Cologne',
       description:
         'Open-level drop-in Argentine tango practica in Cologne. All levels welcome, no partner needed.',
-      duration: 'PT2H30M',
+      duration: 'PT2H',
       location: {
         name: 'Yoga Drop Studio',
         streetAddress: 'Thürmchenswall 21',

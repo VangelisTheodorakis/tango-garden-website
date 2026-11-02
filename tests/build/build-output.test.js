@@ -428,7 +428,7 @@ describe('calendar feed', () => {
     expect(existsSync(path), 'calendar/growth-sessions.ics missing').toBe(true);
     const ics = readFileSync(path, 'utf8');
     expect(ics.match(/BEGIN:VEVENT/g) ?? []).toHaveLength(1);
-    expect(ics).toContain('DTSTART;TZID=Europe/Berlin:20270107T204500');
+    expect(ics).toContain('DTSTART;TZID=Europe/Berlin:20270107T203000');
     expect(ics).not.toContain('EXDATE');
   });
 });
