@@ -1,0 +1,25 @@
+# Gardeners' Area data Worker. Separate from the site's assets-only
+# wrangler.jsonc: it runs on one path of tangogarden.de, in front of the site.
+#
+# Always pass --config explicitly (see workers/registration-email/wrangler.toml
+# for why). Deploy from this directory, logged in to the tangogarden.de account:
+#   npx wrangler deploy --config ./wrangler.toml
+# Secrets (never commit them):
+#   npx wrangler secret put GA_SA_KEY --config ./wrangler.toml
+#   npx wrangler secret put ACCESS_AUD --config ./wrangler.toml
+#   npx wrangler secret put ALLOWED_EMAILS --config ./wrangler.toml
+#
+# Setup steps: docs/gardeners-area-setup.md
+name = "tango-garden-gardeners"
+main = "worker.js"
+compatibility_date = "2026-07-22"
+workers_dev = false
+
+routes = [
+  { pattern = "tangogarden.de/gardeners-area/api/*", zone_name = "tangogarden.de" },
+]
+
+[vars]
+GA_PROPERTY_ID = "550087499"
+# Your Cloudflare Zero Trust team domain, e.g. "tangogarden.cloudflareaccess.com".
+ACCESS_TEAM_DOMAIN = "REPLACE-ME.cloudflareaccess.com"

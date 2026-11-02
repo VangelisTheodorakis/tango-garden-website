@@ -27,6 +27,7 @@ const PAGES = [
   '/products/enter-the-garden-general-admission',
   '/pages/impressum',
   '/pages/training-material',
+  '/gardeners-area',
   '/404',
   // German runs longer than English — the translations get the same checks.
   '/de',

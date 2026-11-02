@@ -13,4 +13,6 @@ export const noindexRoutes = [
   '/pages/privacy-policy/',
   '/pages/terms-of-service/',
   '/pages/refund-and-cancellation-policy/',
+  // Private team dashboard, behind Cloudflare Access.
+  '/gardeners-area/',
 ];

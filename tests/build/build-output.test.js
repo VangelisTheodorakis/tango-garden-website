@@ -55,8 +55,9 @@ describe('pages', () => {
     // material page that lists them)
     // + 12 products (all hidden, kept for direct-URL + price/variant data)
     // + 404
+    // + the private Gardeners' Area dashboard (English only)
     // + a German mirror under /de for every page in src/i18n/index.js translatedPaths
-    expect(pages).toHaveLength(31 + translatedPaths.length);
+    expect(pages).toHaveLength(32 + translatedPaths.length);
   });
 
   it('gives every page a non-empty title', () => {
@@ -523,5 +524,19 @@ describe('languages (EN default, DE under /de)', () => {
     const titles = pages.filter((p) => !noindexed(p)).map((p) => p.document.title);
     const deTitles = pages.filter((p) => isDe(p) && !noindexed(p)).map((p) => p.document.title);
     for (const t of deTitles) expect(titles.filter((x) => x === t), t).toHaveLength(1);
+  });
+});
+
+describe("Gardeners' Area", () => {
+  const page = () => pages.find((p) => p.route === '/gardeners-area/');
+
+  it('is noindexed and left out of the sitemap', () => {
+    expect(page()?.document.querySelector('meta[name="robots"]')?.getAttribute('content')).toMatch(/noindex/);
+    expect(readFileSync(join(DIST, 'sitemap-0.xml'), 'utf8')).not.toContain('gardeners-area');
+  });
+
+  it('never loads Google Analytics', () => {
+    // The GA bootstrap only runs when this meta tag is present.
+    expect(page()?.document.querySelector('meta[name="ga-measurement-id"]')).toBeNull();
   });
 });

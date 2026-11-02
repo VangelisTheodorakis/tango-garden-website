@@ -20,6 +20,8 @@ interface Props {
   canonical?: string;
   ogType?: 'website' | 'article' | 'product';
   noindex?: boolean;
+  /** false leaves GA4 off this page (the private Gardeners' Area). */
+  analytics?: boolean;
   schema?: 'localbusiness' | 'product' | 'learningresource' | 'none';
   product?: {
     name: string;
@@ -45,6 +47,7 @@ const {
   canonical,
   ogType = 'website',
   noindex = false,
+  analytics = true,
   schema = 'none',
   product,
   learningResource,
@@ -87,7 +90,7 @@ const contentGroup = pathname.startsWith('/pages/enter-the-garden')
       locale={locale}
     />
     <StructuredData type={schema} product={product} learningResource={learningResource} />
-    {gaMeasurementId && (
+    {analytics && gaMeasurementId && (
       <>
         <meta name="ga-measurement-id" content={gaMeasurementId} />
         {contentGroup && <meta name="ga-content-group" content={contentGroup} />}
