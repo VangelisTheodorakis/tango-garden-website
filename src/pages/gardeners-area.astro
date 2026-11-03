@@ -495,7 +495,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
       const lang = el('div', 'gd-lang');
       for (const [code, name] of [['en', 'English'], ['de', 'German']] as const) {
-        const l = c.lang[code];
+        const l = c.lang?.[code];
+        if (!l) continue;
         const rate = l.pageSessions > 0 ? ` (${pct(l.clicks / l.pageSessions)})` : '';
         const line = el('div');
         line.append(el('b', '', `${name} page: `), document.createTextNode(`${plural(l.pageSessions, 'visit')} → ${plural(l.clicks, 'click')}${rate}`));
@@ -649,9 +650,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     $('gd-visits').textContent = fmt(r.site.sessions);
     $('gd-bounce').textContent = pct(r.site.bounceRate);
     renderFunnels(r.courses, r.unassigned);
-    renderList('gd-faq', r.faq.map((f) => ({ label: f.question, count: f.count })), 'No questions opened in this period.');
-    $('gd-wa-total').textContent = `· ${fmt(r.whatsapp.total)}`;
-    renderList('gd-wa', r.whatsapp.pages.map((p) => ({ label: pageName(p.path), count: p.count })), 'No WhatsApp clicks in this period.');
+    renderList('gd-faq', (r.faq ?? []).map((f) => ({ label: f.question, count: f.count })), 'No questions opened in this period.');
+    const wa = r.whatsapp ?? { total: 0, pages: [] };
+    $('gd-wa-total').textContent = `· ${fmt(wa.total)}`;
+    renderList('gd-wa', wa.pages.map((p) => ({ label: pageName(p.path), count: p.count })), 'No WhatsApp clicks in this period.');
     renderTrend(r.weeks);
     renderSources(r.channels);
     const at = new Date(r.generatedAt);
