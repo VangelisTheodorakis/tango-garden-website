@@ -1,6 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { buildReport, isoWeekKey, reportRequests } from '../../workers/gardeners-api/report.js';
 import { verifyAccess } from '../../workers/gardeners-api/access.js';
+import { buildRegistrations, parseSheet, roleOf } from '../../workers/gardeners-api/registrations.js';
+import { buildSearch, searchRequest } from '../../workers/gardeners-api/search.js';
 import worker from '../../workers/gardeners-api/worker.js';
 
 const row = (dims, metrics) => ({
@@ -17,9 +19,9 @@ describe('isoWeekKey', () => {
 });
 
 describe('reportRequests', () => {
-  it('asks for eight reports over the chosen period, today included', () => {
+  it('asks for nine reports over the chosen period, today included', () => {
     const reqs = reportRequests(28);
-    expect(reqs).toHaveLength(8);
+    expect(reqs).toHaveLength(9);
     expect(reqs[0].dateRanges).toEqual([{ startDate: '27daysAgo', endDate: 'today' }]);
   });
 
@@ -57,6 +59,14 @@ describe('buildReport', () => {
     { rows: [row(['202645', 'register_click'], [4]), row(['202645', 'registration_submit'], [2])] },
     { rows: [row(['(not set)'], [50]), row(['What should I wear?'], [9]), row(['Do I need to bring a partner?'], [7])] },
     { rows: [row(['/pages/contact'], [6]), row(['/'], [3])] },
+    {
+      rows: [
+        row(['read_expect', 'beginner-course'], [200]),
+        row(['read_prices', 'beginner-course'], [120]),
+        row(['read_end', 'growth-sessions'], [10]),
+        row(['read_prices', 'garden-practica'], [7]),
+      ],
+    },
   ];
   const r = buildReport(28, reports, now);
 
@@ -69,6 +79,7 @@ describe('buildReport', () => {
         clicks: 30,
         submits: 12,
         lang: { en: { pageSessions: 300, clicks: 25 }, de: { pageSessions: 20, clicks: 5 } },
+        read: { expect: 200, prices: 120, faq: 0, end: 0 },
       },
       {
         slug: 'growth-sessions',
@@ -77,6 +88,7 @@ describe('buildReport', () => {
         clicks: 8,
         submits: 3,
         lang: { en: { pageSessions: 80, clicks: 8 }, de: { pageSessions: 0, clicks: 0 } },
+        read: { expect: 0, prices: 0, faq: 0, end: 10 },
       },
     ]);
   });
@@ -110,11 +122,84 @@ describe('buildReport', () => {
   });
 
   it('copes with empty GA4 answers', () => {
-    const empty = buildReport(7, [{}, {}, {}, {}, {}, {}, {}, {}], now);
+    const empty = buildReport(7, [{}, {}, {}, {}, {}, {}, {}, {}, {}], now);
     expect(empty.site).toEqual({ sessions: 0, bounceRate: 0 });
     expect(empty.courses.every((c) => c.clicks === 0)).toBe(true);
     expect(empty.faq).toEqual([]);
     expect(empty.whatsapp).toEqual({ total: 0, pages: [] });
+  });
+});
+
+describe('registrations', () => {
+  // Sheets date serials: 46266 = 1 Sep 2026, 46327 = 1 Nov 2026.
+  const SEP_1 = 46266;
+  const NOV_1 = 46327;
+  const header = ['Timestamp', 'Name', 'Email address', 'Which role do you want to dance?'];
+  const beginners = [
+    header,
+    [SEP_1, 'Old', 'ana@example.com', 'Leader'], // earlier round
+    [NOV_1, 'Ana', 'Ana@Example.com ', 'Follower'], // returning, answer changed
+    [NOV_1 + 1, 'Ben', 'ben@example.com', 'Leader'],
+    [NOV_1 + 2, 'Ben', 'ben@example.com', 'Both / switch'], // submitted twice: latest counts
+    [NOV_1 + 3, 'Cem', 'cem@example.com', ''],
+  ];
+  const improvers = [header, [NOV_1, 'Dia', 'ana@example.com', 'Leader & Follower']];
+  const rounds = {
+    'beginner-course': { from: '2026-09-10', spots: 20 },
+    'growth-sessions': { from: '2026-01-01', spots: 20 },
+  };
+
+  it('reads the role answer in English or German', () => {
+    expect(roleOf('Leader')).toBe('leader');
+    expect(roleOf('Follower')).toBe('follower');
+    expect(roleOf('Both roles')).toBe('both');
+    expect(roleOf('Führende Rolle')).toBe('leader');
+    expect(roleOf('Leader & Follower')).toBe('both');
+    expect(roleOf('')).toBe('unknown');
+  });
+
+  it('finds the email and role columns by their question', () => {
+    expect(parseSheet(beginners)[1]).toMatchObject({ email: 'ana@example.com', role: 'follower' });
+  });
+
+  it('counts each person once, by role, and spots returning students', () => {
+    const r = buildRegistrations(rounds, { 'beginner-course': beginners, 'growth-sessions': improvers });
+    expect(r['beginner-course']).toEqual({
+      from: '2026-09-10',
+      spots: 20,
+      registered: 3,
+      roles: { leader: 0, follower: 1, both: 1, unknown: 1 },
+      returning: 1,
+    });
+    // Ana did the September beginners round, so she returns for the improvers.
+    expect(r['growth-sessions']).toMatchObject({ registered: 1, roles: { both: 1 }, returning: 1 });
+  });
+
+  it('leaves a course without a sheet empty', () => {
+    expect(buildRegistrations(rounds, { 'beginner-course': beginners })['growth-sessions']).toBeNull();
+  });
+
+  it('never puts names or emails in the result', () => {
+    const text = JSON.stringify(buildRegistrations(rounds, { 'beginner-course': beginners, 'growth-sessions': improvers }));
+    expect(text).not.toMatch(/example\.com|Ana|Ben/);
+  });
+});
+
+describe('search', () => {
+  it('asks Search Console for the period, by search', () => {
+    expect(searchRequest(28, new Date('2026-11-04T12:00:00Z'))).toEqual({
+      startDate: '2026-10-08',
+      endDate: '2026-11-04',
+      dimensions: ['query'],
+      rowLimit: 15,
+    });
+  });
+
+  it('keeps search, clicks, impressions and a rounded position', () => {
+    expect(buildSearch({ rows: [{ keys: ['tango cologne'], clicks: 3, impressions: 90, position: 4.26 }] })).toEqual([
+      { query: 'tango cologne', clicks: 3, impressions: 90, position: 4.3 },
+    ]);
+    expect(buildSearch({})).toEqual([]);
   });
 });
 

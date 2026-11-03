@@ -1,11 +1,16 @@
 /**
- * Read-only GA4 access with a Google service account key (GA_SA_KEY secret,
+ * Read-only Google access (GA4, Sheets, Search Console) with a Google service account key (GA_SA_KEY secret,
  * the JSON file Google gives you). The key signs a short-lived JWT, which
  * Google swaps for an access token; the token is reused until shortly before
  * it expires.
  */
 
-const SCOPE = 'https://www.googleapis.com/auth/analytics.readonly';
+// Read-only: GA4, the form response sheets, Search Console.
+const SCOPE = [
+  'https://www.googleapis.com/auth/analytics.readonly',
+  'https://www.googleapis.com/auth/spreadsheets.readonly',
+  'https://www.googleapis.com/auth/webmasters.readonly',
+].join(' ');
 let tokenCache = { token: null, exp: 0 };
 
 const b64url = (bytes) =>

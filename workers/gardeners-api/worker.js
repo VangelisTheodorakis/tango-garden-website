@@ -11,12 +11,17 @@
  *   GA_SA_KEY           service account key JSON (GA4 Viewer on the property)
  *   ACCESS_AUD          the Access application's "Application Audience (AUD) Tag"
  *   ALLOWED_EMAILS      comma-separated, same list as the Access policy
- * Vars (wrangler.toml): GA_PROPERTY_ID, ACCESS_TEAM_DOMAIN
+ * Vars (wrangler.toml): GA_PROPERTY_ID, ACCESS_TEAM_DOMAIN, GSC_SITE, COURSE_ROUNDS
+ *
+ * GA4 is required. Search Console and the response sheets are extras: if one
+ * fails (not shared yet, say), the report still answers, with that part null.
  */
 
 import { verifyAccess } from './access.js';
 import { accessToken, runReports } from './ga.js';
+import { buildRegistrations, fetchSheet } from './registrations.js';
 import { PERIODS, buildReport, reportRequests } from './report.js';
+import { fetchSearch } from './search.js';
 
 const CACHE_SECONDS = 600;
 
@@ -50,8 +55,23 @@ export default {
 
     try {
       const token = await accessToken(env.GA_SA_KEY);
-      const reports = await runReports(env.GA_PROPERTY_ID, token, reportRequests(days));
-      const report = buildReport(days, reports);
+      const rounds = env.COURSE_ROUNDS ?? {};
+      const withSheets = Object.entries(rounds).filter(([, r]) => r.sheet);
+      const [reports, search, sheets] = await Promise.allSettled([
+        runReports(env.GA_PROPERTY_ID, token, reportRequests(days)),
+        env.GSC_SITE ? fetchSearch(env.GSC_SITE, token, days) : Promise.reject(new Error('GSC_SITE not set')),
+        Promise.all(withSheets.map(async ([slug, r]) => [slug, await fetchSheet(r.sheet, token)])),
+      ]);
+      if (reports.status === 'rejected') throw reports.reason;
+      for (const extra of [search, sheets]) if (extra.status === 'rejected') console.error(extra.reason);
+      const report = {
+        ...buildReport(days, reports.value),
+        search: search.status === 'fulfilled' ? search.value : null,
+        registrations:
+          sheets.status === 'fulfilled' && withSheets.length
+            ? buildRegistrations(rounds, Object.fromEntries(sheets.value))
+            : null,
+      };
       ctx.waitUntil(
         caches.default.put(
           cacheKey,

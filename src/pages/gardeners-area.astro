@@ -48,11 +48,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </section>
 
+    <section class="gd-section" aria-labelledby="gd-reg-h">
+      <h2 id="gd-reg-h">This round's sign-ups</h2>
+      <p class="gd-note">From the form response sheets, one per person. Delete a test or a cancellation in the sheet and it disappears here.</p>
+      <div class="gd-pair" id="gd-reg"></div>
+    </section>
+
     <section class="gd-section" aria-labelledby="gd-funnel-h">
       <h2 id="gd-funnel-h">From course page to sign-up</h2>
       <p class="gd-note">Counts per step, not individual people. Each bar is compared with the course page visits.</p>
       <div class="gd-funnels" id="gd-funnels"></div>
       <p class="gd-note" id="gd-unassigned" hidden></p>
+    </section>
+
+    <section class="gd-section" aria-labelledby="gd-read-h">
+      <h2 id="gd-read-h">How far people read</h2>
+      <p class="gd-note">Share of course page visits that scrolled to each part of the page. Counted since November 2026, so longer periods start low.</p>
+      <div class="gd-pair" id="gd-read"></div>
     </section>
 
     <section class="gd-section" aria-labelledby="gd-ask-h">
@@ -89,6 +101,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <tr><th scope="col">Source</th><th scope="col">Visits</th><th scope="col">Bounce</th><th scope="col">Clicks</th></tr>
           </thead>
           <tbody id="gd-sources"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="gd-section" aria-labelledby="gd-search-h">
+      <h2 id="gd-search-h">What people searched for</h2>
+      <p class="gd-note">Google searches that showed the site, from Search Console. Google leaves out rare searches and reports about two days late.</p>
+      <div class="gd-table-wrap">
+        <table class="gd-table">
+          <thead>
+            <tr><th scope="col">Search</th><th scope="col">Shown</th><th scope="col">Clicks</th><th scope="col">Position</th></tr>
+          </thead>
+          <tbody id="gd-search"></tbody>
         </table>
       </div>
     </section>
@@ -305,6 +330,50 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .gd-list .gd-step-top span:first-child {
     overflow-wrap: anywhere;
   }
+  .gd-spots {
+    font-size: 2rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .gd-spots small {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-light);
+  }
+  .gd-card .gd-bar {
+    margin-bottom: 14px;
+  }
+  .gd-card .gd-list .gd-bar {
+    margin-bottom: 0;
+  }
+  .gd-roles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0 0 12px;
+  }
+  .gd-roles div {
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .gd-roles dt {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    font-weight: 600;
+  }
+  .gd-roles dd {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .gd-card-note {
+    font-size: 0.8rem;
+    color: var(--text-mid);
+    margin: 0;
+  }
   .gd-empty {
     color: var(--text-light);
   }
@@ -413,6 +482,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     clicks: number;
     submits: number;
     lang: { en: LangCounts; de: LangCounts };
+    read?: Record<string, number>;
+  };
+  type Round = {
+    from: string;
+    spots: number;
+    registered: number;
+    roles: { leader: number; follower: number; both: number; unknown: number };
+    returning: number;
   };
   type Report = {
     days: number;
@@ -424,7 +501,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     weeks: { week: string; clicks: number; submits: number }[];
     faq: { question: string; count: number }[];
     whatsapp: { total: number; pages: { path: string; count: number }[] };
+    search?: { query: string; clicks: number; impressions: number; position: number }[] | null;
+    registrations?: Record<string, Round | null> | null;
   };
+
+  const SECTIONS = [
+    { key: 'expect', label: 'What to expect' },
+    { key: 'prices', label: 'Prices' },
+    { key: 'faq', label: 'Questions' },
+    { key: 'end', label: 'End of the page' },
+  ];
+  const dateLabel = (iso: string) =>
+    new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 
   const PAGE_NAMES: Record<string, string> = {
     '/': 'Homepage',
@@ -537,24 +625,102 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   /** A ranked list with a bar per row, longest bar = the top row. */
-  function renderList(id: string, rows: { label: string; count: number }[], empty: string) {
+  function renderList(id: string, rows: { label: string; count: number; value?: string; max?: number }[], empty: string) {
     const list = $(id);
     list.textContent = '';
     if (!rows.length) {
       list.append(el('li', 'gd-empty', empty));
       return;
     }
-    const max = Math.max(1, ...rows.map((r) => r.count));
+    const max = Math.max(1, ...rows.map((r) => r.max ?? r.count));
     for (const r of rows) {
       const li = el('li');
       const top = el('div', 'gd-step-top');
-      top.append(el('span', '', r.label), el('span', 'gd-step-value', fmt(r.count)));
+      top.append(el('span', '', r.label), el('span', 'gd-step-value', r.value ?? fmt(r.count)));
       const bar = el('div', 'gd-bar');
       const fill = el('span');
-      fill.style.width = `${(r.count / max) * 100}%`;
+      fill.style.width = `${Math.min(100, (r.count / max) * 100)}%`;
       bar.append(fill);
       li.append(top, bar);
       list.append(li);
+    }
+  }
+
+  function renderRegistrations(courses: Course[], regs: Report['registrations']) {
+    const box = $('gd-reg');
+    box.textContent = '';
+    if (!regs) {
+      box.append(el('p', 'gd-note', 'Not connected yet: the response sheets need to be shared with the data service (setup guide, step 6).'));
+      return;
+    }
+    for (const c of courses) {
+      const r = regs[c.slug];
+      const card = el('div', 'gd-card');
+      card.append(el('h3', '', c.label));
+      if (!r) {
+        card.append(el('p', 'gd-card-note', 'No response sheet set for this course yet.'));
+        box.append(card);
+        continue;
+      }
+      const spots = el('div', 'gd-spots', fmt(r.registered));
+      spots.append(el('small', '', ` of ${fmt(r.spots)} spots`));
+      const bar = el('div', 'gd-bar');
+      const fill = el('span');
+      fill.style.width = `${Math.min(100, (r.registered / Math.max(1, r.spots)) * 100)}%`;
+      bar.title = `${fmt(r.registered)} of ${fmt(r.spots)} spots`;
+      bar.append(fill);
+      const roles = el('dl', 'gd-roles');
+      for (const [label, n] of [['Leaders', r.roles.leader], ['Followers', r.roles.follower], ['Both roles', r.roles.both]] as const) {
+        const d = el('div');
+        d.append(el('dt', '', label), el('dd', '', fmt(n)));
+        roles.append(d);
+      }
+      const isNew = r.registered - r.returning;
+      const parts = [`${plural(r.returning, 'returning student')}, ${fmt(isNew)} new`];
+      if (r.roles.unknown) parts.push(`${fmt(r.roles.unknown)} without a role`);
+      card.append(spots, bar, roles, el('p', 'gd-card-note', `${parts.join(' · ')}. Counting since ${dateLabel(r.from)}.`));
+      box.append(card);
+    }
+  }
+
+  function renderReading(courses: Course[]) {
+    const box = $('gd-read');
+    box.textContent = '';
+    for (const c of courses) {
+      const card = el('div', 'gd-card');
+      card.append(el('h3', '', c.label));
+      const list = el('ol', 'gd-list');
+      list.id = `gd-read-${c.slug}`;
+      card.append(list);
+      box.append(card);
+      const visits = c.pageSessions;
+      const rows = [
+        { label: 'Course page visits', count: visits, value: fmt(visits), max: visits },
+        ...SECTIONS.map((s) => {
+          const n = c.read?.[s.key] ?? 0;
+          return { label: s.label, count: n, value: visits > 0 ? `${fmt(n)} · ${pct(n / visits)}` : fmt(n), max: visits };
+        }),
+      ];
+      renderList(list.id, rows, '');
+    }
+  }
+
+  function renderSearch(search: Report['search']) {
+    const body = $('gd-search');
+    body.textContent = '';
+    const message = !search ? 'Not connected yet: Search Console needs to give the data service access (setup guide, step 7).' : !search.length ? 'No searches in this period.' : '';
+    if (message) {
+      const tr = el('tr');
+      const td = el('td', '', message);
+      td.colSpan = 4;
+      tr.append(td);
+      body.append(tr);
+      return;
+    }
+    for (const q of search!) {
+      const tr = el('tr');
+      tr.append(el('td', '', q.query), el('td', '', fmt(q.impressions)), el('td', '', fmt(q.clicks)), el('td', '', q.position.toFixed(1)));
+      body.append(tr);
     }
   }
 
@@ -649,15 +815,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     last = r;
     $('gd-visits').textContent = fmt(r.site.sessions);
     $('gd-bounce').textContent = pct(r.site.bounceRate);
+    renderRegistrations(r.courses, r.registrations ?? null);
     renderFunnels(r.courses, r.unassigned);
+    renderReading(r.courses);
     renderList('gd-faq', (r.faq ?? []).map((f) => ({ label: f.question, count: f.count })), 'No questions opened in this period.');
     const wa = r.whatsapp ?? { total: 0, pages: [] };
     $('gd-wa-total').textContent = `· ${fmt(wa.total)}`;
     renderList('gd-wa', wa.pages.map((p) => ({ label: pageName(p.path), count: p.count })), 'No WhatsApp clicks in this period.');
     renderTrend(r.weeks);
     renderSources(r.channels);
+    renderSearch(r.search ?? null);
     const at = new Date(r.generatedAt);
-    $('gd-updated').textContent = `Numbers from Google Analytics, ${at.toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })}. They refresh every 10 minutes; today's numbers can take a few hours to appear in full.`;
+    $('gd-updated').textContent = `Numbers from Google Analytics, Search Console and the response sheets, ${at.toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })}. They refresh every 10 minutes; today's numbers can take a few hours to appear in full.`;
   }
 
   /** Clearly fake numbers so the layout can be worked on locally. */
@@ -678,10 +847,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         {
           slug: 'beginner-course', label: 'Beginners', pageSessions: Math.round(320 * f), clicks: Math.round(30 * f), submits: Math.round(12 * f),
           lang: { en: { pageSessions: Math.round(260 * f), clicks: Math.round(26 * f) }, de: { pageSessions: Math.round(60 * f), clicks: Math.round(4 * f) } },
+          read: { expect: Math.round(250 * f), prices: Math.round(170 * f), faq: Math.round(110 * f), end: Math.round(80 * f) },
         },
         {
           slug: 'growth-sessions', label: 'Improvers', pageSessions: Math.round(80 * f), clicks: Math.round(8 * f), submits: Math.round(3 * f),
           lang: { en: { pageSessions: Math.round(70 * f), clicks: Math.round(7 * f) }, de: { pageSessions: Math.round(10 * f), clicks: Math.round(1 * f) } },
+          read: { expect: Math.round(66 * f), prices: Math.round(50 * f), faq: Math.round(30 * f), end: Math.round(24 * f) },
         },
       ],
       unassigned: { clicks: 2, submits: 1 },
@@ -698,6 +869,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         { question: 'Where exactly are you located in Cologne?', count: Math.round(22 * f) },
         { question: 'Do I need any dance experience to start?', count: Math.round(17 * f) },
         { question: "I'm shy. Will I feel awkward?", count: Math.round(4 * f) },
+      ],
+      registrations: {
+        'beginner-course': { from: '2026-09-10', spots: 20, registered: 14, roles: { leader: 5, follower: 7, both: 2, unknown: 0 }, returning: 3 },
+        'growth-sessions': { from: '2026-01-01', spots: 20, registered: 6, roles: { leader: 3, follower: 2, both: 1, unknown: 0 }, returning: 5 },
+      },
+      search: [
+        { query: 'tango cologne', clicks: 12, impressions: 340, position: 4.2 },
+        { query: 'tango köln anfänger', clicks: 6, impressions: 210, position: 7.8 },
+        { query: 'tango garden', clicks: 18, impressions: 40, position: 1.1 },
+        { query: 'argentine tango classes cologne english', clicks: 3, impressions: 90, position: 5.5 },
       ],
       whatsapp: {
         total: Math.round(20 * f),

@@ -23,3 +23,19 @@ routes = [
 GA_PROPERTY_ID = "550087499"
 # Your Cloudflare Zero Trust team domain, e.g. "tangogarden.cloudflareaccess.com".
 ACCESS_TEAM_DOMAIN = "tangogarden.cloudflareaccess.com"
+# Search Console property the "What people searched for" section reads.
+GSC_SITE = "sc-domain:tangogarden.de"
+
+# One block per course. Change `from` (and redeploy) when a new round opens:
+# sign-ups before it count as earlier rounds, used only to spot returning
+# students. `sheet` is the ID in the response sheet's link
+# (docs.google.com/spreadsheets/d/<ID>/edit), shared with ga-reader as Viewer.
+[vars.COURSE_ROUNDS.beginner-course]
+sheet = ""
+from = "2026-09-10"
+spots = 20
+
+[vars.COURSE_ROUNDS.growth-sessions]
+sheet = ""
+from = "2026-01-01"
+spots = 20

@@ -22,6 +22,14 @@ const TREND_DAYS = 84;
 
 const EVENTS = ['register_click', 'registration_submit'];
 
+/** Course page sections, in page order; ClassPage.astro sends read_<key> once each comes into view. */
+export const SECTIONS = [
+  { key: 'expect', label: 'What to expect' },
+  { key: 'prices', label: 'Prices' },
+  { key: 'faq', label: 'Questions' },
+  { key: 'end', label: 'End of the page' },
+];
+
 const liveSite = { filter: { fieldName: 'hostName', stringFilter: { matchType: 'EXACT', value: 'tangogarden.de' } } };
 const ourEvents = { filter: { fieldName: 'eventName', inListFilter: { values: EVENTS } } };
 const coursePages = {
@@ -37,7 +45,7 @@ const and = (...expressions) => ({ andGroup: { expressions } });
 const range = (days) => [{ startDate: `${days - 1}daysAgo`, endDate: 'today' }];
 
 /**
- * The eight GA4 runReport requests, in the order buildReport expects them.
+ * The nine GA4 runReport requests, in the order buildReport expects them.
  * registration_submit is sent by the form's Apps Script and has no hostname,
  * so the event queries are not limited to the live site (localhost never
  * reports to GA4 anyway).
@@ -104,6 +112,15 @@ export function reportRequests(days) {
       orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
       limit: 25,
     },
+    // 8. How far people read the course pages.
+    {
+      dateRanges: range(days),
+      dimensions: [{ name: 'eventName' }, { name: 'customEvent:course' }],
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: and(liveSite, {
+        filter: { fieldName: 'eventName', inListFilter: { values: SECTIONS.map((x) => `read_${x.key}`) } },
+      }),
+    },
   ];
 }
 
@@ -141,14 +158,14 @@ const rowsOf = (report) =>
   ]);
 
 /**
- * Turns the eight GA4 reports into the dashboard's JSON.
+ * Turns the nine GA4 reports into the dashboard's JSON.
  *
  * @param {number} days
  * @param {any[]} reports runReport responses, in reportRequests order
  * @param {Date} [now]
  */
 export function buildReport(days, reports, now = new Date()) {
-  const [siteR, pagesR, eventsR, channelsR, channelClicksR, weeksR, faqR, whatsappR] = reports;
+  const [siteR, pagesR, eventsR, channelsR, channelClicksR, weeksR, faqR, whatsappR, readR] = reports;
 
   const [siteRow] = rowsOf(siteR);
   const site = { sessions: siteRow?.[1][0] ?? 0, bounceRate: siteRow?.[1][1] ?? 0 };
@@ -161,6 +178,8 @@ export function buildReport(days, reports, now = new Date()) {
     // Visits and register clicks on the English and German page. Forms have
     // no page, so submissions can't be split by language.
     lang: { en: { pageSessions: 0, clicks: 0 }, de: { pageSessions: 0, clicks: 0 } },
+    // Page views that reached each section.
+    read: Object.fromEntries(SECTIONS.map((x) => [x.key, 0])),
   }));
   const bySlug = Object.fromEntries(courses.map((c) => [c.slug, c]));
   const unassigned = { clicks: 0, submits: 0 };
@@ -182,6 +201,11 @@ export function buildReport(days, reports, now = new Date()) {
     bySlug[course][key] += count;
     // A click on the course's own page counts for that page's language.
     if (key === 'clicks' && courseFromPath(path) === course) bySlug[course].lang[langOf(path)].clicks += count;
+  }
+
+  for (const [[event, course], [count]] of rowsOf(readR)) {
+    const key = event.replace(/^read_/, '');
+    if (Object.hasOwn(bySlug, course) && Object.hasOwn(bySlug[course].read, key)) bySlug[course].read[key] += count;
   }
 
   const clicksByChannel = Object.fromEntries(rowsOf(channelClicksR).map(([[ch], [n]]) => [ch, n]));

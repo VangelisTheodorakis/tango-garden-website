@@ -343,7 +343,7 @@ const waLabel = text.waLabel;
     </div>
   </section>
 
-  <section class="class-section">
+  <section class="class-section" data-read="expect">
     <h2>{text.whatToExpect}</h2>
     {data.whatToExpect.map((p) => <p>{p}</p>)}
   </section>
@@ -363,7 +363,7 @@ const waLabel = text.waLabel;
     </section>
   )}
 
-  <section class="class-section" id="pricing">
+  <section class="class-section" id="pricing" data-read="prices">
     <h2>{text.pricing}</h2>
     {hasStudent && (
       <div class="class-tier-toggle" role="tablist" aria-label={text.pricingGroup}>
@@ -470,7 +470,7 @@ const waLabel = text.waLabel;
     </section>
   )}
 
-  <section class="class-section class-faq">
+  <section class="class-section class-faq" data-read="faq">
     <h2>{text.questions}</h2>
     {data.faq.map((item) => (
       <div class="class-faq-item">
@@ -488,7 +488,7 @@ const waLabel = text.waLabel;
     ))}
   </section>
 
-  <section class="class-cta">
+  <section class="class-cta" data-read="end">
     <h2>{text.nextStep}</h2>
     <p>{data.nextStep ?? (data.registerUrl ? text.nextStepRegister : text.nextStepDropIn)}</p>
     {data.registerUrl ? (
@@ -980,6 +980,24 @@ const waLabel = text.waLabel;
       if (typeof window.gtag === 'function') window.gtag('event', 'register_click', { course });
     });
   });
+
+  // How far people read: read_<section> once per page view, when the section
+  // scrolls into view (the Gardeners' Area shows it as % of page visits).
+  if ('IntersectionObserver' in window) {
+    const course = location.pathname.replace(/^\/de(?=\/)/, '').replace(/^\/pages\//, '').replace(/\/$/, '');
+    const seen = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const key = (entry.target as HTMLElement).dataset.read;
+          if (typeof window.gtag === 'function') window.gtag('event', `read_${key}`, { course });
+          seen.unobserve(entry.target);
+        }
+      },
+      { rootMargin: '0px 0px -25% 0px' }
+    );
+    document.querySelectorAll('[data-read]').forEach((section) => seen.observe(section));
+  }
 
   // Pricing tier toggle: swaps which of the general/student values show in
   // the table without re-rendering it.

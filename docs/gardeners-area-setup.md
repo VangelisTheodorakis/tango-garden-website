@@ -114,6 +114,50 @@ Claude merges the `gardeners-area` branch and pushes. Then open
 https://tangogarden.de/gardeners-area in a private window: Google login →
 dashboard with real numbers.
 
+## 6. Sign-ups from the response sheets (3 min)
+
+"This round's sign-ups" (spots, leaders / followers / both, returning
+students) reads the two Google Form response sheets. Only counts reach the
+dashboard, never names or emails.
+
+1. Turn on the Sheets API for the project:
+   https://console.developers.google.com/apis/api/sheets.googleapis.com/overview?project=992096888841
+   → **Enable**.
+2. Open each form's response sheet (beginners and improvers) → **Share** →
+   add `ga-reader@tango-garden-seo.iam.gserviceaccount.com` as **Viewer**,
+   untick "Notify people" → Share.
+3. Send Claude both sheet links. Claude puts their IDs in
+   `workers/gardeners-api/wrangler.toml` (`COURSE_ROUNDS`).
+
+The form needs an email question and a role question (leader / follower /
+both); the Worker finds them by their wording, English or German.
+
+**New course round:** change that course's `from` date in `wrangler.toml` to
+the day registration for the new round opens, and deploy again (step 8).
+Earlier rows stay in the sheet and still count for "returning".
+
+**Tests and cancellations:** delete the row in the sheet. The dashboard
+follows within 10 minutes.
+
+## 7. Google searches from Search Console (2 min)
+
+1. Turn on the Search Console API for the project:
+   https://console.developers.google.com/apis/api/searchconsole.googleapis.com/overview?project=992096888841
+   → **Enable**.
+2. search.google.com/search-console → property **tangogarden.de** →
+   **Settings → Users and permissions → Add user** →
+   `ga-reader@tango-garden-seo.iam.gserviceaccount.com`, permission
+   **Restricted** → Add.
+
+## 8. Deploy the data Worker again
+
+After any change in `workers/gardeners-api/` (new sheet IDs, a new round's
+date), from the project folder:
+
+```bash
+npx wrangler deploy --config ./workers/gardeners-api/wrangler.toml
+```
+
 ---
 
 ## Changing who has access
@@ -130,3 +174,4 @@ them in.
 | "You are not signed in, or this email has no access." | `ACCESS_AUD`, `ACCESS_TEAM_DOMAIN` or `ALLOWED_EMAILS` doesn't match |
 | "Couldn't load the numbers. The data service answered 502." | The GA key: `GA_SA_KEY` missing or wrong. `npx wrangler tail --config ./wrangler.toml` shows the exact error |
 | "…answered 404." | The Worker or its route isn't deployed (step 4) |
+| "Not connected yet" under sign-ups or searches | Step 6 or 7 not done, or the Worker not deployed again (step 8). `npx wrangler tail --config ./workers/gardeners-api/wrangler.toml` shows which Google API refused |
