@@ -30,12 +30,14 @@ GSC_SITE = "sc-domain:tangogarden.de"
 # sign-ups before it count as earlier rounds, used only to spot returning
 # students. `sheet` is the ID in the response sheet's link
 # (docs.google.com/spreadsheets/d/<ID>/edit), shared with ga-reader as Viewer.
+# "Register for the Beginner Tango Course - Winter 2027 (Responses)"
 [vars.COURSE_ROUNDS.beginner-course]
-sheet = ""
-from = "2026-09-10"
+sheet = "15h_y4ap3wNrVn-YxaCedHmB5yN6witgcMSA7ecpTORY"
+from = "2026-01-01"
 spots = 20
 
+# "Register for the Improvers Tango Course - Winter 2027 (Responses)"
 [vars.COURSE_ROUNDS.growth-sessions]
-sheet = ""
+sheet = "1KF_tLD1YYe-1YC1sOAdrCx2EFD5yEmvjWFAUw_Bb8Hc"
 from = "2026-01-01"
 spots = 20
