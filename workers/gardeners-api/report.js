@@ -30,13 +30,14 @@ const coursePages = {
     stringFilter: { matchType: 'FULL_REGEXP', value: '^(/de)?/pages/(beginner-course|growth-sessions)/?$' },
   },
 };
-const registerClicks = { filter: { fieldName: 'eventName', stringFilter: { matchType: 'EXACT', value: 'register_click' } } };
+const eventIs = (value) => ({ filter: { fieldName: 'eventName', stringFilter: { matchType: 'EXACT', value } } });
+const registerClicks = eventIs('register_click');
 const and = (...expressions) => ({ andGroup: { expressions } });
 
 const range = (days) => [{ startDate: `${days - 1}daysAgo`, endDate: 'today' }];
 
 /**
- * The six GA4 runReport requests, in the order buildReport expects them.
+ * The eight GA4 runReport requests, in the order buildReport expects them.
  * registration_submit is sent by the form's Apps Script and has no hostname,
  * so the event queries are not limited to the live site (localhost never
  * reports to GA4 anyway).
@@ -85,6 +86,24 @@ export function reportRequests(days) {
       metrics: [{ name: 'eventCount' }],
       dimensionFilter: ourEvents,
     },
+    // 6. FAQ questions people open (German questions report their English key).
+    {
+      dateRanges: range(days),
+      dimensions: [{ name: 'customEvent:faq_question' }],
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: and(liveSite, eventIs('faq_expand')),
+      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+      limit: 25,
+    },
+    // 7. WhatsApp clicks, by the page they happened on.
+    {
+      dateRanges: range(days),
+      dimensions: [{ name: 'pagePath' }],
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: and(liveSite, eventIs('whatsapp_click')),
+      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+      limit: 25,
+    },
   ];
 }
 
@@ -105,6 +124,9 @@ function lastWeeks(now, count) {
   return keys;
 }
 
+/** "de" for the German mirror (/de, /de/...), otherwise "en". */
+const langOf = (path) => (/^\/de(\/|$)/.test(String(path ?? '')) ? 'de' : 'en');
+
 /** The course a page path belongs to, or null ("/de/pages/growth-sessions" -> "growth-sessions"). */
 function courseFromPath(path) {
   const slug = String(path ?? '').match(/^(?:\/de)?\/pages\/([a-z-]+)\/?$/)?.[1];
@@ -119,32 +141,47 @@ const rowsOf = (report) =>
   ]);
 
 /**
- * Turns the six GA4 reports into the dashboard's JSON.
+ * Turns the eight GA4 reports into the dashboard's JSON.
  *
  * @param {number} days
  * @param {any[]} reports runReport responses, in reportRequests order
  * @param {Date} [now]
  */
 export function buildReport(days, reports, now = new Date()) {
-  const [siteR, pagesR, eventsR, channelsR, channelClicksR, weeksR] = reports;
+  const [siteR, pagesR, eventsR, channelsR, channelClicksR, weeksR, faqR, whatsappR] = reports;
 
   const [siteRow] = rowsOf(siteR);
   const site = { sessions: siteRow?.[1][0] ?? 0, bounceRate: siteRow?.[1][1] ?? 0 };
 
-  const courses = COURSES.map((c) => ({ ...c, pageSessions: 0, clicks: 0, submits: 0 }));
+  const courses = COURSES.map((c) => ({
+    ...c,
+    pageSessions: 0,
+    clicks: 0,
+    submits: 0,
+    // Visits and register clicks on the English and German page. Forms have
+    // no page, so submissions can't be split by language.
+    lang: { en: { pageSessions: 0, clicks: 0 }, de: { pageSessions: 0, clicks: 0 } },
+  }));
   const bySlug = Object.fromEntries(courses.map((c) => [c.slug, c]));
   const unassigned = { clicks: 0, submits: 0 };
 
   for (const [[path], [sessions]] of rowsOf(pagesR)) {
     const slug = courseFromPath(path);
-    if (slug) bySlug[slug].pageSessions += sessions;
+    if (!slug) continue;
+    bySlug[slug].pageSessions += sessions;
+    bySlug[slug].lang[langOf(path)].pageSessions += sessions;
   }
   for (const [[event, param, path], [count]] of rowsOf(eventsR)) {
     const key = event === 'register_click' ? 'clicks' : event === 'registration_submit' ? 'submits' : null;
     if (!key) continue;
     const course = Object.hasOwn(bySlug, param) ? param : courseFromPath(path);
-    if (course) bySlug[course][key] += count;
-    else unassigned[key] += count;
+    if (!course) {
+      unassigned[key] += count;
+      continue;
+    }
+    bySlug[course][key] += count;
+    // A click on the course's own page counts for that page's language.
+    if (key === 'clicks' && courseFromPath(path) === course) bySlug[course].lang[langOf(path)].clicks += count;
   }
 
   const clicksByChannel = Object.fromEntries(rowsOf(channelClicksR).map(([[ch], [n]]) => [ch, n]));
@@ -165,5 +202,14 @@ export function buildReport(days, reports, now = new Date()) {
   // Every one of the 12 weeks, so a quiet week shows as 0 instead of vanishing.
   const weeks = lastWeeks(now, TREND_DAYS / 7).map((week) => weekMap.get(week) ?? { week, clicks: 0, submits: 0 });
 
-  return { days, generatedAt: now.toISOString(), site, courses, unassigned, channels, weeks };
+  // "(not set)" = opened before the question was recorded.
+  const faq = rowsOf(faqR)
+    .filter(([[q]]) => q && q !== '(not set)')
+    .map(([[question], [count]]) => ({ question, count }))
+    .slice(0, 10);
+
+  const whatsappPages = rowsOf(whatsappR).map(([[path], [count]]) => ({ path, count }));
+  const whatsapp = { total: whatsappPages.reduce((n, p) => n + p.count, 0), pages: whatsappPages.slice(0, 8) };
+
+  return { days, generatedAt: now.toISOString(), site, courses, unassigned, channels, weeks, faq, whatsapp };
 }

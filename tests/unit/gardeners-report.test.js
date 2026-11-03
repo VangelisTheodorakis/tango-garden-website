@@ -17,9 +17,9 @@ describe('isoWeekKey', () => {
 });
 
 describe('reportRequests', () => {
-  it('asks for six reports over the chosen period, today included', () => {
+  it('asks for eight reports over the chosen period, today included', () => {
     const reqs = reportRequests(28);
-    expect(reqs).toHaveLength(6);
+    expect(reqs).toHaveLength(8);
     expect(reqs[0].dateRanges).toEqual([{ startDate: '27daysAgo', endDate: 'today' }]);
   });
 
@@ -55,14 +55,41 @@ describe('buildReport', () => {
     { rows: [row(['Organic Social'], [500, 0.4]), row(['Direct'], [400, 0.6])] },
     { rows: [row(['Organic Social'], [20])] },
     { rows: [row(['202645', 'register_click'], [4]), row(['202645', 'registration_submit'], [2])] },
+    { rows: [row(['(not set)'], [50]), row(['What should I wear?'], [9]), row(['Do I need to bring a partner?'], [7])] },
+    { rows: [row(['/pages/contact'], [6]), row(['/'], [3])] },
   ];
   const r = buildReport(28, reports, now);
 
   it('adds up each course across both languages', () => {
     expect(r.courses).toEqual([
-      { slug: 'beginner-course', label: 'Beginners', pageSessions: 320, clicks: 30, submits: 12 },
-      { slug: 'growth-sessions', label: 'Improvers', pageSessions: 80, clicks: 8, submits: 3 },
+      {
+        slug: 'beginner-course',
+        label: 'Beginners',
+        pageSessions: 320,
+        clicks: 30,
+        submits: 12,
+        lang: { en: { pageSessions: 300, clicks: 25 }, de: { pageSessions: 20, clicks: 5 } },
+      },
+      {
+        slug: 'growth-sessions',
+        label: 'Improvers',
+        pageSessions: 80,
+        clicks: 8,
+        submits: 3,
+        lang: { en: { pageSessions: 80, clicks: 8 }, de: { pageSessions: 0, clicks: 0 } },
+      },
     ]);
+  });
+
+  it('lists the opened FAQ questions, without the unrecorded ones', () => {
+    expect(r.faq).toEqual([
+      { question: 'What should I wear?', count: 9 },
+      { question: 'Do I need to bring a partner?', count: 7 },
+    ]);
+  });
+
+  it('adds up WhatsApp clicks and keeps the pages', () => {
+    expect(r.whatsapp).toEqual({ total: 9, pages: [{ path: '/pages/contact', count: 6 }, { path: '/', count: 3 }] });
   });
 
   it('counts events without a known course as unassigned', () => {
@@ -83,9 +110,11 @@ describe('buildReport', () => {
   });
 
   it('copes with empty GA4 answers', () => {
-    const empty = buildReport(7, [{}, {}, {}, {}, {}, {}], now);
+    const empty = buildReport(7, [{}, {}, {}, {}, {}, {}, {}, {}], now);
     expect(empty.site).toEqual({ sessions: 0, bounceRate: 0 });
     expect(empty.courses.every((c) => c.clicks === 0)).toBe(true);
+    expect(empty.faq).toEqual([]);
+    expect(empty.whatsapp).toEqual({ total: 0, pages: [] });
   });
 });
 

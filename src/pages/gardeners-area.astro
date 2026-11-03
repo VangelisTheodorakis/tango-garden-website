@@ -55,6 +55,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <p class="gd-note" id="gd-unassigned" hidden></p>
     </section>
 
+    <section class="gd-section" aria-labelledby="gd-ask-h">
+      <h2 id="gd-ask-h">What people want to know</h2>
+      <p class="gd-note">The questions people open before deciding, and where they message you instead of registering.</p>
+      <div class="gd-pair">
+        <div class="gd-card">
+          <h3>FAQ questions opened</h3>
+          <ol class="gd-list" id="gd-faq"></ol>
+        </div>
+        <div class="gd-card">
+          <h3>WhatsApp clicks <span class="gd-card-total" id="gd-wa-total"></span></h3>
+          <ol class="gd-list" id="gd-wa"></ol>
+        </div>
+      </div>
+    </section>
+
     <section class="gd-section" aria-labelledby="gd-trend-h">
       <h2 id="gd-trend-h">Week by week</h2>
       <p class="gd-note">Last 12 weeks, both courses together.</p>
@@ -241,6 +256,58 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     background: var(--gd-s1);
     border-radius: 0 4px 4px 0;
   }
+  .gd-lang {
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid var(--gd-grid);
+    font-size: 0.8rem;
+    color: var(--text-mid);
+    display: grid;
+    gap: 2px;
+  }
+  .gd-lang b {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .gd-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  @media (min-width: 720px) {
+    .gd-pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .gd-card {
+    background: var(--cream-light);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+  }
+  .gd-card h3 {
+    font-size: 1rem;
+    margin: 0 0 12px;
+  }
+  .gd-card-total {
+    font-weight: 500;
+    color: var(--text-light);
+  }
+  .gd-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  .gd-list li {
+    font-size: 0.85rem;
+  }
+  .gd-list .gd-step-top span:first-child {
+    overflow-wrap: anywhere;
+  }
+  .gd-empty {
+    color: var(--text-light);
+  }
   .gd-legend {
     display: flex;
     gap: 16px;
@@ -338,7 +405,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </style>
 
 <script>
-  type Course = { slug: string; label: string; pageSessions: number; clicks: number; submits: number };
+  type LangCounts = { pageSessions: number; clicks: number };
+  type Course = {
+    slug: string;
+    label: string;
+    pageSessions: number;
+    clicks: number;
+    submits: number;
+    lang: { en: LangCounts; de: LangCounts };
+  };
   type Report = {
     days: number;
     generatedAt: string;
@@ -347,7 +422,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     unassigned: { clicks: number; submits: number };
     channels: { channel: string; sessions: number; bounceRate: number; clicks: number }[];
     weeks: { week: string; clicks: number; submits: number }[];
+    faq: { question: string; count: number }[];
+    whatsapp: { total: number; pages: { path: string; count: number }[] };
   };
+
+  const PAGE_NAMES: Record<string, string> = {
+    '/': 'Homepage',
+    '/pages/contact': 'Contact',
+    '/pages/classes': 'Classes',
+    '/pages/the-garden': 'The Garden',
+    '/pages/enter-the-garden': 'Enter the Garden',
+    '/pages/beginner-course': 'Beginners course',
+    '/pages/growth-sessions': 'Improvers course',
+    '/pages/garden-practica': 'Practica',
+    '/pages/private-classes': 'Private classes',
+  };
+  /** "/de/pages/contact" -> "Contact (German)"; unknown paths stay as they are. */
+  function pageName(path: string) {
+    const de = /^\/de(\/|$)/.test(path);
+    const en = (de ? path.slice(3) : path).replace(/\/$/, '') || '/';
+    const name = PAGE_NAMES[en] ?? path;
+    return de ? `${name} (German)` : name;
+  }
 
   const LOCAL = ['localhost', '127.0.0.1'].includes(location.hostname);
   const $ = (id: string) => document.getElementById(id)!;
@@ -397,6 +493,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         step.append(top, bar);
         card.append(step);
       }
+      const lang = el('div', 'gd-lang');
+      for (const [code, name] of [['en', 'English'], ['de', 'German']] as const) {
+        const l = c.lang[code];
+        const rate = l.pageSessions > 0 ? ` (${pct(l.clicks / l.pageSessions)})` : '';
+        const line = el('div');
+        line.append(el('b', '', `${name} page: `), document.createTextNode(`${plural(l.pageSessions, 'visit')} → ${plural(l.clicks, 'click')}${rate}`));
+        lang.append(line);
+      }
+      card.append(lang);
       box.append(card);
     }
     const note = $('gd-unassigned');
@@ -427,6 +532,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       td.colSpan = 4;
       tr.append(td);
       body.append(tr);
+    }
+  }
+
+  /** A ranked list with a bar per row, longest bar = the top row. */
+  function renderList(id: string, rows: { label: string; count: number }[], empty: string) {
+    const list = $(id);
+    list.textContent = '';
+    if (!rows.length) {
+      list.append(el('li', 'gd-empty', empty));
+      return;
+    }
+    const max = Math.max(1, ...rows.map((r) => r.count));
+    for (const r of rows) {
+      const li = el('li');
+      const top = el('div', 'gd-step-top');
+      top.append(el('span', '', r.label), el('span', 'gd-step-value', fmt(r.count)));
+      const bar = el('div', 'gd-bar');
+      const fill = el('span');
+      fill.style.width = `${(r.count / max) * 100}%`;
+      bar.append(fill);
+      li.append(top, bar);
+      list.append(li);
     }
   }
 
@@ -522,6 +649,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     $('gd-visits').textContent = fmt(r.site.sessions);
     $('gd-bounce').textContent = pct(r.site.bounceRate);
     renderFunnels(r.courses, r.unassigned);
+    renderList('gd-faq', r.faq.map((f) => ({ label: f.question, count: f.count })), 'No questions opened in this period.');
+    $('gd-wa-total').textContent = `· ${fmt(r.whatsapp.total)}`;
+    renderList('gd-wa', r.whatsapp.pages.map((p) => ({ label: pageName(p.path), count: p.count })), 'No WhatsApp clicks in this period.');
     renderTrend(r.weeks);
     renderSources(r.channels);
     const at = new Date(r.generatedAt);
@@ -543,8 +673,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       generatedAt: new Date().toISOString(),
       site: { sessions: Math.round(1200 * f), bounceRate: 0.52 },
       courses: [
-        { slug: 'beginner-course', label: 'Beginners', pageSessions: Math.round(320 * f), clicks: Math.round(30 * f), submits: Math.round(12 * f) },
-        { slug: 'growth-sessions', label: 'Improvers', pageSessions: Math.round(80 * f), clicks: Math.round(8 * f), submits: Math.round(3 * f) },
+        {
+          slug: 'beginner-course', label: 'Beginners', pageSessions: Math.round(320 * f), clicks: Math.round(30 * f), submits: Math.round(12 * f),
+          lang: { en: { pageSessions: Math.round(260 * f), clicks: Math.round(26 * f) }, de: { pageSessions: Math.round(60 * f), clicks: Math.round(4 * f) } },
+        },
+        {
+          slug: 'growth-sessions', label: 'Improvers', pageSessions: Math.round(80 * f), clicks: Math.round(8 * f), submits: Math.round(3 * f),
+          lang: { en: { pageSessions: Math.round(70 * f), clicks: Math.round(7 * f) }, de: { pageSessions: Math.round(10 * f), clicks: Math.round(1 * f) } },
+        },
       ],
       unassigned: { clicks: 2, submits: 1 },
       channels: [
@@ -554,6 +690,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         { channel: 'Referral', sessions: Math.round(60 * f), bounceRate: 0.35, clicks: Math.round(3 * f) },
       ],
       weeks,
+      faq: [
+        { question: 'What should I wear?', count: Math.round(29 * f) },
+        { question: 'Do I need to bring a partner?', count: Math.round(25 * f) },
+        { question: 'Where exactly are you located in Cologne?', count: Math.round(22 * f) },
+        { question: 'Do I need any dance experience to start?', count: Math.round(17 * f) },
+        { question: "I'm shy. Will I feel awkward?", count: Math.round(4 * f) },
+      ],
+      whatsapp: {
+        total: Math.round(20 * f),
+        pages: [
+          { path: '/pages/contact', count: Math.round(6 * f) },
+          { path: '/', count: Math.round(3 * f) },
+          { path: '/de/pages/the-garden', count: Math.round(2 * f) },
+          { path: '/pages/beginner-course', count: Math.round(2 * f) },
+        ],
+      },
     };
   }
 
