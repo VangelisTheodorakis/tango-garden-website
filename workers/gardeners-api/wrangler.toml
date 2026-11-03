@@ -33,11 +33,11 @@ GSC_SITE = "sc-domain:tangogarden.de"
 # "Register for the Beginner Tango Course - Winter 2027 (Responses)"
 [vars.COURSE_ROUNDS.beginner-course]
 sheet = "15h_y4ap3wNrVn-YxaCedHmB5yN6witgcMSA7ecpTORY"
-from = "2026-01-01"
+from = "2026-12-01"
 spots = 20
 
 # "Register for the Improvers Tango Course - Winter 2027 (Responses)"
 [vars.COURSE_ROUNDS.growth-sessions]
 sheet = "1KF_tLD1YYe-1YC1sOAdrCx2EFD5yEmvjWFAUw_Bb8Hc"
-from = "2026-01-01"
+from = "2026-12-01"
 spots = 20

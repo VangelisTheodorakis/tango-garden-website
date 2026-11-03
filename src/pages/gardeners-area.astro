@@ -313,6 +313,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-size: 1rem;
     margin: 0 0 12px;
   }
+  .gd-card-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px 12px;
+  }
+  .gd-since {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--green);
+    background: rgba(78, 93, 34, 0.1);
+    border-radius: 999px;
+    padding: 4px 10px;
+  }
   .gd-card-total {
     font-weight: 500;
     color: var(--text-light);
@@ -656,7 +671,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     for (const c of courses) {
       const r = regs[c.slug];
       const card = el('div', 'gd-card');
-      card.append(el('h3', '', c.label));
+      const title = el('h3', 'gd-card-head', c.label);
+      if (r) title.append(el('span', 'gd-since', `Counting from ${dateLabel(r.from)}`));
+      card.append(title);
       if (!r) {
         card.append(el('p', 'gd-card-note', 'No response sheet set for this course yet.'));
         box.append(card);
@@ -678,7 +695,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const isNew = r.registered - r.returning;
       const parts = [`${plural(r.returning, 'returning student')}, ${fmt(isNew)} new`];
       if (r.roles.unknown) parts.push(`${fmt(r.roles.unknown)} without a role`);
-      card.append(spots, bar, roles, el('p', 'gd-card-note', `${parts.join(' · ')}. Counting since ${dateLabel(r.from)}.`));
+      card.append(spots, bar, roles, el('p', 'gd-card-note', `${parts.join(' · ')}.`));
       box.append(card);
     }
   }
@@ -871,8 +888,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         { question: "I'm shy. Will I feel awkward?", count: Math.round(4 * f) },
       ],
       registrations: {
-        'beginner-course': { from: '2026-09-10', spots: 20, registered: 14, roles: { leader: 5, follower: 7, both: 2, unknown: 0 }, returning: 3 },
-        'growth-sessions': { from: '2026-01-01', spots: 20, registered: 6, roles: { leader: 3, follower: 2, both: 1, unknown: 0 }, returning: 5 },
+        'beginner-course': { from: '2026-12-01', spots: 20, registered: 14, roles: { leader: 5, follower: 7, both: 2, unknown: 0 }, returning: 3 },
+        'growth-sessions': { from: '2026-12-01', spots: 20, registered: 6, roles: { leader: 3, follower: 2, both: 1, unknown: 0 }, returning: 5 },
       },
       search: [
         { query: 'tango cologne', clicks: 12, impressions: 340, position: 4.2 },
