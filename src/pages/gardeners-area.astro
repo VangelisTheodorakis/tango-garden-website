@@ -39,11 +39,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="gd-tile">
           <span class="gd-tile-label">Visits</span>
           <span class="gd-tile-value" id="gd-visits">–</span>
+          <span class="gd-tile-note">each time someone opens the site, on any page; a person who comes back tomorrow counts twice</span>
         </div>
         <div class="gd-tile">
           <span class="gd-tile-label">Bounce rate</span>
           <span class="gd-tile-value" id="gd-bounce">–</span>
-          <span class="gd-tile-note">left without looking around</span>
+          <span class="gd-tile-note">share of visits that left within 10 seconds, without clicking anything or opening a second page</span>
         </div>
       </div>
     </section>
@@ -94,11 +95,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <section class="gd-section" aria-labelledby="gd-sources-h">
       <h2 id="gd-sources-h">Where visitors come from</h2>
-      <p class="gd-note">Forms submitted can't be traced back to a source, so this stops at the register click.</p>
+      <p class="gd-note">Visits and bounce rate as explained at the top; clicks are register clicks. Forms submitted can't be traced back to a source, so this stops at the register click. Click a column to sort.</p>
       <div class="gd-table-wrap">
-        <table class="gd-table">
+        <table class="gd-table" data-table="sources">
           <thead>
-            <tr><th scope="col">Source</th><th scope="col">Visits</th><th scope="col">Bounce</th><th scope="col">Clicks</th></tr>
+            <tr>
+              <th scope="col"><button type="button" class="gd-sort" data-sort="channel">Source</button></th>
+              <th scope="col" aria-sort="descending"><button type="button" class="gd-sort" data-sort="sessions">Visits</button></th>
+              <th scope="col"><button type="button" class="gd-sort" data-sort="bounceRate">Bounce</button></th>
+              <th scope="col"><button type="button" class="gd-sort" data-sort="clicks">Clicks</button></th>
+            </tr>
           </thead>
           <tbody id="gd-sources"></tbody>
         </table>
@@ -107,11 +113,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <section class="gd-section" aria-labelledby="gd-search-h">
       <h2 id="gd-search-h">What people searched for</h2>
-      <p class="gd-note">Google searches that showed the site, from Search Console. Google leaves out rare searches and reports about two days late.</p>
+      <p class="gd-note">Google searches that showed the site, from Search Console. Shown: how often the site appeared in the results; clicks: how often someone clicked through; position: average place in the results (1 is the top). Google leaves out rare searches and reports about two days late. Click a column to sort.</p>
       <div class="gd-table-wrap">
-        <table class="gd-table">
+        <table class="gd-table" data-table="search">
           <thead>
-            <tr><th scope="col">Search</th><th scope="col">Shown</th><th scope="col">Clicks</th><th scope="col">Position</th></tr>
+            <tr>
+              <th scope="col"><button type="button" class="gd-sort" data-sort="query">Search</button></th>
+              <th scope="col"><button type="button" class="gd-sort" data-sort="impressions">Shown</button></th>
+              <th scope="col" aria-sort="descending"><button type="button" class="gd-sort" data-sort="clicks">Clicks</button></th>
+              <th scope="col"><button type="button" class="gd-sort" data-sort="position">Position</button></th>
+            </tr>
           </thead>
           <tbody id="gd-search"></tbody>
         </table>
@@ -461,6 +472,35 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     padding: 6px 8px;
     border-bottom: 1px solid var(--gd-grid);
   }
+  .gd-sort {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .gd-sort::after {
+    content: '↕';
+    margin-left: 4px;
+    opacity: 0.35;
+  }
+  [aria-sort='ascending'] > .gd-sort::after {
+    content: '↑';
+    opacity: 1;
+  }
+  [aria-sort='descending'] > .gd-sort::after {
+    content: '↓';
+    opacity: 1;
+  }
+  .gd-sort:hover,
+  [aria-sort] > .gd-sort {
+    color: var(--green);
+  }
+  .gd-table td + td {
+    white-space: nowrap;
+  }
   .gd-table th:first-child,
   .gd-table td:first-child {
     text-align: left;
@@ -616,16 +656,51 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       : '';
   }
 
+  /**
+   * Sortable tables: a click on a header sorts by that column, a second click
+   * reverses it. Text starts A→Z, numbers largest first, except Position,
+   * where 1 is the best.
+   */
+  type SortState = { key: string; dir: 1 | -1 };
+  const sorting: Record<string, SortState> = {
+    sources: { key: 'sessions', dir: -1 },
+    search: { key: 'clicks', dir: -1 },
+  };
+  function sorted<T extends Record<string, unknown>>(table: string, rows: T[]): T[] {
+    const { key, dir } = sorting[table];
+    return [...rows].sort((a, b) => {
+      const x = a[key], y = b[key];
+      return (typeof x === 'string' ? x.localeCompare(String(y)) : Number(x) - Number(y)) * dir;
+    });
+  }
+  document.querySelectorAll<HTMLTableElement>('table[data-table]').forEach((table) => {
+    const name = table.dataset.table!;
+    table.querySelectorAll<HTMLButtonElement>('.gd-sort').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.sort!;
+        const state = sorting[name];
+        const textColumn = key === 'channel' || key === 'query';
+        if (state.key === key) state.dir = state.dir === 1 ? -1 : 1;
+        else sorting[name] = { key, dir: textColumn || key === 'position' ? 1 : -1 };
+        table.querySelectorAll('th').forEach((th) => th.removeAttribute('aria-sort'));
+        btn.parentElement!.setAttribute('aria-sort', sorting[name].dir === 1 ? 'ascending' : 'descending');
+        if (!last) return;
+        if (name === 'sources') renderSources(last.channels);
+        else renderSearch(last.search ?? null);
+      });
+    });
+  });
+
   function renderSources(channels: Report['channels']) {
     const body = $('gd-sources');
     body.textContent = '';
     const max = Math.max(1, ...channels.map((c) => c.sessions));
-    for (const c of channels) {
+    for (const c of sorted('sources', channels)) {
       const tr = el('tr');
       tr.append(el('td', '', c.channel));
       const visits = el('td');
       const bar = el('span', 'gd-cellbar');
-      bar.style.width = `${Math.round((c.sessions / max) * 60)}px`;
+      bar.style.width = `${Math.round((c.sessions / max) * 40)}px`;
       visits.append(bar, document.createTextNode(fmt(c.sessions)));
       tr.append(visits, el('td', '', pct(c.bounceRate)), el('td', '', fmt(c.clicks)));
       body.append(tr);
@@ -734,7 +809,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       body.append(tr);
       return;
     }
-    for (const q of search!) {
+    for (const q of sorted('search', search!)) {
       const tr = el('tr');
       tr.append(el('td', '', q.query), el('td', '', fmt(q.impressions)), el('td', '', fmt(q.clicks)), el('td', '', q.position.toFixed(1)));
       body.append(tr);
