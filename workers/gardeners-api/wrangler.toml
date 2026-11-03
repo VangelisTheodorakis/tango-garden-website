@@ -22,4 +22,4 @@ routes = [
 [vars]
 GA_PROPERTY_ID = "550087499"
 # Your Cloudflare Zero Trust team domain, e.g. "tangogarden.cloudflareaccess.com".
-ACCESS_TEAM_DOMAIN = "REPLACE-ME.cloudflareaccess.com"
+ACCESS_TEAM_DOMAIN = "tangogarden.cloudflareaccess.com"
