@@ -98,17 +98,38 @@ describe('cardContent', () => {
     expect(out.lines[0]).toBe('Starts Tue, 15 Sep 2026');
   });
 
-  it('shows a still-running course next to the new one, then only the new one', () => {
+  it('reads a course as start, weekday and time, plus until when students can join', () => {
     const feed = {
-      current: { prefix: 'Now: ', nextPrefix: 'New: ', events: [{ date: '2026-11-12', time: '19:30 – 21:00' }] },
-      events: [{ date: '2027-01-07', time: '19:15 – 20:30' }],
+      joinUntil: '2027-01-28',
+      events: [
+        { date: '2027-01-07', time: '19:15 – 20:30' },
+        { date: '2027-01-14', time: '19:15 – 20:30' },
+      ],
     };
-    expect(cardContent(feed, at('2026-10-30')).lines).toEqual([
-      'Now: Thu 12 Nov, 19:30 – 21:00',
-      'New: Thu 07 Jan, 19:15 – 20:30',
-    ]);
-    expect(cardContent(feed, at('2026-10-30')).newLine).toBe(1);
-    expect(cardContent(feed, at('2026-11-13')).lines).toEqual(['Thu, 07 Jan 2027', '19:15 – 20:30']);
+    expect(cardContent(feed, at('2026-11-09'))).toMatchObject({
+      lines: ['Starts Thu 7 Jan', 'Thursdays · 19:15–20:30'],
+      note: 'New students welcome until 28 Jan',
+    });
+    expect(cardContent(feed, at('2026-11-09'), 'de')).toMatchObject({
+      lines: ['Start Do. 07.01.', 'Donnerstags · 19:15–20:30'],
+      note: 'Neue Teilnehmer:innen willkommen bis 28.01.',
+    });
+  });
+
+  it('switches a course to the next class once it has started, and drops the note after the cut-off', () => {
+    const feed = {
+      joinUntil: '2027-01-28',
+      events: [
+        { date: '2027-01-07', time: '19:15 – 20:30' },
+        { date: '2027-01-14', time: '19:15 – 20:30' },
+        { date: '2027-02-04', time: '19:15 – 20:30' },
+      ],
+    };
+    expect(cardContent(feed, at('2027-01-10'))).toMatchObject({
+      lines: ['Next class Thu 14 Jan', 'Thursdays · 19:15–20:30'],
+      note: 'New students welcome until 28 Jan',
+    });
+    expect(cardContent(feed, at('2027-01-29')).note).toBeNull();
   });
 
   it('can leave the year out for the homepage cards', () => {
@@ -175,7 +196,7 @@ describe('German locale', () => {
       label: 'Nächste Practica',
       lines: ['Mi., 29.07.2026', '19:30 – 22:00'],
       isEmpty: false,
-      newLine: null,
+      note: null,
     });
     expect(cardContent({ label: 'Next Practica', events: [] }, at('2026-07-22'), 'de').label).toBe(
       'Next Practica'

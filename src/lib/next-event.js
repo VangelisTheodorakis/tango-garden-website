@@ -9,8 +9,7 @@
  * replacing the English ones.
  *
  * @typedef {{ date: string, time?: string }} GardenEvent
- * @typedef {{ prefix?: string, prefix_de?: string, nextPrefix?: string, nextPrefix_de?: string, events?: GardenEvent[] }} RunningCourse
- * @typedef {{ label?: string, prefix?: string, emptyMessage?: string, label_de?: string, prefix_de?: string, emptyMessage_de?: string, events?: GardenEvent[], current?: RunningCourse }} EventFeed
+ * @typedef {{ label?: string, prefix?: string, emptyMessage?: string, label_de?: string, prefix_de?: string, emptyMessage_de?: string, events?: GardenEvent[], joinUntil?: string }} EventFeed
  * @typedef {'en' | 'de'} Locale
  */
 
@@ -60,9 +59,14 @@ export function formatDate(iso, locale = 'en') {
   return `${DAYS[d.getDay()]}, ${day} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 }
 
+const WEEKDAYS_PLURAL = {
+  en: ['Sundays', 'Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays'],
+  de: ['Sonntags', 'Montags', 'Dienstags', 'Mittwochs', 'Donnerstags', 'Freitags', 'Samstags'],
+};
+
 /**
- * A compact date without the year ("Thu 05 Nov", "Do. 05.11."), for the two-line
- * running-course display where every character counts on a narrow card.
+ * A compact date without the year ("Thu 7 Jan", "Do. 07.01."), for the cards
+ * where every character counts.
  *
  * @param {string} iso
  * @param {Locale} [locale]
@@ -71,14 +75,11 @@ export function formatDate(iso, locale = 'en') {
 function formatShort(iso, locale = 'en') {
   const d = parseDate(iso);
   if (!d) return iso;
-  const day = String(d.getDate()).padStart(2, '0');
-  if (locale === 'de') return `${DAYS_DE[d.getDay()]} ${day}.${String(d.getMonth() + 1).padStart(2, '0')}.`;
-  return `${DAYS[d.getDay()]} ${day} ${MONTHS[d.getMonth()]}`;
+  if (locale === 'de') {
+    return `${DAYS_DE[d.getDay()]} ${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.`;
+  }
+  return `${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`;
 }
-
-/** "Thu 05 Nov, 19:30 – 21:00" (or just the date when there is no time). */
-const shortLine = (prefix, event, locale) =>
-  prefix + formatShort(event.date, locale) + (event.time ? `, ${event.time}` : '');
 
 /**
  * The soonest event on or after `today`. Events in the past are skipped, and
@@ -101,42 +102,66 @@ export function nextEvent(feed, today) {
 }
 
 /**
- * What a card should display, as plain strings: the label, and one or two
- * lines of date text. Deliberately not HTML — the caller renders these with
- * textContent, so nothing from the JSON feed can inject markup.
+ * A course that takes registrations (feed has `joinUntil`) reads differently
+ * from a single dated event: when it starts, which weekday and time it meets,
+ * and until when new students can still join.
+ *
+ * @param {EventFeed} feed
+ * @param {GardenEvent} next the next class on or after today
+ * @param {Date} cutoff today at midnight
+ * @param {Locale} locale
+ * @returns {{ lines: string[], note: string | null }}
+ */
+function courseLines(feed, next, cutoff, locale) {
+  const de = locale === 'de';
+  const first = (feed.events ?? [])
+    .map((e) => parseDate(e?.date))
+    .filter((d) => d !== null)
+    .sort((a, b) => a - b)[0];
+  const notStarted = first && first >= cutoff;
+
+  const lead = notStarted ? (de ? 'Start' : 'Starts') : de ? 'Nächste Stunde' : 'Next class';
+  const lines = [`${lead} ${formatShort(next.date, locale)}`];
+  if (next.time) {
+    const weekday = WEEKDAYS_PLURAL[locale][parseDate(next.date)?.getDay() ?? 0];
+    lines.push(`${weekday} · ${next.time.replace(/\s*–\s*/, '–')}`);
+  }
+
+  const joinUntil = parseDate(feed.joinUntil ?? '');
+  let note = null;
+  if (joinUntil && joinUntil >= cutoff) {
+    note = de
+      ? `Neue Teilnehmer:innen willkommen bis ${String(joinUntil.getDate()).padStart(2, '0')}.${String(joinUntil.getMonth() + 1).padStart(2, '0')}.`
+      : `New students welcome until ${joinUntil.getDate()} ${MONTHS[joinUntil.getMonth()]}`;
+  }
+  return { lines, note };
+}
+
+/**
+ * What a card should display, as plain strings: the label, one or two lines of
+ * date text and, for a course, a small note. Deliberately not HTML — the caller
+ * renders these with textContent, so nothing from the JSON feed can inject markup.
  *
  * @param {EventFeed | null | undefined} feed
  * @param {Date} today
  * @param {Locale} [locale]
  * @param {{ showYear?: boolean, oneLine?: boolean }} [options] `showYear: false` drops the year (the homepage cards); `oneLine` puts the time on the date line
- * @returns {{ label: string | null, lines: string[], isEmpty: boolean, newLine: number | null }}
+ * @returns {{ label: string | null, lines: string[], isEmpty: boolean, note: string | null }}
  */
 export function cardContent(feed, today, locale = 'en', { showYear = true, oneLine = false } = {}) {
   const de = locale === 'de';
   const label = (de ? feed?.label_de : undefined) ?? feed?.label ?? null;
   const next = nextEvent(feed, today);
 
-  // A course that is still running next to the one taking registrations: its
-  // next class is shown first, then the new course. `current` is display only;
-  // the calendar and the email keep reading `events`, the new course alone.
-  const running = feed?.current ? nextEvent(feed.current, today) : null;
-  if (running) {
-    const cur = feed.current;
-    const runPrefix = (de ? cur.prefix_de : undefined) ?? cur.prefix ?? '';
-    // One line per course: four lines pushed the featured homepage card out of
-    // line with its neighbours.
-    const lines = [shortLine(runPrefix, running, locale)];
-    if (next) {
-      const newPrefix = (de ? cur.nextPrefix_de : undefined) ?? cur.nextPrefix ?? '';
-      lines.push(shortLine(newPrefix, next, locale));
-    }
-    // `newLine` is the line that announces the new course, so the page can mark it.
-    return { label, lines, isEmpty: false, newLine: next ? 1 : null };
-  }
-
   if (!next) {
     const message = (de ? feed?.emptyMessage_de : feed?.emptyMessage) ?? EMPTY[locale];
-    return { label, lines: [message], isEmpty: true, newLine: null };
+    return { label, lines: [message], isEmpty: true, note: null };
+  }
+
+  if (feed?.joinUntil) {
+    const cutoff = new Date(today);
+    cutoff.setHours(0, 0, 0, 0);
+    return { label, isEmpty: false, ...courseLines(feed, next, cutoff, locale) };
   }
 
   const prefix = (de ? feed?.prefix_de : undefined) ?? feed?.prefix ?? '';
@@ -146,5 +171,5 @@ export function cardContent(feed, today, locale = 'en', { showYear = true, oneLi
     else lines.push(next.time);
   }
 
-  return { label, lines, isEmpty: false, newLine: null };
+  return { label, lines, isEmpty: false, note: null };
 }

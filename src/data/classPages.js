@@ -96,11 +96,11 @@ export const classPages = [
       'A 12-week Argentine tango beginner course in Cologne. No partner needed, weekly classes, free makeup sessions. Everything you need to start dancing with us.',
     eyebrow: 'The Sprouting Sessions',
     heading: 'Start Dancing Argentine Tango',
-    intro: 'A gentle, structured 12-week beginning for people who have never danced tango before.',
+    intro: 'A structured 12-week beginning for people who have never danced tango before.',
     feed: '/assets/data/regular-classes.json',
-    feedLabel: 'Next Beginner Course · Closes 28/01',
+    feedLabel: 'Next Beginner Tango Course ⭐',
     whatToExpect: [
-      "A gentle weekly ritual, whether you're here for the best value per class or the flexibility to try it first.",
+      "A weekly ritual, whether you're here for the best value per class or the flexibility to try it first.",
       "Each 75-minute class builds on the last: connection, weight shifts, the embrace, and musicality, taught in a fun and engaging way that builds confidence and momentum.",
       "No partner needed. We rotate partners throughout the course, and you choose which role you'd like to learn: Leader, Follower, or Double-Role.",
     ],
@@ -219,7 +219,7 @@ export const classPages = [
       'The next step after the Sprouting Sessions: 12 weeks to turn your basics into confident, musical dancing at the milonga.',
     feed: '/assets/data/growth-sessions.json',
     feedOneLine: true,
-    feedLabel: 'Next Improvers Course · Closes 28/01',
+    feedLabel: 'Next Improvers Tango Course ⭐',
     whatToExpect: [
       'For dancers who already know the basics: change of weight, walking in parallel and cross system, ochos, giro, sandwichito, parada and pasada, calesita, plus the basic social rules and navigation of a milonga.',
       'Each 75-minute class builds on the last. We deepen connection, musicality and navigation on the dance floor, taught in a fun and engaging way.',

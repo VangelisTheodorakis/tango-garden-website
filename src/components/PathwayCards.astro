@@ -48,7 +48,7 @@ const text = {
           'Community events & rituals',
           'Make up missed classes for free',
         ],
-        dateLabel: 'Next Beginner Course · Closes 28/01',
+        dateLabel: 'Next Beginner Tango Course ⭐',
         dateFallback: 'No upcoming dates scheduled (TBA)',
         price: 'from €13 or €10*/class',
         cta: 'See beginner tango course →',
@@ -101,7 +101,7 @@ const text = {
           'Community-Events & Rituale',
           'Verpasste Stunden kostenlos nachholen',
         ],
-        dateLabel: 'Nächster Anfängerkurs · Gruppe schließt am 28.01.',
+        dateLabel: 'Nächster Tango-Anfängerkurs ⭐',
         dateFallback: 'Aktuell keine Termine geplant',
         // "\n" marks a line break in the rendered price.
         price: 'ab 13 € oder 10 €*\npro Stunde',
@@ -383,14 +383,19 @@ const cards = shape.map((c, i) => {
   .date-value :global(.date-line) {
     display: block;
   }
-  /* The emoji sit in a gutter column, each on the line it belongs to: the
-     calendar on the first date line, the star on the new-course line. The side
+  .date-value :global(.date-note) {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    font-weight: 500;
+    opacity: 0.85;
+  }
+  /* The calendar emoji sits in a gutter column on the first date line. The side
      emoji element only keeps the column's width. */
   .card-date-emoji {
     visibility: hidden;
   }
-  .date-value::before,
-  .date-value :global(.date-line--new)::before {
+  .date-value::before {
     position: absolute;
     left: -28px;
     width: 20px;
@@ -400,9 +405,6 @@ const cards = shape.map((c, i) => {
   }
   .date-value::before {
     content: '🗓️';
-  }
-  .date-value :global(.date-line--new)::before {
-    content: '⭐';
   }
   .featured .date-value {
     color: white;
@@ -575,7 +577,7 @@ const cards = shape.map((c, i) => {
         const dateEl = document.getElementById(`${feed.key}-date`);
         if (!dateEl) return;
 
-        const { label, lines, newLine } = cardContent(data, new Date(), locale, {
+        const { label, lines, note } = cardContent(data, new Date(), locale, {
           showYear: false,
           oneLine: feed.oneLine,
         });
@@ -585,13 +587,19 @@ const cards = shape.map((c, i) => {
         // textContent per line, not innerHTML — nothing from the feed is
         // parsed as markup.
         dateEl.textContent = '';
-        // One block per line; the new-course line gets a star in the emoji column.
-        lines.forEach((line, i) => {
+        // One block per line, plus a small note for courses that take registrations.
+        lines.forEach((line) => {
           const row = document.createElement('span');
-          row.className = i === newLine ? 'date-line date-line--new' : 'date-line';
+          row.className = 'date-line';
           row.textContent = line;
           dateEl.appendChild(row);
         });
+        if (note) {
+          const small = document.createElement('span');
+          small.className = 'date-note';
+          small.textContent = note;
+          dateEl.appendChild(small);
+        }
       })
       .catch(() => {
         /* keep the static fallback text on error */

@@ -594,14 +594,19 @@ const waLabel = text.waLabel;
   .class-schedule-date :global(.date-line) {
     display: block;
   }
-  /* Emoji in a gutter column, each on its own line: the calendar on the first
-     date line, the star on the new-course line. The side emoji element only
-     keeps the column's width. */
+  .class-schedule-date :global(.date-note) {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    font-weight: 500;
+    opacity: 0.85;
+  }
+  /* The calendar emoji sits in a gutter column on the first date line. The side
+     emoji element only keeps the column's width. */
   .class-schedule-emoji {
     visibility: hidden;
   }
-  .class-schedule-date::before,
-  .class-schedule-date :global(.date-line--new)::before {
+  .class-schedule-date::before {
     position: absolute;
     left: -32px;
     width: 22px;
@@ -610,9 +615,6 @@ const waLabel = text.waLabel;
   }
   .class-schedule-date::before {
     content: '🗓️';
-  }
-  .class-schedule-date :global(.date-line--new)::before {
-    content: '⭐';
   }
   .class-hero--photo .class-schedule {
     background: var(--green);
@@ -954,16 +956,22 @@ const waLabel = text.waLabel;
       .then((data) => {
         if (!data) return;
         const oneLine = box?.dataset.oneLine !== undefined;
-        const { label, lines, newLine } = cardContent(data, new Date(), locale, { showYear: !oneLine, oneLine });
+        const { label, lines, note } = cardContent(data, new Date(), locale, { showYear: !oneLine, oneLine });
         if (labelEl && label) labelEl.textContent = label;
         dateEl.textContent = '';
-        // One block per line; the new-course line gets a star in the emoji column.
-        lines.forEach((line, i) => {
+        // One block per line, plus a small note for courses that take registrations.
+        lines.forEach((line) => {
           const row = document.createElement('span');
-          row.className = i === newLine ? 'date-line date-line--new' : 'date-line';
+          row.className = 'date-line';
           row.textContent = line;
           dateEl.appendChild(row);
         });
+        if (note) {
+          const small = document.createElement('span');
+          small.className = 'date-note';
+          small.textContent = note;
+          dateEl.appendChild(small);
+        }
       })
       .catch(() => {
         if (dateEl) dateEl.textContent = cardContent(null, new Date(), locale).lines[0];
