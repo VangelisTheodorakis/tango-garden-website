@@ -9,7 +9,7 @@
  * replacing the English ones.
  *
  * @typedef {{ date: string, time?: string }} GardenEvent
- * @typedef {{ label?: string, prefix?: string, emptyMessage?: string, label_de?: string, prefix_de?: string, emptyMessage_de?: string, events?: GardenEvent[], joinUntil?: string }} EventFeed
+ * @typedef {{ label?: string, prefix?: string, emptyMessage?: string, label_de?: string, prefix_de?: string, emptyMessage_de?: string, events?: GardenEvent[], course?: boolean, joinUntil?: string }} EventFeed
  * @typedef {'en' | 'de'} Locale
  */
 
@@ -102,9 +102,9 @@ export function nextEvent(feed, today) {
 }
 
 /**
- * A course that takes registrations (feed has `joinUntil`) reads differently
- * from a single dated event: when it starts, which weekday and time it meets,
- * and until when new students can still join.
+ * A course (feed has `course: true`) reads differently from a single dated
+ * event: when it starts, which weekday and time it meets and, if the feed has
+ * `joinUntil`, until when new students can still join.
  *
  * @param {EventFeed} feed
  * @param {GardenEvent} next the next class on or after today
@@ -158,7 +158,7 @@ export function cardContent(feed, today, locale = 'en', { showYear = true, oneLi
     return { label, lines: [message], isEmpty: true, note: null };
   }
 
-  if (feed?.joinUntil) {
+  if (feed?.course) {
     const cutoff = new Date(today);
     cutoff.setHours(0, 0, 0, 0);
     return { label, isEmpty: false, ...courseLines(feed, next, cutoff, locale) };

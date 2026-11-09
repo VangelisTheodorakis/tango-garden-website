@@ -100,6 +100,7 @@ describe('cardContent', () => {
 
   it('reads a course as start, weekday and time, plus until when students can join', () => {
     const feed = {
+      course: true,
       joinUntil: '2027-01-28',
       events: [
         { date: '2027-01-07', time: '19:15 – 20:30' },
@@ -116,8 +117,17 @@ describe('cardContent', () => {
     });
   });
 
+  it('shows a course without a cut-off as start and schedule only', () => {
+    const feed = { course: true, events: [{ date: '2027-01-07', time: '20:30 – 21:45' }] };
+    expect(cardContent(feed, at('2026-11-09'))).toMatchObject({
+      lines: ['Starts Thu 7 Jan', 'Thursdays · 20:30–21:45'],
+      note: null,
+    });
+  });
+
   it('switches a course to the next class once it has started, and drops the note after the cut-off', () => {
     const feed = {
+      course: true,
       joinUntil: '2027-01-28',
       events: [
         { date: '2027-01-07', time: '19:15 – 20:30' },

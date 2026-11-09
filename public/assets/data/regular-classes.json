@@ -4,6 +4,7 @@
   "label_de": "Nächster Tango-Anfängerkurs ⭐",
   "emptyMessage_de": "Aktuell keine Termine geplant",
   "prefix": "",
+  "course": true,
   "joinUntil": "2027-01-28",
   "events": [
     { "date": "2027-01-07", "time": "19:15 – 20:30" },

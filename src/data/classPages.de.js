@@ -137,7 +137,7 @@ export const classPagesDe = {
     heading: 'Tango weiterentwickeln: Dein Kurs nach dem Einstieg',
     intro:
       'Der nächste Schritt nach den Sprouting Sessions: 12 Wochen, in denen deine Grundlagen zu sicherem, musikalischem Tanzen im Salon wachsen.',
-    feedLabel: 'Nächster Tango-Kurs für Fortgeschrittene ⭐',
+    feedLabel: 'Nächster Kurs für Fortgeschrittene',
     whatToExpect: [
       'Für alle, die die Grundlagen schon kennen: Gewichtsverlagerung, Gehen im Parallel- und Kreuzsystem, Ochos, Giro, Sandwichito, Parada und Pasada, Calesita sowie die wichtigsten Regeln und die Orientierung auf einer Milonga.',
       'Jede Stunde dauert 75 Minuten und baut auf der letzten auf. Wir vertiefen Verbindung, Musikalität und Navigation auf der Tanzfläche, mit viel Spaß vermittelt.',

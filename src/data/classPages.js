@@ -220,7 +220,7 @@ export const classPages = [
       'The next step after the Sprouting Sessions: 12 weeks to turn your basics into confident, musical dancing at the milonga.',
     feed: '/assets/data/growth-sessions.json',
     feedOneLine: true,
-    feedLabel: 'Next Improvers Tango Course ⭐',
+    feedLabel: 'Next Improvers Course',
     whatToExpect: [
       'For dancers who already know the basics: change of weight, walking in parallel and cross system, ochos, giro, sandwichito, parada and pasada, calesita, plus the basic social rules and navigation of a milonga.',
       'Each 75-minute class builds on the last. We deepen connection, musicality and navigation on the dance floor, taught in a fun and engaging way.',
