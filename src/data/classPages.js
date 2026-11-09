@@ -107,6 +107,7 @@ export const classPages = [
     whatsIncluded: [],
     registerUrl:
       'https://docs.google.com/forms/d/e/1FAIpQLSfKxH4ndLnCj5Y-c73Ty-ubZOEFU_fNehXq2Uwj6-WJkHu4gg/viewform?utm_source=tangogarden.de&utm_medium=website&utm_campaign=sprouting-sessions-winter',
+    bankTransfer: true,
     waMessage: "Hi! I have a question about the Beginners' Tango Course at Tango Garden!",
     heroImage: 'hero-dancers.png',
     gallery: [
@@ -233,6 +234,7 @@ export const classPages = [
     // Sessions prices; they are plain values so no Shopify product is needed.
     registerUrl:
       'https://docs.google.com/forms/d/e/1FAIpQLSeg8Mn2gDfP0JUQ_-n_Zldr4n8JQ2CrAr9e9zL1o8VfBl41aA/viewform?utm_source=tangogarden.de&utm_medium=website&utm_campaign=growth-sessions-winter',
+    bankTransfer: true,
     waMessage: "Hi! I have a question about the Improvers' Tango Course at Tango Garden!",
     perkColumn: 'Free access to all beginner classes',
     heroImage: 'hero-dancers.png',

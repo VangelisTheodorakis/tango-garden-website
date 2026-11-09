@@ -45,6 +45,8 @@ interface ClassPageEntry {
   priceNote?: string;
   /** Closing-section text; defaults to the register / drop-in wording. */
   nextStep?: string;
+  /** The course also takes bank transfer, so the payment notes say so. */
+  bankTransfer?: boolean;
   /** Header of the ✓/— perk column; defaults to the "free practica if you miss a class" wording. */
   perkColumn?: string;
   /** WhatsApp message; defaults to "Hi! I have a question about <heading>." */
@@ -94,6 +96,8 @@ const text = {
     seePrices: 'See course prices\u00a0↓',
     registerNote: 'No payment required to register. Pay in cash or via PayPal at your first class.',
     paymentNote: 'All prices are paid in cash or via PayPal.',
+    registerNoteBank: 'No payment required to register. Pay in cash, via PayPal or by bank transfer.',
+    paymentNoteBank: 'All prices are paid in cash, via PayPal or by bank transfer.',
     whereIsIt: '📍 Where is it?',
     whatToExpect: 'What to Expect',
     photo: 'photo',
@@ -135,6 +139,9 @@ const text = {
     registerNote:
       'Für die Anmeldung zahlst du nichts, bezahlt wird bar oder per PayPal in deiner ersten Stunde. Das Anmeldeformular ist auf Englisch.',
     paymentNote: 'Alle Preise zahlst du bar oder per PayPal.',
+    registerNoteBank:
+      'Für die Anmeldung zahlst du nichts, bezahlt wird bar, per PayPal oder per Überweisung. Das Anmeldeformular ist auf Englisch.',
+    paymentNoteBank: 'Alle Preise zahlst du bar, per PayPal oder per Überweisung.',
     whereIsIt: '📍 Wo ist das?',
     whatToExpect: 'Was dich erwartet',
     photo: 'Foto',
@@ -211,6 +218,8 @@ const canonical = absoluteUrl(localizePath(`/pages/${data.slug}`, locale));
 const hasStudent = data.table.rows.some((r) => r.student);
 const hasPerClass = data.table.rows.some((r) => r.perClass);
 const hasMakeup = data.table.rows.some((r) => r.makeupIncluded !== undefined);
+const registerNote = data.bankTransfer ? text.registerNoteBank : text.registerNote;
+const paymentNote = data.bankTransfer ? text.paymentNoteBank : text.paymentNote;
 const hasPaidRow = data.table.rows.some((r) => priceOf(r.general) !== 'Free');
 
 const offers = data.offerHandles
@@ -335,7 +344,7 @@ const waLabel = text.waLabel;
         <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
       )}
       {data.registerUrl && (
-        <p class="class-cta-note">{text.registerNote}</p>
+        <p class="class-cta-note">{registerNote}</p>
       )}
       {mapUrl && (
         <a class="class-location-toggle" href={mapUrl} target="_blank" rel="noopener">{text.whereIsIt}</a>
@@ -428,7 +437,7 @@ const waLabel = text.waLabel;
       </table>
     </div>
     {data.priceNote && <p class="class-note">{data.priceNote}</p>}
-    {hasPaidRow && <p class="class-note">{text.paymentNote}</p>}
+    {hasPaidRow && <p class="class-note">{paymentNote}</p>}
     {hasPerClass && (
       <p class="class-note">
         {text.refundNote}
@@ -499,7 +508,7 @@ const waLabel = text.waLabel;
     ) : (
       <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
     )}
-    {data.registerUrl && <p class="class-cta-note">{text.registerNote}</p>}
+    {data.registerUrl && <p class="class-cta-note">{registerNote}</p>}
   </section>
 </BaseLayout>
 
