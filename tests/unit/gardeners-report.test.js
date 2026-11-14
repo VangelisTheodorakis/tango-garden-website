@@ -30,10 +30,11 @@ describe('reportRequests', () => {
     expect(JSON.stringify(reportRequests(7)[2].dimensionFilter)).not.toContain('hostName');
   });
 
-  it('counts reading as visits, not events, so it is comparable with course page visits', () => {
-    // read_<section> fires once per page view; counting events let a reload or a
-    // second view push "What to expect" above 100% of visits.
-    expect(reportRequests(7)[8].metrics).toEqual([{ name: 'sessions' }]);
+  it('measures reading against page views, the unit its events are counted in', () => {
+    // read_<section> fires at most once per page view. Compared with visits it
+    // went over 100%, because GA4 credits a visit only to the page it started on.
+    expect(reportRequests(7)[1].metrics).toContainEqual({ name: 'screenPageViews' });
+    expect(reportRequests(7)[8].metrics).toEqual([{ name: 'eventCount' }]);
   });
 });
 
@@ -43,9 +44,9 @@ describe('buildReport', () => {
     { rows: [row([], [1200, 0.52])] },
     {
       rows: [
-        row(['/pages/beginner-course'], [300]),
-        row(['/de/pages/beginner-course'], [20]),
-        row(['/pages/growth-sessions'], [80]),
+        row(['/pages/beginner-course'], [300, 380]),
+        row(['/de/pages/beginner-course'], [20, 25]),
+        row(['/pages/growth-sessions'], [80, 95]),
       ],
     },
     {
@@ -82,6 +83,7 @@ describe('buildReport', () => {
         slug: 'beginner-course',
         label: 'Beginners',
         pageSessions: 320,
+        pageViews: 405,
         clicks: 30,
         submits: 12,
         lang: { en: { pageSessions: 300, clicks: 25 }, de: { pageSessions: 20, clicks: 5 } },
@@ -91,6 +93,7 @@ describe('buildReport', () => {
         slug: 'growth-sessions',
         label: 'Improvers',
         pageSessions: 80,
+        pageViews: 95,
         clicks: 8,
         submits: 3,
         lang: { en: { pageSessions: 80, clicks: 8 }, de: { pageSessions: 0, clicks: 0 } },

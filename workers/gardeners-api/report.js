@@ -56,11 +56,11 @@ export function reportRequests(days) {
   return [
     // 0. Site: visits and bounce rate.
     { dateRanges: range(days), metrics: [{ name: 'sessions' }, { name: 'bounceRate' }], dimensionFilter: liveSite },
-    // 1. Visits to the two course pages (EN and DE).
+    // 1. Visits and page views of the two course pages (EN and DE).
     {
       dateRanges: range(days),
       dimensions: [{ name: 'pagePath' }],
-      metrics: [{ name: 'sessions' }],
+      metrics: [{ name: 'sessions' }, { name: 'screenPageViews' }],
       dimensionFilter: and(liveSite, coursePages),
     },
     // 2. Register clicks and submitted forms, by course. The page path names
@@ -112,14 +112,15 @@ export function reportRequests(days) {
       orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
       limit: 25,
     },
-    // 8. How far people read the course pages: visits (sessions) that reached
-    //    each section. Not event counts: read_<key> fires once per page view,
-    //    and a visit that reloads or comes back to the page sends it again, which
-    //    pushed "What to expect" above 100% of visits.
+    // 8. How far people read the course pages. read_<key> fires at most once per
+    //    page view, so its event count is compared with page views (report 1),
+    //    never with visits: GA4 credits a visit to the page it started on, so
+    //    people arriving from the homepage were missing from the visits and the
+    //    share went over 100%.
     {
       dateRanges: range(days),
       dimensions: [{ name: 'eventName' }, { name: 'customEvent:course' }],
-      metrics: [{ name: 'sessions' }],
+      metrics: [{ name: 'eventCount' }],
       dimensionFilter: and(liveSite, {
         filter: { fieldName: 'eventName', inListFilter: { values: SECTIONS.map((x) => `read_${x.key}`) } },
       }),
@@ -176,21 +177,24 @@ export function buildReport(days, reports, now = new Date()) {
   const courses = COURSES.map((c) => ({
     ...c,
     pageSessions: 0,
+    // Page views, the base for how far people read.
+    pageViews: 0,
     clicks: 0,
     submits: 0,
     // Visits and register clicks on the English and German page. Forms have
     // no page, so submissions can't be split by language.
     lang: { en: { pageSessions: 0, clicks: 0 }, de: { pageSessions: 0, clicks: 0 } },
-    // Visits that reached each section.
+    // Page views that reached each section.
     read: Object.fromEntries(SECTIONS.map((x) => [x.key, 0])),
   }));
   const bySlug = Object.fromEntries(courses.map((c) => [c.slug, c]));
   const unassigned = { clicks: 0, submits: 0 };
 
-  for (const [[path], [sessions]] of rowsOf(pagesR)) {
+  for (const [[path], [sessions, views]] of rowsOf(pagesR)) {
     const slug = courseFromPath(path);
     if (!slug) continue;
     bySlug[slug].pageSessions += sessions;
+    bySlug[slug].pageViews += views ?? 0;
     bySlug[slug].lang[langOf(path)].pageSessions += sessions;
   }
   for (const [[event, param, path], [count]] of rowsOf(eventsR)) {
