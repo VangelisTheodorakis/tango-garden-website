@@ -57,7 +57,7 @@ interface ClassPageEntry {
   registerUrl?: string;
   /** File name in src/assets/. */
   heroImage?: string;
-  /** Wide picture shown above the heading (public path), for a partner banner. */
+  /** Wide partner banner at the top of the hero, fading into the page (public path). */
   banner?: string;
   bannerAlt?: string;
   gallery?: string[];
@@ -316,11 +316,10 @@ const waLabel = text.waLabel;
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
 
-  {data.banner && (
-    <img class="class-banner" src={data.banner} alt={data.bannerAlt ?? ''} width="1600" height="450" loading="eager" fetchpriority="high" />
-  )}
-
-  <section class:list={['class-hero', data.heroImage && 'class-hero--photo']}>
+  <section class:list={['class-hero', data.heroImage && 'class-hero--photo', data.banner && 'class-hero--banner']}>
+    {data.banner && (
+      <img class="class-hero-banner" src={data.banner} alt={data.bannerAlt ?? ''} width="1600" height="450" loading="eager" fetchpriority="high" />
+    )}
     {heroImage && (
       <Image
         class="class-hero-bg"
@@ -817,13 +816,22 @@ const waLabel = text.waLabel;
     font-style: italic;
     color: var(--text-light);
   }
-  .class-banner {
-    display: block;
+  /* A partner banner at the top of the hero that fades into the page, so it reads
+     as part of the hero the way the photo does on the other class pages. */
+  .class-hero--banner {
+    --banner-h: clamp(140px, 30vw, 380px);
+    padding-top: calc(var(--banner-h) - 10px);
+  }
+  .class-hero-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    aspect-ratio: 1600 / 450;
-    max-height: 340px;
+    height: var(--banner-h);
     object-fit: cover;
     object-position: 50% 59%;
+    -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent);
+    mask-image: linear-gradient(to bottom, #000 72%, transparent);
   }
 
   .class-teacher-cards {
