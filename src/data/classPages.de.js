@@ -32,7 +32,7 @@ export const classPagesDe = {
       'Keine Erfahrung nötig. Kein Partner nötig. Komm einfach, wie du bist.',
       'Anmeldung: erforderlich, die Plätze sind begrenzt',
     ],
-    boldNote: 'Diese Stunde ist für Menschen unter 30.',
+    boldNote: 'Diese Sonderstunde am 13.12. mit ESN Köln ist für Menschen unter 30.',
     whatsIncluded: [],
     nextStep:
       'Die Anmeldung ist erforderlich und die Plätze sind begrenzt. Melde dich über Rausgegangen an oder schreib uns bei Fragen auf WhatsApp.',

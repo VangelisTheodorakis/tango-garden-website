@@ -36,7 +36,7 @@ export const classPages = [
       'No experience needed. No partner required. Just come as you are.',
       'Registration: required, spots are limited',
     ],
-    boldNote: 'This class is for people under 30.',
+    boldNote: 'This special class on 13/12 with ESN Köln is for people under 30.',
     whatsIncluded: [],
     nextStep: 'Registration is required and spots are limited. Sign up on Rausgegangen, or message us on WhatsApp with any questions.',
     // The event is shared with ESN Köln, who take the sign-ups on Rausgegangen.
