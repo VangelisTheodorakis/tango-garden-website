@@ -19,35 +19,47 @@
 export const classPages = [
   {
     slug: 'enter-the-garden',
-    title: 'Enter the Garden: Introductory Session',
-    metaTitle: 'Free Tango Intro Class in Cologne (Köln)',
+    title: 'ESN Köln × Tango Garden: Free Argentine Tango Class',
+    metaTitle: 'Free Tango Class with ESN Köln, 13 December',
     metaDescription:
-      'A free, open-air introduction to Argentine Tango at Rheinpark in Cologne. One hour, no partner needed, no experience required.',
-    heading: 'Enter the Garden',
-    intro:
-      "A free, open-air introduction to Argentine Tango at Rheinpark. No partner, no experience, no pressure. Just an hour to see how it feels.",
+      'Free beginner-friendly Argentine tango class in English for under 30s, with ESN Köln and Tango Garden at UniSport Köln, Sunday 13 December. Registration required.',
+    eyebrow: 'ESN Köln × Tango Garden 🤍',
+    heading: 'Free Argentine Tango Class',
+    intro: 'Free admission · Under 30 · Registration required',
     feed: '/assets/data/enter-the-garden.json',
-    feedLabel: 'Next introductory class',
+    feedLabel: 'Free class with ESN Köln',
     whatToExpect: [
-      'A one-hour, guided introduction to connection, weight shifts, and the embrace, not performance, just conversation between two people.',
-      "We rotate throughout the session so everyone dances with everyone. Come solo or with a partner.",
+      'In a world of algorithms, endless scrolling, and fleeting interactions, ESN Cologne and Tango Garden are creating space for something slower, more real, and more human: something we can share.',
+      'ESN Cologne invites you to a free, beginner-friendly Argentine tango class in English, taught by Kristina and Vangelis from Tango Garden.',
+      'No experience needed. No partner required. Just come as you are.',
+      'Where: UniSport Köln, small gym',
+      'When: Sunday, 13 December, 17:30–19:00',
+      'Price: free',
+      'Registration: required, spots are limited',
     ],
-    whatsIncluded: [
-      'One hour, guided, outdoors at Rheinpark',
-      'Partner rotation, come solo or with a partner',
-      'A Garden Ambassador greeting, so you never stand alone',
-    ],
-    heroImage: 'enter-the-garden-hero.webp',
+    whatsIncluded: [],
+    nextStep: 'Registration is required and spots are limited. Sign up on Rausgegangen, or message us on WhatsApp with any questions.',
+    // The event is shared with ESN Köln, who take the sign-ups on Rausgegangen.
+    extraCta: {
+      label: 'Register on Rausgegangen',
+      href: 'https://rausgegangen.de/en/events/esn-koln-tango-garden-free-argentine-tango-class-0/?utm_source=tangogarden.de&utm_medium=website&utm_campaign=esn-koeln_2026-12-13',
+    },
+    waMessage: 'Hi! I saw the tango class with ESN Köln on 13 December on your website and have a question.',
+    banner: '/images/esn-tango-garden-banner.webp',
+    bannerAlt: 'ESN Köln × Tango Garden',
     gallery: [
+      '/images/enter-the-garden-rheinpark-banner.webp',
       '/images/enter-the-garden-1.webp',
       '/images/enter-the-garden-2.webp',
       '/images/enter-the-garden-3.webp',
     ],
+    galleryCaption: 'Photos from our last free open classes at Rheinpark - Summer 2026',
+    showTeachers: true,
     table: {
       caption: 'Price',
       rows: [
         {
-          label: 'Enter the Garden',
+          label: 'ESN Köln × Tango Garden class',
           general: { handle: 'enter-the-garden-general-admission' },
           student: null,
           perClass: null,
@@ -58,33 +70,37 @@ export const classPages = [
     cancellationNote: null,
     faq: [
       {
+        q: 'Who can join?',
+        a: 'The class is for people under 30. Registration is required and spots are limited, so please sign up on Rausgegangen.',
+      },
+      {
         q: 'Do I need any dance experience to start?',
-        a: 'Not at all. Every session is designed for absolute beginners. We start from scratch: how to stand, how to be present, how to listen through touch.',
+        a: 'Not at all. This class is designed for absolute beginners. We start from scratch: how to stand, how to be present, how to listen through touch.',
       },
       {
         q: 'Do I need to bring a partner?',
-        a: 'No. Most people come alone. We rotate partners during the session so everyone gets to dance with different people.',
+        a: 'No. Most people come alone. We rotate partners during the class so everyone gets to dance with different people.',
       },
       {
         q: 'What should I wear?',
-        a: "Comfortable clothes and shoes you can move in. We're outdoors on grass at Rheinpark.",
+        a: 'Comfortable clothes and shoes you can move in. We dance in a gym, so clean indoor shoes or socks work well.',
       },
       {
         q: 'Where exactly are you located in Cologne?',
-        a: '<a href="https://www.google.com/maps/search/?api=1&query=Tango+Garden+Tanzpavillon+vor+der+Claudius-Therme+K%C3%B6ln" target="_blank" rel="noopener">Rheinpark, Tanzpavillon vor der Claudius-Therme</a>, on the Rhine near the Rheinparkweg entrance.',
+        a: '<a href="https://maps.app.goo.gl/28yKvvXAWNpXnT9V8" target="_blank" rel="noopener">UniSport Köln</a>, small gym.',
         raw: true,
       },
     ],
     offerHandles: ['enter-the-garden-general-admission'],
     courseSchema: {
-      name: 'Enter the Garden: Introductory Tango Session Cologne',
+      name: 'ESN Köln × Tango Garden: Free Argentine Tango Class',
       description:
-        'Free one-hour open-air introductory Argentine tango session at Rheinpark in Cologne. No partner or experience needed.',
-      duration: 'PT1H',
+        'Free beginner-friendly Argentine tango class in English for under 30s at UniSport Köln, with ESN Köln and Tango Garden. No experience or partner needed.',
+      duration: 'PT1H30M',
       location: {
-        name: 'Rheinpark, Tanzpavillon vor der Claudius-Therme',
-        streetAddress: 'Tanzpavillon vor der Claudius-Therme',
+        name: 'UniSport Köln, small gym',
         addressLocality: 'Köln',
+        mapUrl: 'https://maps.app.goo.gl/28yKvvXAWNpXnT9V8',
       },
     },
   },

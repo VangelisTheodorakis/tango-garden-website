@@ -57,7 +57,14 @@ interface ClassPageEntry {
   registerUrl?: string;
   /** File name in src/assets/. */
   heroImage?: string;
+  /** Wide picture shown above the heading (public path), for a partner banner. */
+  banner?: string;
+  bannerAlt?: string;
   gallery?: string[];
+  /** Line under the gallery, e.g. where and when the photos were taken. */
+  galleryCaption?: string;
+  /** A second sign-up button next to WhatsApp, for sign-ups taken on another site. */
+  extraCta?: { label: string; href: string };
   showTeachers?: boolean;
   courseSchema: {
     name: string;
@@ -69,6 +76,8 @@ interface ClassPageEntry {
       streetAddress?: string;
       postalCode?: string;
       addressLocality: string;
+      /** Map link when the place has no street address. */
+      mapUrl?: string;
     };
   };
 }
@@ -289,7 +298,8 @@ const breadcrumbSchema = {
 
 // No street address (e.g. private classes, held wherever suits) means no map link.
 const mapQuery = [loc.streetAddress, loc.postalCode, loc.addressLocality].filter(Boolean).join(', ');
-const mapUrl = loc.streetAddress ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}` : null;
+const mapUrl =
+  loc.mapUrl ?? (loc.streetAddress ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}` : null);
 
 // German headings are keyword phrases; the message names the class by its brand name.
 // A page can set its own message (`waMessage` in classPages.js / classPages.de.js).
@@ -305,6 +315,10 @@ const waLabel = text.waLabel;
   <script type="application/ld+json" set:html={JSON.stringify(courseSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+
+  {data.banner && (
+    <img class="class-banner" src={data.banner} alt={data.bannerAlt ?? ''} width="1600" height="675" loading="eager" fetchpriority="high" />
+  )}
 
   <section class:list={['class-hero', data.heroImage && 'class-hero--photo']}>
     {heroImage && (
@@ -340,6 +354,11 @@ const waLabel = text.waLabel;
           <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">{text.register}</a>
           <a class="btn-ghost" href="#pricing">{text.seePrices}</a>
         </div>
+      ) : data.extraCta ? (
+        <div class="class-btn-row">
+          <a class="btn-register" href={data.extraCta.href} target="_blank" rel="noopener">{data.extraCta.label}</a>
+          <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
+        </div>
       ) : (
         <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
       )}
@@ -363,12 +382,13 @@ const waLabel = text.waLabel;
         <img class="class-gallery-wide" src={data.gallery[0]} alt={`${data.heading} ${text.photo} 1`} loading="lazy" />
       )}
       {data.gallery.length > 1 && (
-        <div class="class-gallery-pair">
+        <div class:list={['class-gallery-pair', { 'class-gallery-pair--three': data.gallery.length === 4 }]}>
           {data.gallery.slice(1).map((src, i) => (
             <img src={src} alt={`${data.heading} ${text.photo} ${i + 2}`} loading="lazy" />
           ))}
         </div>
       )}
+      {data.galleryCaption && <p class="class-gallery-caption">{data.galleryCaption}</p>}
     </section>
   )}
 
@@ -503,6 +523,11 @@ const waLabel = text.waLabel;
     {data.registerUrl ? (
       <div class="class-btn-row">
         <a class="btn-register" href={data.registerUrl} target="_blank" rel="noopener">{text.register}</a>
+        <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
+      </div>
+    ) : data.extraCta ? (
+      <div class="class-btn-row">
+        <a class="btn-register" href={data.extraCta.href} target="_blank" rel="noopener">{data.extraCta.label}</a>
         <a class="btn-whatsapp" href={waHref} target="_blank" rel="noopener">{waLabel}</a>
       </div>
     ) : (
@@ -780,6 +805,24 @@ const waLabel = text.waLabel;
     .class-gallery-pair {
       grid-template-columns: 1fr 1fr;
     }
+    /* A wide picture plus three more: the three share one row. */
+    .class-gallery-pair--three {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .class-gallery-caption {
+    margin: 10px 0 0;
+    text-align: center;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--text-light);
+  }
+  .class-banner {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1600 / 675;
+    object-fit: cover;
+    object-position: 50% 58%;
   }
 
   .class-teacher-cards {

@@ -17,51 +17,63 @@ const EBERTPLATZ_LINK =
 
 export const classPagesDe = {
   'enter-the-garden': {
-    metaTitle: 'Kostenlose Tango-Probestunde in Köln',
+    metaTitle: 'Kostenlose Tango-Stunde mit ESN Köln, 13. Dezember',
     metaDescription:
-      'Tango Argentino kostenlos ausprobieren: Eine Stunde open air im Rheinpark Köln. Ohne Partner, ohne Vorkenntnisse, ohne Druck.',
-    eyebrow: 'Enter the Garden',
-    heading: 'Kostenlose Tango-Probestunde im Rheinpark',
-    intro:
-      'Eine kostenlose Einführung in den Tango Argentino, open air im Rheinpark. Kein Partner, keine Erfahrung, kein Druck. Nur eine Stunde, um zu spüren, wie es sich anfühlt.',
-    feedLabel: 'Nächste Probestunde',
+      'Kostenlose Tango-Argentino-Stunde für Anfänger:innen unter 30 im UniSport Köln, Sonntag 13. Dezember, mit ESN Köln und Tango Garden. Anmeldung erforderlich.',
+    eyebrow: 'ESN Köln × Tango Garden 🤍',
+    heading: 'Kostenlose Tango-Argentino-Stunde',
+    intro: 'Kostenlos · Unter 30 · Anmeldung erforderlich',
+    feedLabel: 'Kostenlose Stunde mit ESN Köln',
     whatToExpect: [
-      'Eine angeleitete Stunde rund um Verbindung, Gewichtsverlagerung und die Umarmung. Keine Performance, sondern ein Gespräch zwischen zwei Menschen.',
-      'Wir wechseln während der Stunde die Partner:innen, sodass alle mit allen tanzen. Komm allein oder zu zweit.',
+      'In einer Welt voller Algorithmen, endlosem Scrollen und flüchtiger Begegnungen schaffen ESN Köln und Tango Garden einen Raum für etwas Langsameres, Echteres und Menschlicheres: etwas, das wir teilen können.',
+      'ESN Köln lädt dich zu einer kostenlosen, anfänger:innenfreundlichen Tango-Argentino-Stunde auf Englisch ein, geleitet von Kristina und Vangelis von Tango Garden.',
+      'Keine Erfahrung nötig. Kein Partner nötig. Komm einfach, wie du bist.',
+      'Wo: UniSport Köln, kleine Halle',
+      'Wann: Sonntag, 13. Dezember, 17:30–19:00 Uhr',
+      'Preis: kostenlos',
+      'Anmeldung: erforderlich, die Plätze sind begrenzt',
     ],
-    whatsIncluded: [
-      'Eine Stunde, angeleitet, draußen im Rheinpark',
-      'Partnerwechsel, komm allein oder zu zweit',
-      'Ein Garden Ambassador begrüßt dich, damit du nie allein dastehst',
-    ],
-    table: { caption: 'Preis', rowLabels: ['Enter the Garden'] },
+    whatsIncluded: [],
+    nextStep:
+      'Die Anmeldung ist erforderlich und die Plätze sind begrenzt. Melde dich über Rausgegangen an oder schreib uns bei Fragen auf WhatsApp.',
+    extraCta: { label: 'Auf Rausgegangen anmelden' },
+    waMessage:
+      'Hi! Ich habe die Tango-Stunde mit ESN Köln am 13. Dezember auf eurer Website gesehen und habe eine Frage.',
+    galleryCaption: 'Fotos von unseren letzten kostenlosen offenen Stunden im Rheinpark, Sommer 2026',
+    table: { caption: 'Preis', rowLabels: ['ESN Köln × Tango Garden Stunde'] },
     faq: [
+      {
+        key: 'Who can join?',
+        q: 'Wer kann mitmachen?',
+        a: 'Die Stunde ist für Menschen unter 30. Die Anmeldung ist erforderlich und die Plätze sind begrenzt, bitte melde dich über Rausgegangen an.',
+      },
       {
         key: 'Do I need any dance experience to start?',
         q: 'Brauche ich Tanzerfahrung?',
-        a: 'Überhaupt nicht. Jede Session ist für absolute Anfänger:innen gemacht. Wir fangen bei null an: Wie du stehst, wie du präsent bist, wie du über Berührung zuhörst.',
+        a: 'Überhaupt nicht. Diese Stunde ist für absolute Anfänger:innen gemacht. Wir fangen bei null an: Wie du stehst, wie du präsent bist, wie du über Berührung zuhörst.',
       },
       {
         key: 'Do I need to bring a partner?',
         q: 'Muss ich eine:n Partner:in mitbringen?',
-        a: 'Nein. Die meisten kommen allein. Wir wechseln während der Session die Partner:innen, sodass du mit verschiedenen Leuten tanzt.',
+        a: 'Nein. Die meisten kommen allein. Wir wechseln während der Stunde die Partner:innen, sodass du mit verschiedenen Leuten tanzt.',
       },
       {
         key: 'What should I wear?',
         q: 'Was soll ich anziehen?',
-        a: 'Bequeme Kleidung und Schuhe, in denen du dich gut bewegen kannst. Wir sind draußen auf dem Rasen im Rheinpark.',
+        a: 'Bequeme Kleidung und Schuhe, in denen du dich gut bewegen kannst. Wir tanzen in einer Halle, saubere Hallenschuhe oder Socken passen gut.',
       },
       {
         key: 'Where exactly are you located in Cologne?',
         q: 'Wo genau seid ihr in Köln?',
-        a: '<a href="https://www.google.com/maps/search/?api=1&query=Tango+Garden+Tanzpavillon+vor+der+Claudius-Therme+K%C3%B6ln" target="_blank" rel="noopener">Rheinpark, Tanzpavillon vor der Claudius-Therme</a>, direkt am Rhein nahe dem Eingang Rheinparkweg.',
+        a: '<a href="https://maps.app.goo.gl/28yKvvXAWNpXnT9V8" target="_blank" rel="noopener">UniSport Köln</a>, kleine Halle.',
         raw: true,
       },
     ],
     courseSchema: {
-      name: 'Enter the Garden: Kostenlose Tango-Probestunde in Köln',
+      name: 'ESN Köln × Tango Garden: Kostenlose Tango-Argentino-Stunde',
       description:
-        'Kostenlose, einstündige Tango-Argentino-Probestunde open air im Rheinpark Köln. Kein Partner und keine Erfahrung nötig.',
+        'Kostenlose, anfänger:innenfreundliche Tango-Argentino-Stunde auf Englisch für Menschen unter 30 im UniSport Köln, mit ESN Köln und Tango Garden. Kein Partner und keine Erfahrung nötig.',
+      location: { name: 'UniSport Köln, kleine Halle' },
     },
   },
   'beginner-course': {
@@ -356,6 +368,8 @@ export function getClassPage(slug, locale = 'en') {
     ...(de.priceNote && { priceNote: de.priceNote }),
     ...(de.nextStep && { nextStep: de.nextStep }),
     ...(de.perkColumn && { perkColumn: de.perkColumn }),
+    ...(de.extraCta && { extraCta: { ...en.extraCta, label: de.extraCta.label } }),
+    ...(de.galleryCaption && { galleryCaption: de.galleryCaption }),
     // Never the English message on a German page; without one, the page builds its own.
     waMessage: 'waMessage' in de ? de.waMessage : undefined,
     faq: de.faq,

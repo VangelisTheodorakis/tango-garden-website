@@ -1,12 +1,9 @@
 {
-  "label": "Next introductory class",
+  "label": "Free class with ESN Köln",
   "emptyMessage": "New dates coming soon (TBA)",
-  "label_de": "Nächste Probestunde",
+  "label_de": "Kostenlose Stunde mit ESN Köln",
   "emptyMessage_de": "Neue Termine folgen bald",
   "events": [
-    { "date": "2026-08-01", "time": "19:00 – 20:00" },
-    { "date": "2026-08-08", "time": "19:00 – 20:00" },
-    { "date": "2026-09-05", "time": "19:00 – 20:00" },
-    { "date": "2026-09-19", "time": "19:00 – 20:00" }
+    { "date": "2026-12-13", "time": "17:30 – 19:00" }
   ]
 }
