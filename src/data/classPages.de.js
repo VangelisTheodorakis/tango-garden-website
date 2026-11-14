@@ -20,7 +20,6 @@ export const classPagesDe = {
     metaTitle: 'Kostenlose Tango-Stunde mit ESN Köln, 13. Dezember',
     metaDescription:
       'Kostenlose Tango-Argentino-Stunde für Anfänger:innen unter 30 im UniSport Köln, Sonntag 13. Dezember, mit ESN Köln und Tango Garden. Anmeldung erforderlich.',
-    eyebrow: 'ESN Köln × Tango Garden 🤍',
     heading: 'Kostenlose Tango-Argentino-Stunde',
     intro: 'Eine kostenlose Einführung in den Argentinischen Tango in Zusammenarbeit mit ESN Köln. Kein Partner, keine Erfahrung, kein Druck. Nur eine Stunde, um zu spüren, wie es sich anfühlt.',
     feedLabel: 'Nächste Probestunde',

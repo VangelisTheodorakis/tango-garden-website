@@ -23,7 +23,6 @@ export const classPages = [
     metaTitle: 'Free Tango Class with ESN Köln, 13 December',
     metaDescription:
       'Free beginner-friendly Argentine tango class in English for under 30s, with ESN Köln and Tango Garden at UniSport Köln, Sunday 13 December. Registration required.',
-    eyebrow: 'ESN Köln × Tango Garden 🤍',
     heading: 'Free Argentine Tango Class',
     intro: 'A free introduction to Argentine Tango in collaboration with ESN Köln. No partner, no experience, no pressure. Just an hour to see how it feels.',
     feed: '/assets/data/enter-the-garden.json',
