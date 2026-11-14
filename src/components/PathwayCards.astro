@@ -33,12 +33,12 @@ const text = {
     cards: [
       {
         title: 'Enter the Garden',
-        description: 'A free beginner class with ESN Köln for anyone under 30.',
-        features: ['In English, no experience needed', 'At UniSport Köln', 'Registration required'],
-        dateLabel: 'Free class with ESN Köln',
+        description: 'Free introductory class for anyone who wants to try tango.',
+        features: ['One-time 1.5-hour class', 'Under 30, registration required', 'At UniSport Köln, with ESN Köln'],
+        dateLabel: 'Next introductory class',
         dateFallback: 'New dates coming soon (TBA)',
         price: 'Free of charge',
-        cta: 'Free class with ESN Köln →',
+        cta: 'Free tango class in Cologne →',
       },
       {
         title: 'Regular Classes',
@@ -86,12 +86,12 @@ const text = {
     cards: [
       {
         title: 'Enter the Garden',
-        description: 'Eine kostenlose Anfänger:innenstunde mit ESN Köln für alle unter 30.',
-        features: ['Auf Englisch, ohne Vorkenntnisse', 'Im UniSport Köln', 'Anmeldung erforderlich'],
-        dateLabel: 'Kostenlose Stunde mit ESN Köln',
+        description: 'Kostenlose Probestunde für alle, die Tango ausprobieren möchten.',
+        features: ['Eine einmalige Stunde (90 Min.)', 'Unter 30, Anmeldung erforderlich', 'Im UniSport Köln, mit ESN Köln'],
+        dateLabel: 'Nächste Probestunde',
         dateFallback: 'Neue Termine folgen bald',
         price: 'Kostenlos',
-        cta: 'Kostenlose Stunde mit ESN Köln →',
+        cta: 'Kostenlose Probestunde →',
       },
       {
         title: 'Anfängerkurs',
@@ -563,7 +563,7 @@ const cards = shape.map((c, i) => {
   const locale = document.documentElement.lang === 'de' ? 'de' : 'en';
 
   const feeds = [
-    { url: '/assets/data/enter-the-garden.json', key: 'etg' },
+    { url: '/assets/data/enter-the-garden.json', key: 'etg', oneLine: true },
     { url: '/assets/data/regular-classes.json', key: 'rc' },
     { url: '/assets/data/practicas.json', key: 'prac', oneLine: true },
   ];

@@ -23,7 +23,7 @@ export const classPagesDe = {
     eyebrow: 'ESN Köln × Tango Garden 🤍',
     heading: 'Kostenlose Tango-Argentino-Stunde',
     intro: 'Kostenlos · Unter 30 · Anmeldung erforderlich',
-    feedLabel: 'Kostenlose Stunde mit ESN Köln',
+    feedLabel: 'Nächste Probestunde',
     whatToExpect: [
       'In einer Welt voller Algorithmen, endlosem Scrollen und flüchtiger Begegnungen schaffen ESN Köln und Tango Garden einen Raum für etwas Langsameres, Echteres und Menschlicheres: etwas, das wir teilen können.',
       'ESN Köln lädt dich zu einer kostenlosen, anfänger:innenfreundlichen Tango-Argentino-Stunde auf Englisch ein, geleitet von Kristina und Vangelis von Tango Garden.',

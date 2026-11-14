@@ -27,7 +27,7 @@ export const classPages = [
     heading: 'Free Argentine Tango Class',
     intro: 'Free admission · Under 30 · Registration required',
     feed: '/assets/data/enter-the-garden.json',
-    feedLabel: 'Free class with ESN Köln',
+    feedLabel: 'Next introductory class',
     whatToExpect: [
       'In a world of algorithms, endless scrolling, and fleeting interactions, ESN Cologne and Tango Garden are creating space for something slower, more real, and more human: something we can share.',
       'ESN Cologne invites you to a free, beginner-friendly Argentine tango class in English, taught by Kristina and Vangelis from Tango Garden.',
