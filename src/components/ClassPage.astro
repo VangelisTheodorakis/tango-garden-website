@@ -317,7 +317,7 @@ const waLabel = text.waLabel;
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
 
   {data.banner && (
-    <img class="class-banner" src={data.banner} alt={data.bannerAlt ?? ''} width="1600" height="675" loading="eager" fetchpriority="high" />
+    <img class="class-banner" src={data.banner} alt={data.bannerAlt ?? ''} width="1600" height="450" loading="eager" fetchpriority="high" />
   )}
 
   <section class:list={['class-hero', data.heroImage && 'class-hero--photo']}>
@@ -820,9 +820,10 @@ const waLabel = text.waLabel;
   .class-banner {
     display: block;
     width: 100%;
-    aspect-ratio: 1600 / 675;
+    aspect-ratio: 1600 / 450;
+    max-height: 340px;
     object-fit: cover;
-    object-position: 50% 58%;
+    object-position: 50% 59%;
   }
 
   .class-teacher-cards {
