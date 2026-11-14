@@ -73,6 +73,14 @@ export const navLabelsDe = {
   '/pages/contact': 'Kontakt',
 };
 
+/** German nav hints (the small line under a child label), keyed by English href. */
+export const navHintsDe = {
+  '/pages/enter-the-garden': 'Kostenlose Probestunde',
+  '/pages/beginner-course': 'Anfängerkurs',
+  '/pages/growth-sessions': 'Kurs für Fortgeschrittene',
+  '/pages/garden-practica': 'Geführte Practica',
+};
+
 /** Child-link overrides where one href appears with two labels (parent vs. child). */
 export const navChildLabelsDe = {};
 
@@ -86,3 +94,11 @@ export const navLabel = (locale, href, fallback, child = false) => {
   if (locale !== 'de') return fallback;
   return (child && navChildLabelsDe[href]) || navLabelsDe[href] || fallback;
 };
+
+/**
+ * @param {'en' | 'de'} locale
+ * @param {string} href
+ * @param {string | undefined} fallback
+ */
+export const navHint = (locale, href, fallback) =>
+  fallback && (locale === 'de' ? navHintsDe[href] || fallback : fallback);

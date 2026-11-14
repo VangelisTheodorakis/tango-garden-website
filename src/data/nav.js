@@ -3,7 +3,10 @@
  * Used by both the desktop dropdown menu and the mobile drawer so the two can
  * never drift apart (they were hand-duplicated in every HTML page before).
  *
- * @typedef {{ href: string, label: string, children?: { href: string, label: string }[] }} NavItem
+ * `hint` is a short plain description shown under a child label, so the
+ * programme names ("Sprouting Sessions" etc.) say what they are.
+ *
+ * @typedef {{ href: string, label: string, children?: { href: string, label: string, hint?: string }[] }} NavItem
  * @type {NavItem[]}
  */
 export const navItems = [
@@ -20,10 +23,10 @@ export const navItems = [
     href: '/pages/classes',
     label: 'Classes',
     children: [
-      { href: '/pages/enter-the-garden', label: 'Enter the Garden' },
-      { href: '/pages/beginner-course', label: 'Sprouting Sessions' },
-      { href: '/pages/growth-sessions', label: 'Growth Sessions' },
-      { href: '/pages/garden-practica', label: 'Garden Practica' },
+      { href: '/pages/enter-the-garden', label: 'Enter the Garden', hint: 'Free intro class' },
+      { href: '/pages/beginner-course', label: 'Sprouting Sessions', hint: 'Beginner course' },
+      { href: '/pages/growth-sessions', label: 'Growth Sessions', hint: 'Improvers course' },
+      { href: '/pages/garden-practica', label: 'Garden Practica', hint: 'Guided practica' },
       { href: '/pages/private-classes', label: 'Private Classes' },
     ],
   },

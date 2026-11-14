@@ -790,6 +790,14 @@ h1,h2,h3,h4 { line-height: 1.2; }
   color: var(--text-mid);
 }
 .nav-drawer-submenu li a:hover { color: var(--green); }
+/* Plain description under a programme name, in both the dropdown and the drawer. */
+.nav-hint {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--text-mid);
+  margin-top: 1px;
+}
 .nav-drawer-footer {
   margin-top: 2rem;
   padding-top: 1.5rem;

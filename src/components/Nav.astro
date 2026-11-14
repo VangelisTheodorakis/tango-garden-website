@@ -1,7 +1,7 @@
 ---
 import { navItems, social } from '../data/nav.js';
 import { getLocale, localizePath, switchPath } from '../i18n/index.js';
-import { navLabel, ui } from '../i18n/ui.js';
+import { navHint, navLabel, ui } from '../i18n/ui.js';
 import Icon from './Icons.astro';
 
 const locale = getLocale(Astro.url.pathname);
@@ -15,6 +15,7 @@ const items = navItems.map((item) => ({
   children: item.children?.map((c) => ({
     href: localizePath(c.href, locale),
     label: navLabel(locale, c.href, c.label, true),
+    hint: navHint(locale, c.href, c.hint),
   })),
 }));
 const isCurrent = (href: string) => path === href.replace(/\/$/, '');
@@ -78,7 +79,10 @@ const otherUi = ui[other];
               <ul class="nav-dropdown" role="list">
                 {item.children.map((child) => (
                   <li>
-                    <a href={child.href}>{child.label}</a>
+                    <a href={child.href}>
+                      {child.label}
+                      {child.hint && <span class="nav-hint">{child.hint}</span>}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -154,7 +158,10 @@ const otherUi = ui[other];
                 <ul class="nav-drawer-submenu" role="list" hidden>
                   {item.children.map((child) => (
                     <li>
-                      <a href={child.href}>{child.label}</a>
+                      <a href={child.href}>
+                        {child.label}
+                        {child.hint && <span class="nav-hint">{child.hint}</span>}
+                      </a>
                     </li>
                   ))}
                 </ul>
