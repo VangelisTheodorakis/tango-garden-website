@@ -28,7 +28,8 @@ interface ClassPageEntry {
   feedLabel?: string;
   /** Next date without the year and with the time on the same line. */
   feedOneLine?: boolean;
-  whatToExpect: string[];
+  /** A paragraph, or a sentence with one plain text link inside it. */
+  whatToExpect: (string | { text: string; label: string; href: string; after?: string })[];
   /** Bold line after What to Expect, e.g. an age limit. */
   boldNote?: string;
   whatsIncluded: string[];
@@ -368,7 +369,17 @@ const waLabel = text.waLabel;
 
   <section class="class-section" data-read="expect">
     <h2>{text.whatToExpect}</h2>
-    {data.whatToExpect.map((p) => <p>{p}</p>)}
+    {data.whatToExpect.map((p) => (
+      <p>
+        {typeof p === 'string' ? (
+          p
+        ) : (
+          <Fragment>
+            {p.text}{' '}<a href={p.href} target="_blank" rel="noopener">{p.label}</a>{p.after ?? ''}
+          </Fragment>
+        )}
+      </p>
+    ))}
     {data.boldNote && <p><strong>{data.boldNote}</strong></p>}
   </section>
 

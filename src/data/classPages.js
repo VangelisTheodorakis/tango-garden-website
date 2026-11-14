@@ -33,7 +33,12 @@ export const classPages = [
       'A one-hour, guided introduction to connection, weight shifts, and the embrace, not performance, just conversation between two people.',
       'We rotate throughout the session so everyone dances with everyone. Come solo or with a partner.',
       'No experience needed. No partner required. Just come as you are.',
-      'Registration: required, spots are limited',
+      {
+        text: 'Registration: required, spots are limited. Sign up on',
+        label: 'Rausgegangen',
+        href: 'https://rausgegangen.de/en/events/esn-koln-tango-garden-free-argentine-tango-class-0/?utm_source=tangogarden.de&utm_medium=website&utm_campaign=esn-koeln_2026-12-13',
+        after: '.',
+      },
     ],
     boldNote: 'This special class on 13/12 with ESN Köln is for people under 30.',
     whatsIncluded: [],

@@ -29,7 +29,12 @@ export const classPagesDe = {
       'Eine einstündige, angeleitete Einführung in Verbindung, Gewichtsverlagerung und die Umarmung. Keine Performance, sondern ein Gespräch zwischen zwei Menschen.',
       'Wir wechseln während der Stunde die Partner:innen, sodass alle mit allen tanzen. Komm allein oder zu zweit.',
       'Keine Erfahrung nötig. Kein Partner nötig. Komm einfach, wie du bist.',
-      'Anmeldung: erforderlich, die Plätze sind begrenzt',
+      {
+        text: 'Anmeldung: erforderlich, die Plätze sind begrenzt. Melde dich auf',
+        label: 'Rausgegangen',
+        href: 'https://rausgegangen.de/en/events/esn-koln-tango-garden-free-argentine-tango-class-0/?utm_source=tangogarden.de&utm_medium=website&utm_campaign=esn-koeln_2026-12-13',
+        after: ' an.',
+      },
     ],
     boldNote: 'Diese Sonderstunde am 13.12. mit ESN Köln ist für Menschen unter 30.',
     whatsIncluded: [],
