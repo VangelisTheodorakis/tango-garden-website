@@ -29,6 +29,8 @@ interface ClassPageEntry {
   /** Next date without the year and with the time on the same line. */
   feedOneLine?: boolean;
   whatToExpect: string[];
+  /** Bold line after What to Expect, e.g. an age limit. */
+  boldNote?: string;
   whatsIncluded: string[];
   table: {
     rows: {
@@ -367,6 +369,7 @@ const waLabel = text.waLabel;
   <section class="class-section" data-read="expect">
     <h2>{text.whatToExpect}</h2>
     {data.whatToExpect.map((p) => <p>{p}</p>)}
+    {data.boldNote && <p><strong>{data.boldNote}</strong></p>}
   </section>
 
   {data.gallery && data.gallery.length > 0 && (
