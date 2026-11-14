@@ -45,8 +45,7 @@ export const classPages = [
       href: 'https://rausgegangen.de/en/events/esn-koln-tango-garden-free-argentine-tango-class-0/?utm_source=tangogarden.de&utm_medium=website&utm_campaign=esn-koeln_2026-12-13',
     },
     waMessage: 'Hi! I saw the tango class with ESN Köln on 13 December on your website and have a question.',
-    banner: '/images/esn-tango-garden-banner.webp',
-    bannerAlt: 'ESN Köln × Tango Garden',
+    heroImage: 'esn-tango-garden-hero.webp',
     gallery: [
       '/images/enter-the-garden-rheinpark-banner.webp',
       '/images/enter-the-garden-1.webp',
