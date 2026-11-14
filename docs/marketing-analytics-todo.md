@@ -78,8 +78,6 @@ listings keep the English links.
 ## Site
 - [ ] Native-speaker read of the German pages; legal check of the German
       privacy policy, AGB and refund policy.
-- [ ] Cloudflare: 301 `www.tangogarden.de` → `https://tangogarden.de`
-      (Rules → Redirect Rules). Low priority; canonicals already cover it.
 - [ ] Decide on a one-line rhythm-trainer link below the homepage pathway cards.
 - [ ] **After 13 Dec:** switch the Enter the Garden page and homepage card
       (EN + DE) from the ESN class to the next free-class dates. Waiting for
