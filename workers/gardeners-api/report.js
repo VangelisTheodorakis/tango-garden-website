@@ -112,11 +112,14 @@ export function reportRequests(days) {
       orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
       limit: 25,
     },
-    // 8. How far people read the course pages.
+    // 8. How far people read the course pages: visits (sessions) that reached
+    //    each section. Not event counts: read_<key> fires once per page view,
+    //    and a visit that reloads or comes back to the page sends it again, which
+    //    pushed "What to expect" above 100% of visits.
     {
       dateRanges: range(days),
       dimensions: [{ name: 'eventName' }, { name: 'customEvent:course' }],
-      metrics: [{ name: 'eventCount' }],
+      metrics: [{ name: 'sessions' }],
       dimensionFilter: and(liveSite, {
         filter: { fieldName: 'eventName', inListFilter: { values: SECTIONS.map((x) => `read_${x.key}`) } },
       }),
@@ -178,7 +181,7 @@ export function buildReport(days, reports, now = new Date()) {
     // Visits and register clicks on the English and German page. Forms have
     // no page, so submissions can't be split by language.
     lang: { en: { pageSessions: 0, clicks: 0 }, de: { pageSessions: 0, clicks: 0 } },
-    // Page views that reached each section.
+    // Visits that reached each section.
     read: Object.fromEntries(SECTIONS.map((x) => [x.key, 0])),
   }));
   const bySlug = Object.fromEntries(courses.map((c) => [c.slug, c]));

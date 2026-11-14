@@ -29,6 +29,12 @@ describe('reportRequests', () => {
     // registration_submit comes from Apps Script and has no hostname.
     expect(JSON.stringify(reportRequests(7)[2].dimensionFilter)).not.toContain('hostName');
   });
+
+  it('counts reading as visits, not events, so it is comparable with course page visits', () => {
+    // read_<section> fires once per page view; counting events let a reload or a
+    // second view push "What to expect" above 100% of visits.
+    expect(reportRequests(7)[8].metrics).toEqual([{ name: 'sessions' }]);
+  });
 });
 
 describe('buildReport', () => {
