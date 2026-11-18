@@ -329,7 +329,7 @@ const faqSchema = {
      voucher in the envelope. */
   .gift-page {
     --on-green: #f3ede1;
-    --on-green-soft: rgba(243, 237, 225, 0.82);
+    --on-green-soft: rgba(243, 237, 225, 0.9);
     --green-deep: #435019;
     background: var(--green);
     color: var(--on-green);
@@ -432,8 +432,8 @@ const faqSchema = {
     overflow: hidden;
     text-overflow: ellipsis;
     background: #e5dc9f;
-    color: var(--green);
-    font-size: 0.75rem;
+    color: #3f4b1b;
+    font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.05em;
     padding: 0.3rem 0.9rem;
@@ -504,11 +504,11 @@ const faqSchema = {
     text-decoration: none;
     transition: background 0.2s ease, color 0.2s ease;
   }
-  /* Orange like the site's Register buttons, so it doesn't read as a second WhatsApp button. */
+  /* Terracotta, a shade deeper than the Register orange so white text stays readable (5:1). */
   .gift-card-more:hover,
   .gift-card-more:focus-visible {
-    background: #c9703e;
-    border-color: #c9703e;
+    background: #a85a2c;
+    border-color: #a85a2c;
     color: #fff;
   }
   .gift-note {
@@ -582,7 +582,8 @@ const faqSchema = {
   .gift-example {
     max-width: 640px;
     margin: 2rem auto 0;
-    background: rgba(243, 237, 225, 0.12);
+    background: var(--green-deep);
+    color: var(--on-green);
     border-radius: 8px;
     padding: 1rem 1.25rem;
     text-align: center;
@@ -596,6 +597,9 @@ const faqSchema = {
   .gift-page .contact-faq-eyebrow,
   .gift-page .contact-faq-inner h2 {
     color: var(--on-green);
+  }
+  .gift-page .contact-faq-eyebrow {
+    font-size: 0.75rem;
   }
   .gift-page .faq-item {
     color: var(--text);
