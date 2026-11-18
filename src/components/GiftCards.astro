@@ -491,11 +491,22 @@ const faqSchema = {
     align-items: center;
     gap: 0.75rem;
   }
+  /* Outline pill, quieter than the WhatsApp button above it. */
   .gift-card-more {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 22px;
+    border: 1.5px solid var(--green);
+    border-radius: 30px;
     color: var(--green);
     font-weight: 600;
     font-size: 0.92rem;
-    text-underline-offset: 3px;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .gift-card-more:hover {
+    background: var(--green);
+    color: #fff;
   }
   .gift-note {
     max-width: 1060px;
