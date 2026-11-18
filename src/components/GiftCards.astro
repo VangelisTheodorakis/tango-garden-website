@@ -22,7 +22,8 @@ const texts = {
     description:
       'Gift someone a little tango: a 4-week beginner class pass or Garden Practica passes in Cologne. No partner or experience needed.',
     h1: 'Gift someone a little tango.',
-    lead: 'No partner and no experience needed. Our new beginners group starts in January, and classes are taught in English.',
+    lead: 'No partner and no experience needed, and classes are taught in English.',
+    leadLink: ['Our ', 'new beginners group', ' starts in January.'],
     reduced: 'reduced*',
     reducedNote: '* Reduced price if the person you gift it to is a student or 28 or under.',
     buy: '💬 Ask for this card',
@@ -103,7 +104,8 @@ const texts = {
     description:
       'Verschenk ein bisschen Tango: einen 4-Wochen-Kurspass für Anfänger:innen oder Practica-Pässe in Köln. Ohne Partner:in und ohne Vorkenntnisse.',
     h1: 'Verschenk ein bisschen Tango.',
-    lead: 'Ohne Partner:in, ohne Vorkenntnisse. Unsere neue Anfänger:innen-Gruppe startet im Januar, unterrichtet wird auf Englisch.',
+    lead: 'Ohne Partner:in, ohne Vorkenntnisse, unterrichtet wird auf Englisch.',
+    leadLink: ['Unsere ', 'neue Anfänger:innen-Gruppe', ' startet im Januar.'],
     reduced: 'ermäßigt*',
     reducedNote: '* Ermäßigt, wenn die beschenkte Person studiert oder 28 oder jünger ist.',
     buy: '💬 Diesen Gutschein anfragen',
@@ -203,7 +205,11 @@ const faqSchema = {
   <section class="gift-hero">
     <img class="gift-hero-logo" src="/assets/logo-icon.svg" alt="" width="64" height="64" />
     <h1>{text.h1}</h1>
-    <p>{text.lead}</p>
+    <p>
+      {text.lead}
+      <br />
+      {text.leadLink[0]}<a href={l('/pages/beginner-course')}>{text.leadLink[1]}</a>{text.leadLink[2]}
+    </p>
   </section>
 
   <section class="gift-cards">
@@ -214,7 +220,6 @@ const faqSchema = {
           return (
             <article class:list={['gift-card', { featured: t.tag }]} id={g.slug}>
               {t.tag && <span class="gift-card-tag">{t.tag}</span>}
-              <span class="gift-card-circle" aria-hidden="true" />
               <h2>
                 {t.title}
                 <span>{t.subtitle}</span>
@@ -328,11 +333,17 @@ const faqSchema = {
     letter-spacing: -0.02em;
     margin-bottom: 1rem;
   }
+  .gift-hero a {
+    color: var(--green);
+    font-weight: 600;
+    text-underline-offset: 3px;
+  }
   .gift-hero p {
     font-size: 1.1rem;
     color: var(--text-mid);
-    max-width: 560px;
+    max-width: 640px;
     margin: 0 auto;
+    text-wrap: balance;
   }
 
   .gift-cards {
@@ -363,7 +374,7 @@ const faqSchema = {
     }
     .gift-cards-inner .gift-card {
       display: grid;
-      grid-row: span 6;
+      grid-row: span 5;
       grid-template-rows: subgrid;
       justify-items: center;
       align-content: start;
@@ -413,13 +424,6 @@ const faqSchema = {
     letter-spacing: 0.05em;
     padding: 0.3rem 0.9rem;
     border-radius: 50px;
-  }
-  .gift-card-circle {
-    width: 40px;
-    height: 40px;
-    border: 3px solid #8a9a2a;
-    border-radius: 50%;
-    margin-bottom: 0.9rem;
   }
   .gift-card h2 {
     font-size: 1.5rem;
