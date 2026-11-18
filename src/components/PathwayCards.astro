@@ -21,6 +21,9 @@ const text = {
     lead: 'Choose what feels right for where you are.',
     why: 'Young people are the future of tango. We keep a reduced rate so the next generation can always find their way onto the floor.',
     reduced: '* Reduced price for students and anyone aged 28 or under.',
+    giftTitle: 'Give tango this Christmas',
+    giftBody: "A 4-week class pass or practica passes, for someone who's always wanted to try. No partner needed.",
+    giftCta: '🎁 See gift cards',
     helpTitle: 'Still wandering?',
     helpBody:
       "Every dancer starts somewhere different. If you're not sure where you fit, we're happy to guide you personally.",
@@ -74,6 +77,9 @@ const text = {
     lead: 'Wähl, was sich für dich gerade richtig anfühlt.',
     why: 'Junge Menschen sind die Zukunft des Tango. Deshalb gibt es einen ermäßigten Preis, damit die nächste Generation immer ihren Weg auf die Tanzfläche findet.',
     reduced: '* Ermäßigt für Studierende und alle bis 28 Jahre.',
+    giftTitle: 'Verschenk Tango zu Weihnachten',
+    giftBody: 'Ein 4-Wochen-Kurspass oder Practica-Pässe, für alle, die es schon immer ausprobieren wollten. Ohne Partner:in.',
+    giftCta: '🎁 Zu den Gutscheinen',
     helpTitle: 'Noch unentschlossen?',
     helpBody:
       'Alle fangen woanders an. Wenn du nicht sicher bist, was zu dir passt, helfen wir dir gerne persönlich weiter.',
@@ -138,11 +144,7 @@ const cards = shape.map((c, i) => {
     ...t,
     cta: { label: t.cta, href: l(c.href) },
     priceNote: undefined as string | undefined,
-    // Gift cards exist for the beginner course and the practica.
-    secondaryCta:
-      c.key === 'etg'
-        ? undefined
-        : { label: locale === 'de' ? '🎁 Als Gutschein verschenken' : '🎁 Give it as a gift', href: `${l('/pages/gift-cards')}#${c.key === 'rc' ? 'class-pass' : 'practica-2'}` },
+    secondaryCta: undefined as { label: string; href: string } | undefined,
   };
 });
 ---
@@ -205,12 +207,10 @@ const cards = shape.map((c, i) => {
               <a class="card-btn" href={card.cta.href}>
                 {card.cta.label}
               </a>
-              {card.secondaryCta ? (
+              {card.secondaryCta && (
                 <a class="card-btn-secondary" href={card.secondaryCta.href}>
                   {card.secondaryCta.label}
                 </a>
-              ) : (
-                <span class="card-btn-secondary is-spacer" aria-hidden="true">&nbsp;</span>
               )}
             </div>
           </div>
@@ -225,6 +225,15 @@ const cards = shape.map((c, i) => {
       <p style="margin: 0;">
         <span>{text.reduced}</span>
       </p>
+    </div>
+
+    {/* Seasonal gift strip. After Christmas: delete this block, or change giftTitle. */}
+    <div class="pathways-gift">
+      <div>
+        <h3 class="pathways-gift-title">{text.giftTitle}</h3>
+        <p class="pathways-gift-body">{text.giftBody}</p>
+      </div>
+      <a class="pathways-gift-btn" href={l('/pages/gift-cards')}>{text.giftCta}</a>
     </div>
 
     <div
@@ -546,27 +555,66 @@ const cards = shape.map((c, i) => {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   }
   .card-btn + .card-btn-secondary {
-    margin-top: 12px;
+    margin-top: 20px;
   }
-  /* A quiet text link under the main button (the gift card link). */
   .card-btn-secondary {
-    display: block;
-    color: #4e5d22;
-    font-size: 15px;
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 10px 8px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
     font-weight: 600;
     text-align: center;
-    text-underline-offset: 3px;
   }
-  .featured .card-btn-secondary {
-    color: white;
+  /* Gift strip: darker cream with an olive edge, quieter than the green card. */
+  .pathways-gift {
+    margin-top: 40px;
+    padding: 24px 28px;
+    background: #efe8d8;
+    border-left: 4px solid #4e5d22;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
-  /* Keeps the main buttons level when cards sit side by side. */
-  .card-btn-secondary.is-spacer {
-    visibility: hidden;
+  .pathways-gift-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #4e5d22;
+    margin-bottom: 4px;
   }
-  @media (max-width: 967px) {
-    .card-btn-secondary.is-spacer {
-      display: none;
+  .pathways-gift-body {
+    font-size: 16px;
+    line-height: 1.55;
+    color: #444;
+    margin: 0;
+  }
+  .pathways-gift-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 24px;
+    border: 2px solid #4e5d22;
+    border-radius: 30px;
+    color: #4e5d22;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .pathways-gift-btn:hover,
+  .pathways-gift-btn:focus-visible {
+    background: #4e5d22;
+    color: #fff;
+  }
+  @media (min-width: 768px) {
+    .pathways-gift {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
     }
   }
 </style>
