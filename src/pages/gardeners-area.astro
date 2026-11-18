@@ -83,6 +83,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </section>
 
+    <section class="gd-section" aria-labelledby="gd-gift-h">
+      <h2 id="gd-gift-h">Gift cards</h2>
+      <p class="gd-note">Gift cards are sold over WhatsApp, so sales themselves don't show here: these are the steps around them.</p>
+      <div class="gd-tiles gd-tiles--3">
+        <div class="gd-tile">
+          <span class="gd-tile-label">Gift page visits</span>
+          <span class="gd-tile-value" id="gd-gift-visits">–</span>
+          <span class="gd-tile-note">visits that opened the gift cards page, English and German</span>
+        </div>
+        <div class="gd-tile">
+          <span class="gd-tile-label">WhatsApp requests</span>
+          <span class="gd-tile-value" id="gd-gift-requests">–</span>
+          <span class="gd-tile-note">taps on a WhatsApp button on the gift cards page</span>
+        </div>
+        <div class="gd-tile">
+          <span class="gd-tile-label">QR scans</span>
+          <span class="gd-tile-value" id="gd-gift-qr">–</span>
+          <span class="gd-tile-note">visits from the QR code on the printed card: roughly, gifts that were opened</span>
+        </div>
+      </div>
+      <div class="gd-card gd-gift-card">
+        <h3>Requests by card</h3>
+        <ol class="gd-list" id="gd-gift-list"></ol>
+      </div>
+    </section>
+
     <section class="gd-section" aria-labelledby="gd-trend-h">
       <h2 id="gd-trend-h">Week by week</h2>
       <p class="gd-note">Last 12 weeks, both courses together.</p>
@@ -217,6 +243,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
+    margin-top: 12px;
+  }
+  /* Three tiles: one column on phones, a row of three from 600px. */
+  .gd-tiles--3 {
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 600px) {
+    .gd-tiles--3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .gd-gift-card {
     margin-top: 12px;
   }
   .gd-tile {
@@ -559,7 +597,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     whatsapp: { total: number; pages: { path: string; count: number }[] };
     search?: { query: string; clicks: number; impressions: number; position: number }[] | null;
     registrations?: Record<string, Round | null> | null;
+    gifts?: { pageSessions: number; pageViews: number; requests: Record<string, number>; qrScans: number };
   };
+
+  const GIFTS = [
+    { key: 'class-pass', label: '4-week class pass' },
+    { key: 'practica-2', label: '2-practica pass' },
+    { key: 'practica-4', label: '4-practica pass' },
+    { key: 'other', label: '"Not sure which" questions' },
+  ];
+  function renderGifts(g: Report['gifts']) {
+    if (!g) {
+      // A data service from before the gift cards: it needs a redeploy.
+      for (const id of ['gd-gift-visits', 'gd-gift-requests', 'gd-gift-qr']) $(id).textContent = '–';
+      renderList('gd-gift-list', [], 'Not connected yet.');
+      return;
+    }
+    const total = Object.values(g.requests).reduce((n, c) => n + c, 0);
+    $('gd-gift-visits').textContent = fmt(g.pageSessions);
+    $('gd-gift-requests').textContent = fmt(total);
+    $('gd-gift-qr').textContent = fmt(g.qrScans);
+    renderList(
+      'gd-gift-list',
+      total ? GIFTS.map((x) => ({ label: x.label, count: g.requests[x.key] ?? 0 })) : [],
+      'No gift card requests in this period.'
+    );
+  }
 
   const SECTIONS = [
     { key: 'expect', label: 'What to expect' },
@@ -918,6 +981,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     const wa = r.whatsapp ?? { total: 0, pages: [] };
     $('gd-wa-total').textContent = `· ${fmt(wa.total)}`;
     renderList('gd-wa', wa.pages.map((p) => ({ label: pageName(p.path), count: p.count })), 'No WhatsApp clicks in this period.');
+    renderGifts(r.gifts);
     renderTrend(r.weeks);
     renderSources(r.channels);
     renderSearch(r.search ?? null);
@@ -976,6 +1040,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         { query: 'tango garden', clicks: 18, impressions: 40, position: 1.1 },
         { query: 'argentine tango classes cologne english', clicks: 3, impressions: 90, position: 5.5 },
       ],
+      gifts: {
+        pageSessions: Math.round(90 * f),
+        pageViews: Math.round(110 * f),
+        requests: { 'class-pass': Math.round(9 * f), 'practica-2': Math.round(4 * f), 'practica-4': Math.round(2 * f), other: Math.round(3 * f) },
+        qrScans: Math.round(5 * f),
+      },
       whatsapp: {
         total: Math.round(20 * f),
         pages: [

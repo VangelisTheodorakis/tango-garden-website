@@ -44,8 +44,32 @@ const and = (...expressions) => ({ andGroup: { expressions } });
 
 const range = (days) => [{ startDate: `${days - 1}daysAgo`, endDate: 'today' }];
 
+/** Gift cards (/pages/gift-cards), in the order the page shows them. */
+export const GIFTS = [
+  { key: 'class-pass', label: '4-week class pass' },
+  { key: 'practica-2', label: '2-practica pass' },
+  { key: 'practica-4', label: '4-practica pass' },
+  { key: 'other', label: '"Not sure which" questions' },
+];
+const giftPage = {
+  filter: { fieldName: 'pagePath', stringFilter: { matchType: 'FULL_REGEXP', value: '^(/de)?/pages/gift-cards/?$' } },
+};
+/** The card a WhatsApp link asks for, read from its prefilled message (EN or DE). */
+export function giftOf(linkUrl) {
+  let text = String(linkUrl ?? '');
+  try {
+    text = decodeURIComponent(text);
+  } catch {
+    // keep the raw link
+  }
+  if (/class pass|kurspass/i.test(text)) return 'class-pass';
+  if (/2-practica/i.test(text)) return 'practica-2';
+  if (/4-practica/i.test(text)) return 'practica-4';
+  return 'other';
+}
+
 /**
- * The nine GA4 runReport requests, in the order buildReport expects them.
+ * The twelve GA4 runReport requests, in the order buildReport expects them.
  * registration_submit is sent by the form's Apps Script and has no hostname,
  * so the event queries are not limited to the live site (localhost never
  * reports to GA4 anyway).
@@ -125,6 +149,33 @@ export function reportRequests(days) {
         filter: { fieldName: 'eventName', inListFilter: { values: SECTIONS.map((x) => `read_${x.key}`) } },
       }),
     },
+    // 9. Gift cards page: visits and page views (EN and DE).
+    {
+      dateRanges: range(days),
+      dimensions: [{ name: 'pagePath' }],
+      metrics: [{ name: 'sessions' }, { name: 'screenPageViews' }],
+      dimensionFilter: and(liveSite, giftPage),
+    },
+    // 10. WhatsApp requests on the gift cards page, by link. The derived
+    //     whatsapp_click event has no link URL, so this reads GA4's own outbound
+    //     `click` event, whose link carries the card's prefilled message.
+    {
+      dateRanges: range(days),
+      dimensions: [{ name: 'linkUrl' }],
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: and(liveSite, giftPage, eventIs('click'), {
+        filter: { fieldName: 'linkUrl', stringFilter: { matchType: 'CONTAINS', value: 'wa.me' } },
+      }),
+      limit: 50,
+    },
+    // 11. Gift card QR scans: visits tagged utm_source=giftcard (the printed card).
+    {
+      dateRanges: range(days),
+      metrics: [{ name: 'sessions' }],
+      dimensionFilter: and(liveSite, {
+        filter: { fieldName: 'sessionSource', stringFilter: { matchType: 'EXACT', value: 'giftcard' } },
+      }),
+    },
   ];
 }
 
@@ -162,14 +213,15 @@ const rowsOf = (report) =>
   ]);
 
 /**
- * Turns the nine GA4 reports into the dashboard's JSON.
+ * Turns the twelve GA4 reports into the dashboard's JSON.
  *
  * @param {number} days
  * @param {any[]} reports runReport responses, in reportRequests order
  * @param {Date} [now]
  */
 export function buildReport(days, reports, now = new Date()) {
-  const [siteR, pagesR, eventsR, channelsR, channelClicksR, weeksR, faqR, whatsappR, readR] = reports;
+  const [siteR, pagesR, eventsR, channelsR, channelClicksR, weeksR, faqR, whatsappR, readR, giftPagesR, giftClicksR, giftQrR] =
+    reports;
 
   const [siteRow] = rowsOf(siteR);
   const site = { sessions: siteRow?.[1][0] ?? 0, bounceRate: siteRow?.[1][1] ?? 0 };
@@ -242,5 +294,17 @@ export function buildReport(days, reports, now = new Date()) {
   const whatsappPages = rowsOf(whatsappR).map(([[path], [count]]) => ({ path, count }));
   const whatsapp = { total: whatsappPages.reduce((n, p) => n + p.count, 0), pages: whatsappPages.slice(0, 8) };
 
-  return { days, generatedAt: now.toISOString(), site, courses, unassigned, channels, weeks, faq, whatsapp };
+  const gifts = {
+    pageSessions: 0,
+    pageViews: 0,
+    requests: Object.fromEntries(GIFTS.map((g) => [g.key, 0])),
+    qrScans: rowsOf(giftQrR)[0]?.[1][0] ?? 0,
+  };
+  for (const [, [sessions, views]] of rowsOf(giftPagesR)) {
+    gifts.pageSessions += sessions;
+    gifts.pageViews += views ?? 0;
+  }
+  for (const [[link], [count]] of rowsOf(giftClicksR)) gifts.requests[giftOf(link)] += count;
+
+  return { days, generatedAt: now.toISOString(), site, courses, unassigned, channels, weeks, faq, whatsapp, gifts };
 }

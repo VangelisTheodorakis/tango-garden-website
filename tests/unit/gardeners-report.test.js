@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
-import { buildReport, isoWeekKey, reportRequests } from '../../workers/gardeners-api/report.js';
+import { buildReport, giftOf, isoWeekKey, reportRequests } from '../../workers/gardeners-api/report.js';
 import { verifyAccess } from '../../workers/gardeners-api/access.js';
 import { buildRegistrations, parseSheet, roleOf } from '../../workers/gardeners-api/registrations.js';
 import { buildSearch, searchRequest } from '../../workers/gardeners-api/search.js';
@@ -19,9 +19,9 @@ describe('isoWeekKey', () => {
 });
 
 describe('reportRequests', () => {
-  it('asks for nine reports over the chosen period, today included', () => {
+  it('asks for twelve reports over the chosen period, today included', () => {
     const reqs = reportRequests(28);
-    expect(reqs).toHaveLength(9);
+    expect(reqs).toHaveLength(12);
     expect(reqs[0].dateRanges).toEqual([{ startDate: '27daysAgo', endDate: 'today' }]);
   });
 
@@ -74,8 +74,28 @@ describe('buildReport', () => {
         row(['read_prices', 'garden-practica'], [7]),
       ],
     },
+    { rows: [row(['/pages/gift-cards'], [40, 50]), row(['/de/pages/gift-cards'], [5, 6])] },
+    {
+      rows: [
+        row(["https://wa.me/491602368723?text=Hi!%20I%27d%20like%20the%204-week%20class%20pass%20gift%20card."], [4]),
+        row(['https://wa.me/491602368723?text=Hi!%20Ich%20h%C3%A4tte%20gern%20den%204-Wochen-Kurspass%20als%20Gutschein.'], [1]),
+        row(["https://wa.me/491602368723?text=Hi!%20I%27d%20like%20the%202-practica%20gift%20card."], [2]),
+        row(['https://wa.me/491602368723?text=Hi!%20Ich%20h%C3%A4tte%20gern%20den%204-Practica-Pass.'], [1]),
+        row(["https://wa.me/491602368723?text=Hi!%20I%27d%20like%20to%20gift%20tango%20to%20someone"], [3]),
+      ],
+    },
+    { rows: [row([], [7])] },
   ];
   const r = buildReport(28, reports, now);
+
+  it('counts gift card visits, requests per card and QR scans', () => {
+    expect(r.gifts).toEqual({
+      pageSessions: 45,
+      pageViews: 56,
+      requests: { 'class-pass': 5, 'practica-2': 2, 'practica-4': 1, other: 3 },
+      qrScans: 7,
+    });
+  });
 
   it('adds up each course across both languages', () => {
     expect(r.courses).toEqual([
@@ -132,10 +152,23 @@ describe('buildReport', () => {
 
   it('copes with empty GA4 answers', () => {
     const empty = buildReport(7, [{}, {}, {}, {}, {}, {}, {}, {}, {}], now);
+    expect(empty.gifts).toEqual({
+      pageSessions: 0,
+      pageViews: 0,
+      requests: { 'class-pass': 0, 'practica-2': 0, 'practica-4': 0, other: 0 },
+      qrScans: 0,
+    });
     expect(empty.site).toEqual({ sessions: 0, bounceRate: 0 });
     expect(empty.courses.every((c) => c.clicks === 0)).toBe(true);
     expect(empty.faq).toEqual([]);
     expect(empty.whatsapp).toEqual({ total: 0, pages: [] });
+  });
+});
+
+describe('giftOf', () => {
+  it('reads the card from a malformed link without throwing', () => {
+    expect(giftOf('https://wa.me/1?text=%E0%A4%A')).toBe('other');
+    expect(giftOf(undefined)).toBe('other');
   });
 });
 

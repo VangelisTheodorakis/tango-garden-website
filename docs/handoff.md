@@ -98,6 +98,7 @@ A wrong `COURSE_SLUG` gives "Render Worker error 400: unknown course".
 | Week by week | GA4, last 12 ISO weeks | |
 | Where visitors come from | GA4 default channel group | |
 | What people searched for | Search Console, top 15 queries | ~2 days lag; rare queries hidden by Google |
+| Gift cards | GA4: sessions on `/pages/gift-cards` (EN+DE); outbound `click` events on that page whose `linkUrl` is a wa.me link, sorted to a card by the prefilled message (`giftOf` in `report.js`); sessions with `sessionSource = giftcard` (QR scans) | the derived `whatsapp_click` has no link URL, so the card comes from GA4's own `click` event. Sales are offline and not counted |
 
 GA4 is required for the report; Search Console and the sheets are optional:
 if one fails the section says "Not connected yet" and the rest still loads
