@@ -568,12 +568,11 @@ const cards = shape.map((c, i) => {
     font-weight: 600;
     text-align: center;
   }
-  /* Gift strip: darker cream with an olive edge, quieter than the green card. */
+  /* Gift strip: the gift cards page's green, with cream text. */
   .pathways-gift {
     margin-top: 40px;
     padding: 24px 28px;
-    background: #efe8d8;
-    border-left: 4px solid #4e5d22;
+    background: #4e5d22;
     border-radius: 14px;
     display: flex;
     flex-direction: column;
@@ -582,13 +581,13 @@ const cards = shape.map((c, i) => {
   .pathways-gift-title {
     font-size: 20px;
     font-weight: 700;
-    color: #4e5d22;
+    color: #f3ede1;
     margin-bottom: 4px;
   }
   .pathways-gift-body {
     font-size: 16px;
     line-height: 1.55;
-    color: #444;
+    color: rgba(243, 237, 225, 0.9);
     margin: 0;
   }
   .pathways-gift-btn {
@@ -596,7 +595,8 @@ const cards = shape.map((c, i) => {
     justify-content: center;
     align-items: center;
     padding: 12px 24px;
-    border: 2px solid #4e5d22;
+    background: #f3ede1;
+    border: 2px solid #f3ede1;
     border-radius: 30px;
     color: #4e5d22;
     font-weight: 600;
@@ -606,8 +606,8 @@ const cards = shape.map((c, i) => {
   }
   .pathways-gift-btn:hover,
   .pathways-gift-btn:focus-visible {
-    background: #4e5d22;
-    color: #fff;
+    background: #fff;
+    border-color: #fff;
   }
   @media (min-width: 768px) {
     .pathways-gift {
