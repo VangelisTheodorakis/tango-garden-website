@@ -54,8 +54,8 @@ const texts = {
     ],
     courseNote: 'Thursdays, one class a week. New to tango? Start with the beginners.',
     practicaTime: (time: string) => time,
-    allDates: 'All practica dates →',
-    allCourse: 'About the classes →',
+    allDates: '🗓️ All practica dates',
+    allCourse: '🌿 About the classes',
     bring: 'Bring your voucher to your first visit.',
     start: '💬 Tell us you are coming',
     expectTitle: 'Good to know',
@@ -66,8 +66,8 @@ const texts = {
       'Arrive 10 minutes early to settle in.',
     ],
     where: 'Thürmchenswall 21, 50668 Cologne (Yoga Drop Studio), 3 minutes from Ebertplatz.',
-    directions: 'Directions →',
-    another: 'Choose another gift',
+    directions: '📍 Directions',
+    another: '🎁 Choose another gift',
   },
   de: {
     title: 'Du hast Tango geschenkt bekommen | Tango Garden',
@@ -89,8 +89,8 @@ const texts = {
     ],
     courseNote: 'Donnerstags, eine Stunde pro Woche. Neu im Tango? Starte bei den Anfänger:innen.',
     practicaTime: (time: string) => `${time} Uhr`,
-    allDates: 'Alle Practica-Termine →',
-    allCourse: 'Mehr zu den Kursen →',
+    allDates: '🗓️ Alle Practica-Termine',
+    allCourse: '🌿 Mehr zu den Kursen',
     bring: 'Bring deinen Gutschein zum ersten Besuch mit.',
     start: '💬 Sag uns, dass du kommst',
     expectTitle: 'Gut zu wissen',
@@ -101,8 +101,8 @@ const texts = {
       'Komm 10 Minuten früher, um in Ruhe anzukommen.',
     ],
     where: 'Thürmchenswall 21, 50668 Köln (Yoga Drop Studio), drei Minuten vom Ebertplatz.',
-    directions: 'Anfahrt →',
-    another: 'Anderen Gutschein wählen',
+    directions: '📍 Anfahrt',
+    another: '🎁 Anderen Gutschein wählen',
   },
 };
 const text = texts[locale];
@@ -164,8 +164,8 @@ const text = texts[locale];
                     ))}
                   </ul>
                   <p>{text.courseNote}</p>
-                  <p>
-                    <a href={l('/pages/classes')}>{text.allCourse}</a>
+                  <p class="gc-actions">
+                    <a class="gc-btn" href={l('/pages/classes')}>{text.allCourse}</a>
                   </p>
                 </>
               ) : (
@@ -178,8 +178,8 @@ const text = texts[locale];
                       </li>
                     ))}
                   </ul>
-                  <p>
-                    <a href={l('/pages/garden-practica')}>{text.allDates}</a>
+                  <p class="gc-actions">
+                    <a class="gc-btn" href={l('/pages/garden-practica')}>{text.allDates}</a>
                   </p>
                 </>
               )}
@@ -195,19 +195,19 @@ const text = texts[locale];
                   <li>{i}</li>
                 ))}
               </ul>
-              <p>
-                {text.where} <a href={`${l('/pages/contact')}#location`}>{text.directions}</a>
+              <p class="gc-where">{text.where}</p>
+              <p class="gc-actions">
+                <a class="gc-btn" href={`${l('/pages/contact')}#location`}>{text.directions}</a>
               </p>
 
-              <p class="gc-another">
-                <a href="#choose">{text.another}</a>
+              <p class="gc-actions gc-another">
+                <a class="gc-btn" href="#choose">{text.another}</a>
               </p>
             </section>
           );
         })
       }
 
-      <p class="gc-site">tangogarden.de</p>
     </div>
   </section>
 </BaseLayout>
@@ -333,9 +333,32 @@ const text = texts[locale];
   .gc-detail li {
     color: #3c4520;
   }
-  .gc-detail a:not(.btn-whatsapp) {
+  /* Outline pill buttons, the same as on the gift cards page. */
+  .gc-actions {
+    margin-top: 0.75rem;
+  }
+  .gc-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 10px 22px;
+    border: 1.5px solid var(--olive);
+    border-radius: 30px;
+    background: #fdfcf7;
     color: var(--olive);
     font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .gc-btn:hover,
+  .gc-btn:focus-visible {
+    background: #a85a2c;
+    border-color: #a85a2c;
+    color: #fff;
+  }
+  .gc-where {
+    margin-top: 0.75rem;
   }
   .gc-list {
     list-style: none;
@@ -378,10 +401,5 @@ const text = texts[locale];
   .gc-another {
     margin-top: 2rem;
     text-align: center;
-  }
-  .gc-site {
-    margin-top: 3rem;
-    color: var(--olive-light);
-    font-size: 1.05rem;
   }
 </style>
