@@ -1,6 +1,7 @@
 ---
 import { products } from '../data/products.js';
 import { classPages } from '../data/classPages.js';
+import { giftCards } from '../data/giftCards.js';
 import { formatPrice, localizePath } from '../i18n/index.js';
 
 interface Props {
@@ -31,6 +32,10 @@ const beginnerCourseRegisterUrl = classPages.find((c) => c.slug === 'beginner-co
 const growthRow = rowFor('growth-sessions', 'Full Course (12 classes)');
 const growthRegisterUrl = classPages.find((c) => c.slug === 'growth-sessions')?.registerUrl;
 
+// Cheapest gift card, for "from €20 or €16*".
+const cheapestGift = giftCards.reduce((a, b) => (b.price < a.price ? b : a));
+const giftFrom = { price: fmt(`€${cheapestGift.price}`), reduced: fmt(`€${cheapestGift.reduced}`) };
+
 const text = {
   en: {
     title: 'Classes & Passes',
@@ -40,6 +45,7 @@ const text = {
       curious: { title: 'For the curious', lead: 'Want to feel what tango is like? No commitment.' },
       determined: { title: 'For the determined', lead: 'Ready to learn and grow, in a group or one-to-one.' },
       everyone: { title: 'For everyone', lead: 'Come and practise together, whenever you like.' },
+      lovedOnes: { title: 'For your loved ones', lead: 'Give someone a little tango.' },
     },
     bestFor: 'Best for:',
     register: 'Register Now',
@@ -47,9 +53,6 @@ const text = {
     detailsFree: 'View details →',
     why: 'Young people are the future of tango. We keep a reduced rate so the next generation can always find their way onto the floor.',
     note: '* Reduced rate for students and anyone 28 and under.',
-    giftTitle: 'Give someone a little tango',
-    giftBody: 'Gift cards for the 4-week beginner class pass or 2 or 4 practicas. Picked up at the studio or posted.',
-    giftCta: '🎁 See gift cards',
     helpTitle: 'Not sure where to start?',
     helpBody: 'Tell us where you are and we will point you to the right pass.',
     whatsapp: '💬 Chat on WhatsApp',
@@ -85,6 +88,13 @@ const text = {
         bestFor: 'anyone who wants a class built around their own goals and pace.',
         price: `${privatePrice('One person')}/hour, or ${privatePrice('Couple')} for a couple`,
       },
+      {
+        title: 'Gift Cards',
+        blurb: 'A 4-week beginner class pass, or 2 or 4 practicas, in an envelope to give. Picked up at the studio or posted.',
+        bestFor: 'anyone who wants to give a friend or partner some tango.',
+        price: `from ${giftFrom.price} or ${giftFrom.reduced}*`,
+        details: 'See gift cards →',
+      },
     ],
   },
   de: {
@@ -95,6 +105,7 @@ const text = {
       curious: { title: 'Für die Neugierigen', lead: 'Du willst spüren, wie sich Tango anfühlt? Ganz ohne Verpflichtung.' },
       determined: { title: 'Für die Entschlossenen', lead: 'Du willst lernen und wachsen, in der Gruppe oder ganz persönlich.' },
       everyone: { title: 'Für alle', lead: 'Komm zum gemeinsamen Üben vorbei, wann immer du magst.' },
+      lovedOnes: { title: 'Für deine Liebsten', lead: 'Verschenk ein bisschen Tango.' },
     },
     bestFor: 'Ideal für:',
     register: 'Jetzt anmelden',
@@ -102,9 +113,6 @@ const text = {
     detailsFree: 'Details ansehen →',
     why: 'Junge Menschen sind die Zukunft des Tango. Deshalb gibt es einen ermäßigten Preis, damit die nächste Generation immer ihren Weg auf die Tanzfläche findet.',
     note: '* Ermäßigt für Studierende und alle bis 28 Jahre.',
-    giftTitle: 'Verschenk ein bisschen Tango',
-    giftBody: 'Gutscheine für den 4-Wochen-Kurspass für Anfänger:innen oder für 2 oder 4 Practicas. Abholung im Studio oder per Post.',
-    giftCta: '🎁 Zu den Gutscheinen',
     helpTitle: 'Nicht sicher, wo du anfangen sollst?',
     helpBody: 'Erzähl uns, wo du gerade stehst, und wir zeigen dir den passenden Pass.',
     whatsapp: '💬 Auf WhatsApp schreiben',
@@ -140,13 +148,20 @@ const text = {
         bestFor: 'Alle, die eine Stunde ganz nach ihren eigenen Zielen und ihrem Tempo möchten.',
         price: `${privatePrice('One person')} pro Stunde oder ${privatePrice('Couple')} für ein Paar`,
       },
+      {
+        title: 'Gutscheine',
+        blurb: 'Ein 4-Wochen-Kurspass für Anfänger:innen oder 2 bzw. 4 Practicas, im Umschlag zum Verschenken. Abholung im Studio oder per Post.',
+        bestFor: 'Alle, die Freund:innen oder Partner:innen etwas Tango schenken möchten.',
+        price: `ab ${giftFrom.price} oder ${giftFrom.reduced}*`,
+        details: 'Zu den Gutscheinen →',
+      },
     ],
   },
 }[locale];
 
-const [etg, sprouting, growth, practica, privateClasses] = text.groups;
+const [etg, sprouting, growth, practica, privateClasses, gifts] = text.groups;
 type Group = { title: string; blurb: string; bestFor: string; price: string; href: string; registerUrl?: string; details?: string };
-const [etgCard, sproutingCard, growthCard, practicaCard, privateCard]: Group[] = [
+const [etgCard, sproutingCard, growthCard, practicaCard, privateCard, giftCard]: Group[] = [
   {
     ...etg,
     price: etg.price!,
@@ -176,14 +191,19 @@ const [etgCard, sproutingCard, growthCard, practicaCard, privateCard]: Group[] =
     price: privateClasses.price!,
     href: localizePath('/pages/private-classes', locale),
   },
+  {
+    ...gifts,
+    price: gifts.price!,
+    href: localizePath('/pages/gift-cards', locale),
+  },
 ];
 
-// Three sections by intent. The determined ones fill the first row; the curious
-// and everyone share the second.
+// Four sections by intent. The determined ones fill the first row; the curious,
+// everyone and loved ones share the second.
 const section = (key: keyof typeof text.sections, cards: Group[]) => ({ key, cards, ...text.sections[key] });
 const rows = [
   [section('determined', [sproutingCard, growthCard, privateCard])],
-  [section('curious', [etgCard]), section('everyone', [practicaCard])],
+  [section('curious', [etgCard]), section('everyone', [practicaCard]), section('lovedOnes', [giftCard])],
 ];
 ---
 
@@ -199,7 +219,7 @@ const rows = [
   <div class="collection-grid">
   {
     rows.map((row) => (
-      <div class:list={['collection-row', { 'is-pair': row.length > 1 }]}>
+      <div class:list={['collection-row', { 'is-pair': row.length > 1, 'is-trio': row.length === 3 }]}>
         {row.map((section) => (
         <section class="collection-section">
           <h2 class="collection-section-title">{section.title}</h2>
@@ -245,11 +265,6 @@ const rows = [
     {text.note}
   </p>
 
-  <div class="collection-help collection-gift">
-    <h2>{text.giftTitle}</h2>
-    <p>{text.giftBody}</p>
-    <a class="btn-whatsapp" href={localizePath('/pages/gift-cards', locale)}>{text.giftCta}</a>
-  </div>
   <div class="collection-help">
     <h2>{text.helpTitle}</h2>
     <p>{text.helpBody}</p>
@@ -321,6 +336,13 @@ const rows = [
     .collection-row.is-pair .collection-section:last-child > *,
     .collection-row.is-pair .collection-section:last-child .collection-list > li { grid-column: 4 / 6; }
     .collection-row.is-pair .collection-section:first-child .collection-list > li { grid-column: 2 / 4; }
+    /* Three sections in the second row: same columns as the first row. */
+    .collection-row.is-trio .collection-section:nth-child(1) > *,
+    .collection-row.is-trio .collection-section:nth-child(1) .collection-list > li { grid-column: 1 / 3; }
+    .collection-row.is-trio .collection-section:nth-child(2) > *,
+    .collection-row.is-trio .collection-section:nth-child(2) .collection-list > li { grid-column: 3 / 5; }
+    .collection-row.is-trio .collection-section:nth-child(3) > *,
+    .collection-row.is-trio .collection-section:nth-child(3) .collection-list > li { grid-column: 5 / 7; }
   }
   .collection-section-title {
     font-size: 1.5rem;
