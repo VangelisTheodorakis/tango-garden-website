@@ -266,6 +266,10 @@ const faqSchema = {
         ))
       }
     </ol>
+    <!-- Where to pick it up: the Tango Garden pin on Google Maps (a plain link, nothing loads until tapped). -->
+    <p class="gift-location">
+      <a class="gift-location-btn" href={regularClasses.mapsUrl} target="_blank" rel="noopener">{text.location}</a>
+    </p>
   </section>
 
   <section class="gift-steps gift-steps--alt">
@@ -316,11 +320,7 @@ const faqSchema = {
       <div class="gift-help">
         <h2>{text.helpTitle}</h2>
         <p>{text.helpBody}</p>
-        <div class="gift-help-actions">
-          <a class="btn-whatsapp" href={waLink(text.helpMessage)} target="_blank" rel="noopener">{text.help}</a>
-          <!-- The Tango Garden pin on Google Maps; a plain link, nothing loads until tapped. -->
-          <a class="gift-help-location" href={regularClasses.mapsUrl} target="_blank" rel="noopener">{text.location}</a>
-        </div>
+        <a class="btn-whatsapp" href={waLink(text.helpMessage)} target="_blank" rel="noopener">{text.help}</a>
       </div>
     </div>
   </section>
@@ -632,14 +632,12 @@ const faqSchema = {
   .gift-help .btn-whatsapp:hover {
     background: #fff;
   }
-  .gift-help-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.75rem;
+  .gift-location {
+    margin-top: 2rem;
+    text-align: center;
   }
-  /* Cream outline on green, next to the cream WhatsApp button. */
-  .gift-help-location {
+  /* Cream outline on green. */
+  .gift-location-btn {
     display: inline-flex;
     align-items: center;
     padding: 12px 24px;
@@ -651,8 +649,8 @@ const faqSchema = {
     text-decoration: none;
     transition: background 0.2s ease, color 0.2s ease;
   }
-  .gift-help-location:hover,
-  .gift-help-location:focus-visible {
+  .gift-location-btn:hover,
+  .gift-location-btn:focus-visible {
     background: var(--on-green);
     color: var(--green);
   }
