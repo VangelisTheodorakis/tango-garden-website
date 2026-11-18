@@ -37,7 +37,7 @@ export const giftCards = [
       forWhom: 'For new dancers or improvers: four classes in a row, one a week, on Thursdays.',
       includes: [
         '4 classes in a row, one a week, on Thursdays',
-        'Beginners 19:15–20:30, improvers 20:30–21:45',
+        'Either the beginners class (19:15–20:30) or the improvers class (20:30–21:45)',
         'No partner needed. Classes are in English.',
       ],
       buyMessage: "Hi! I'd like the 4-week class pass gift card. Pickup or by post?",
@@ -52,7 +52,7 @@ export const giftCards = [
       forWhom: 'Für Neueinsteiger:innen oder Fortgeschrittene: vier Stunden am Stück, eine pro Woche, donnerstags.',
       includes: [
         '4 Stunden am Stück, eine pro Woche, donnerstags',
-        'Anfänger:innen 19:15–20:30, Fortgeschrittene 20:30–21:45',
+        'Entweder die Anfänger:innen-Stunde (19:15–20:30) oder die Stunde für Fortgeschrittene (20:30–21:45)',
         'Ohne Partner:in. Unterricht auf Englisch.',
       ],
       buyMessage: 'Hi! Ich hätte gern den 4-Wochen-Kurspass als Gutschein. Abholung oder per Post?',
