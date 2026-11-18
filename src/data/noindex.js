@@ -13,6 +13,8 @@ export const noindexRoutes = [
   '/pages/privacy-policy/',
   '/pages/terms-of-service/',
   '/pages/refund-and-cancellation-policy/',
+  // Gift card QR landing page: for card holders, not for search.
+  '/pages/you-ve-got-tango/',
   // Private team dashboard, behind Cloudflare Access.
   '/gardeners-area/',
 ];

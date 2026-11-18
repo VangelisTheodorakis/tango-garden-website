@@ -27,6 +27,8 @@ const PAGES = [
   '/products/enter-the-garden-general-admission',
   '/pages/impressum',
   '/pages/training-material',
+  '/pages/gift-cards',
+  '/pages/you-ve-got-tango#class-pass',
   '/gardeners-area',
   '/404',
   // German runs longer than English — the translations get the same checks.
@@ -50,6 +52,8 @@ const PAGES = [
   '/de/pages/terms-of-service',
   '/de/pages/refund-and-cancellation-policy',
   '/de/pages/impressum',
+  '/de/pages/gift-cards',
+  '/de/pages/you-ve-got-tango#practica-4',
 ];
 
 // Narrowest phone still worth supporting, through to a large desktop.

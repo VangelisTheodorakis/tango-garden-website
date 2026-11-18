@@ -163,6 +163,16 @@ count can't be undone (see open items).
 - [ ] Classes page: bottom cards are equal height; the owner was asked whether
       they should size to their own text instead (no answer yet).
 
+## 7b. Gift cards (Christmas 2026)
+
+- **Pages:** `/pages/gift-cards` (public) and `/pages/you-ve-got-tango` (noindex, the QR page), each with a `/de` twin. Words and prices are in `src/data/giftCards.js`; `tests/unit/gift-cards.test.js` keeps prices equal to 2×/4× the practica and the 4-Class Pass in `products.js`.
+- **No checkout:** each card opens WhatsApp with a prefilled message (GA4 sees it as `whatsapp_click`, the message is in the link URL). Pickup and payment at a class, a practica or an agreed time, or by post for +€2 after payment. No deadline to buy.
+- **Rules:** 2 practicas = 8 weeks, 4 practicas = 16 weeks, class pass = 4 weeks, all from the first visit; up to 3 years to come for the first time; cancelled dates extend the window; the card is personal (From / To).
+- **QR code on the printed card** (use a *static* code, not a dynamic one from a QR service):
+  `https://tangogarden.de/pages/you-ve-got-tango?utm_source=giftcard&utm_medium=qr&utm_campaign=gift_2026`
+- The QR page lists the next practicas from `practicas.json` and the beginner start from `regular-classes.json` at build time; a small script hides dates that have passed.
+- **Open:** no gift-card clause in the AGB / refund policy yet; add it with the pending German legal check.
+
 ## 8. Gotchas
 
 - Files have mixed CRLF/LF line endings; edit with tools that keep them.

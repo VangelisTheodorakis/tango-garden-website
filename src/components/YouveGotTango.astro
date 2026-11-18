@@ -1,0 +1,372 @@
+---
+/**
+ * /pages/you-ve-got-tango: where the QR code on the printed gift card leads.
+ * Laid out like the card itself (paper colour, logo, headline, line), with
+ * the gift choice where the card has its QR code. Each choice is an anchor;
+ * CSS :target shows only that gift's details, so it works without JS.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { giftCards, waLink, YEARS_TO_START } from '../data/giftCards.js';
+import { localizePath } from '../i18n/index.js';
+import practicas from '../../public/assets/data/practicas.json';
+import beginners from '../../public/assets/data/regular-classes.json';
+
+interface Props {
+  locale?: 'en' | 'de';
+}
+const { locale = 'en' } = Astro.props;
+const l = (path: string) => localizePath(path, locale);
+
+const fmtDate = (iso: string) =>
+  new Intl.DateTimeFormat(locale === 'de' ? 'de-DE' : 'en-GB', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(`${iso}T00:00:00Z`));
+
+const today = new Date().toISOString().slice(0, 10);
+// Upcoming at build time; a small script hides any that pass before the next build.
+const nextPracticas = practicas.events.filter((e) => e.date >= today).slice(0, 4);
+const beginnersStart = beginners.events.find((e) => e.date >= today) ?? beginners.events[0];
+
+const texts = {
+  en: {
+    title: "You've Got Tango | Tango Garden",
+    description:
+      'Someone gave you tango. Find out what your Tango Garden gift card includes, how long it lasts and how to come for your first visit.',
+    h1: 'A little tango for you',
+    sub: "Someone thought you'd enjoy a little more dancing in your life.",
+    choose: 'Which gift did you get?',
+    chooseHint: 'Tap the one that matches your voucher.',
+    included: "What's included",
+    timeTitle: 'Your time',
+    time: (weeks: number, kind: string) =>
+      `You have up to ${YEARS_TO_START} years to come for the first time. From your first ${kind === 'classes' ? 'class' : 'practica'}, you have ${weeks} weeks to use it. If we cancel a date, your time gets longer by that much.`,
+    datesPractica: 'Next practicas',
+    datesClasses: 'Next beginners group',
+    beginnersLine: `Starts ${fmtDate(beginnersStart.date)}, ${beginnersStart.time}. Thursdays, one class a week.`,
+    practicaTime: (time: string) => time,
+    allDates: 'All practica dates →',
+    allCourse: 'About the beginner course →',
+    bring: 'Bring your voucher to your first visit.',
+    start: '💬 Tell us you are coming',
+    expectTitle: 'Good to know',
+    expect: [
+      'No partner and no experience needed. Most people come alone.',
+      'Classes are taught in English.',
+      'Wear comfortable clothes. Clean socks or indoor shoes that turn easily; no thick rubber soles.',
+      'Arrive 10 minutes early to settle in.',
+    ],
+    where: 'Thürmchenswall 21, 50668 Cologne (Yoga Drop Studio), 3 minutes from Ebertplatz.',
+    directions: 'Directions →',
+    another: 'Choose another gift',
+  },
+  de: {
+    title: 'Du hast Tango geschenkt bekommen | Tango Garden',
+    description:
+      'Jemand hat dir Tango geschenkt. Hier siehst du, was dein Tango-Garden-Gutschein enthält, wie lange er gilt und wie du zum ersten Mal kommst.',
+    h1: 'Ein bisschen Tango für dich',
+    sub: 'Jemand dachte, ein bisschen mehr Tanz würde dir guttun.',
+    choose: 'Welchen Gutschein hast du bekommen?',
+    chooseHint: 'Tipp auf den, der zu deinem Gutschein passt.',
+    included: 'Das ist drin',
+    timeTitle: 'Deine Zeit',
+    time: (weeks: number, kind: string) =>
+      `Du hast bis zu ${YEARS_TO_START} Jahre Zeit für deinen ersten Besuch. Ab deiner ersten ${kind === 'classes' ? 'Stunde' : 'Practica'} hast du ${weeks} Wochen Zeit. Fällt ein Termin bei uns aus, verlängert sich deine Zeit entsprechend.`,
+    datesPractica: 'Nächste Practicas',
+    datesClasses: 'Nächste Anfänger:innen-Gruppe',
+    beginnersLine: `Start: ${fmtDate(beginnersStart.date)}, ${beginnersStart.time} Uhr. Donnerstags, eine Stunde pro Woche.`,
+    practicaTime: (time: string) => `${time} Uhr`,
+    allDates: 'Alle Practica-Termine →',
+    allCourse: 'Mehr zum Anfänger:innen-Kurs →',
+    bring: 'Bring deinen Gutschein zum ersten Besuch mit.',
+    start: '💬 Sag uns, dass du kommst',
+    expectTitle: 'Gut zu wissen',
+    expect: [
+      'Ohne Partner:in und ohne Vorkenntnisse. Die meisten kommen allein.',
+      'Unterrichtet wird auf Englisch.',
+      'Bequeme Kleidung. Saubere Socken oder Hallenschuhe, mit denen du dich gut drehen kannst; keine dicken Gummisohlen.',
+      'Komm 10 Minuten früher, um in Ruhe anzukommen.',
+    ],
+    where: 'Thürmchenswall 21, 50668 Köln (Yoga Drop Studio), drei Minuten vom Ebertplatz.',
+    directions: 'Anfahrt →',
+    another: 'Anderen Gutschein wählen',
+  },
+};
+const text = texts[locale];
+---
+
+<BaseLayout title={text.title} description={text.description} canonical={`https://tangogarden.de${l('/pages/you-ve-got-tango')}`} noindex>
+  <section class="gc-paper">
+    <div class="gc-card">
+      <img class="gc-logo" src="/assets/logo-icon.svg" alt="Tango Garden" width="96" height="96" />
+      <h1>{text.h1}</h1>
+      <p class="gc-sub">{text.sub}</p>
+      <hr class="gc-line" />
+
+      <div class="gc-choose" id="choose">
+        <h2>{text.choose}</h2>
+        <p>{text.chooseHint}</p>
+        <ul class="gc-vouchers">
+          {
+            giftCards.map((g) => (
+              <li>
+                <a class="gc-voucher" href={`#${g.slug}`}>
+                  <span class="gc-circle" aria-hidden="true" />
+                  <strong>{g[locale].title}</strong>
+                  <span>{g[locale].subtitle}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      {
+        giftCards.map((g) => {
+          const t = g[locale];
+          return (
+            <section class="gc-detail" id={g.slug}>
+              <div class="gc-voucher gc-voucher--big">
+                <span class="gc-circle" aria-hidden="true" />
+                <strong>{t.title}</strong>
+                <span>{t.subtitle}</span>
+              </div>
+
+              <h3>{text.included}</h3>
+              <ul class="gc-list">
+                {t.includes.map((i) => (
+                  <li>{i}</li>
+                ))}
+              </ul>
+
+              <h3>{text.timeTitle}</h3>
+              <p>{text.time(g.weeks, g.kind)}</p>
+
+              {g.kind === 'classes' ? (
+                <>
+                  <h3>{text.datesClasses}</h3>
+                  <p>{text.beginnersLine}</p>
+                  <p>
+                    <a href={l('/pages/beginner-course')}>{text.allCourse}</a>
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h3>{text.datesPractica}</h3>
+                  <ul class="gc-dates">
+                    {nextPracticas.map((e) => (
+                      <li data-date={e.date}>
+                        {fmtDate(e.date)} · {text.practicaTime(e.time)}
+                      </li>
+                    ))}
+                  </ul>
+                  <p>
+                    <a href={l('/pages/garden-practica')}>{text.allDates}</a>
+                  </p>
+                </>
+              )}
+
+              <p class="gc-bring">{text.bring}</p>
+              <a class="btn-whatsapp" href={waLink(t.startMessage)} target="_blank" rel="noopener">
+                {text.start}
+              </a>
+
+              <h3>{text.expectTitle}</h3>
+              <ul class="gc-list">
+                {text.expect.map((i) => (
+                  <li>{i}</li>
+                ))}
+              </ul>
+              <p>
+                {text.where} <a href={`${l('/pages/contact')}#location`}>{text.directions}</a>
+              </p>
+
+              <p class="gc-another">
+                <a href="#choose">{text.another}</a>
+              </p>
+            </section>
+          );
+        })
+      }
+
+      <p class="gc-site">tangogarden.de</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Dates baked in at build time: hide any that have passed since.
+  const today = new Date().toISOString().slice(0, 10);
+  for (const li of document.querySelectorAll<HTMLElement>('.gc-dates li[data-date]')) {
+    if ((li.dataset.date ?? '') < today) li.hidden = true;
+  }
+</script>
+
+<style>
+  /* The printed card: pale yellow-green paper, olive type, centred column. */
+  .gc-paper {
+    --paper: #ebe4b0;
+    --olive: #4e5d22;
+    --olive-light: #8a9a2a;
+    background: var(--paper);
+    padding: 3.5rem 1.25rem 3rem;
+  }
+  .gc-card {
+    max-width: 620px;
+    margin: 0 auto;
+    text-align: center;
+    color: var(--olive);
+  }
+  .gc-logo {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 2.25rem;
+  }
+  .gc-card h1 {
+    font-size: clamp(2.1rem, 9vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.9rem;
+  }
+  .gc-sub {
+    font-size: clamp(1.1rem, 4.5vw, 1.5rem);
+    line-height: 1.4;
+    max-width: 30ch;
+    margin: 0 auto;
+  }
+  .gc-line {
+    width: min(60%, 320px);
+    margin: 2.75rem auto;
+    border: 0;
+    border-top: 2px solid var(--olive);
+  }
+
+  .gc-choose h2 {
+    font-size: 1.35rem;
+    font-weight: 600;
+  }
+  .gc-choose > p {
+    margin: 0.25rem 0 1.5rem;
+  }
+  .gc-vouchers {
+    list-style: none;
+    display: grid;
+    gap: 1rem;
+  }
+  /* The voucher in the envelope: cream card, thin border, olive circle. */
+  .gc-voucher {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fdfcf7;
+    border: 2px solid #b9b293;
+    border-radius: 10px;
+    padding: 1.4rem 1rem 1.25rem;
+    text-decoration: none;
+    color: var(--olive);
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease;
+  }
+  a.gc-voucher:hover,
+  a.gc-voucher:focus-visible {
+    transform: translateY(-2px);
+    border-color: var(--olive);
+  }
+  .gc-voucher strong {
+    font-size: 1.45rem;
+    line-height: 1.15;
+  }
+  .gc-voucher span:last-child {
+    font-size: 1.15rem;
+    color: #444;
+    margin-top: 0.2rem;
+  }
+  .gc-circle {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--olive-light);
+    border-radius: 50%;
+    margin-bottom: 0.7rem;
+  }
+
+  /* One gift at a time: a detail shows only when its #anchor is in the URL,
+     and then the chooser steps aside. */
+  .gc-detail {
+    display: none;
+    text-align: left;
+    scroll-margin-top: 90px;
+  }
+  .gc-detail:target {
+    display: block;
+  }
+  .gc-card:has(.gc-detail:target) .gc-choose {
+    display: none;
+  }
+  .gc-voucher--big {
+    margin-bottom: 2rem;
+  }
+  .gc-detail h3 {
+    font-size: 1.15rem;
+    margin: 1.75rem 0 0.5rem;
+  }
+  .gc-detail p,
+  .gc-detail li {
+    color: #3c4520;
+  }
+  .gc-detail a:not(.btn-whatsapp) {
+    color: var(--olive);
+    font-weight: 600;
+  }
+  .gc-list {
+    list-style: none;
+  }
+  .gc-list li,
+  .gc-dates li {
+    padding: 0.3rem 0 0.3rem 1.3rem;
+    position: relative;
+  }
+  .gc-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+    color: var(--olive);
+  }
+  .gc-dates {
+    list-style: none;
+    margin-bottom: 0.5rem;
+  }
+  .gc-dates li::before {
+    content: '•';
+    position: absolute;
+    left: 0.3rem;
+  }
+  .gc-list + p {
+    margin-top: 0.75rem;
+  }
+  .gc-bring {
+    margin: 2rem 0 1rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  .gc-detail .btn-whatsapp {
+    display: flex;
+    justify-content: center;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+  .gc-another {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  .gc-site {
+    margin-top: 3rem;
+    color: var(--olive-light);
+    font-size: 1.05rem;
+  }
+</style>

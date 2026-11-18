@@ -47,6 +47,9 @@ const text = {
     detailsFree: 'View details →',
     why: 'Young people are the future of tango. We keep a reduced rate so the next generation can always find their way onto the floor.',
     note: '* Reduced rate for students and anyone 28 and under.',
+    giftTitle: 'Give someone a little tango',
+    giftBody: 'Gift cards for the 4-week beginner class pass or 2 or 4 practicas. Picked up at the studio or posted.',
+    giftCta: '🎁 See gift cards',
     helpTitle: 'Not sure where to start?',
     helpBody: 'Tell us where you are and we will point you to the right pass.',
     whatsapp: '💬 Chat on WhatsApp',
@@ -99,6 +102,9 @@ const text = {
     detailsFree: 'Details ansehen →',
     why: 'Junge Menschen sind die Zukunft des Tango. Deshalb gibt es einen ermäßigten Preis, damit die nächste Generation immer ihren Weg auf die Tanzfläche findet.',
     note: '* Ermäßigt für Studierende und alle bis 28 Jahre.',
+    giftTitle: 'Verschenk ein bisschen Tango',
+    giftBody: 'Gutscheine für den 4-Wochen-Kurspass für Anfänger:innen oder für 2 oder 4 Practicas. Abholung im Studio oder per Post.',
+    giftCta: '🎁 Zu den Gutscheinen',
     helpTitle: 'Nicht sicher, wo du anfangen sollst?',
     helpBody: 'Erzähl uns, wo du gerade stehst, und wir zeigen dir den passenden Pass.',
     whatsapp: '💬 Auf WhatsApp schreiben',
@@ -239,6 +245,11 @@ const rows = [
     {text.note}
   </p>
 
+  <div class="collection-help collection-gift">
+    <h2>{text.giftTitle}</h2>
+    <p>{text.giftBody}</p>
+    <a class="btn-whatsapp" href={localizePath('/pages/gift-cards', locale)}>{text.giftCta}</a>
+  </div>
   <div class="collection-help">
     <h2>{text.helpTitle}</h2>
     <p>{text.helpBody}</p>

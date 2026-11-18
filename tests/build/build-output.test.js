@@ -52,12 +52,13 @@ describe('pages', () => {
   it('builds every expected route', () => {
     // 1 home + 17 content/legal (incl. the classes overview, the 5 class pages, the
     // three rhythm trainers: tango, tango vals and milonga, and the training
-    // material page that lists them)
+    // material page that lists them, and the two gift card pages: gift-cards and
+    // the QR page you-ve-got-tango)
     // + 12 products (all hidden, kept for direct-URL + price/variant data)
     // + 404
     // + the private Gardeners' Area dashboard (English only)
     // + a German mirror under /de for every page in src/i18n/index.js translatedPaths
-    expect(pages).toHaveLength(32 + translatedPaths.length);
+    expect(pages).toHaveLength(34 + translatedPaths.length);
   });
 
   it('gives every page a non-empty title', () => {

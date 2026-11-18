@@ -20,6 +20,7 @@ export const translatedPaths = [
   '/pages/contact',
   '/pages/enter-the-garden',
   '/pages/garden-practica',
+  '/pages/gift-cards',
   '/pages/growth-sessions',
   '/pages/impressum',
   '/pages/milonga-rhythm-trainer',
@@ -31,6 +32,7 @@ export const translatedPaths = [
   '/pages/terms-of-service',
   '/pages/the-garden',
   '/pages/training-material',
+  '/pages/you-ve-got-tango',
 ];
 
 const trimSlash = (/** @type {string} */ p) => p.replace(/(.)\/$/, '$1');

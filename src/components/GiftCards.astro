@@ -1,0 +1,535 @@
+---
+/**
+ * /pages/gift-cards and /de/pages/gift-cards: buying a gift card.
+ * No checkout: each card opens WhatsApp with a prefilled message, and the
+ * card is picked up (or posted) and paid in person.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { giftCards, waLink, POSTAGE, YEARS_TO_START } from '../data/giftCards.js';
+import { formatPrice, localizePath } from '../i18n/index.js';
+import '../styles/contact.css';
+
+interface Props {
+  locale?: 'en' | 'de';
+}
+const { locale = 'en' } = Astro.props;
+const l = (path: string) => localizePath(path, locale);
+const euro = (n: number) => formatPrice(`€${n}`, locale);
+
+const texts = {
+  en: {
+    title: 'Tango Gift Cards | Tango Garden',
+    description:
+      'Gift someone a little tango: a 4-week beginner class pass or Garden Practica passes in Cologne. No partner or experience needed.',
+    h1: 'Gift someone a little tango.',
+    lead: 'No partner and no experience needed. Our new beginners group starts in January, and classes are taught in English.',
+    reduced: 'reduced*',
+    reducedNote: '* Reduced price if the person you gift it to is a student or 28 or under. No proof needed, we trust you.',
+    newToTango: 'New to tango? The class pass is the better start.',
+    buy: '💬 Ask for this card',
+    howTitle: 'How it works',
+    how: [
+      ['Message us', 'Tap the button under the card you want. We reply on WhatsApp, usually within a few hours.'],
+      [
+        'Pick it up or get it posted',
+        `Pick it up and pay at a Thursday class, a practica or a time we agree. Cash, PayPal or bank transfer. Or we post it for ${euro(POSTAGE)} extra after you pay.`,
+      ],
+      ['Write From / To and give it', 'The card is personal: it carries your name and theirs.'],
+    ],
+    envelopeTitle: "What's in the envelope",
+    envelope: [
+      ['The card', '"A little tango for you", with From / To and a QR code that explains the gift and how to start.'],
+      ['The voucher', 'The same voucher our students get, which they bring to their first visit.'],
+    ],
+    timeTitle: 'How the time works',
+    time: [
+      ['No rush', `They have up to ${YEARS_TO_START} years to come for the first time.`],
+      ['First visit = start', 'The time window starts on the day they first come.'],
+      ['Enjoy it', '2 practicas within 8 weeks, 4 practicas within 16 weeks, or 4 class weeks in a row.'],
+    ],
+    example:
+      'Example: first practica on 13 January 2027, so a 2-practica pass is good until 10 March 2027. If we cancel a date, the window gets longer by that much.',
+    faqEyebrow: 'Questions',
+    faqTitle: 'Before you gift',
+    faq: [
+      [
+        'Which one should I pick?',
+        'Has the person danced tango before? If not, the 4-week class pass: four beginner classes in a row. If they already dance, a practica pass.',
+      ],
+      [
+        'Do they need a partner or any experience?',
+        'No. Most people come alone, and we rotate partners in class. The class pass is made for people who have never danced.',
+      ],
+      ['Are the classes in English?', 'Yes, all teaching is in English. Tango itself needs very few words.'],
+      [
+        'Who gets the reduced price?',
+        "It depends on the person you gift it to: students and anyone 28 or under. No proof needed, we trust you. Just tell us in the chat.",
+      ],
+      [
+        'How do I pay and get the card?',
+        `Message us on WhatsApp. Pick it up at a Thursday class, a practica or a time we agree, and pay in cash, by PayPal or by bank transfer. Or we post it for ${euro(POSTAGE)} extra once you've paid.`,
+      ],
+      [
+        'Is there a deadline to buy?',
+        'No, you can order any time of the year. For Christmas, message us early so it arrives in time.',
+      ],
+      [
+        'When can they start the class pass?',
+        'With the new beginners group in January 2027, or with any later beginners group within 3 years. They message us and we tell them the next start date.',
+      ],
+      [
+        'What if a practica or class is cancelled?',
+        'Their time window gets longer by the cancelled date, so they never lose a visit because of us.',
+      ],
+      [
+        'What if they miss a class?',
+        'Class pass holders can come to a Garden Practica instead, at no extra cost.',
+      ],
+      [
+        'Can the card be passed on?',
+        'The card is personal: it carries the names of the giver and the person receiving it.',
+      ],
+      [
+        'Where are you?',
+        'Thürmchenswall 21, 50668 Cologne (Yoga Drop Studio), a 3-minute walk from Ebertplatz.',
+      ],
+    ],
+    helpTitle: 'Still not sure?',
+    helpBody: "Tell us who it's for and we'll suggest the right card.",
+    help: '💬 Ask us on WhatsApp',
+    helpMessage: "Hi! I'd like to gift tango to someone but I'm not sure which card fits.",
+  },
+  de: {
+    title: 'Tango-Gutscheine verschenken | Tango Garden Köln',
+    description:
+      'Verschenk ein bisschen Tango: einen 4-Wochen-Kurspass für Anfänger:innen oder Practica-Pässe in Köln. Ohne Partner:in und ohne Vorkenntnisse.',
+    h1: 'Verschenk ein bisschen Tango.',
+    lead: 'Ohne Partner:in, ohne Vorkenntnisse. Unsere neue Anfänger:innen-Gruppe startet im Januar, unterrichtet wird auf Englisch.',
+    reduced: 'ermäßigt*',
+    reducedNote: '* Ermäßigt, wenn die beschenkte Person studiert oder 28 oder jünger ist. Kein Nachweis nötig, wir vertrauen dir.',
+    newToTango: 'Neu im Tango? Dann ist der Kurspass der bessere Start.',
+    buy: '💬 Diesen Gutschein anfragen',
+    howTitle: "So funktioniert's",
+    how: [
+      ['Schreib uns', 'Tipp auf den Button unter dem Gutschein. Wir antworten auf WhatsApp, meist innerhalb weniger Stunden.'],
+      [
+        'Abholen oder per Post',
+        `Hol ihn ab und bezahl bei einer Donnerstagsstunde, einer Practica oder zu einer abgesprochenen Zeit. Bar, per PayPal oder Überweisung. Oder wir schicken ihn nach Zahlung für ${euro(POSTAGE)} extra per Post.`,
+      ],
+      ['Von / Für eintragen und verschenken', 'Der Gutschein ist persönlich: Er trägt deinen Namen und den der beschenkten Person.'],
+    ],
+    envelopeTitle: 'Was im Umschlag steckt',
+    envelope: [
+      ['Die Karte', '„A little tango for you“, mit Von / Für und einem QR-Code, der das Geschenk und den Einstieg erklärt.'],
+      ['Der Gutschein', 'Derselbe Gutschein, den auch unsere Schüler:innen bekommen. Er kommt zum ersten Besuch mit.'],
+    ],
+    timeTitle: 'So läuft die Zeit',
+    time: [
+      ['Keine Eile', `Bis zu ${YEARS_TO_START} Jahre Zeit für den ersten Besuch.`],
+      ['Erster Besuch = Start', 'Die Zeit läuft ab dem Tag des ersten Besuchs.'],
+      ['Genießen', '2 Practicas in 8 Wochen, 4 Practicas in 16 Wochen oder 4 Kurswochen am Stück.'],
+    ],
+    example:
+      'Beispiel: erste Practica am 13. Januar 2027, dann gilt ein 2-Practica-Pass bis zum 10. März 2027. Fällt ein Termin bei uns aus, verlängert sich die Zeit um diesen Termin.',
+    faqEyebrow: 'Fragen',
+    faqTitle: 'Bevor du verschenkst',
+    faq: [
+      [
+        'Welchen Gutschein soll ich nehmen?',
+        'Hat die Person schon Tango getanzt? Wenn nicht, den 4-Wochen-Kurspass: vier Anfänger:innen-Stunden am Stück. Wer schon tanzt, freut sich über einen Practica-Pass.',
+      ],
+      [
+        'Braucht die Person eine:n Partner:in oder Erfahrung?',
+        'Nein. Die meisten kommen allein, im Unterricht wechseln wir die Partner:innen. Der Kurspass ist genau für Menschen gemacht, die noch nie getanzt haben.',
+      ],
+      ['Ist der Unterricht auf Englisch?', 'Ja, unterrichtet wird auf Englisch. Tango selbst braucht nur wenige Worte.'],
+      [
+        'Wer bekommt den ermäßigten Preis?',
+        'Das hängt von der beschenkten Person ab: Studierende und alle bis 28 Jahre. Kein Nachweis nötig, wir vertrauen dir. Sag es uns einfach im Chat.',
+      ],
+      [
+        'Wie bezahle ich und bekomme den Gutschein?',
+        `Schreib uns auf WhatsApp. Hol ihn bei einer Donnerstagsstunde, einer Practica oder zu einer abgesprochenen Zeit ab und bezahl bar, per PayPal oder Überweisung. Oder wir schicken ihn nach Zahlung für ${euro(POSTAGE)} extra per Post.`,
+      ],
+      [
+        'Gibt es eine Frist zum Kaufen?',
+        'Nein, du kannst das ganze Jahr bestellen. Für Weihnachten schreib uns früh genug, damit er rechtzeitig ankommt.',
+      ],
+      [
+        'Wann kann der Kurspass starten?',
+        'Mit der neuen Anfänger:innen-Gruppe im Januar 2027 oder mit jeder späteren Anfänger:innen-Gruppe innerhalb von 3 Jahren. Die beschenkte Person schreibt uns und wir nennen den nächsten Start.',
+      ],
+      [
+        'Was, wenn eine Practica oder Stunde ausfällt?',
+        'Dann verlängert sich die Zeit um den ausgefallenen Termin. Wegen uns geht kein Besuch verloren.',
+      ],
+      [
+        'Was, wenn eine Stunde verpasst wird?',
+        'Mit dem Kurspass kann man stattdessen kostenlos zu einer Garden Practica kommen.',
+      ],
+      [
+        'Kann der Gutschein weitergegeben werden?',
+        'Der Gutschein ist persönlich: Er trägt die Namen der schenkenden und der beschenkten Person.',
+      ],
+      [
+        'Wo seid ihr?',
+        'Thürmchenswall 21, 50668 Köln (Yoga Drop Studio), drei Minuten zu Fuß vom Ebertplatz.',
+      ],
+    ],
+    helpTitle: 'Noch unsicher?',
+    helpBody: 'Erzähl uns, für wen er ist, und wir schlagen den passenden Gutschein vor.',
+    help: '💬 Auf WhatsApp fragen',
+    helpMessage: 'Hi! Ich möchte jemandem Tango schenken, weiß aber nicht, welcher Gutschein passt.',
+  },
+};
+const text = texts[locale];
+
+// The English question is the GA key, so both languages report together.
+const enFaqQuestions = texts.en.faq.map(([q]) => q);
+
+const canonical = `https://tangogarden.de${l('/pages/gift-cards')}`;
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: text.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+};
+---
+
+<BaseLayout title={text.title} description={text.description} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
+  <section class="gift-hero">
+    <img class="gift-hero-logo" src="/assets/logo-icon.svg" alt="" width="64" height="64" />
+    <h1>{text.h1}</h1>
+    <p>{text.lead}</p>
+  </section>
+
+  <section class="gift-cards">
+    <div class="gift-cards-inner">
+      {
+        giftCards.map((g) => {
+          const t = g[locale];
+          return (
+            <article class:list={['gift-card', { featured: t.tag }]} id={g.slug}>
+              {t.tag && <span class="gift-card-tag">{t.tag}</span>}
+              <span class="gift-card-circle" aria-hidden="true" />
+              <h2>
+                {t.title}
+                <span>{t.subtitle}</span>
+              </h2>
+              <p class="gift-card-price">
+                {euro(g.price)} <span>· {euro(g.reduced)} {text.reduced}</span>
+              </p>
+              <p class="gift-card-for">{t.forWhom}</p>
+              <ul>
+                {t.includes.map((i) => (
+                  <li>{i}</li>
+                ))}
+              </ul>
+              {g.kind === 'practica' && (
+                <p class="gift-card-hint">
+                  <a href="#class-pass">{text.newToTango}</a>
+                </p>
+              )}
+              <a class="btn-whatsapp" href={waLink(t.buyMessage)} target="_blank" rel="noopener">
+                {text.buy}
+              </a>
+            </article>
+          );
+        })
+      }
+    </div>
+    <p class="gift-note">{text.reducedNote}</p>
+  </section>
+
+  <section class="gift-steps">
+    <h2>{text.howTitle}</h2>
+    <ol>
+      {
+        text.how.map(([h, p]) => (
+          <li>
+            <h3>{h}</h3>
+            <p>{p}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="gift-steps gift-steps--alt">
+    <h2>{text.envelopeTitle}</h2>
+    <ul class="gift-envelope">
+      {
+        text.envelope.map(([h, p]) => (
+          <li>
+            <h3>{h}</h3>
+            <p>{p}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="gift-steps">
+    <h2>{text.timeTitle}</h2>
+    <ol>
+      {
+        text.time.map(([h, p]) => (
+          <li>
+            <h3>{h}</h3>
+            <p>{p}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="gift-example">{text.example}</p>
+  </section>
+
+  <section class="contact-faq-section">
+    <div class="contact-faq-inner">
+      <div class="contact-faq-eyebrow">{text.faqEyebrow}</div>
+      <h2>{text.faqTitle}</h2>
+      {
+        text.faq.map(([q, a], i) => (
+          <div class="faq-item">
+            <button class="faq-question" data-faq-key={`gift: ${enFaqQuestions[i]}`}>
+              {q}
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">{a}</div>
+            </div>
+          </div>
+        ))
+      }
+      <div class="gift-help">
+        <h2>{text.helpTitle}</h2>
+        <p>{text.helpBody}</p>
+        <a class="btn-whatsapp" href={waLink(text.helpMessage)} target="_blank" rel="noopener">{text.help}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import '../scripts/contact-faq.ts';
+</script>
+
+<style>
+  .gift-hero {
+    background: var(--cream);
+    padding: 4.5rem 1.5rem 3rem;
+    text-align: center;
+  }
+  .gift-hero-logo {
+    margin: 0 auto 1.25rem;
+  }
+  .gift-hero h1 {
+    font-size: clamp(2.1rem, 7vw, 3.6rem);
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+  .gift-hero p {
+    font-size: 1.1rem;
+    color: var(--text-mid);
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .gift-cards {
+    background: var(--cream);
+    padding: 1rem 1.25rem 4rem;
+  }
+  .gift-cards-inner {
+    max-width: 1060px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 860px) {
+    .gift-cards-inner {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  /* Echoes the voucher in the envelope: white card, thin border, olive circle. */
+  .gift-card {
+    position: relative;
+    background: #fdfcf7;
+    border: 1.5px solid #b9b293;
+    border-radius: 12px;
+    padding: 2.25rem 1.5rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    scroll-margin-top: 90px;
+  }
+  .gift-card.featured {
+    border-color: var(--green);
+    box-shadow: 0 10px 28px rgba(45, 80, 22, 0.14);
+  }
+  .gift-card-tag {
+    position: absolute;
+    top: -0.8rem;
+    background: var(--green);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 0.3rem 0.9rem;
+    border-radius: 50px;
+  }
+  .gift-card-circle {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #8a9a2a;
+    border-radius: 50%;
+    margin-bottom: 0.9rem;
+  }
+  .gift-card h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1.15;
+  }
+  .gift-card h2 span {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text-mid);
+    margin-top: 0.25rem;
+  }
+  .gift-card-price {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--green);
+    margin: 1rem 0 0.5rem;
+  }
+  .gift-card-price span {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-light);
+  }
+  .gift-card-for {
+    color: var(--text-mid);
+    margin-bottom: 0.75rem;
+  }
+  .gift-card ul {
+    list-style: none;
+    text-align: left;
+    font-size: 0.92rem;
+    color: var(--text-mid);
+    margin-bottom: 1rem;
+    flex: 1;
+  }
+  .gift-card li {
+    padding: 0.3rem 0 0.3rem 1.3rem;
+    position: relative;
+  }
+  .gift-card li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-weight: 700;
+  }
+  .gift-card-hint {
+    font-size: 0.88rem;
+    margin-bottom: 1rem;
+  }
+  .gift-card-hint a {
+    color: var(--green);
+  }
+  .gift-note {
+    max-width: 1060px;
+    margin: 1.5rem auto 0;
+    text-align: center;
+    font-size: 0.88rem;
+    color: var(--text-light);
+  }
+
+  .gift-steps {
+    background: #fff;
+    padding: 4rem 1.25rem;
+  }
+  .gift-steps--alt {
+    background: var(--cream-light);
+  }
+  .gift-steps h2 {
+    text-align: center;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 2rem;
+  }
+  .gift-steps ol,
+  .gift-envelope {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    counter-reset: step;
+  }
+  @media (min-width: 760px) {
+    .gift-steps ol {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .gift-envelope {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-width: 760px;
+    }
+  }
+  .gift-steps li {
+    text-align: center;
+  }
+  .gift-steps ol li::before {
+    counter-increment: step;
+    content: counter(step);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    margin: 0 auto 0.75rem;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    font-weight: 700;
+  }
+  .gift-steps h3 {
+    font-size: 1.1rem;
+    color: var(--green);
+    margin-bottom: 0.4rem;
+  }
+  .gift-steps p {
+    color: var(--text-mid);
+    font-size: 0.95rem;
+  }
+  .gift-example {
+    max-width: 640px;
+    margin: 2rem auto 0;
+    background: var(--cream);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    text-align: center;
+  }
+
+  .gift-help {
+    margin-top: 3rem;
+    text-align: center;
+  }
+  .gift-help h2 {
+    font-size: 1.4rem !important;
+    margin-bottom: 0.4rem !important;
+  }
+  .gift-help p {
+    color: var(--text-light);
+    margin-bottom: 1.25rem;
+  }
+</style>
