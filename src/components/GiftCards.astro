@@ -24,8 +24,7 @@ const texts = {
     h1: 'Gift someone a little tango.',
     lead: 'No partner and no experience needed. Our new beginners group starts in January, and classes are taught in English.',
     reduced: 'reduced*',
-    reducedNote: '* Reduced price if the person you gift it to is a student or 28 or under. No proof needed, we trust you.',
-    newToTango: 'New to tango? The class pass is the better start.',
+    reducedNote: '* Reduced price if the person you gift it to is a student or 28 or under.',
     buy: '💬 Ask for this card',
     howTitle: 'How it works',
     how: [
@@ -63,7 +62,7 @@ const texts = {
       ['Are the classes in English?', 'Yes, all teaching is in English. Tango itself needs very few words.'],
       [
         'Who gets the reduced price?',
-        "It depends on the person you gift it to: students and anyone 28 or under. No proof needed, we trust you. Just tell us in the chat.",
+        "It depends on the person you gift it to: students and anyone 28 or under. Just tell us in the chat.",
       ],
       [
         'How do I pay and get the card?',
@@ -106,8 +105,7 @@ const texts = {
     h1: 'Verschenk ein bisschen Tango.',
     lead: 'Ohne Partner:in, ohne Vorkenntnisse. Unsere neue Anfänger:innen-Gruppe startet im Januar, unterrichtet wird auf Englisch.',
     reduced: 'ermäßigt*',
-    reducedNote: '* Ermäßigt, wenn die beschenkte Person studiert oder 28 oder jünger ist. Kein Nachweis nötig, wir vertrauen dir.',
-    newToTango: 'Neu im Tango? Dann ist der Kurspass der bessere Start.',
+    reducedNote: '* Ermäßigt, wenn die beschenkte Person studiert oder 28 oder jünger ist.',
     buy: '💬 Diesen Gutschein anfragen',
     howTitle: "So funktioniert's",
     how: [
@@ -145,7 +143,7 @@ const texts = {
       ['Ist der Unterricht auf Englisch?', 'Ja, unterrichtet wird auf Englisch. Tango selbst braucht nur wenige Worte.'],
       [
         'Wer bekommt den ermäßigten Preis?',
-        'Das hängt von der beschenkten Person ab: Studierende und alle bis 28 Jahre. Kein Nachweis nötig, wir vertrauen dir. Sag es uns einfach im Chat.',
+        'Das hängt von der beschenkten Person ab: Studierende und alle bis 28 Jahre. Sag es uns einfach im Chat.',
       ],
       [
         'Wie bezahle ich und bekomme den Gutschein?',
@@ -226,11 +224,6 @@ const faqSchema = {
                   <li>{i}</li>
                 ))}
               </ul>
-              {g.kind === 'practica' && (
-                <p class="gift-card-hint">
-                  <a href="#class-pass">{text.newToTango}</a>
-                </p>
-              )}
               <a class="btn-whatsapp" href={waLink(t.buyMessage)} target="_blank" rel="noopener">
                 {text.buy}
               </a>
@@ -435,13 +428,6 @@ const faqSchema = {
     left: 0;
     color: var(--green);
     font-weight: 700;
-  }
-  .gift-card-hint {
-    font-size: 0.88rem;
-    margin-bottom: 1rem;
-  }
-  .gift-card-hint a {
-    color: var(--green);
   }
   .gift-note {
     max-width: 1060px;
