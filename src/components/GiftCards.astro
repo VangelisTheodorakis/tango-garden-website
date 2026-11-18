@@ -185,6 +185,10 @@ const text = texts[locale];
 // The English question is the GA key, so both languages report together.
 const enFaqQuestions = texts.en.faq.map(([q]) => q);
 
+// The class pass ("Most gifted") sits in the middle on wide screens.
+const bySlug = (s: string) => giftCards.find((g) => g.slug === s)!;
+const displayOrder = ['practica-2', 'class-pass', 'practica-4'].map(bySlug);
+
 const canonical = `https://tangogarden.de${l('/pages/gift-cards')}`;
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -205,7 +209,7 @@ const faqSchema = {
   <section class="gift-cards">
     <div class="gift-cards-inner">
       {
-        giftCards.map((g) => {
+        displayOrder.map((g) => {
           const t = g[locale];
           return (
             <article class:list={['gift-card', { featured: t.tag }]} id={g.slug}>
@@ -342,9 +346,38 @@ const faqSchema = {
     grid-template-columns: 1fr;
     gap: 1.25rem;
   }
+  /* On phones the most gifted card comes first. */
+  .gift-card.featured {
+    order: -1;
+  }
+  /* Side by side, the cards share row tracks (subgrid), so the price, the
+     "for whom" line, the checklist and the button start at the same height in
+     all three. */
   @media (min-width: 860px) {
     .gift-cards-inner {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+      row-gap: 0;
+    }
+    .gift-card.featured {
+      order: 0;
+    }
+    .gift-cards-inner .gift-card {
+      display: grid;
+      grid-row: span 6;
+      grid-template-rows: subgrid;
+      justify-items: center;
+      align-content: start;
+      align-items: start;
+      row-gap: 0.85rem;
+    }
+    .gift-cards-inner .gift-card > * {
+      margin: 0;
+    }
+    .gift-cards-inner .gift-card ul {
+      justify-self: stretch;
+    }
+    .gift-card .btn-whatsapp {
+      align-self: end;
     }
   }
   /* Echoes the voucher in the envelope: white card, thin border, olive circle. */
@@ -367,6 +400,9 @@ const faqSchema = {
   .gift-card-tag {
     position: absolute;
     top: -0.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
     background: var(--green);
     color: #fff;
     font-size: 0.75rem;
