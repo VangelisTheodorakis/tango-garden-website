@@ -11,6 +11,7 @@ import { localizePath } from '../i18n/index.js';
 import practicas from '../../public/assets/data/practicas.json';
 import beginners from '../../public/assets/data/regular-classes.json';
 import improvers from '../../public/assets/data/growth-sessions.json';
+import { regularClasses } from '../data/courses.js';
 
 interface Props {
   locale?: 'en' | 'de';
@@ -28,8 +29,9 @@ const fmtDate = (iso: string) =>
   }).format(new Date(`${iso}T00:00:00Z`));
 
 const today = new Date().toISOString().slice(0, 10);
+// The Tango Garden pin on Google Maps (same link as in the confirmation emails).
 // A plain link: nothing loads from Google until someone taps it.
-const MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Th%C3%BCrmchenswall+21%2C+50668+K%C3%B6ln';
+const MAPS_URL = regularClasses.mapsUrl;
 // Upcoming at build time; a small script hides any that pass before the next build.
 const nextPracticas = practicas.events.filter((e) => e.date >= today).slice(0, 4);
 const beginnersStart = beginners.events.find((e) => e.date >= today) ?? beginners.events[0];
