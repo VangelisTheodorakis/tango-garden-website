@@ -7,6 +7,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { giftCards, waLink, POSTAGE, YEARS_TO_START } from '../data/giftCards.js';
 import { formatPrice, localizePath } from '../i18n/index.js';
+import { regularClasses } from '../data/courses.js';
 import '../styles/contact.css';
 
 interface Props {
@@ -97,6 +98,7 @@ const texts = {
     helpTitle: 'Still not sure?',
     helpBody: "Tell us who it's for and we'll suggest the right card.",
     help: '💬 Ask us on WhatsApp',
+    location: '📍 Where is it?',
     helpMessage: "Hi! I'd like to gift tango to someone but I'm not sure which card fits.",
   },
   de: {
@@ -179,6 +181,7 @@ const texts = {
     helpTitle: 'Noch unsicher?',
     helpBody: 'Erzähl uns, für wen er ist, und wir schlagen den passenden Gutschein vor.',
     help: '💬 Auf WhatsApp fragen',
+    location: '📍 Wo ist das?',
     helpMessage: 'Hi! Ich möchte jemandem Tango schenken, weiß aber nicht, welcher Gutschein passt.',
   },
 };
@@ -313,7 +316,11 @@ const faqSchema = {
       <div class="gift-help">
         <h2>{text.helpTitle}</h2>
         <p>{text.helpBody}</p>
-        <a class="btn-whatsapp" href={waLink(text.helpMessage)} target="_blank" rel="noopener">{text.help}</a>
+        <div class="gift-help-actions">
+          <a class="btn-whatsapp" href={waLink(text.helpMessage)} target="_blank" rel="noopener">{text.help}</a>
+          <!-- The Tango Garden pin on Google Maps; a plain link, nothing loads until tapped. -->
+          <a class="gift-help-location" href={regularClasses.mapsUrl} target="_blank" rel="noopener">{text.location}</a>
+        </div>
       </div>
     </div>
   </section>
@@ -624,5 +631,29 @@ const faqSchema = {
   }
   .gift-help .btn-whatsapp:hover {
     background: #fff;
+  }
+  .gift-help-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+  /* Cream outline on green, next to the cream WhatsApp button. */
+  .gift-help-location {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 24px;
+    border: 1.5px solid var(--on-green);
+    border-radius: 30px;
+    color: var(--on-green);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .gift-help-location:hover,
+  .gift-help-location:focus-visible {
+    background: var(--on-green);
+    color: var(--green);
   }
 </style>

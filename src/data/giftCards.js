@@ -33,7 +33,7 @@ export const giftCards = [
       subtitle: '4-Week Class Pass',
       name: '4-week class pass',
       tag: 'Most gifted',
-      more: 'About the classes →',
+      more: '🌿 About the classes',
       forWhom: 'For new dancers or improvers: four classes in a row, one a week, on Thursdays.',
       includes: [
         '4 classes in a row, one a week, on Thursdays',
@@ -48,7 +48,7 @@ export const giftCards = [
       subtitle: '4-Wochen-Kurspass',
       name: '4-Wochen-Kurspass',
       tag: 'Am häufigsten verschenkt',
-      more: 'Mehr zu den Kursen →',
+      more: '🌿 Mehr zu den Kursen',
       forWhom: 'Für Neueinsteiger:innen oder Fortgeschrittene: vier Stunden am Stück, eine pro Woche, donnerstags.',
       includes: [
         '4 Stunden am Stück, eine pro Woche, donnerstags',
@@ -71,7 +71,7 @@ export const giftCards = [
       title: 'Garden Practica',
       subtitle: '2-Practica Pass',
       name: '2-practica pass',
-      more: 'About the practica →',
+      more: '🌳 About the practica',
       forWhom: 'For someone who already dances: two guided practice evenings.',
       includes: [
         '2 Garden Practicas, 2nd and 4th Wednesday of the month, 19:30–21:30',
@@ -85,7 +85,7 @@ export const giftCards = [
       title: 'Garden Practica',
       subtitle: '2-Practica-Pass',
       name: '2-Practica-Pass',
-      more: 'Mehr zur Practica →',
+      more: '🌳 Mehr zur Practica',
       forWhom: 'Für alle, die schon tanzen: zwei begleitete Übungsabende.',
       includes: [
         '2 Garden Practicas, am 2. und 4. Mittwoch im Monat, 19:30–21:30',
@@ -108,7 +108,7 @@ export const giftCards = [
       title: 'Garden Practica',
       subtitle: '4-Practica Pass',
       name: '4-practica pass',
-      more: 'About the practica →',
+      more: '🌳 About the practica',
       forWhom: 'For someone who already dances: four practice evenings over a few months.',
       includes: [
         '4 Garden Practicas, 2nd and 4th Wednesday of the month, 19:30–21:30',
@@ -122,7 +122,7 @@ export const giftCards = [
       title: 'Garden Practica',
       subtitle: '4-Practica-Pass',
       name: '4-Practica-Pass',
-      more: 'Mehr zur Practica →',
+      more: '🌳 Mehr zur Practica',
       forWhom: 'Für alle, die schon tanzen: vier Übungsabende über ein paar Monate.',
       includes: [
         '4 Garden Practicas, am 2. und 4. Mittwoch im Monat, 19:30–21:30',
