@@ -28,6 +28,8 @@ const fmtDate = (iso: string) =>
   }).format(new Date(`${iso}T00:00:00Z`));
 
 const today = new Date().toISOString().slice(0, 10);
+// A plain link: nothing loads from Google until someone taps it.
+const MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Th%C3%BCrmchenswall+21%2C+50668+K%C3%B6ln';
 // Upcoming at build time; a small script hides any that pass before the next build.
 const nextPracticas = practicas.events.filter((e) => e.date >= today).slice(0, 4);
 const beginnersStart = beginners.events.find((e) => e.date >= today) ?? beginners.events[0];
@@ -67,7 +69,7 @@ const texts = {
     ],
     where: 'Thürmchenswall 21, 50668 Cologne (Yoga Drop Studio), 3 minutes from Ebertplatz.',
     directions: '📍 Directions',
-    another: '🎁 Choose another gift',
+    another: '🎁 Another gift',
   },
   de: {
     title: 'Du hast Tango geschenkt bekommen | Tango Garden',
@@ -102,7 +104,7 @@ const texts = {
     ],
     where: 'Thürmchenswall 21, 50668 Köln (Yoga Drop Studio), drei Minuten vom Ebertplatz.',
     directions: '📍 Anfahrt',
-    another: '🎁 Anderen Gutschein wählen',
+    another: '🎁 Anderer Gutschein',
   },
 };
 const text = texts[locale];
@@ -196,11 +198,8 @@ const text = texts[locale];
                 ))}
               </ul>
               <p class="gc-where">{text.where}</p>
-              <p class="gc-actions">
-                <a class="gc-btn" href={`${l('/pages/contact')}#location`}>{text.directions}</a>
-              </p>
-
-              <p class="gc-actions gc-another">
+              <p class="gc-actions gc-row">
+                <a class="gc-btn" href={MAPS_URL} target="_blank" rel="noopener">{text.directions}</a>
                 <a class="gc-btn" href="#choose">{text.another}</a>
               </p>
             </section>
@@ -362,6 +361,17 @@ const text = texts[locale];
   .gc-where {
     margin-top: 0.75rem;
   }
+  /* Directions and "choose another gift" side by side, wrapping on narrow phones. */
+  .gc-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  .gc-row .gc-btn {
+    padding: 10px 16px;
+  }
   .gc-list {
     list-style: none;
   }
@@ -399,9 +409,5 @@ const text = texts[locale];
     justify-content: center;
     max-width: 340px;
     margin: 0 auto;
-  }
-  .gc-another {
-    margin-top: 2rem;
-    text-align: center;
   }
 </style>
