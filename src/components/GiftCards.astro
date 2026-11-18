@@ -20,10 +20,10 @@ const texts = {
   en: {
     title: 'Tango Gift Cards | Tango Garden',
     description:
-      'Gift someone a little tango: a 4-week beginner class pass or Garden Practica passes in Cologne. No partner or experience needed.',
+      'Gift someone a little tango: a 4-week class pass or Garden Practica passes in Cologne. No partner or experience needed.',
     h1: 'Gift someone a little tango.',
     lead: 'No partner or experience needed. All classes are taught in English.',
-    leadLink: ['Our ', 'new beginners group', ' starts in January.'],
+    leadLink: ['Our ', 'next classes', ' start in January.'],
     reduced: 'reduced*',
     reducedNote: '* Reduced price if the person you gift it to is a student or 28 or under.',
     buy: '💬 Ask for this card',
@@ -54,11 +54,11 @@ const texts = {
     faq: [
       [
         'Which one should I pick?',
-        'Has the person danced tango before? If not, the 4-week class pass: four beginner classes in a row. If they already dance, a practica pass.',
+        'The 4-week class pass works for everyone: complete beginners join the beginners group, dancers join the improvers. If they mainly want to practise, a practica pass.',
       ],
       [
         'Do they need a partner or any experience?',
-        'No. Most people come alone, and we rotate partners in class. The class pass is made for people who have never danced.',
+        'No. Most people come alone, and we rotate partners in class. Complete beginners start in the beginners group.',
       ],
       ['Are the classes in English?', 'Yes, all teaching is in English. Tango itself needs very few words.'],
       [
@@ -75,7 +75,7 @@ const texts = {
       ],
       [
         'When can they start the class pass?',
-        'With the new beginners group in January 2027, or with any later beginners group within 3 years. They message us and we tell them the next start date.',
+        'With the next beginners or improvers course (the next ones start in January 2027), or any later course within 3 years. They message us and we tell them the next start date.',
       ],
       [
         'What if a practica or class is cancelled?',
@@ -83,7 +83,7 @@ const texts = {
       ],
       [
         'What if they miss a class?',
-        'Class pass holders can come to a Garden Practica instead, at no extra cost.',
+        'In the beginners group, a missed class can be made up at a Garden Practica at no extra cost. Otherwise, just message us.',
       ],
       [
         'Can the card be passed on?',
@@ -102,10 +102,10 @@ const texts = {
   de: {
     title: 'Tango-Gutscheine verschenken | Tango Garden Köln',
     description:
-      'Verschenk ein bisschen Tango: einen 4-Wochen-Kurspass für Anfänger:innen oder Practica-Pässe in Köln. Ohne Partner:in und ohne Vorkenntnisse.',
+      'Verschenk ein bisschen Tango: einen 4-Wochen-Kurspass oder Practica-Pässe in Köln. Ohne Partner:in und ohne Vorkenntnisse, Unterricht auf Englisch.',
     h1: 'Verschenk ein bisschen Tango.',
     lead: 'Ohne Partner:in und ohne Vorkenntnisse. Unterrichtet wird auf Englisch.',
-    leadLink: ['Unsere ', 'neue Anfänger:innen-Gruppe', ' startet im Januar.'],
+    leadLink: ['Unsere ', 'nächsten Kurse', ' starten im Januar.'],
     reduced: 'ermäßigt*',
     reducedNote: '* Ermäßigt, wenn die beschenkte Person studiert oder 28 oder jünger ist.',
     buy: '💬 Diesen Gutschein anfragen',
@@ -136,11 +136,11 @@ const texts = {
     faq: [
       [
         'Welchen Gutschein soll ich nehmen?',
-        'Hat die Person schon Tango getanzt? Wenn nicht, den 4-Wochen-Kurspass: vier Anfänger:innen-Stunden am Stück. Wer schon tanzt, freut sich über einen Practica-Pass.',
+        'Der 4-Wochen-Kurspass passt für alle: Neueinsteiger:innen kommen in die Anfänger:innen-Gruppe, Tänzer:innen zu den Fortgeschrittenen. Wer vor allem üben möchte, freut sich über einen Practica-Pass.',
       ],
       [
         'Braucht die Person eine:n Partner:in oder Erfahrung?',
-        'Nein. Die meisten kommen allein, im Unterricht wechseln wir die Partner:innen. Der Kurspass ist genau für Menschen gemacht, die noch nie getanzt haben.',
+        'Nein. Die meisten kommen allein, im Unterricht wechseln wir die Partner:innen. Wer ganz neu ist, startet in der Anfänger:innen-Gruppe.',
       ],
       ['Ist der Unterricht auf Englisch?', 'Ja, unterrichtet wird auf Englisch. Tango selbst braucht nur wenige Worte.'],
       [
@@ -157,7 +157,7 @@ const texts = {
       ],
       [
         'Wann kann der Kurspass starten?',
-        'Mit der neuen Anfänger:innen-Gruppe im Januar 2027 oder mit jeder späteren Anfänger:innen-Gruppe innerhalb von 3 Jahren. Die beschenkte Person schreibt uns und wir nennen den nächsten Start.',
+        'Mit dem nächsten Kurs für Anfänger:innen oder Fortgeschrittene (die nächsten starten im Januar 2027) oder mit jedem späteren Kurs innerhalb von 3 Jahren. Die beschenkte Person schreibt uns und wir nennen den nächsten Start.',
       ],
       [
         'Was, wenn eine Practica oder Stunde ausfällt?',
@@ -165,7 +165,7 @@ const texts = {
       ],
       [
         'Was, wenn eine Stunde verpasst wird?',
-        'Mit dem Kurspass kann man stattdessen kostenlos zu einer Garden Practica kommen.',
+        'In der Anfänger:innen-Gruppe kann eine verpasste Stunde kostenlos bei einer Garden Practica nachgeholt werden. Sonst schreib uns einfach.',
       ],
       [
         'Kann der Gutschein weitergegeben werden?',
@@ -187,9 +187,9 @@ const text = texts[locale];
 // The English question is the GA key, so both languages report together.
 const enFaqQuestions = texts.en.faq.map(([q]) => q);
 
-// The class pass ("Most gifted") sits in the middle on wide screens.
+// The class pass ("Most gifted") comes first.
 const bySlug = (s: string) => giftCards.find((g) => g.slug === s)!;
-const displayOrder = ['practica-2', 'class-pass', 'practica-4'].map(bySlug);
+const displayOrder = ['class-pass', 'practica-2', 'practica-4'].map(bySlug);
 
 const canonical = `https://tangogarden.de${l('/pages/gift-cards')}`;
 const faqSchema = {
@@ -202,13 +202,15 @@ const faqSchema = {
 <BaseLayout title={text.title} description={text.description} canonical={canonical}>
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 
+  <div class="gift-page">
+
   <section class="gift-hero">
     <img class="gift-hero-logo" src="/assets/logo-icon.svg" alt="" width="64" height="64" />
     <h1>{text.h1}</h1>
     <p>
       {text.lead}
       <br />
-      {text.leadLink[0]}<a href={l('/pages/beginner-course')}>{text.leadLink[1]}</a>{text.leadLink[2]}
+      {text.leadLink[0]}<a href={l('/pages/classes')}>{text.leadLink[1]}</a>{text.leadLink[2]}
     </p>
   </section>
 
@@ -233,9 +235,14 @@ const faqSchema = {
                   <li>{i}</li>
                 ))}
               </ul>
-              <a class="btn-whatsapp" href={waLink(t.buyMessage)} target="_blank" rel="noopener">
-                {text.buy}
-              </a>
+              <div class="gift-card-actions">
+                <a class="btn-whatsapp" href={waLink(t.buyMessage)} target="_blank" rel="noopener">
+                  {text.buy}
+                </a>
+                <a class="gift-card-more" href={l(g.moreHref)}>
+                  {t.more}
+                </a>
+              </div>
             </article>
           );
         })
@@ -310,6 +317,7 @@ const faqSchema = {
       </div>
     </div>
   </section>
+  </div>
 </BaseLayout>
 
 <script>
@@ -317,37 +325,50 @@ const faqSchema = {
 </script>
 
 <style>
+  /* The whole page sits on the brand green; the cards stay cream, like the
+     voucher in the envelope. */
+  .gift-page {
+    --on-green: #f3ede1;
+    --on-green-soft: rgba(243, 237, 225, 0.82);
+    --green-deep: #435019;
+    background: var(--green);
+    color: var(--on-green);
+  }
+
   .gift-hero {
-    background: var(--cream);
     padding: 4.5rem 1.5rem 3rem;
     text-align: center;
   }
   .gift-hero-logo {
     margin: 0 auto 1.25rem;
+    background: var(--on-green);
+    border-radius: 50%;
+    padding: 6px;
+    width: 76px;
+    height: 76px;
   }
   .gift-hero h1 {
     font-size: clamp(2.1rem, 7vw, 3.6rem);
     font-weight: 700;
-    color: var(--green);
+    color: var(--on-green);
     line-height: 1.1;
     letter-spacing: -0.02em;
     margin-bottom: 1rem;
   }
-  .gift-hero a {
-    color: var(--green);
-    font-weight: 600;
-    text-underline-offset: 3px;
-  }
   .gift-hero p {
     font-size: 1.1rem;
-    color: var(--text-mid);
+    color: var(--on-green-soft);
     max-width: 640px;
     margin: 0 auto;
     text-wrap: balance;
   }
+  .gift-hero a {
+    color: var(--on-green);
+    font-weight: 600;
+    text-underline-offset: 3px;
+  }
 
   .gift-cards {
-    background: var(--cream);
     padding: 1rem 1.25rem 4rem;
   }
   .gift-cards-inner {
@@ -357,20 +378,13 @@ const faqSchema = {
     grid-template-columns: 1fr;
     gap: 1.25rem;
   }
-  /* On phones the most gifted card comes first. */
-  .gift-card.featured {
-    order: -1;
-  }
   /* Side by side, the cards share row tracks (subgrid), so the price, the
-     "for whom" line, the checklist and the button start at the same height in
+     "for whom" line, the checklist and the buttons start at the same height in
      all three. */
   @media (min-width: 860px) {
     .gift-cards-inner {
       grid-template-columns: repeat(3, minmax(0, 1fr));
       row-gap: 0;
-    }
-    .gift-card.featured {
-      order: 0;
     }
     .gift-cards-inner .gift-card {
       display: grid;
@@ -387,14 +401,14 @@ const faqSchema = {
     .gift-cards-inner .gift-card ul {
       justify-self: stretch;
     }
-    .gift-card .btn-whatsapp {
+    .gift-cards-inner .gift-card-actions {
       align-self: end;
     }
   }
-  /* Echoes the voucher in the envelope: white card, thin border, olive circle. */
   .gift-card {
     position: relative;
     background: #fdfcf7;
+    color: var(--text);
     border: 1.5px solid #b9b293;
     border-radius: 12px;
     padding: 2.25rem 1.5rem 1.75rem;
@@ -405,8 +419,8 @@ const faqSchema = {
     scroll-margin-top: 90px;
   }
   .gift-card.featured {
-    border-color: var(--green);
-    box-shadow: 0 10px 28px rgba(45, 80, 22, 0.14);
+    border: 2px solid #e5dc9f;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
   }
   .gift-card-tag {
     position: absolute;
@@ -417,10 +431,10 @@ const faqSchema = {
     max-width: calc(100% - 2rem);
     overflow: hidden;
     text-overflow: ellipsis;
-    background: var(--green);
-    color: #fff;
+    background: #e5dc9f;
+    color: var(--green);
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.05em;
     padding: 0.3rem 0.9rem;
     border-radius: 50px;
@@ -458,8 +472,7 @@ const faqSchema = {
     text-align: left;
     font-size: 0.92rem;
     color: var(--text-mid);
-    margin-bottom: 1rem;
-    flex: 1;
+    margin-bottom: 1.25rem;
   }
   .gift-card li {
     padding: 0.3rem 0 0.3rem 1.3rem;
@@ -472,26 +485,38 @@ const faqSchema = {
     color: var(--green);
     font-weight: 700;
   }
+  .gift-card-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .gift-card-more {
+    color: var(--green);
+    font-weight: 600;
+    font-size: 0.92rem;
+    text-underline-offset: 3px;
+  }
   .gift-note {
     max-width: 1060px;
     margin: 1.5rem auto 0;
     text-align: center;
     font-size: 0.88rem;
-    color: var(--text-light);
+    color: var(--on-green-soft);
   }
 
   .gift-steps {
-    background: #fff;
     padding: 4rem 1.25rem;
+    border-top: 1px solid rgba(243, 237, 225, 0.15);
   }
   .gift-steps--alt {
-    background: var(--cream-light);
+    background: var(--green-deep);
   }
   .gift-steps h2 {
     text-align: center;
     font-size: 1.9rem;
     font-weight: 700;
-    color: var(--green);
+    color: var(--on-green);
     margin-bottom: 2rem;
   }
   .gift-steps ol,
@@ -527,26 +552,39 @@ const faqSchema = {
     height: 2.4rem;
     margin: 0 auto 0.75rem;
     border-radius: 50%;
-    background: var(--green);
-    color: #fff;
+    background: var(--on-green);
+    color: var(--green);
     font-weight: 700;
   }
   .gift-steps h3 {
     font-size: 1.1rem;
-    color: var(--green);
+    color: var(--on-green);
     margin-bottom: 0.4rem;
   }
   .gift-steps p {
-    color: var(--text-mid);
+    color: var(--on-green-soft);
     font-size: 0.95rem;
   }
   .gift-example {
     max-width: 640px;
     margin: 2rem auto 0;
-    background: var(--cream);
+    background: rgba(243, 237, 225, 0.12);
     border-radius: 8px;
     padding: 1rem 1.25rem;
     text-align: center;
+  }
+
+  /* FAQ: the contact page's accordion, on green. */
+  .gift-page .contact-faq-section {
+    background: transparent;
+    border-top: 1px solid rgba(243, 237, 225, 0.15);
+  }
+  .gift-page .contact-faq-eyebrow,
+  .gift-page .contact-faq-inner h2 {
+    color: var(--on-green);
+  }
+  .gift-page .faq-item {
+    color: var(--text);
   }
 
   .gift-help {
@@ -558,7 +596,15 @@ const faqSchema = {
     margin-bottom: 0.4rem !important;
   }
   .gift-help p {
-    color: var(--text-light);
+    color: var(--on-green-soft);
     margin-bottom: 1.25rem;
+  }
+  /* Inverted button: on green, a cream button. */
+  .gift-help .btn-whatsapp {
+    background: var(--on-green);
+    color: var(--green);
+  }
+  .gift-help .btn-whatsapp:hover {
+    background: #fff;
   }
 </style>

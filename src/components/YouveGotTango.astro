@@ -10,6 +10,7 @@ import { giftCards, waLink, YEARS_TO_START } from '../data/giftCards.js';
 import { localizePath } from '../i18n/index.js';
 import practicas from '../../public/assets/data/practicas.json';
 import beginners from '../../public/assets/data/regular-classes.json';
+import improvers from '../../public/assets/data/growth-sessions.json';
 
 interface Props {
   locale?: 'en' | 'de';
@@ -30,6 +31,7 @@ const today = new Date().toISOString().slice(0, 10);
 // Upcoming at build time; a small script hides any that pass before the next build.
 const nextPracticas = practicas.events.filter((e) => e.date >= today).slice(0, 4);
 const beginnersStart = beginners.events.find((e) => e.date >= today) ?? beginners.events[0];
+const improversStart = improvers.events.find((e) => e.date >= today) ?? improvers.events[0];
 
 const texts = {
   en: {
@@ -45,11 +47,15 @@ const texts = {
     time: (weeks: number, kind: string) =>
       `You have up to ${YEARS_TO_START} years to come for the first time. From your first ${kind === 'classes' ? 'class' : 'practica'}, you have ${weeks} weeks to use it. If we cancel a date, your time gets longer by that much.`,
     datesPractica: 'Next practicas',
-    datesClasses: 'Next beginners group',
-    beginnersLine: `Starts ${fmtDate(beginnersStart.date)}, ${beginnersStart.time}. Thursdays, one class a week.`,
+    datesClasses: 'Next classes',
+    courseLines: [
+      `Beginners: from ${fmtDate(beginnersStart.date)}, ${beginnersStart.time}`,
+      `Improvers: from ${fmtDate(improversStart.date)}, ${improversStart.time}`,
+    ],
+    courseNote: 'Thursdays, one class a week. New to tango? Start with the beginners.',
     practicaTime: (time: string) => time,
     allDates: 'All practica dates →',
-    allCourse: 'About the beginner course →',
+    allCourse: 'About the classes →',
     bring: 'Bring your voucher to your first visit.',
     start: '💬 Tell us you are coming',
     expectTitle: 'Good to know',
@@ -76,11 +82,15 @@ const texts = {
     time: (weeks: number, kind: string) =>
       `Du hast bis zu ${YEARS_TO_START} Jahre Zeit für deinen ersten Besuch. Ab deiner ersten ${kind === 'classes' ? 'Stunde' : 'Practica'} hast du ${weeks} Wochen Zeit. Fällt ein Termin bei uns aus, verlängert sich deine Zeit entsprechend.`,
     datesPractica: 'Nächste Practicas',
-    datesClasses: 'Nächste Anfänger:innen-Gruppe',
-    beginnersLine: `Start: ${fmtDate(beginnersStart.date)}, ${beginnersStart.time} Uhr. Donnerstags, eine Stunde pro Woche.`,
+    datesClasses: 'Nächste Kurse',
+    courseLines: [
+      `Anfänger:innen: ab ${fmtDate(beginnersStart.date)}, ${beginnersStart.time} Uhr`,
+      `Fortgeschrittene: ab ${fmtDate(improversStart.date)}, ${improversStart.time} Uhr`,
+    ],
+    courseNote: 'Donnerstags, eine Stunde pro Woche. Neu im Tango? Starte bei den Anfänger:innen.',
     practicaTime: (time: string) => `${time} Uhr`,
     allDates: 'Alle Practica-Termine →',
-    allCourse: 'Mehr zum Anfänger:innen-Kurs →',
+    allCourse: 'Mehr zu den Kursen →',
     bring: 'Bring deinen Gutschein zum ersten Besuch mit.',
     start: '💬 Sag uns, dass du kommst',
     expectTitle: 'Gut zu wissen',
@@ -148,9 +158,14 @@ const text = texts[locale];
               {g.kind === 'classes' ? (
                 <>
                   <h3>{text.datesClasses}</h3>
-                  <p>{text.beginnersLine}</p>
+                  <ul class="gc-dates">
+                    {text.courseLines.map((line) => (
+                      <li>{line}</li>
+                    ))}
+                  </ul>
+                  <p>{text.courseNote}</p>
                   <p>
-                    <a href={l('/pages/beginner-course')}>{text.allCourse}</a>
+                    <a href={l('/pages/classes')}>{text.allCourse}</a>
                   </p>
                 </>
               ) : (
