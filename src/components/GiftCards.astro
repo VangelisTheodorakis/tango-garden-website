@@ -403,6 +403,9 @@ const faqSchema = {
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
+    max-width: calc(100% - 2rem);
+    overflow: hidden;
+    text-overflow: ellipsis;
     background: var(--green);
     color: #fff;
     font-size: 0.75rem;
