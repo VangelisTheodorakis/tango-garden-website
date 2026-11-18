@@ -504,8 +504,11 @@ const faqSchema = {
     text-decoration: none;
     transition: background 0.2s ease, color 0.2s ease;
   }
-  .gift-card-more:hover {
-    background: var(--green);
+  /* Orange like the site's Register buttons, so it doesn't read as a second WhatsApp button. */
+  .gift-card-more:hover,
+  .gift-card-more:focus-visible {
+    background: #c9703e;
+    border-color: #c9703e;
     color: #fff;
   }
   .gift-note {
