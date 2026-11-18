@@ -28,6 +28,7 @@ export const navItems = [
       { href: '/pages/growth-sessions', label: 'Growth Sessions', hint: 'Improvers course' },
       { href: '/pages/garden-practica', label: 'Garden Practica', hint: 'Guided practica' },
       { href: '/pages/private-classes', label: 'Private Classes' },
+      { href: '/pages/gift-cards', label: 'Gift Cards', hint: 'Give someone tango' },
     ],
   },
   {
