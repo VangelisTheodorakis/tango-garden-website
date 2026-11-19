@@ -6,7 +6,10 @@
  * `hint` is a short plain description shown under a child label, so the
  * programme names ("Sprouting Sessions" etc.) say what they are.
  *
- * @typedef {{ href: string, label: string, children?: { href: string, label: string, hint?: string }[] }} NavItem
+ * `highlight` draws a top-level item as an outline pill (the seasonal gift
+ * cards link); set it to false, or remove the item, to tone it down.
+ *
+ * @typedef {{ href: string, label: string, highlight?: boolean, children?: { href: string, label: string, hint?: string }[] }} NavItem
  * @type {NavItem[]}
  */
 export const navItems = [
@@ -28,7 +31,6 @@ export const navItems = [
       { href: '/pages/growth-sessions', label: 'Growth Sessions', hint: 'Improvers course' },
       { href: '/pages/garden-practica', label: 'Garden Practica', hint: 'Guided practica' },
       { href: '/pages/private-classes', label: 'Private Classes' },
-      { href: '/pages/gift-cards', label: 'Gift Cards', hint: 'Give someone tango' },
     ],
   },
   {
@@ -41,6 +43,7 @@ export const navItems = [
     ],
   },
   { href: '/pages/contact', label: 'Connect with us' },
+  { href: '/pages/gift-cards', label: 'Gift Cards', highlight: true },
 ];
 
 export const social = {

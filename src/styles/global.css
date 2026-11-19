@@ -147,6 +147,21 @@ h1,h2,h3,h4 { line-height: 1.2; }
     align-items: center;
   }
   .nav-link:hover { color: #252525; text-decoration: underline; text-underline-offset: 4px; }
+  /* Highlighted item (gift cards): an outline pill at the end of the menu. */
+  .nav-link.nav-link--pill {
+    margin-left: 0.5rem;
+    padding: 0.45rem 1rem;
+    border: 1.5px solid var(--green);
+    border-radius: 999px;
+    color: var(--green);
+    font-weight: 600;
+  }
+  .nav-link.nav-link--pill:hover,
+  .nav-link.nav-link--pill[aria-current='page'] {
+    background: var(--green);
+    color: #fff;
+    text-decoration: none;
+  }
 }
 
 /* =====================
@@ -747,6 +762,16 @@ h1,h2,h3,h4 { line-height: 1.2; }
   color: var(--text);
 }
 .nav-drawer-links > li > a:hover { color: var(--green); }
+/* Highlighted item (gift cards) in the phone menu: the same outline pill. */
+.nav-drawer-links > li:has(> .nav-drawer-pill) { border-bottom: none; padding-top: 1rem; }
+.nav-drawer-links > li > a.nav-drawer-pill {
+  display: inline-block;
+  padding: 0.6rem 1.4rem;
+  border: 1.5px solid var(--green);
+  border-radius: 999px;
+  color: var(--green);
+}
+.nav-drawer-links > li > a.nav-drawer-pill:hover { background: var(--green); color: #fff; }
 .nav-drawer-row {
   display: flex;
   align-items: center;

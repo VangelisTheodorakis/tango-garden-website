@@ -21,7 +21,7 @@ const texts = {
   en: {
     title: 'Tango Gift Cards | Tango Garden',
     description:
-      'Gift someone a little tango: a 4-week class pass or Garden Practica passes in Cologne. No partner or experience needed.',
+      'Gift someone a little tango: a 4-class pass or Garden Practica passes in Cologne. No partner or experience needed.',
     h1: 'Gift someone a little tango.',
     lead: 'No partner or experience needed. All classes are taught in English.',
     leadLink: ['Our ', 'next classes', ' start in January.'],
@@ -30,32 +30,40 @@ const texts = {
     buy: '💬 Ask for this card',
     howTitle: 'How it works',
     how: [
-      ['Message us', 'Tap the button under the card you want. We reply on WhatsApp, usually within a few hours.'],
+      ['Message us', "Tap the button under the gift card you want. We'll reply on WhatsApp, usually within a few hours."],
       [
-        'Pick it up or get it posted',
-        `Pick it up and pay at a Thursday class, a practica or a time we agree. Cash, PayPal or bank transfer. Or we post it for ${euro(POSTAGE)} extra after you pay.`,
+        'Pick it up or have it posted',
+        `Pick it up and pay at a Thursday class, a practica or another time we arrange together. Pay by cash, PayPal or bank transfer. Or we can post it to you for ${euro(POSTAGE)} extra.`,
       ],
-      ['Write From / To and give it', 'The card is personal: it carries your name and theirs.'],
+      ['Give it to someone', "We write the recipient's name on the card. The gift can only be used by that person."],
     ],
     envelopeTitle: "What's in the envelope",
     envelope: [
-      ['The card', '"A little tango for you", with From / To and a QR code that explains the gift and how to start.'],
-      ['The voucher', 'The same voucher our students get, which they bring to their first visit.'],
+      [
+        'A little tango for you',
+        'A printed card introducing the gift, with a QR code that leads to a page explaining what they received, how it works and how to get started.',
+      ],
+      ['The pass', 'A physical pass they bring with them when they come to Tango Garden.'],
     ],
-    timeTitle: 'How the time works',
+    timeTitle: 'When the pass starts',
     time: [
-      ['No rush', `They have up to ${YEARS_TO_START} years to come for the first time. But let's not wait that long 😉`],
-      ['First visit = start', 'The time window starts on the day they first come.'],
-      ['Enjoy it', '2 practicas within 8 weeks, 4 practicas within 16 weeks, or 4 class weeks in a row.'],
+      ['No rush', [`They have up to ${YEARS_TO_START} years to use the gift for the first time.`]],
+      ['The first visit starts the pass', ['The validity period begins on the day they first come.']],
+      [
+        'Use it within the validity period',
+        ['2-Practica Pass: 2 practicas within 8 weeks', '4-Practica Pass: 4 practicas within 16 weeks', '4-Class Pass: 4 consecutive Thursday classes'],
+      ],
     ],
-    example:
-      'Example: first practica on 13 January 2027, so a 2-practica pass is good until 10 March 2027. If we cancel a date, the window gets longer by that much.',
+    example: [
+      'Example: if their first practica is on 13 January 2027, a 2-Practica Pass is valid until and including 10 March 2027.',
+      'If we cancel a practica, the validity period is extended accordingly.',
+    ],
     faqEyebrow: 'Questions',
     faqTitle: 'Before you gift',
     faq: [
       [
         'Which one should I pick?',
-        'The 4-week class pass works for everyone: complete beginners join the beginners group, dancers join the improvers. If they mainly want to practise, a practica pass.',
+        'The 4-class pass works for everyone: complete beginners join the beginners group, dancers join the improvers. If they mainly want to practise, a practica pass.',
       ],
       [
         'Do they need a partner or any experience?',
@@ -68,7 +76,7 @@ const texts = {
       ],
       [
         'How do I pay and get the card?',
-        `Message us on WhatsApp. Pick it up at a Thursday class, a practica or a time we agree, and pay in cash, by PayPal or by bank transfer. Or we post it for ${euro(POSTAGE)} extra once you've paid.`,
+        `Message us on WhatsApp. Pick it up at a Thursday class, a practica or another time we arrange together, and pay by cash, PayPal or bank transfer. Or we can post it to you for ${euro(POSTAGE)} extra.`,
       ],
       [
         'Is there a deadline to buy?',
@@ -80,16 +88,13 @@ const texts = {
       ],
       [
         'What if a practica or class is cancelled?',
-        'Their time window gets longer by the cancelled date, so they never lose a visit because of us.',
+        'The validity period is extended by the cancelled date, so they never lose a visit because of us.',
       ],
       [
         'What if they miss a class?',
         'In the beginners group, a missed class can be made up at a Garden Practica at no extra cost. Otherwise, just message us.',
       ],
-      [
-        'Can the card be passed on?',
-        'The card is personal: it carries the names of the giver and the person receiving it.',
-      ],
+      ['Can the card be passed on?', "No. We write the recipient's name on the card, and only that person can use it."],
       [
         'Where are you?',
         'Thürmchenswall 21, 50668 Cologne (Yoga Drop Studio), a 3-minute walk from Ebertplatz.',
@@ -104,7 +109,7 @@ const texts = {
   de: {
     title: 'Tango-Gutscheine verschenken | Tango Garden Köln',
     description:
-      'Verschenk ein bisschen Tango: einen 4-Wochen-Kurspass oder Practica-Pässe in Köln. Ohne Partner:in und ohne Vorkenntnisse, Unterricht auf Englisch.',
+      'Verschenk ein bisschen Tango: einen 4er-Kurspass oder Practica-Pässe in Köln. Ohne Partner:in und ohne Vorkenntnisse, Unterricht auf Englisch.',
     h1: 'Verschenk ein bisschen Tango.',
     lead: 'Ohne Partner:in und ohne Vorkenntnisse. Unterrichtet wird auf Englisch.',
     leadLink: ['Unsere ', 'nächsten Kurse', ' starten im Januar.'],
@@ -113,32 +118,40 @@ const texts = {
     buy: '💬 Diesen Gutschein anfragen',
     howTitle: "So funktioniert's",
     how: [
-      ['Schreib uns', 'Tipp auf den Button unter dem Gutschein. Wir antworten auf WhatsApp, meist innerhalb weniger Stunden.'],
+      ['Schreib uns', 'Tipp auf den Button unter dem Gutschein, den du möchtest. Wir antworten auf WhatsApp, meist innerhalb weniger Stunden.'],
       [
         'Abholen oder per Post',
-        `Hol ihn ab und bezahl bei einer Donnerstagsstunde, einer Practica oder zu einer abgesprochenen Zeit. Bar, per PayPal oder Überweisung. Oder wir schicken ihn nach Zahlung für ${euro(POSTAGE)} extra per Post.`,
+        `Hol ihn ab und bezahl bei einer Donnerstagsstunde, einer Practica oder zu einer anderen Zeit, die wir zusammen ausmachen. Bar, per PayPal oder Überweisung. Oder wir schicken ihn dir für ${euro(POSTAGE)} extra per Post.`,
       ],
-      ['Von / Für eintragen und verschenken', 'Der Gutschein ist persönlich: Er trägt deinen Namen und den der beschenkten Person.'],
+      ['Verschenken', 'Wir schreiben den Namen der beschenkten Person auf den Gutschein. Nur diese Person kann ihn einlösen.'],
     ],
     envelopeTitle: 'Was im Umschlag steckt',
     envelope: [
-      ['Die Karte', '„A little tango for you“, mit Von / Für und einem QR-Code, der das Geschenk und den Einstieg erklärt.'],
-      ['Der Gutschein', 'Derselbe Gutschein, den auch unsere Schüler:innen bekommen. Er kommt zum ersten Besuch mit.'],
+      [
+        'A little tango for you',
+        'Eine gedruckte Karte, die das Geschenk vorstellt, mit einem QR-Code zu einer Seite, die erklärt, was drin ist, wie es funktioniert und wie der Einstieg klappt.',
+      ],
+      ['Der Pass', 'Ein Pass zum Mitbringen, wenn die beschenkte Person zu Tango Garden kommt.'],
     ],
-    timeTitle: 'So läuft die Zeit',
+    timeTitle: 'Wann der Pass startet',
     time: [
-      ['Keine Eile', `Bis zu ${YEARS_TO_START} Jahre Zeit für den ersten Besuch. Aber lass uns nicht so lange warten 😉`],
-      ['Erster Besuch = Start', 'Die Zeit läuft ab dem Tag des ersten Besuchs.'],
-      ['Genießen', '2 Practicas in 8 Wochen, 4 Practicas in 16 Wochen oder 4 Kurswochen am Stück.'],
+      ['Keine Eile', [`Bis zu ${YEARS_TO_START} Jahre Zeit, das Geschenk zum ersten Mal einzulösen.`]],
+      ['Der erste Besuch startet den Pass', ['Die Gültigkeit beginnt am Tag des ersten Besuchs.']],
+      [
+        'Innerhalb der Gültigkeit nutzen',
+        ['2-Practica-Pass: 2 Practicas in 8 Wochen', '4-Practica-Pass: 4 Practicas in 16 Wochen', '4er-Kurspass: 4 aufeinanderfolgende Donnerstagsstunden'],
+      ],
     ],
-    example:
-      'Beispiel: erste Practica am 13. Januar 2027, dann gilt ein 2-Practica-Pass bis zum 10. März 2027. Fällt ein Termin bei uns aus, verlängert sich die Zeit um diesen Termin.',
+    example: [
+      'Beispiel: Ist die erste Practica am 13. Januar 2027, gilt ein 2-Practica-Pass bis einschließlich 10. März 2027.',
+      'Fällt eine Practica bei uns aus, verlängert sich die Gültigkeit entsprechend.',
+    ],
     faqEyebrow: 'Fragen',
     faqTitle: 'Bevor du verschenkst',
     faq: [
       [
         'Welchen Gutschein soll ich nehmen?',
-        'Der 4-Wochen-Kurspass passt für alle: Neueinsteiger:innen kommen in die Anfänger:innen-Gruppe, Tänzer:innen zu den Fortgeschrittenen. Wer vor allem üben möchte, freut sich über einen Practica-Pass.',
+        'Der 4er-Kurspass passt für alle: Neueinsteiger:innen kommen in die Anfänger:innen-Gruppe, Tänzer:innen zu den Fortgeschrittenen. Wer vor allem üben möchte, freut sich über einen Practica-Pass.',
       ],
       [
         'Braucht die Person eine:n Partner:in oder Erfahrung?',
@@ -151,7 +164,7 @@ const texts = {
       ],
       [
         'Wie bezahle ich und bekomme den Gutschein?',
-        `Schreib uns auf WhatsApp. Hol ihn bei einer Donnerstagsstunde, einer Practica oder zu einer abgesprochenen Zeit ab und bezahl bar, per PayPal oder Überweisung. Oder wir schicken ihn nach Zahlung für ${euro(POSTAGE)} extra per Post.`,
+        `Schreib uns auf WhatsApp. Hol ihn bei einer Donnerstagsstunde, einer Practica oder zu einer anderen Zeit, die wir zusammen ausmachen, ab und bezahl bar, per PayPal oder Überweisung. Oder wir schicken ihn dir für ${euro(POSTAGE)} extra per Post.`,
       ],
       [
         'Gibt es eine Frist zum Kaufen?',
@@ -163,16 +176,13 @@ const texts = {
       ],
       [
         'Was, wenn eine Practica oder Stunde ausfällt?',
-        'Dann verlängert sich die Zeit um den ausgefallenen Termin. Wegen uns geht kein Besuch verloren.',
+        'Dann verlängert sich die Gültigkeit um den ausgefallenen Termin. Wegen uns geht kein Besuch verloren.',
       ],
       [
         'Was, wenn eine Stunde verpasst wird?',
         'In der Anfänger:innen-Gruppe kann eine verpasste Stunde kostenlos bei einer Garden Practica nachgeholt werden. Sonst schreib uns einfach.',
       ],
-      [
-        'Kann der Gutschein weitergegeben werden?',
-        'Der Gutschein ist persönlich: Er trägt die Namen der schenkenden und der beschenkten Person.',
-      ],
+      ['Kann der Gutschein weitergegeben werden?', 'Nein. Wir schreiben den Namen der beschenkten Person auf den Gutschein, und nur diese Person kann ihn einlösen.'],
       [
         'Wo seid ihr?',
         'Thürmchenswall 21, 50668 Köln (Yoga Drop Studio), drei Minuten zu Fuß vom Ebertplatz.',
@@ -190,7 +200,7 @@ const text = texts[locale];
 // The English question is the GA key, so both languages report together.
 const enFaqQuestions = texts.en.faq.map(([q]) => q);
 
-// The class pass ("Most gifted") comes first.
+// The class pass ("Our favourite gift") comes first.
 const bySlug = (s: string) => giftCards.find((g) => g.slug === s)!;
 const displayOrder = ['class-pass', 'practica-2', 'practica-4'].map(bySlug);
 
@@ -208,7 +218,7 @@ const faqSchema = {
   <div class="gift-page">
 
   <section class="gift-hero">
-    <img class="gift-hero-logo" src="/assets/logo-icon.svg" alt="" width="64" height="64" />
+    <img class="gift-hero-logo" src="/assets/logo-light.webp" alt="" width="88" height="88" />
     <h1>{text.h1}</h1>
     <p>
       {text.lead}
@@ -232,7 +242,7 @@ const faqSchema = {
               <p class="gift-card-price">
                 {euro(g.price)} <span>· {euro(g.reduced)} {text.reduced}</span>
               </p>
-              <p class="gift-card-for">{t.forWhom}</p>
+              <p class="gift-card-tagline">{t.tagline}</p>
               <ul>
                 {t.includes.map((i) => (
                   <li>{i}</li>
@@ -254,7 +264,7 @@ const faqSchema = {
     <p class="gift-note">{text.reducedNote}</p>
   </section>
 
-  <section class="gift-steps">
+  <section class="gift-steps gift-steps--light">
     <h2>{text.howTitle}</h2>
     <ol>
       {
@@ -272,7 +282,7 @@ const faqSchema = {
     </p>
   </section>
 
-  <section class="gift-steps gift-steps--alt">
+  <section class="gift-steps">
     <h2>{text.envelopeTitle}</h2>
     <ul class="gift-envelope">
       {
@@ -286,19 +296,25 @@ const faqSchema = {
     </ul>
   </section>
 
-  <section class="gift-steps">
+  <section class="gift-steps gift-steps--light">
     <h2>{text.timeTitle}</h2>
     <ol>
       {
-        text.time.map(([h, p]) => (
+        text.time.map(([h, lines]) => (
           <li>
             <h3>{h}</h3>
-            <p>{p}</p>
+            {(lines as string[]).map((line) => (
+              <p>{line}</p>
+            ))}
           </li>
         ))
       }
     </ol>
-    <p class="gift-example">{text.example}</p>
+    <div class="gift-example">
+      {text.example.map((line) => (
+        <p>{line}</p>
+      ))}
+    </div>
   </section>
 
   <section class="contact-faq-section">
@@ -333,7 +349,7 @@ const faqSchema = {
 
 <style>
   /* The whole page sits on the brand green; the cards stay cream, like the
-     voucher in the envelope. */
+     pass in the envelope. */
   .gift-page {
     --on-green: #f3ede1;
     --on-green-soft: rgba(243, 237, 225, 0.9);
@@ -348,11 +364,8 @@ const faqSchema = {
   }
   .gift-hero-logo {
     margin: 0 auto 1.25rem;
-    background: var(--on-green);
-    border-radius: 50%;
-    padding: 6px;
-    width: 76px;
-    height: 76px;
+    width: 88px;
+    height: 88px;
   }
   .gift-hero h1 {
     font-size: clamp(2.1rem, 7vw, 3.6rem);
@@ -469,10 +482,6 @@ const faqSchema = {
     font-size: 0.95rem;
     font-weight: 500;
     color: var(--text-light);
-  }
-  .gift-card-for {
-    color: var(--text-mid);
-    margin-bottom: 0.75rem;
   }
   .gift-card ul {
     list-style: none;
@@ -653,5 +662,56 @@ const faqSchema = {
   .gift-location-btn:focus-visible {
     background: var(--on-green);
     color: var(--green);
+  }
+
+  /* Warm light sections ("How it works", "When the pass starts"): the steps
+     sit on white cards, numbers and headings in green. */
+  .gift-steps--light {
+    background: var(--cream);
+    color: var(--text);
+    border-top: 0;
+  }
+  .gift-steps--light h2,
+  .gift-steps--light h3 {
+    color: var(--green);
+  }
+  .gift-steps--light p {
+    color: var(--text-mid);
+  }
+  .gift-steps--light ol li {
+    background: #fff;
+    border: 1px solid rgba(78, 93, 34, 0.12);
+    border-radius: 14px;
+    padding: 1.5rem 1.25rem;
+  }
+  .gift-steps--light ol li p + p {
+    margin-top: 0.3rem;
+  }
+  .gift-steps--light ol li::before {
+    background: var(--green);
+    color: #fff;
+  }
+  .gift-steps--light .gift-example {
+    background: #fff;
+    color: var(--text-mid);
+    border: 1px solid rgba(78, 93, 34, 0.12);
+  }
+  .gift-example p + p {
+    margin-top: 0.4rem;
+  }
+  /* "Where is it?" on the light section: green outline. */
+  .gift-steps--light .gift-location-btn {
+    border-color: var(--green);
+    color: var(--green);
+  }
+  .gift-steps--light .gift-location-btn:hover,
+  .gift-steps--light .gift-location-btn:focus-visible {
+    background: var(--green);
+    color: #fff;
+  }
+  .gift-card-tagline {
+    font-weight: 600;
+    color: var(--green);
+    margin-bottom: 0.75rem;
   }
 </style>

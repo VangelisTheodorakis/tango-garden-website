@@ -46,7 +46,7 @@ const range = (days) => [{ startDate: `${days - 1}daysAgo`, endDate: 'today' }];
 
 /** Gift cards (/pages/gift-cards), in the order the page shows them. */
 export const GIFTS = [
-  { key: 'class-pass', label: '4-week class pass' },
+  { key: 'class-pass', label: '4-class pass' },
   { key: 'practica-2', label: '2-practica pass' },
   { key: 'practica-4', label: '4-practica pass' },
   { key: 'other', label: '"Not sure which" questions' },

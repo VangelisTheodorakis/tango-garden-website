@@ -80,7 +80,6 @@ export const navHintsDe = {
   '/pages/beginner-course': 'Anfängerkurs',
   '/pages/growth-sessions': 'Kurs für Fortgeschrittene',
   '/pages/garden-practica': 'Geführte Practica',
-  '/pages/gift-cards': 'Tango verschenken',
 };
 
 /** Child-link overrides where one href appears with two labels (parent vs. child). */

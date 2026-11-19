@@ -12,6 +12,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const items = navItems.map((item) => ({
   href: localizePath(item.href, locale),
   label: navLabel(locale, item.href, item.label),
+  highlight: item.highlight ?? false,
   children: item.children?.map((c) => ({
     href: localizePath(c.href, locale),
     label: navLabel(locale, c.href, c.label, true),
@@ -91,7 +92,7 @@ const otherUi = ui[other];
             <li>
               <a
                 href={item.href}
-                class="nav-link"
+                class:list={['nav-link', { 'nav-link--pill': item.highlight }]}
                 aria-current={isCurrent(item.href) ? 'page' : undefined}
               >
                 {item.label}
@@ -167,7 +168,11 @@ const otherUi = ui[other];
                 </ul>
               </Fragment>
             ) : (
-              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+              <a
+                href={item.href}
+                class:list={{ 'nav-drawer-pill': item.highlight }}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+              >
                 {item.label}
               </a>
             )}

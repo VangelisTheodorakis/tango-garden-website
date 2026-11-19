@@ -7,8 +7,8 @@
  * and 4-Class Pass prices (a unit test keeps them in step with products.js).
  *
  * Rules the pages promise: up to 3 years to come for the first time; the
- * first visit starts the clock; cancelled dates extend it. Cards carry
- * From / To, so they're personal.
+ * first visit starts the clock; cancelled dates extend it. The recipient's
+ * name is written on the card, so it's personal.
  */
 
 export const WHATSAPP = 'https://wa.me/491602368723';
@@ -30,33 +30,33 @@ export const giftCards = [
     reduced: 45,
     en: {
       title: 'Tango Classes',
-      subtitle: '4-Week Class Pass',
-      name: '4-week class pass',
-      tag: 'Most gifted',
+      subtitle: '4-Class Pass',
+      name: '4-class pass',
+      tag: 'Our favourite gift',
       more: '🌿 About the classes',
-      forWhom: 'For new dancers or improvers: four classes in a row, one a week, on Thursdays.',
+      tagline: 'Give someone a month of tango.',
       includes: [
-        '4 classes in a row, one a week, on Thursdays',
-        'Either the beginners class (19:15–20:30) or the improvers class (20:30–21:45)',
-        'No partner needed. Classes are in English.',
+        'Four Thursday classes in a row',
+        'Choose Beginners (19:15–20:30) or Improvers (20:30–21:45)',
+        'No partner needed · Classes are in English',
       ],
-      buyMessage: "Hi! I'd like the 4-week class pass gift card. Pickup or by post?",
-      startMessage: "Hi! I got the 4-week class pass as a gift and I'd like to start. When do the next classes begin?",
+      buyMessage: "Hi! I'd like the 4-class pass gift card. Pickup or by post?",
+      startMessage: "Hi! I got the 4-class pass as a gift and I'd like to start. When do the next classes begin?",
     },
     de: {
       title: 'Tango-Kurse',
-      subtitle: '4-Wochen-Kurspass',
-      name: '4-Wochen-Kurspass',
-      tag: 'Am häufigsten verschenkt',
+      subtitle: '4er-Kurspass',
+      name: '4er-Kurspass',
+      tag: 'Unser Lieblingsgeschenk',
       more: '🌿 Mehr zu den Kursen',
-      forWhom: 'Für Neueinsteiger:innen oder Fortgeschrittene: vier Stunden am Stück, eine pro Woche, donnerstags.',
+      tagline: 'Schenk einen Monat Tango.',
       includes: [
-        '4 Stunden am Stück, eine pro Woche, donnerstags',
-        'Entweder die Anfänger:innen-Stunde (19:15–20:30) oder die Stunde für Fortgeschrittene (20:30–21:45)',
-        'Ohne Partner:in. Unterricht auf Englisch.',
+        'Vier Donnerstagsstunden am Stück',
+        'Wahlweise Anfänger:innen (19:15–20:30) oder Fortgeschrittene (20:30–21:45)',
+        'Ohne Partner:in · Unterricht auf Englisch',
       ],
-      buyMessage: 'Hi! Ich hätte gern den 4-Wochen-Kurspass als Gutschein. Abholung oder per Post?',
-      startMessage: 'Hi! Ich habe den 4-Wochen-Kurspass geschenkt bekommen und möchte anfangen. Wann starten die nächsten Kurse?',
+      buyMessage: 'Hi! Ich hätte gern den 4er-Kurspass als Gutschein. Abholung oder per Post?',
+      startMessage: 'Hi! Ich habe den 4er-Kurspass geschenkt bekommen und möchte anfangen. Wann starten die nächsten Kurse?',
     },
   },
   {
@@ -72,10 +72,11 @@ export const giftCards = [
       subtitle: '2-Practica Pass',
       name: '2-practica pass',
       more: '🌳 About the practica',
-      forWhom: 'For someone who already dances: two guided practice evenings.',
+      tagline: 'Give someone two evenings to dance, practise and explore.',
       includes: [
-        '2 Garden Practicas, 2nd and 4th Wednesday of the month, 19:30–21:30',
-        'Guided practice evenings: dance, ask, try things out',
+        'For dancers with some tango experience',
+        '2 Garden Practicas · 2nd and 4th Wednesday of the month · 19:30–21:30',
+        'Guided practice with space to dance, ask questions and try things out',
         'Come alone or with a partner',
       ],
       buyMessage: "Hi! I'd like the 2-practica gift card. Pickup or by post?",
@@ -86,10 +87,11 @@ export const giftCards = [
       subtitle: '2-Practica-Pass',
       name: '2-Practica-Pass',
       more: '🌳 Mehr zur Practica',
-      forWhom: 'Für alle, die schon tanzen: zwei begleitete Übungsabende.',
+      tagline: 'Schenk zwei Abende zum Tanzen, Üben und Ausprobieren.',
       includes: [
-        '2 Garden Practicas, am 2. und 4. Mittwoch im Monat, 19:30–21:30',
-        'Begleitete Übungsabende: tanzen, fragen, ausprobieren',
+        'Für Tänzer:innen mit etwas Tango-Erfahrung',
+        '2 Garden Practicas · am 2. und 4. Mittwoch im Monat · 19:30–21:30',
+        'Begleitetes Üben mit Raum zum Tanzen, Fragen und Ausprobieren',
         'Komm allein oder zu zweit',
       ],
       buyMessage: 'Hi! Ich hätte gern den 2-Practica-Pass als Gutschein. Abholung oder per Post?',
@@ -109,10 +111,11 @@ export const giftCards = [
       subtitle: '4-Practica Pass',
       name: '4-practica pass',
       more: '🌳 About the practica',
-      forWhom: 'For someone who already dances: four practice evenings over a few months.',
+      tagline: 'Give someone four evenings to dance, practise and explore.',
       includes: [
-        '4 Garden Practicas, 2nd and 4th Wednesday of the month, 19:30–21:30',
-        'Guided practice evenings: dance, ask, try things out',
+        'For dancers with some tango experience',
+        '4 Garden Practicas · 2nd and 4th Wednesday of the month · 19:30–21:30',
+        'Guided practice with space to dance, ask questions and try things out',
         'Come alone or with a partner',
       ],
       buyMessage: "Hi! I'd like the 4-practica gift card. Pickup or by post?",
@@ -123,10 +126,11 @@ export const giftCards = [
       subtitle: '4-Practica-Pass',
       name: '4-Practica-Pass',
       more: '🌳 Mehr zur Practica',
-      forWhom: 'Für alle, die schon tanzen: vier Übungsabende über ein paar Monate.',
+      tagline: 'Schenk vier Abende zum Tanzen, Üben und Ausprobieren.',
       includes: [
-        '4 Garden Practicas, am 2. und 4. Mittwoch im Monat, 19:30–21:30',
-        'Begleitete Übungsabende: tanzen, fragen, ausprobieren',
+        'Für Tänzer:innen mit etwas Tango-Erfahrung',
+        '4 Garden Practicas · am 2. und 4. Mittwoch im Monat · 19:30–21:30',
+        'Begleitetes Üben mit Raum zum Tanzen, Fragen und Ausprobieren',
         'Komm allein oder zu zweit',
       ],
       buyMessage: 'Hi! Ich hätte gern den 4-Practica-Pass als Gutschein. Abholung oder per Post?',

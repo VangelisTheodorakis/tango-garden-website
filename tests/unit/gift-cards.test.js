@@ -37,7 +37,7 @@ describe('gift cards', () => {
 
   it.each(giftCards)('$slug has every word in both languages', (g) => {
     for (const lang of ['en', 'de']) {
-      for (const key of ['title', 'subtitle', 'name', 'forWhom', 'buyMessage', 'startMessage']) {
+      for (const key of ['title', 'subtitle', 'name', 'tagline', 'buyMessage', 'startMessage']) {
         expect(g[lang][key], `${lang}.${key}`).toBeTruthy();
       }
       expect(g[lang].includes.length).toBeGreaterThan(0);

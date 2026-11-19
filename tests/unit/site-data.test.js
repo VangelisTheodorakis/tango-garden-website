@@ -8,9 +8,6 @@ import { classPagesDe, getClassPage } from '../../src/data/classPages.de.js';
 const feed = (name) =>
   JSON.parse(readFileSync(new URL(`../../public/assets/data/${name}.json`, import.meta.url), 'utf8'));
 
-// Gift cards sit in the Classes menu too, but aren't a class page.
-const classChildren = () => navItems.find((i) => i.label === 'Classes').children.filter((c) => c.href !== '/pages/gift-cards');
-
 const FEEDS = ['enter-the-garden', 'regular-classes', 'growth-sessions', 'practicas'];
 
 describe('products data', () => {
@@ -101,8 +98,9 @@ describe('navigation data', () => {
   });
 
   it('points the Classes menu at the consolidated class pages', () => {
+    const classes = navItems.find((i) => i.label === 'Classes');
     const slugs = classPages.map((c) => c.slug);
-    for (const child of classChildren()) {
+    for (const child of classes.children) {
       expect(child.href, child.href).toMatch(/^\/pages\//);
       expect(slugs, child.href).toContain(child.href.replace('/pages/', ''));
     }
@@ -160,7 +158,8 @@ describe('classPages data', () => {
 
   it('points every class page nav/pathway link at a page that exists', () => {
     const slugs = new Set(classPages.map((c) => c.slug));
-    for (const child of classChildren()) {
+    const classes = navItems.find((i) => i.label === 'Classes');
+    for (const child of classes.children) {
       expect(slugs.has(child.href.replace('/pages/', '')), child.href).toBe(true);
     }
   });
