@@ -194,7 +194,7 @@ export const classPages = [
       },
       {
         q: 'Is the class taught in English?',
-        a: 'Yes. All teaching is in English. Under request, we can also offer German, Russian and Greek.',
+        a: 'Yes. All teaching is in English. Individual feedback is also available in German, Greek or Russian on request.',
       },
       {
         q: 'What if I miss a class?',
@@ -316,7 +316,7 @@ export const classPages = [
       },
       {
         q: 'Is the class taught in English?',
-        a: 'Yes. All teaching is in English. Under request, we can also offer German, Russian and Greek.',
+        a: 'Yes. All teaching is in English. Individual feedback is also available in German, Greek or Russian on request.',
       },
       {
         q: 'Where exactly are you located in Cologne?',

@@ -246,16 +246,16 @@ h1,h2,h3,h4 { line-height: 1.2; }
   align-items: center;
   gap: 0.5rem;
   padding: 14px 32px;
-  background: #C9703E;
+  background: #a85a2c;
   color: #fff;
   font-weight: 700;
   font-size: 1rem;
   text-decoration: none;
   border-radius: 999px;
-  box-shadow: 0 6px 16px rgba(201, 112, 62, 0.35);
+  box-shadow: 0 6px 16px rgba(168, 90, 44, 0.35);
   transition: background 0.3s, transform 0.2s;
 }
-.btn-register:hover { background: #b25f31; transform: translateY(-2px); }
+.btn-register:hover { background: #8f4b24; transform: translateY(-2px); }
 
 .btn-whatsapp {
   display: inline-flex;
