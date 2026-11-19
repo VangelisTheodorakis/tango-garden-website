@@ -47,9 +47,13 @@ const texts = {
     choose: 'Which gift did you get?',
     chooseHint: 'Tap the one that matches your pass.',
     included: "What's included",
-    timeTitle: 'Your time',
-    time: (weeks: number, kind: string) =>
-      `You have up to ${YEARS_TO_START} years to come for the first time. From your first ${kind === 'classes' ? 'class' : 'practica'}, you have ${weeks} weeks to use it. If we cancel a date, your time gets longer by that much.`,
+    timeTitle: 'When your pass starts',
+    time: (weeks: number, kind: string, visits: number) =>
+      `You have up to ${YEARS_TO_START} years to use your gift for the first time. Your first visit starts the pass: ${
+        kind === 'classes'
+          ? `your ${visits} classes then run on ${visits} Thursdays in a row`
+          : `from then on you have ${weeks} weeks for your ${visits} practicas`
+      }. If we cancel a date, the validity period is extended accordingly.`,
     datesPractica: 'Next practicas',
     datesClasses: 'Next classes',
     courseLines: [
@@ -82,9 +86,13 @@ const texts = {
     choose: 'Welchen Gutschein hast du bekommen?',
     chooseHint: 'Tipp auf den, der zu deinem Pass passt.',
     included: 'Das ist drin',
-    timeTitle: 'Deine Zeit',
-    time: (weeks: number, kind: string) =>
-      `Du hast bis zu ${YEARS_TO_START} Jahre Zeit für deinen ersten Besuch. Ab deiner ersten ${kind === 'classes' ? 'Stunde' : 'Practica'} hast du ${weeks} Wochen Zeit. Fällt ein Termin bei uns aus, verlängert sich deine Zeit entsprechend.`,
+    timeTitle: 'Wann dein Pass startet',
+    time: (weeks: number, kind: string, visits: number) =>
+      `Du hast bis zu ${YEARS_TO_START} Jahre Zeit, dein Geschenk zum ersten Mal einzulösen. Dein erster Besuch startet den Pass: ${
+        kind === 'classes'
+          ? `deine ${visits} Stunden finden dann an ${visits} Donnerstagen hintereinander statt`
+          : `ab dann hast du ${weeks} Wochen Zeit für deine ${visits} Practicas`
+      }. Fällt ein Termin bei uns aus, verlängert sich die Gültigkeit entsprechend.`,
     datesPractica: 'Nächste Practicas',
     datesClasses: 'Nächste Kurse',
     courseLines: [
@@ -157,7 +165,7 @@ const text = texts[locale];
               </ul>
 
               <h3>{text.timeTitle}</h3>
-              <p>{text.time(g.weeks, g.kind)}</p>
+              <p>{text.time(g.weeks, g.kind, g.visits)}</p>
 
               {g.kind === 'classes' ? (
                 <>
