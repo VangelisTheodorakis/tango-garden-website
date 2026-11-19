@@ -29,8 +29,9 @@ const text = {
       "Every dancer starts somewhere different. If you're not sure where you fit, we're happy to guide you personally.",
     seeAll: 'See all details',
     whatsapp: 'Chat on WhatsApp',
-    privatePrompt: 'Prefer one-to-one?',
-    privateLink: 'Private classes with Vangelis or Kristina →',
+    privateTitle: 'One-to-one with Vangelis or Kristina',
+    privateBody: 'A class built around your goals and pace, on your own or as a couple. At your place, ours or a studio.',
+    privateCta: '👥 See private classes',
     whatsappHref:
       "https://wa.me/491602368723?text=Hi!%20I'm%20not%20sure%20which%20option%20is%20right%20for%20me...",
     cards: [
@@ -85,8 +86,9 @@ const text = {
       'Alle fangen woanders an. Wenn du nicht sicher bist, was zu dir passt, helfen wir dir gerne persönlich weiter.',
     seeAll: 'Alle Details ansehen',
     whatsapp: 'Auf WhatsApp schreiben',
-    privatePrompt: 'Lieber ganz persönlich?',
-    privateLink: 'Privatunterricht mit Vangelis oder Kristina →',
+    privateTitle: 'Privatunterricht mit Vangelis oder Kristina',
+    privateBody: 'Eine Stunde nach deinen Zielen und in deinem Tempo, allein oder als Paar. Bei dir, bei uns oder im Studio.',
+    privateCta: '👥 Zum Privatunterricht',
     whatsappHref:
       'https://wa.me/491602368723?text=Hi!%20Ich%20bin%20mir%20nicht%20sicher%2C%20welches%20Angebot%20zu%20mir%20passt...',
     cards: [
@@ -265,9 +267,15 @@ const cards = shape.map((c, i) => {
           <span style="margin-right: 8px;">💬</span> {text.whatsapp}
         </a>
       </div>
-      <p class="pathways-private">
-        {text.privatePrompt} <a href={l('/pages/private-classes')}>{text.privateLink}</a>
-      </p>
+    </div>
+
+    {/* Private classes: the gift ribbon's light twin. */}
+    <div class="pathways-gift pathways-gift--light">
+      <div>
+        <h3 class="pathways-gift-title">{text.privateTitle}</h3>
+        <p class="pathways-gift-body">{text.privateBody}</p>
+      </div>
+      <a class="pathways-gift-btn" href={l('/pages/private-classes')}>{text.privateCta}</a>
     </div>
   </div>
 </section>
@@ -508,18 +516,6 @@ const cards = shape.map((c, i) => {
     color: #666;
     margin: 0 0 15px;
   }
-  .pathways-private {
-    margin: 28px 0 0;
-    font-size: 15px;
-    line-height: 1.6;
-    color: #666;
-  }
-  .pathways-private a {
-    color: var(--green);
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
   .pathways-why {
     max-width: 620px;
     margin: 0 auto 14px;
@@ -616,6 +612,27 @@ const cards = shape.map((c, i) => {
       justify-content: space-between;
       gap: 32px;
     }
+  }
+  /* Light version: cream with green text and a green outline button. */
+  .pathways-gift--light {
+    background: #f3ede1;
+  }
+  .pathways-gift--light .pathways-gift-title {
+    color: #4e5d22;
+  }
+  .pathways-gift--light .pathways-gift-body {
+    color: #444;
+  }
+  .pathways-gift--light .pathways-gift-btn {
+    background: transparent;
+    border-color: #4e5d22;
+    color: #4e5d22;
+  }
+  .pathways-gift--light .pathways-gift-btn:hover,
+  .pathways-gift--light .pathways-gift-btn:focus-visible {
+    background: #4e5d22;
+    border-color: #4e5d22;
+    color: #fff;
   }
 </style>
 
