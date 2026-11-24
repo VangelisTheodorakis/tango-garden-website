@@ -57,8 +57,9 @@ describe('pages', () => {
     // + 12 products (all hidden, kept for direct-URL + price/variant data)
     // + 404
     // + the private Gardeners' Area dashboard (English only)
+    // + the personal advent card for-my-jini (English only)
     // + a German mirror under /de for every page in src/i18n/index.js translatedPaths
-    expect(pages).toHaveLength(34 + translatedPaths.length);
+    expect(pages).toHaveLength(35 + translatedPaths.length);
   });
 
   it('gives every page a non-empty title', () => {

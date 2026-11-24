@@ -15,6 +15,8 @@ export const noindexRoutes = [
   '/pages/refund-and-cancellation-policy/',
   // Gift card QR landing page: for card holders, not for search.
   '/pages/you-ve-got-tango/',
+  // Personal advent card for one student: not for search.
+  '/pages/for-my-jini/',
   // Private team dashboard, behind Cloudflare Access.
   '/gardeners-area/',
 ];

@@ -1,0 +1,246 @@
+---
+/**
+ * /pages/for-my-jini: a one-off advent-calendar card (day 2) from
+ * Duc to Jini, both regular students. Styled like the you-ve-got-tango card;
+ * tap the card to flip it and read the message. English only, noindex.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="For my Jini | Tango Garden"
+  description="A little advent gift."
+  canonical="https://tangogarden.de/pages/for-my-jini"
+  noindex
+  analytics={false}
+  schema="none"
+>
+  <section class="sj-paper">
+    <h1 class="visually-hidden">For my Jini</h1>
+    <button class="sj-card" type="button" aria-pressed="false" aria-label="Open the card">
+      <span class="sj-inner">
+        <span class="sj-face sj-front">
+          <img class="sj-logo" src="/assets/logo-icon.svg" alt="" width="80" height="80" />
+          <span class="sj-day">Day 2</span>
+          <span class="sj-title" aria-hidden="true">For my Jini</span>
+          <span class="sj-hint">Tap to open</span>
+        </span>
+        <span class="sj-face sj-back" aria-hidden="true">
+          <span class="sj-p">Dear Jini,</span>
+          <span class="sj-p sj-body">
+            Today I give you the Gift of the Embrace, which is simply what you give me every day.
+          </span>
+          <span class="sj-p sj-body">
+            I don't say it enough: with you I feel loved on my best days and on my worst. You are
+            the earth that grounds me and the sky I look up to. You make me want to be better,
+            kinder and braver, a man worthy of standing beside you.
+          </span>
+          <span class="sj-p sj-ask">Will you dance with me?</span>
+          <span class="sj-p sj-yours">Yours,</span>
+          <span class="sj-p sj-sign">Duc</span>
+          <span class="sj-foot">Wed 2 Dec · 19:30 · Tango Garden</span>
+        </span>
+      </span>
+    </button>
+  </section>
+</BaseLayout>
+
+<script>
+  const card = document.querySelector<HTMLButtonElement>('.sj-card');
+  card?.addEventListener('click', () => {
+    const open = card.getAttribute('aria-pressed') !== 'true';
+    card.setAttribute('aria-pressed', String(open));
+    card.setAttribute('aria-label', open ? 'Close the card' : 'Open the card');
+    card.querySelector('.sj-front')?.setAttribute('aria-hidden', String(open));
+    card.querySelector('.sj-back')?.setAttribute('aria-hidden', String(!open));
+  });
+</script>
+
+<style>
+  /* Caveat (OFL), self-hosted like Inter; loads only on this page. */
+  @font-face {
+    font-family: 'Caveat';
+    src: url('/fonts/caveat-latin-400.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Caveat';
+    src: url('/fonts/caveat-latin-700.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+  }
+  .sj-paper {
+    --paper: #ebe4b0;
+    --olive: #4e5d22;
+    --olive-light: #8a9a2a;
+    background: var(--paper);
+    padding: 2.5rem 1rem 3rem;
+  }
+  /* The printed card is 8.5 x 5.5 cm. Phones get it upright (55:85) so the
+     message stays readable; wider screens get it landscape (85:55). Type is in
+     cqi (card width), so the text scales with the card and always fits. */
+  .sj-card {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-family: 'Caveat', cursive;
+    color: var(--olive);
+    cursor: pointer;
+    perspective: 1400px;
+    container-type: inline-size;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sj-card:focus-visible {
+    outline: 3px solid var(--olive);
+    outline-offset: 6px;
+    border-radius: 14px;
+  }
+  /* Both faces share one grid cell; min-height: 0 keeps the ratio strict. */
+  .sj-inner {
+    display: grid;
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+    aspect-ratio: 55 / 85;
+    min-height: 0;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.3, 0.7, 0.2, 1);
+  }
+  .sj-card[aria-pressed='true'] .sj-inner {
+    transform: rotateY(180deg);
+  }
+  .sj-face {
+    grid-area: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    background: #fdfcf7;
+    border: 2px solid #b9b293;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(78, 93, 34, 0.18);
+    padding: 7cqi 12cqi;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .sj-front {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .sj-logo {
+    width: 22cqi;
+    height: 22cqi;
+    margin-bottom: 6cqi;
+  }
+  .sj-day {
+    font-size: 4.6cqi;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--olive-light);
+  }
+  .sj-title {
+    font-size: 13cqi;
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 2cqi 0 7cqi;
+  }
+  .sj-hint {
+    padding: 0.5em 1.3em;
+    border: 1.5px solid var(--olive);
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 5.6cqi;
+  }
+  .sj-back {
+    transform: rotateY(180deg);
+    justify-content: center;
+    text-align: left;
+    color: #3c4520;
+    font-size: 5.6cqi;
+    line-height: 1.25;
+  }
+  .sj-p {
+    display: block;
+    margin-bottom: 0.5em;
+  }
+  .sj-ask {
+    font-weight: 700;
+    color: var(--olive);
+    font-size: 1.2em;
+    margin-top: 0.3em;
+  }
+  /* The two main paragraphs stay in the site font for easy reading;
+     greeting, invitation and signature are handwritten. */
+  .sj-body {
+    font-family: Inter, sans-serif;
+    font-size: 4.9cqi;
+    line-height: 1.4;
+    margin-bottom: 0.7em;
+  }
+  .sj-yours {
+    margin-bottom: 0;
+  }
+  .sj-sign {
+    font-weight: 700;
+    font-size: 1.4em;
+    color: var(--olive);
+    margin-bottom: 0;
+  }
+  .sj-foot {
+    display: block;
+    margin-top: 0.9em;
+    padding-top: 0.8em;
+    border-top: 1px solid #d8d2b4;
+    font-size: 0.85em;
+    text-align: center;
+    color: #6b6f55;
+  }
+
+  @media (min-width: 640px) {
+    .sj-paper {
+      padding: 4rem 2rem;
+    }
+    .sj-card {
+      max-width: 680px;
+    }
+    .sj-inner {
+      aspect-ratio: 85 / 55;
+    }
+    .sj-face {
+      padding: 4cqi 10cqi;
+    }
+    .sj-logo {
+      width: 12cqi;
+      height: 12cqi;
+      margin-bottom: 3cqi;
+    }
+    .sj-day {
+      font-size: 2.5cqi;
+    }
+    .sj-title {
+      font-size: 7.5cqi;
+      margin: 1cqi 0 3.5cqi;
+    }
+    .sj-hint {
+      font-size: 3cqi;
+    }
+    .sj-back {
+      font-size: 3cqi;
+    }
+    .sj-body {
+      font-size: 2.45cqi;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sj-inner {
+      transition: none;
+    }
+  }
+</style>
