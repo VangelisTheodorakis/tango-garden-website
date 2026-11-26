@@ -8,6 +8,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { giftCards, waLink, POSTAGE, YEARS_TO_START } from '../data/giftCards.js';
 import { formatPrice, localizePath } from '../i18n/index.js';
 import { regularClasses } from '../data/courses.js';
+import { festive } from '../data/site.js';
 import '../styles/contact.css';
 
 interface Props {
@@ -22,7 +23,7 @@ const texts = {
     title: 'Tango Gift Cards | Tango Garden',
     description:
       'Gift someone a little tango: a 4-class pass or Garden Practica passes in Cologne. No partner or experience needed.',
-    h1: 'Gift someone a little tango.',
+    h1: 'Gift someone a little tango',
     lead: 'No partner or experience needed. All classes are taught in English.',
     leadLink: ['Our ', 'next classes', ' start in January.'],
     reduced: 'reduced*',
@@ -38,6 +39,7 @@ const texts = {
       ['Give it to someone', "We write the recipient's name on the card. The gift can only be used by that person."],
     ],
     envelopeTitle: "What's in the envelope",
+    envelopeAlt: 'An envelope holding the "A little tango for you" card and a Garden Practica pass',
     envelope: [
       [
         'A little tango for you',
@@ -110,7 +112,7 @@ const texts = {
     title: 'Tango-Gutscheine verschenken | Tango Garden Köln',
     description:
       'Verschenk ein bisschen Tango: einen 4er-Kurspass oder Practica-Pässe in Köln. Ohne Partner:in und ohne Vorkenntnisse, Unterricht auf Englisch.',
-    h1: 'Verschenk ein bisschen Tango.',
+    h1: 'Verschenk ein bisschen Tango',
     lead: 'Ohne Partner:in und ohne Vorkenntnisse. Unterrichtet wird auf Englisch.',
     leadLink: ['Unsere ', 'nächsten Kurse', ' starten im Januar.'],
     reduced: 'ermäßigt*',
@@ -126,6 +128,7 @@ const texts = {
       ['Verschenken', 'Wir schreiben den Namen der beschenkten Person auf den Gutschein. Nur diese Person kann ihn einlösen.'],
     ],
     envelopeTitle: 'Was im Umschlag steckt',
+    envelopeAlt: 'Ein Umschlag mit der Karte „A little tango for you“ und einem Garden-Practica-Pass',
     envelope: [
       [
         'A little tango for you',
@@ -215,10 +218,17 @@ const faqSchema = {
 <BaseLayout title={text.title} description={text.description} canonical={canonical}>
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 
-  <div class="gift-page">
+  <div class:list={['gift-page', { 'is-festive': festive }]}>
 
   <section class="gift-hero">
-    <img class="gift-hero-logo" src="/assets/logo-light.webp" alt="" width="88" height="88" />
+    <div class="gift-hero-mark">
+      <img class="gift-hero-logo" src="/assets/logo-light.webp" alt="" width="120" height="120" />
+      {festive && <Fragment>
+        <span class="sparkle" style="--s:22px;left:-34px;top:2px" aria-hidden="true"></span>
+        <span class="sparkle" style="--s:14px;left:-58px;top:34px" aria-hidden="true"></span>
+        <span class="sparkle" style="--s:18px;right:-44px;top:58px" aria-hidden="true"></span>
+      </Fragment>}
+    </div>
     <h1>{text.h1}</h1>
     <p>
       {text.lead}
@@ -265,6 +275,11 @@ const faqSchema = {
   </section>
 
   <section class="gift-steps gift-steps--light">
+    {festive && <Fragment>
+      <span class="sparkle sparkle--sand" style="--s:20px;right:12%;top:3.2rem" aria-hidden="true"></span>
+      <span class="sparkle sparkle--sand" style="--s:12px;right:calc(12% + 26px);top:4.6rem" aria-hidden="true"></span>
+      <span class="sparkle sparkle--sand" style="--s:16px;left:9%;bottom:3rem" aria-hidden="true"></span>
+    </Fragment>}
     <h2>{text.howTitle}</h2>
     <ol>
       {
@@ -282,21 +297,32 @@ const faqSchema = {
     </p>
   </section>
 
-  <section class="gift-steps">
-    <h2>{text.envelopeTitle}</h2>
-    <ul class="gift-envelope">
-      {
-        text.envelope.map(([h, p]) => (
-          <li>
-            <h3>{h}</h3>
-            <p>{p}</p>
-          </li>
-        ))
-      }
-    </ul>
+  <section class="gift-steps gift-envelope-section">
+    <h2 class="gift-envelope-title">
+      {festive && <span class="sparkle" style="--s:18px;left:-2.2rem;top:-0.4rem" aria-hidden="true"></span>}
+      {text.envelopeTitle}
+      {festive && <span class="sparkle" style="--s:22px;right:-2.4rem;top:0.9rem" aria-hidden="true"></span>}
+    </h2>
+    <div class="gift-envelope-wrap">
+      <ul class="gift-envelope">
+        {
+          text.envelope.map(([h, p]) => (
+            <li>
+              <h3>{h}</h3>
+              <p>{p}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <img class="gift-envelope-img" src="/assets/gift-envelope.webp" alt={text.envelopeAlt} width="720" height="827" loading="lazy" />
+    </div>
   </section>
 
   <section class="gift-steps gift-steps--light">
+    {festive && <Fragment>
+      <span class="sparkle sparkle--sand" style="--s:16px;left:10%;top:3.4rem" aria-hidden="true"></span>
+      <span class="sparkle sparkle--sand" style="--s:20px;right:9%;bottom:3.5rem" aria-hidden="true"></span>
+    </Fragment>}
     <h2>{text.timeTitle}</h2>
     <ol>
       {
@@ -362,10 +388,28 @@ const faqSchema = {
     padding: 4.5rem 1.5rem 3rem;
     text-align: center;
   }
-  .gift-hero-logo {
+  .gift-hero-mark {
+    position: relative;
+    width: 120px;
     margin: 0 auto 1.25rem;
-    width: 88px;
-    height: 88px;
+  }
+  .gift-hero-logo {
+    width: 120px;
+    height: 120px;
+  }
+  /* Christmas sparkles (site.js `festive`): a four-point star in gold, or
+     sand on the light sections. Position and size come from inline styles. */
+  .sparkle {
+    position: absolute;
+    width: var(--s, 16px);
+    height: var(--s, 16px);
+    background: #f2cf6b;
+    -webkit-mask: url('/assets/sparkle.svg') center / contain no-repeat;
+    mask: url('/assets/sparkle.svg') center / contain no-repeat;
+    pointer-events: none;
+  }
+  .sparkle--sand {
+    background: #dcc48e;
   }
   .gift-hero h1 {
     font-size: clamp(2.1rem, 7vw, 3.6rem);
@@ -427,9 +471,9 @@ const faqSchema = {
   }
   .gift-card {
     position: relative;
-    background: #fdfcf7;
+    background: #fbf3e4;
     color: var(--text);
-    border: 1.5px solid #b9b293;
+    border: 1.5px solid #cdbf98;
     border-radius: 12px;
     padding: 2.25rem 1.5rem 1.75rem;
     display: flex;
@@ -536,6 +580,8 @@ const faqSchema = {
   }
 
   .gift-steps {
+    position: relative;
+    overflow: hidden;
     padding: 4rem 1.25rem;
     border-top: 1px solid rgba(243, 237, 225, 0.15);
   }
@@ -564,9 +610,46 @@ const faqSchema = {
     .gift-steps ol {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
-    .gift-envelope {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      max-width: 760px;
+  }
+
+  /* What's in the envelope: the two items on the left, the envelope on the right. */
+  .gift-envelope-title {
+    position: relative;
+    width: fit-content;
+    max-width: calc(100% - 5.5rem); /* room for the sparkles on phones */
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .gift-envelope-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+  .gift-envelope {
+    gap: 2rem;
+  }
+  .gift-envelope-section .gift-envelope li {
+    text-align: left;
+  }
+  .gift-envelope-section .gift-envelope h3 {
+    font-size: clamp(1.5rem, 3.5vw, 1.9rem);
+    margin-bottom: 0.5rem;
+  }
+  .gift-envelope-section .gift-envelope p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+  .gift-envelope-img {
+    width: min(100%, 480px);
+    height: auto;
+    margin: 0 auto;
+  }
+  @media (min-width: 760px) {
+    .gift-envelope-wrap {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 3rem;
     }
   }
   .gift-steps li {
@@ -617,8 +700,21 @@ const faqSchema = {
   .gift-page .contact-faq-eyebrow {
     font-size: 0.75rem;
   }
-  .gift-page .faq-item {
-    color: var(--text);
+  .gift-page .contact-faq-inner h2 {
+    margin-bottom: 2.5rem;
+  }
+  /* No white block: the questions sit on the green, divided by thin cream lines. */
+  .gift-page .faq-item,
+  .gift-page .faq-item:first-of-type {
+    background: transparent;
+    border-color: rgba(243, 237, 225, 0.35);
+  }
+  .gift-page .faq-question,
+  .gift-page .faq-question::after {
+    color: var(--on-green);
+  }
+  .gift-page .faq-answer {
+    color: var(--on-green-soft);
   }
 
   .gift-help {
@@ -678,18 +774,51 @@ const faqSchema = {
   .gift-steps--light p {
     color: var(--text-mid);
   }
+  .gift-steps--light {
+    padding: 4.5rem 1.25rem;
+  }
+  .gift-steps--light h2 {
+    font-size: clamp(2rem, 5vw, 2.6rem);
+    margin-bottom: 2.75rem;
+  }
+  .gift-steps--light ol {
+    gap: 2.25rem;
+  }
   .gift-steps--light ol li {
-    background: #fff;
-    border: 1px solid rgba(78, 93, 34, 0.12);
-    border-radius: 14px;
-    padding: 1.5rem 1.25rem;
+    position: relative;
+    padding: 0 0.5rem;
+  }
+  .gift-steps--light ol li p {
+    max-width: 30ch;
+    margin-left: auto;
+    margin-right: auto;
   }
   .gift-steps--light ol li p + p {
     margin-top: 0.3rem;
   }
+  .gift-steps--light h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.6rem;
+  }
   .gift-steps--light ol li::before {
+    width: 3.2rem;
+    height: 3.2rem;
+    margin-bottom: 1.25rem;
+    font-size: 1.35rem;
     background: var(--green);
     color: #fff;
+  }
+  /* Side by side, a thin green line joins the circles. */
+  @media (min-width: 760px) {
+    .gift-steps--light ol li:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 1.6rem;
+      left: calc(50% + 2.2rem);
+      width: calc(100% + 2.25rem - 4.4rem);
+      height: 1.5px;
+      background: var(--green);
+    }
   }
   .gift-steps--light .gift-example {
     background: #fff;

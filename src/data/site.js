@@ -18,3 +18,10 @@ export const showPurchaseControls = false;
  * GA4 off — BaseLayout only loads gtag.js when this is set.
  */
 export const gaMeasurementId = 'G-35BD84HHPR';
+
+/**
+ * Christmas sparkles: the gold stars around the Gift Cards menu pill (on
+ * hover) and on the gift cards page. Set to false after the season; the pages
+ * look complete without them.
+ */
+export const festive = true;

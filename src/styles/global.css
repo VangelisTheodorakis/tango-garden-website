@@ -162,6 +162,31 @@ h1,h2,h3,h4 { line-height: 1.2; }
     color: #fff;
     text-decoration: none;
   }
+  /* The pill is shorter than the other links: centre it on their line. */
+  .nav-links > li:has(> .nav-link--pill) {
+    display: flex;
+    align-items: center;
+  }
+  /* Christmas (site.js `festive`): three gold sparkles appear around the
+     pill on hover. */
+  .nav-link--pill.is-festive { position: relative; }
+  .nav-link--pill.is-festive::after {
+    content: '';
+    position: absolute;
+    inset: -11px -12px;
+    background: #d9a514;
+    -webkit-mask: url('/assets/sparkle.svg') 0 0 / 13px no-repeat, url('/assets/sparkle.svg') 100% 100% / 10px no-repeat, url('/assets/sparkle.svg') 88% 0 / 8px no-repeat;
+    mask: url('/assets/sparkle.svg') 0 0 / 13px no-repeat, url('/assets/sparkle.svg') 100% 100% / 10px no-repeat, url('/assets/sparkle.svg') 88% 0 / 8px no-repeat;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.25s ease, transform 0.35s ease;
+    pointer-events: none;
+  }
+  .nav-link--pill.is-festive:hover::after,
+  .nav-link--pill.is-festive:focus-visible::after {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* =====================

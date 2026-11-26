@@ -3,6 +3,7 @@ import { navItems, social } from '../data/nav.js';
 import { getLocale, localizePath, switchPath } from '../i18n/index.js';
 import { navHint, navLabel, ui } from '../i18n/ui.js';
 import Icon from './Icons.astro';
+import { festive } from '../data/site.js';
 
 const locale = getLocale(Astro.url.pathname);
 const t = ui[locale];
@@ -92,7 +93,7 @@ const otherUi = ui[other];
             <li>
               <a
                 href={item.href}
-                class:list={['nav-link', { 'nav-link--pill': item.highlight }]}
+                class:list={['nav-link', { 'nav-link--pill': item.highlight, 'is-festive': item.highlight && festive }]}
                 aria-current={isCurrent(item.href) ? 'page' : undefined}
               >
                 {item.label}
