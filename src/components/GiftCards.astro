@@ -51,13 +51,12 @@ const texts = {
     time: [
       ['No rush', [`They have up to ${YEARS_TO_START} years to use the gift for the first time.`]],
       ['The first visit starts the pass', ['The validity period begins on the day they first come.']],
-      [
-        'Use it within the validity period',
-        ['2-Practica Pass: 2 practicas within 8 weeks', '4-Practica Pass: 4 practicas within 16 weeks', '4-Class Pass: 4 consecutive Thursday classes'],
-      ],
+      ['Then it runs for', ['How long each pass lasts from the first visit:']],
     ],
+    validity: [['2-Practica Pass', '8 weeks'], ['4-Practica Pass', '16 weeks'], ['4-Class Pass', '4 Thursdays in a row']],
+    exampleLabel: 'For example',
     example: [
-      'Example: if their first practica is on 13 January 2027, a 2-Practica Pass is valid until and including 10 March 2027.',
+      'First practica on 13 January 2027: a 2-Practica Pass is valid until and including 10 March 2027.',
       'If we cancel a practica, the validity period is extended accordingly.',
     ],
     faqEyebrow: 'Questions',
@@ -140,13 +139,12 @@ const texts = {
     time: [
       ['Keine Eile', [`Bis zu ${YEARS_TO_START} Jahre Zeit, das Geschenk zum ersten Mal einzulösen.`]],
       ['Der erste Besuch startet den Pass', ['Die Gültigkeit beginnt am Tag des ersten Besuchs.']],
-      [
-        'Innerhalb der Gültigkeit nutzen',
-        ['2-Practica-Pass: 2 Practicas in 8 Wochen', '4-Practica-Pass: 4 Practicas in 16 Wochen', '4er-Kurspass: 4 aufeinanderfolgende Donnerstagsstunden'],
-      ],
+      ['Dann gilt er', ['So lange gilt jeder Pass ab dem ersten Besuch:']],
     ],
+    validity: [['2-Practica-Pass', '8 Wochen'], ['4-Practica-Pass', '16 Wochen'], ['4er-Kurspass', '4 Donnerstage am Stück']],
+    exampleLabel: 'Zum Beispiel',
     example: [
-      'Beispiel: Ist die erste Practica am 13. Januar 2027, gilt ein 2-Practica-Pass bis einschließlich 10. März 2027.',
+      'Erste Practica am 13. Januar 2027: Ein 2-Practica-Pass gilt bis einschließlich 10. März 2027.',
       'Fällt eine Practica bei uns aus, verlängert sich die Gültigkeit entsprechend.',
     ],
     faqEyebrow: 'Fragen',
@@ -326,17 +324,28 @@ const faqSchema = {
     <h2>{text.timeTitle}</h2>
     <ol>
       {
-        text.time.map(([h, lines]) => (
+        text.time.map(([h, lines], i) => (
           <li>
             <h3>{h}</h3>
             {(lines as string[]).map((line) => (
               <p>{line}</p>
             ))}
+            {i === text.time.length - 1 && (
+              <dl class="gift-validity">
+                {text.validity.map(([name, length]) => (
+                  <div>
+                    <dt>{name}</dt>
+                    <dd>{length}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
           </li>
         ))
       }
     </ol>
     <div class="gift-example">
+      <p class="gift-example-label">🗓️ {text.exampleLabel}</p>
       {text.example.map((line) => (
         <p>{line}</p>
       ))}
@@ -820,10 +829,54 @@ const faqSchema = {
       background: var(--green);
     }
   }
-  .gift-steps--light .gift-example {
-    background: #fff;
+  /* Step 3: each pass and how long it lasts, as a small table. */
+  .gift-validity {
+    max-width: 290px;
+    margin: 0.9rem auto 0;
+    text-align: left;
+  }
+  .gift-validity div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(78, 93, 34, 0.18);
+  }
+  .gift-validity div:first-child {
+    border-top: 1px solid rgba(78, 93, 34, 0.18);
+  }
+  .gift-validity dt {
+    white-space: nowrap;
     color: var(--text-mid);
-    border: 1px solid rgba(78, 93, 34, 0.12);
+    font-size: 0.95rem;
+  }
+  .gift-validity dd {
+    margin: 0;
+    color: var(--green);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-align: right;
+  }
+  /* The worked example: a soft sand note under the steps. */
+  .gift-steps--light .gift-example {
+    max-width: 560px;
+    margin-top: 3rem;
+    background: #ebe1cc;
+    color: var(--text-mid);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+  }
+  .gift-steps--light .gift-example p {
+    color: var(--text-mid);
+  }
+  .gift-steps--light .gift-example .gift-example-label {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
   }
   .gift-example p + p {
     margin-top: 0.4rem;
