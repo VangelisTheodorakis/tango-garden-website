@@ -138,6 +138,20 @@ describe('buildIcs: DST and holiday-skip correctness', () => {
   });
 });
 
+describe('buildIcs, one-off event', () => {
+  const ics = buildIcs(course, [{ date: '2026-12-13', time: '17:30 – 19:00' }], opts);
+
+  it('emits a single plain VEVENT with no repeat rule', () => {
+    // A COUNT=1 RRULE is valid but makes Apple Calendar show the event as
+    // "repeating", which is confusing for a one-off class.
+    expect(ics.match(/BEGIN:VEVENT/g)).toHaveLength(1);
+    expect(ics).not.toContain('RRULE:FREQ=WEEKLY');
+    expect(ics).not.toContain('EXDATE');
+    expect(ics).toContain('DTSTART;TZID=Europe/Berlin:20261213T173000');
+    expect(ics).toContain('DTEND;TZID=Europe/Berlin:20261213T190000');
+  });
+});
+
 describe('googleCalendarUrl', () => {
   const url = googleCalendarUrl(course, events);
   const parsed = new URL(url);

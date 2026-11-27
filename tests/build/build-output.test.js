@@ -434,6 +434,16 @@ describe('calendar feed', () => {
     expect(ics).toContain('DTSTART;TZID=Europe/Berlin:20270107T203000');
     expect(ics).not.toContain('EXDATE');
   });
+
+  it('ships the ESN pop-up class .ics as a one-off event', () => {
+    const path = join(DIST, 'calendar', 'esn-tango-class-13-dec.ics');
+    expect(existsSync(path), 'calendar/esn-tango-class-13-dec.ics missing').toBe(true);
+    const ics = readFileSync(path, 'utf8');
+    expect(ics.match(/BEGIN:VEVENT/g) ?? []).toHaveLength(1);
+    expect(ics).toContain('DTSTART;TZID=Europe/Berlin:20261213T173000');
+    expect(ics).toContain('DTEND;TZID=Europe/Berlin:20261213T190000');
+    expect(ics).not.toContain('RRULE:FREQ=WEEKLY');
+  });
 });
 
 describe('deploy artefacts', () => {

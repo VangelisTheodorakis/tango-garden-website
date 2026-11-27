@@ -208,9 +208,13 @@ export function buildIcs(course, events, opts = {}) {
       `UID:${course.slug}@tangogarden.de`,
       `DTSTAMP:${stamp}`,
       `DTSTART;TZID=${course.timezone}:${localStamp(first.event.date, first.time.start)}`,
-      `DTEND;TZID=${course.timezone}:${localStamp(first.event.date, first.time.end)}`,
-      `RRULE:FREQ=WEEKLY;BYDAY=${WEEKDAY_CODES[firstUtc.getUTCDay()]};COUNT=${weekly}`
+      `DTEND;TZID=${course.timezone}:${localStamp(first.event.date, first.time.end)}`
     );
+    // A one-off event (e.g. a pop-up class) gets no RRULE: COUNT=1 is valid
+    // but Apple Calendar then labels it as a repeating event.
+    if (weekly > 1) {
+      lines.push(`RRULE:FREQ=WEEKLY;BYDAY=${WEEKDAY_CODES[firstUtc.getUTCDay()]};COUNT=${weekly}`);
+    }
     if (exdates.length) {
       lines.push(
         `EXDATE;TZID=${course.timezone}:` +
