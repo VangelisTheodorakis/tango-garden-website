@@ -174,6 +174,32 @@ count can't be undone (see open items).
 - The QR page lists the next practicas from `practicas.json` and the beginner start from `regular-classes.json` at build time; a small script hides dates that have passed.
 - **Open:** no gift-card clause in the AGB / refund policy yet; add it with the pending German legal check.
 
+## 7c. Personal flip cards (/card/&lt;slug&gt;)
+
+- **Editor:** `/gardeners-area/cards` (`src/pages/gardeners-area/cards.astro`), behind the same
+  Access app as the dashboard. Write the card, preview it at phone and desktop size, publish,
+  download its QR code (SVG/PNG, gift-card style, `src/lib/qr-style.js`), edit or delete it later.
+- **Public page:** `/card/<slug>`, served by the `tango-garden-gardeners` Worker from KV
+  (`workers/gardeners-api/cards-api.js`; markup in `cards.js`, shared with the editor preview).
+  Styles and the flip script are site files: `public/assets/card/card.css`, `card.js`.
+  noindex (meta + header), no analytics, own CSP header.
+- **No rebuild, nothing in git:** publishing writes to KV and is live at once; messages never enter
+  this public repo. KV is eventually consistent: an edit or delete can take up to a minute to show
+  everywhere.
+- **Delete** removes the card for good; its link and printed QR code then show "This card has been
+  opened" (404, noindex). Unknown addresses show the same page.
+- The details button may only link to a page on tangogarden.de (checked in the editor and the Worker).
+- **One-time setup (owner),** in this order:
+  1. `npx wrangler kv namespace create CARDS --config ./workers/gardeners-api/wrangler.toml`
+     (logged in to the tangogarden.de account) and paste the printed id into
+     `workers/gardeners-api/wrangler.toml` (`[[kv_namespaces]]`).
+  2. Push the site (editor page, card.css/card.js, fonts) so the assets exist.
+  3. Redeploy the Worker: `npx wrangler deploy --config ./workers/gardeners-api/wrangler.toml`
+     (adds the `tangogarden.de/card/*` route and the KV binding).
+  4. Open `/gardeners-area/cards` in a private window: it must ask for the Google login. The Access
+     app on `/gardeners-area` covers sub-paths; if it doesn't, add `gardeners-area/cards` to it.
+- Jini's first card (`/pages/for-my-jini`) is a static page from before the editor; it stays as is.
+
 ## 8. Gotchas
 
 - Files have mixed CRLF/LF line endings; edit with tools that keep them.

@@ -1,7 +1,9 @@
 /**
  * Gardeners' Area data: GET /gardeners-area/api/report?days=7|28|90
+ * Personal cards:       GET /card/<slug> (public), and behind Access
+ *                       GET/PUT/DELETE /gardeners-area/api/cards[/<slug>]
  *
- * Runs on the route tangogarden.de/gardeners-area/api/*, in front of the
+ * Runs on the routes tangogarden.de/gardeners-area/api/* and /card/*, in front of the
  * site's own (assets-only) Worker. Cloudflare Access guards the whole
  * /gardeners-area path; verifyAccess checks again here. Answers are cached for
  * 10 minutes per period, so opening the dashboard repeatedly does not use up
@@ -12,12 +14,14 @@
  *   ACCESS_AUD          the Access application's "Application Audience (AUD) Tag"
  *   ALLOWED_EMAILS      comma-separated, same list as the Access policy
  * Vars (wrangler.toml): GA_PROPERTY_ID, ACCESS_TEAM_DOMAIN, GSC_SITE, COURSE_ROUNDS
+ * KV (wrangler.toml):   CARDS, the published cards (key card:<slug>)
  *
  * GA4 is required. Search Console and the response sheets are extras: if one
  * fails (not shared yet, say), the report still answers, with that part null.
  */
 
 import { verifyAccess } from './access.js';
+import { handleCards } from './cards-api.js';
 import { accessToken, runReports } from './ga.js';
 import { buildRegistrations, fetchSheet } from './registrations.js';
 import { PERIODS, buildReport, reportRequests } from './report.js';
@@ -40,6 +44,9 @@ function json(body, status = 200) {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    if (url.pathname.startsWith('/card/') || url.pathname.startsWith('/gardeners-area/api/cards')) {
+      return handleCards(request, env, url);
+    }
     if (url.pathname !== '/gardeners-area/api/report') return json({ error: 'not found' }, 404);
     if (request.method !== 'GET') return json({ error: 'method not allowed' }, 405);
 

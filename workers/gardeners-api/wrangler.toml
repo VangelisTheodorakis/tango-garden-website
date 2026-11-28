@@ -17,7 +17,15 @@ workers_dev = false
 
 routes = [
   { pattern = "tangogarden.de/gardeners-area/api/*", zone_name = "tangogarden.de" },
+  # Personal flip cards (public; the editor is behind Access in /gardeners-area/cards).
+  { pattern = "tangogarden.de/card/*", zone_name = "tangogarden.de" },
 ]
+
+# Published cards. Create once, then paste the id it prints here:
+#   npx wrangler kv namespace create CARDS --config ./wrangler.toml
+[[kv_namespaces]]
+binding = "CARDS"
+id = "e1572db906114125a6d5e861b62669b6"
 
 [vars]
 GA_PROPERTY_ID = "550087499"

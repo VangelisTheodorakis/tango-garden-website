@@ -19,4 +19,6 @@ export const noindexRoutes = [
   '/pages/for-my-jini/',
   // Private team dashboard, behind Cloudflare Access.
   '/gardeners-area/',
+  // Its card editor, same Access protection.
+  '/gardeners-area/cards/',
 ];

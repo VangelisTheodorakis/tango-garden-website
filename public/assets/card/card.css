@@ -1,0 +1,324 @@
+/*
+ * Personal flip cards (/card/<slug>), rendered by the tango-garden-gardeners
+ * Worker from workers/gardeners-api/cards.js. Also loaded by the editor in
+ * /gardeners-area/cards for its preview. Every class starts with tgc- so it
+ * can sit next to the site's own styles.
+ *
+ * The printed card is 8.5 x 5.5 cm: upright (55:85) on a narrow stage, so
+ * phones can read it, landscape (85:55) from 560px of stage. Type is in cqi
+ * (card width), so the text scales with the card.
+ */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-v20-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Caveat';
+  src: url('/fonts/caveat-latin-400.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Caveat';
+  src: url('/fonts/caveat-latin-700.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ---- The page around a card (public pages only) ---- */
+.tgc-page {
+  margin: 0;
+  min-height: 100vh;
+  background: #ebe4b0;
+  color: #4e5d22;
+  font-family: Inter, system-ui, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+.tgc-main {
+  box-sizing: border-box;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 3rem;
+}
+.tgc-home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+  color: #4e5d22;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-decoration: none;
+}
+.tgc-vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.tgc-gone {
+  max-width: 420px;
+  margin: 2rem auto;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background: #fdfcf7;
+  border: 2px solid #b9b293;
+  border-radius: 14px;
+}
+.tgc-gone h1 {
+  font-family: Caveat, cursive;
+  font-size: 2.4rem;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+}
+.tgc-gone p {
+  line-height: 1.5;
+}
+
+/* ---- The stage and the card ---- */
+.tgc-stage {
+  container: tgc-stage / inline-size;
+  --olive: #4e5d22;
+  --olive-light: #8a9a2a;
+  color: var(--olive);
+}
+.tgc-card {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-family: Inter, system-ui, sans-serif;
+  color: var(--olive);
+  text-align: inherit;
+  cursor: pointer;
+  perspective: 1400px;
+  container-type: inline-size;
+  -webkit-tap-highlight-color: transparent;
+  /* Sizes per font choice (portrait); landscape values further down. */
+  --title: 9cqi;
+  --kicker: 3.6cqi;
+  --hint: 4.2cqi;
+  --back: 4.9cqi;
+  --body: 4.9cqi;
+  --pad: 7cqi 12cqi;
+}
+.tgc-card *,
+.tgc-card *::before,
+.tgc-card *::after {
+  box-sizing: border-box;
+}
+.tgc-card:focus-visible {
+  outline: 3px solid var(--olive);
+  outline-offset: 6px;
+  border-radius: 14px;
+}
+/* Both faces share one grid cell; min-height: 0 keeps the ratio strict. */
+.tgc-inner {
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  aspect-ratio: 55 / 85;
+  min-height: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+.tgc-card[aria-pressed='true'] .tgc-inner {
+  transform: rotateY(180deg);
+}
+.tgc-face {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  background: #fdfcf7;
+  border: 2px solid #b9b293;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(78, 93, 34, 0.18);
+  padding: var(--pad);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+/* Centred, but a too-long message starts at the top and scrolls rather than
+   being cut off at both ends. */
+.tgc-face > :first-child {
+  margin-top: auto;
+}
+.tgc-face > :last-child {
+  margin-bottom: auto;
+}
+.tgc-front {
+  align-items: center;
+  text-align: center;
+}
+.tgc-logo {
+  width: 22cqi;
+  height: 22cqi;
+  margin-bottom: 6cqi;
+}
+.tgc-kicker {
+  font-size: var(--kicker);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--olive-light);
+}
+.tgc-title {
+  font-size: var(--title);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 2cqi 0 7cqi;
+  overflow-wrap: anywhere;
+}
+.tgc-hint {
+  padding: 0.5em 1.3em;
+  border: 1.5px solid var(--olive);
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: var(--hint);
+}
+.tgc-back {
+  transform: rotateY(180deg);
+  overflow-y: auto;
+  text-align: left;
+  color: #3c4520;
+  font-size: var(--back);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.tgc-p {
+  display: block;
+  margin-bottom: 0.5em;
+}
+.tgc-body {
+  font-size: var(--body);
+  line-height: 1.4;
+  margin-bottom: 0.7em;
+}
+.tgc-ask {
+  font-weight: 700;
+  color: var(--olive);
+  font-size: 1.15em;
+  margin-top: 0.3em;
+}
+.tgc-signoff {
+  margin-bottom: 0;
+}
+.tgc-signature {
+  color: var(--olive);
+  font-size: 1.15em;
+  font-style: italic;
+  margin-bottom: 0;
+}
+.tgc-foot {
+  display: block;
+  margin-top: 0.9em;
+  padding-top: 0.8em;
+  border-top: 1px solid #d8d2b4;
+  font-size: 0.8em;
+  text-align: center;
+  color: #6b6f55;
+}
+
+/* ---- Font choices ---- */
+/* mixed: handwritten front, greeting, invitation and signature; the message
+   itself in the site font, for easy reading (like the first card, for Jini). */
+.tgc-font-mixed,
+.tgc-font-caveat {
+  --title: 13cqi;
+  --kicker: 4.6cqi;
+  --hint: 5.6cqi;
+  --back: 5.6cqi;
+}
+.tgc-font-mixed :is(.tgc-front, .tgc-greeting, .tgc-ask, .tgc-signoff, .tgc-signature, .tgc-foot),
+.tgc-font-caveat .tgc-inner {
+  font-family: Caveat, cursive;
+}
+.tgc-font-mixed .tgc-signature,
+.tgc-font-caveat .tgc-signature {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.4em;
+}
+.tgc-font-mixed .tgc-ask,
+.tgc-font-caveat .tgc-ask {
+  font-size: 1.2em;
+}
+.tgc-font-caveat {
+  --body: 5.6cqi;
+}
+.tgc-font-caveat .tgc-body {
+  line-height: 1.25;
+  margin-bottom: 0.5em;
+}
+
+/* ---- Landscape, on a wide stage ---- */
+@container tgc-stage (min-width: 560px) {
+  .tgc-card {
+    max-width: 680px;
+    --title: 5.2cqi;
+    --kicker: 1.9cqi;
+    --hint: 2.2cqi;
+    --back: 2.45cqi;
+    --body: 2.45cqi;
+    --pad: 4cqi 10cqi;
+  }
+  .tgc-font-mixed,
+  .tgc-font-caveat {
+    --title: 7.5cqi;
+    --kicker: 2.5cqi;
+    --hint: 3cqi;
+    --back: 3cqi;
+  }
+  .tgc-font-caveat {
+    --body: 3cqi;
+  }
+  .tgc-inner {
+    aspect-ratio: 85 / 55;
+  }
+  .tgc-logo {
+    width: 12cqi;
+    height: 12cqi;
+    margin-bottom: 3cqi;
+  }
+  .tgc-title {
+    margin: 1cqi 0 3.5cqi;
+  }
+}
+
+/* ---- After opening: the way to the details ---- */
+.tgc-after {
+  margin: 1.75rem 0 0;
+  text-align: center;
+}
+.tgc-details {
+  display: inline-block;
+  padding: 12px 26px;
+  border-radius: 30px;
+  background: #4e5d22;
+  color: #fdfcf7;
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+.tgc-details:hover,
+.tgc-details:focus-visible {
+  background: #a85a2c;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tgc-inner {
+    transition: none;
+  }
+}

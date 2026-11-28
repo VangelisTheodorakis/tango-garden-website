@@ -56,10 +56,10 @@ describe('pages', () => {
     // the QR page you-ve-got-tango)
     // + 12 products (all hidden, kept for direct-URL + price/variant data)
     // + 404
-    // + the private Gardeners' Area dashboard (English only)
+    // + the private Gardeners' Area dashboard and its card editor (English only)
     // + the personal advent card for-my-jini (English only)
     // + a German mirror under /de for every page in src/i18n/index.js translatedPaths
-    expect(pages).toHaveLength(35 + translatedPaths.length);
+    expect(pages).toHaveLength(36 + translatedPaths.length);
   });
 
   it('gives every page a non-empty title', () => {
@@ -550,5 +550,13 @@ describe("Gardeners' Area", () => {
   it('never loads Google Analytics', () => {
     // The GA bootstrap only runs when this meta tag is present.
     expect(page()?.document.querySelector('meta[name="ga-measurement-id"]')).toBeNull();
+  });
+
+  it('keeps the card editor noindexed, out of the sitemap and free of analytics', () => {
+    const editor = pages.find((p) => p.route === '/gardeners-area/cards/');
+    expect(editor?.document.querySelector('meta[name="robots"]')?.getAttribute('content')).toMatch(/noindex/);
+    expect(editor?.document.querySelector('meta[name="ga-measurement-id"]')).toBeNull();
+    expect(existsSync(join(DIST, 'assets/card/card.css'))).toBe(true);
+    expect(existsSync(join(DIST, 'assets/card/card.js'))).toBe(true);
   });
 });

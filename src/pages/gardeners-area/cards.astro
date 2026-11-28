@@ -1,0 +1,656 @@
+---
+/**
+ * Gardeners' Area: personal card editor.
+ *
+ * Write a flip card, see it exactly as it will look (same renderer and
+ * stylesheet as the public page), publish it to /card/<slug>, get its QR code,
+ * and delete it once it has been used. Cards are stored by the
+ * tango-garden-gardeners Worker in KV (workers/gardeners-api/cards-api.js), so
+ * publishing needs no site rebuild and messages never enter the (public) repo.
+ *
+ * Behind Cloudflare Access like the dashboard. Not indexed, no analytics. On
+ * localhost there is no API: the editor, preview and QR work, publishing doesn't.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { FONTS, FONT_LABELS } from '../../../workers/gardeners-api/cards.js';
+---
+
+<BaseLayout
+  title="Cards | Gardeners' Area | Tango Garden"
+  description="Write and publish personal flip cards."
+  canonical="https://tangogarden.de/gardeners-area/cards"
+  noindex
+  analytics={false}
+>
+  <link slot="head" rel="stylesheet" href="/assets/card/card.css" />
+  <script slot="head" is:inline src="/assets/card/card.js" defer></script>
+
+  <div class="ce">
+    <header class="ce-head">
+      <div>
+        <h1>Cards</h1>
+        <p class="ce-sub">Personal flip cards with their own link and QR code.</p>
+      </div>
+      <a class="ce-link" href="/gardeners-area">← Dashboard</a>
+    </header>
+
+    <p class="ce-status" id="ce-status" role="status"></p>
+
+    <div class="ce-grid">
+      <form class="ce-form" id="ce-form" novalidate>
+        <fieldset>
+          <legend>Address</legend>
+          <label class="ce-field">
+            <span>Link</span>
+            <span class="ce-slug"><span class="ce-prefix">tangogarden.de/card/</span><input name="slug" autocomplete="off" spellcheck="false" placeholder="for-my-jini" maxlength="60" /></span>
+            <small>Lowercase letters, numbers and dashes. Fills in from the title.</small>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Front</legend>
+          <label class="ce-field"><span>Small line</span><input name="kicker" maxlength="40" placeholder="Day 2" /></label>
+          <label class="ce-field"><span>Title</span><input name="title" maxlength="60" placeholder="For my Jini" required /></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Back</legend>
+          <label class="ce-field"><span>Greeting</span><input name="greeting" maxlength="80" placeholder="Dear Jini," /></label>
+          <label class="ce-field">
+            <span>Message</span>
+            <textarea name="message" rows="8" maxlength="1200" required placeholder="Today I give you the Gift of the Embrace…"></textarea>
+            <small>An empty line starts a new paragraph.</small>
+          </label>
+          <label class="ce-field"><span>Highlighted line</span><input name="ask" maxlength="120" placeholder="Will you dance with me?" /></label>
+          <div class="ce-pair">
+            <label class="ce-field"><span>Sign-off</span><input name="signoff" maxlength="60" placeholder="Yours," /></label>
+            <label class="ce-field"><span>Signature</span><input name="signature" maxlength="60" placeholder="Duc" /></label>
+          </div>
+          <label class="ce-field"><span>Date line</span><input name="footer" maxlength="80" placeholder="Wed 2 Dec · 19:30 · Tango Garden" /></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Font</legend>
+          <div class="ce-fonts">
+            {
+              FONTS.map((f) => (
+                <label class="ce-radio">
+                  <input type="radio" name="font" value={f} checked={f === 'mixed'} />
+                  <span>{FONT_LABELS[f as keyof typeof FONT_LABELS]}</span>
+                </label>
+              ))
+            }
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Button after opening</legend>
+          <div class="ce-pair">
+            <label class="ce-field"><span>Text</span><input name="detailsLabel" maxlength="40" /></label>
+            <label class="ce-field"><span>Page</span><input name="detailsUrl" maxlength="300" spellcheck="false" /></label>
+          </div>
+          <small>A page on tangogarden.de. Leave the page empty for no button.</small>
+        </fieldset>
+
+        <div class="ce-actions">
+          <button type="submit" class="ce-btn ce-primary" id="ce-publish">Publish</button>
+          <button type="button" class="ce-btn" id="ce-new">New card</button>
+        </div>
+      </form>
+
+      <div class="ce-side">
+        <section class="ce-panel" aria-labelledby="ce-preview-h">
+          <div class="ce-panel-head">
+            <h2 id="ce-preview-h">Preview</h2>
+            <div class="ce-toggle" role="group" aria-label="Preview size">
+              <button type="button" data-view="phone" aria-pressed="true">Phone</button>
+              <button type="button" data-view="desktop" aria-pressed="false">Desktop</button>
+            </div>
+          </div>
+          <p class="ce-note">Tap the card to flip it.</p>
+          <div class="ce-stage-wrap" id="ce-stage-wrap" data-view="phone">
+            <div class="tgc-stage" id="ce-stage"></div>
+          </div>
+          <p class="ce-warn" id="ce-fit" hidden></p>
+        </section>
+
+        <section class="ce-panel" aria-labelledby="ce-qr-h">
+          <h2 id="ce-qr-h">QR code</h2>
+          <div class="ce-qr">
+            <img id="ce-qr-img" alt="" width="160" height="160" hidden />
+            <div>
+              <p class="ce-note" id="ce-qr-url">Choose a link first.</p>
+              <div class="ce-actions">
+                <button type="button" class="ce-btn" id="ce-qr-svg" disabled>Download SVG</button>
+                <button type="button" class="ce-btn" id="ce-qr-png" disabled>Download PNG</button>
+              </div>
+              <p class="ce-note">The code works once the card is published. Scan it once before printing.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <section class="ce-panel ce-list" aria-labelledby="ce-list-h">
+      <h2 id="ce-list-h">Published cards</h2>
+      <p class="ce-note">Deleting a card can't be undone; its link and QR code then show "This card has been opened".</p>
+      <ul id="ce-cards"></ul>
+    </section>
+
+    <div class="ce-measure" aria-hidden="true">
+      <div class="tgc-stage ce-measure-phone" id="ce-m-phone"></div>
+      <div class="tgc-stage ce-measure-desktop" id="ce-m-desktop"></div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import { EMPTY_CARD, SLUG_RE, cardMarkup, cardUrl, validateCard } from '../../../workers/gardeners-api/cards.js';
+  import { qrSvg } from '../../lib/qr-style.js';
+
+  type Card = typeof EMPTY_CARD & { updated?: string };
+  const API = '/gardeners-area/api/cards';
+  const LOCAL = ['localhost', '127.0.0.1'].includes(location.hostname);
+
+  const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
+  const form = $<HTMLFormElement>('ce-form');
+  const status = $('ce-status');
+  const stage = $('ce-stage');
+  const fit = $('ce-fit');
+  const slugInput = form.elements.namedItem('slug') as HTMLInputElement;
+  const titleInput = form.elements.namedItem('title') as HTMLInputElement;
+
+  let published: { slug: string; title?: string; updated?: string }[] = [];
+  let editing = ''; // slug of the card loaded for editing
+  let slugTouched = false;
+
+  function say(text: string, kind: '' | 'ok' | 'error' = '', html = false) {
+    status.className = `ce-status${kind ? ` is-${kind}` : ''}`;
+    if (html) status.innerHTML = text;
+    else status.textContent = text;
+  }
+
+  function readForm(): Card {
+    const data = new FormData(form);
+    const card = { ...EMPTY_CARD } as Card;
+    for (const k of Object.keys(EMPTY_CARD) as (keyof typeof EMPTY_CARD)[]) {
+      (card as Record<string, string>)[k] = String(data.get(k) ?? '');
+    }
+    return card;
+  }
+
+  function fillForm(card: Partial<Card>) {
+    const c = { ...EMPTY_CARD, ...card };
+    for (const [k, v] of Object.entries(c)) {
+      const el = form.elements.namedItem(k);
+      if (el instanceof RadioNodeList) el.value = String(v);
+      else if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) el.value = String(v ?? '');
+    }
+  }
+
+  const slugify = (s: string) =>
+    s
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60)
+      .replace(/-+$/, '');
+
+  // ---- Preview, fit check, QR ----
+  function render() {
+    const card = readForm();
+    const shown = card.title ? card : { ...card, title: 'Your title' };
+    const wasOpen = stage.querySelector('.tgc-card')?.getAttribute('aria-pressed') === 'true';
+    stage.innerHTML = cardMarkup(shown);
+    if (wasOpen) (stage.querySelector('.tgc-card') as HTMLElement).click();
+    for (const id of ['ce-m-phone', 'ce-m-desktop']) $(id).innerHTML = cardMarkup(shown);
+    checkFit();
+    renderQr(card.slug);
+  }
+
+  function checkFit() {
+    const tight: string[] = [];
+    for (const [id, name] of [['ce-m-phone', 'small phones'], ['ce-m-desktop', 'desktop']]) {
+      for (const face of $(id).querySelectorAll<HTMLElement>('.tgc-face')) {
+        if (face.scrollHeight > face.clientHeight + 1) tight.push(name);
+      }
+    }
+    fit.hidden = tight.length === 0;
+    fit.textContent = tight.length
+      ? `Too much text to fit on ${[...new Set(tight)].join(' and ')}: it will scroll inside the card. Shorten the message a little.`
+      : '';
+  }
+
+  let qrText = '';
+  function renderQr(slug: string) {
+    const img = $<HTMLImageElement>('ce-qr-img');
+    const ok = SLUG_RE.test(slug);
+    for (const id of ['ce-qr-svg', 'ce-qr-png']) $<HTMLButtonElement>(id).disabled = !ok;
+    img.hidden = !ok;
+    $('ce-qr-url').textContent = ok ? cardUrl(slug) : 'Choose a link first.';
+    if (!ok) return;
+    qrText = qrSvg(cardUrl(slug));
+    img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(qrText)}`;
+  }
+
+  function download(blob: Blob, name: string) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+  $('ce-qr-svg').addEventListener('click', () =>
+    download(new Blob([qrText], { type: 'image/svg+xml' }), `qr-${slugInput.value}.svg`)
+  );
+  $('ce-qr-png').addEventListener('click', async () => {
+    const img = new Image();
+    img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(qrText)}`;
+    await img.decode();
+    const canvas = document.createElement('canvas');
+    canvas.width = canvas.height = 2048;
+    canvas.getContext('2d')!.drawImage(img, 0, 0, 2048, 2048);
+    canvas.toBlob((b) => b && download(b, `qr-${slugInput.value}.png`), 'image/png');
+  });
+
+  // ---- Talking to the Worker ----
+  async function api(path: string, init: RequestInit = {}) {
+    const res = await fetch(`${API}${path}`, {
+      credentials: 'same-origin',
+      ...init,
+      headers: { 'content-type': 'application/json', ...(init.headers ?? {}) },
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(
+        res.status === 401 ? 'You are not signed in, or this email has no access.' : body.error ?? `The card service answered ${res.status}.`
+      );
+    }
+    return body;
+  }
+
+  const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+  const fmt = (iso?: string) =>
+    iso ? new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }).format(new Date(iso)) : '';
+
+  async function loadList() {
+    const list = $('ce-cards');
+    if (LOCAL) {
+      list.innerHTML = '<li class="ce-empty">Publishing and the card list only work on tangogarden.de.</li>';
+      return;
+    }
+    try {
+      published = (await api('')).cards;
+      list.innerHTML = published.length
+        ? published
+            .map(
+              (c) => `<li>
+                <div><strong>${esc(c.title ?? c.slug)}</strong>
+                <a href="/card/${esc(c.slug)}" target="_blank" rel="noopener">/card/${esc(c.slug)}</a>
+                <small>${esc(fmt(c.updated))}</small></div>
+                <div class="ce-row-actions">
+                  <button type="button" class="ce-btn" data-edit="${esc(c.slug)}">Edit</button>
+                  <button type="button" class="ce-btn ce-danger" data-delete="${esc(c.slug)}">Delete</button>
+                </div></li>`
+            )
+            .join('')
+        : '<li class="ce-empty">No cards yet.</li>';
+    } catch (err) {
+      list.innerHTML = `<li class="ce-empty">${esc((err as Error).message)}</li>`;
+    }
+  }
+
+  $('ce-cards').addEventListener('click', async (e) => {
+    const btn = (e.target as Element).closest('button');
+    if (!btn) return;
+    const { edit, delete: del } = btn.dataset;
+    try {
+      if (edit) {
+        const { card } = await api(`/${edit}`);
+        fillForm(card);
+        editing = edit;
+        slugTouched = true;
+        render();
+        say(`Editing /card/${edit}. Publish to save the changes.`);
+        form.scrollIntoView({ behavior: 'smooth' });
+      } else if (del) {
+        if (!confirm(`Delete /card/${del}? This can't be undone. The link and QR code will show "This card has been opened".`)) return;
+        await api(`/${del}`, { method: 'DELETE' });
+        if (editing === del) editing = '';
+        say(`Deleted /card/${del}.`, 'ok');
+        loadList();
+      }
+    } catch (err) {
+      say((err as Error).message, 'error');
+    }
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const result = validateCard(readForm());
+    if ('error' in result) return say(result.error, 'error');
+    const { card } = result;
+    if (LOCAL) return say('Publishing only works on tangogarden.de. The preview and QR code are ready.', 'error');
+    if (card.slug !== editing && published.some((p) => p.slug === card.slug)) {
+      if (!confirm(`/card/${card.slug} already exists. Replace that card?`)) return;
+    }
+    try {
+      await api(`/${card.slug}`, { method: 'PUT', body: JSON.stringify(card) });
+      editing = card.slug;
+      say(`Published: <a href="/card/${esc(card.slug)}" target="_blank" rel="noopener">${esc(cardUrl(card.slug))}</a>`, 'ok', true);
+      loadList();
+    } catch (err) {
+      say((err as Error).message, 'error');
+    }
+  });
+
+  $('ce-new').addEventListener('click', () => {
+    if (!confirm('Start a new card? Unpublished changes are lost.')) return;
+    fillForm(EMPTY_CARD);
+    editing = '';
+    slugTouched = false;
+    say('');
+    render();
+  });
+
+  // ---- Live updates ----
+  slugInput.addEventListener('input', () => {
+    slugTouched = slugInput.value !== '';
+    slugInput.value = slugInput.value.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+  });
+  titleInput.addEventListener('input', () => {
+    if (!slugTouched && !editing) slugInput.value = slugify(titleInput.value);
+  });
+  form.addEventListener('input', render);
+
+  document.querySelectorAll<HTMLButtonElement>('.ce-toggle button').forEach((b) =>
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.ce-toggle button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      $('ce-stage-wrap').dataset.view = b.dataset.view;
+    })
+  );
+  const wrap = $('ce-stage-wrap');
+  const fitDesktop = () => wrap.style.setProperty('--fit', String(Math.min(1, (wrap.clientWidth - 24) / 680)));
+  new ResizeObserver(fitDesktop).observe(wrap);
+
+  fillForm(EMPTY_CARD);
+  render();
+  document.fonts.ready.then(checkFit);
+  loadList();
+</script>
+
+<style>
+  .ce {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 40px 16px 64px;
+    color: var(--text);
+  }
+  .ce-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .ce h1 {
+    font-size: 2rem;
+    color: var(--green);
+  }
+  .ce h2 {
+    font-size: 1.15rem;
+    color: var(--green);
+  }
+  .ce-sub,
+  .ce-note,
+  .ce small {
+    color: #5b5f4a;
+    font-size: 0.9rem;
+  }
+  .ce-link {
+    color: var(--green);
+    font-weight: 600;
+  }
+  .ce-status {
+    min-height: 1.5em;
+    margin-bottom: 12px;
+  }
+  .ce-status.is-ok {
+    color: #2f6b1f;
+    font-weight: 600;
+  }
+  .ce-status.is-error,
+  .ce-warn {
+    color: #a33a1c;
+    font-weight: 600;
+  }
+  .ce-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  @media (min-width: 960px) {
+    .ce-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      align-items: start;
+    }
+    .ce-side {
+      position: sticky;
+      top: 90px;
+    }
+  }
+  .ce-form fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0 0 20px;
+    min-width: 0;
+  }
+  .ce-form legend {
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .ce-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+    min-width: 0;
+  }
+  .ce-field > span:first-child {
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+  .ce input:not([type='radio']),
+  .ce textarea {
+    font: inherit;
+    width: 100%;
+    min-width: 0;
+    padding: 9px 11px;
+    border: 1.5px solid #c9c3a4;
+    border-radius: 8px;
+    background: #fff;
+    color: inherit;
+  }
+  .ce textarea {
+    resize: vertical;
+    line-height: 1.45;
+  }
+  .ce input:focus-visible,
+  .ce textarea:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 1px;
+  }
+  .ce-slug {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid #c9c3a4;
+    border-radius: 8px;
+    background: #fff;
+    min-width: 0;
+  }
+  .ce-slug .ce-prefix {
+    padding-left: 11px;
+    color: #6b6f55;
+    white-space: nowrap;
+    font-size: 0.9rem;
+  }
+  .ce .ce-slug input {
+    border: 0;
+    padding-left: 2px;
+  }
+  .ce-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px;
+  }
+  .ce-fonts {
+    display: grid;
+    gap: 8px;
+  }
+  .ce-radio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ce-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ce-btn {
+    font: inherit;
+    font-weight: 600;
+    padding: 9px 18px;
+    border: 1.5px solid var(--green);
+    border-radius: 30px;
+    background: #fdfcf7;
+    color: var(--green);
+    cursor: pointer;
+  }
+  .ce-btn:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+  .ce-btn.ce-primary {
+    background: var(--green);
+    color: #fff;
+  }
+  .ce-btn.ce-danger {
+    border-color: #a33a1c;
+    color: #a33a1c;
+  }
+  .ce-panel {
+    background: #fbf9ef;
+    border: 1px solid #e2dcc0;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .ce-panel-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .ce-toggle button {
+    font: inherit;
+    font-size: 0.9rem;
+    padding: 5px 12px;
+    border: 1.5px solid var(--green);
+    background: #fff;
+    color: var(--green);
+    cursor: pointer;
+  }
+  .ce-toggle button:first-child {
+    border-radius: 20px 0 0 20px;
+  }
+  .ce-toggle button:last-child {
+    border-radius: 0 20px 20px 0;
+    margin-left: -1.5px;
+  }
+  .ce-toggle button[aria-pressed='true'] {
+    background: var(--green);
+    color: #fff;
+  }
+  .ce-stage-wrap {
+    background: #ebe4b0;
+    border-radius: 10px;
+    padding: 20px 12px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+  .ce-stage-wrap .tgc-stage {
+    margin: 0 auto;
+  }
+  .ce-stage-wrap[data-view='phone'] .tgc-stage {
+    width: min(100%, 320px);
+  }
+  /* Real desktop size, zoomed down to the panel (--fit is set by the script). */
+  .ce-stage-wrap[data-view='desktop'] .tgc-stage {
+    width: 680px;
+    zoom: var(--fit, 1);
+  }
+  .ce-warn {
+    margin-top: 10px;
+  }
+  .ce-qr {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .ce-qr img {
+    width: 160px;
+    height: 160px;
+    border-radius: 8px;
+  }
+  .ce-qr > div {
+    flex: 1 1 200px;
+    min-width: 0;
+  }
+  .ce-qr .ce-note {
+    margin: 0 0 10px;
+    overflow-wrap: anywhere;
+  }
+  .ce-list ul {
+    list-style: none;
+    margin-top: 10px;
+  }
+  .ce-list li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-top: 1px solid #e2dcc0;
+  }
+  .ce-list li > div:first-child {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .ce-row-actions {
+    display: flex;
+    gap: 8px;
+  }
+  /* Off-screen copies at the real phone and desktop widths, to check the fit. */
+  .ce-measure {
+    position: absolute;
+    left: -10000px;
+    top: 0;
+    visibility: hidden;
+  }
+  .ce-measure-phone {
+    width: 288px;
+  }
+  .ce-measure-desktop {
+    width: 680px;
+  }
+</style>
